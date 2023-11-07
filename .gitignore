@@ -3,8 +3,7 @@
 Thumbs.db
 
 # ignore all vscode generated files #
-.vscode/
-```
+.vscode
 
 # ignore all .idea generated files #
 .idea
@@ -12,13 +11,8 @@ Thumbs.db
 # ignore all compiled C++ files #
 *.o
 
-# ignore all text and pdf files #
-*.txt
+# ignore all pdf files #
 *.pdf
 
 # ignore all .json files #
 *.json
-
-# ignore all build files #
-build/
-```
