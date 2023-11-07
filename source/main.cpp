@@ -1,10 +1,13 @@
 // main.cpp
 #include <QApplication>
-#include "GameModel.h"
+#include <iostream>
+#include "../headers/GameModel.h"
 #include "../headers/GameView.h"
 #include "../headers/GameController.h"
 
 int main(int argc, char *argv[]) {
+    std::cout << "Starting game..." << std::endl;
+
     QApplication app(argc, argv);
 
     GameModel *model = new GameModel();
