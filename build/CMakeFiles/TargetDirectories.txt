@@ -1,0 +1,4 @@
+/home/rcw/works/team-a4-fa/build/CMakeFiles/MyQtProject.dir
+/home/rcw/works/team-a4-fa/build/CMakeFiles/edit_cache.dir
+/home/rcw/works/team-a4-fa/build/CMakeFiles/rebuild_cache.dir
+/home/rcw/works/team-a4-fa/build/CMakeFiles/MyQtProject_autogen.dir

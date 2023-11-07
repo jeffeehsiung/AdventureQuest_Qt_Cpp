@@ -1,21 +1,19 @@
+// main.cpp
 #include <QApplication>
-#include "../headers/GameModel.h"
+#include "GameModel.h"
 #include "../headers/GameView.h"
 #include "../headers/GameController.h"
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    // Instantiate the MVC components
     GameModel *model = new GameModel();
-    GameView *view = new GameView(model);
-    new GameController(model, view); // Controller is allocated on the heap and doesn't need to be assigned to a variable
+    model->createWorld("assets/world_images/maze1.png", 10, 5, 0.25); // Example usage
 
-    // Configure the view
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    GameView *view = new GameView(model);
+    GameController *controller = new GameController(model, view);
+
     view->show();
 
-    // Start the application's event loop
     return app.exec();
 }
