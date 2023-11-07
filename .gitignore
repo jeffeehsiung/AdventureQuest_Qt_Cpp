@@ -11,7 +11,8 @@ Thumbs.db
 # ignore all compiled C++ files #
 *.o
 
-# ignore all pdf files #
+# ignore all txt and pdf files #
+*.txt
 *.pdf
 
 # ignore all .json files #
