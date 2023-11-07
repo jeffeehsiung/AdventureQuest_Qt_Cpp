@@ -14,3 +14,6 @@ Thumbs.db
 # ignore all text and pdf files #
 *.txt
 *.pdf
+
+# ignore all .json files #
+*.json
