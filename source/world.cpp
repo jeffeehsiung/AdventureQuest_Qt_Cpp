@@ -1,4 +1,4 @@
-﻿#include "headers/world.h"
+﻿#include "../headers/world.h"
 #include <QDateTime>
 #include <QImage>
 #include <QRgb>
