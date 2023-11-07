@@ -2198,15 +2198,7 @@ CMakeFiles/MyQtProject.dir/source/main.cpp.o: ../source/main.cpp \
   /home/rcw/anaconda3/include/qt/QtCore/qhash.h \
   /usr/include/c++/11/variant \
   /home/rcw/anaconda3/include/qt/QtCore/qshareddata.h \
-  ../headers/GameModel.h \
-  /home/rcw/anaconda3/include/qt/QtCore/QObject \
-  /home/rcw/anaconda3/include/qt/QtCore/qobject.h \
-  ../headers/world.h \
-  ../headers/world_global.h \
-  /usr/include/c++/11/memory \
-  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
-  /usr/include/c++/11/bits/align.h \
-  /usr/include/c++/11/bits/unique_ptr.h \
+  /usr/include/c++/11/iostream \
   /usr/include/c++/11/ostream \
   /usr/include/c++/11/ios \
   /usr/include/c++/11/bits/basic_ios.h \
@@ -2219,6 +2211,17 @@ CMakeFiles/MyQtProject.dir/source/main.cpp.o: ../source/main.cpp \
   /usr/include/c++/11/bits/locale_facets.tcc \
   /usr/include/c++/11/bits/basic_ios.tcc \
   /usr/include/c++/11/bits/ostream.tcc \
+  /usr/include/c++/11/istream \
+  /usr/include/c++/11/bits/istream.tcc \
+  ../headers/GameModel.h \
+  /home/rcw/anaconda3/include/qt/QtCore/QObject \
+  /home/rcw/anaconda3/include/qt/QtCore/qobject.h \
+  ../headers/world.h \
+  ../headers/world_global.h \
+  /usr/include/c++/11/memory \
+  /usr/include/c++/11/bits/stl_raw_storage_iter.h \
+  /usr/include/c++/11/bits/align.h \
+  /usr/include/c++/11/bits/unique_ptr.h \
   /usr/include/c++/11/bits/shared_ptr.h \
   /usr/include/c++/11/bits/shared_ptr_base.h \
   /usr/include/c++/11/ext/concurrence.h \
@@ -2695,10 +2698,6 @@ CMakeFiles/MyQtProject.dir/source/world.cpp.o: ../source/world.cpp \
 
 /usr/include/c++/11/random:
 
-/usr/include/c++/11/bits/istream.tcc:
-
-/usr/include/c++/11/istream:
-
 /home/rcw/anaconda3/include/qt/QtCore/qcontiguouscache.h:
 
 /home/rcw/anaconda3/include/qt/QtCore/qtextstream.h:
@@ -2712,6 +2711,10 @@ CMakeFiles/MyQtProject.dir/source/world.cpp.o: ../source/world.cpp \
 /home/rcw/anaconda3/include/qt/QtCore/QTimer:
 
 /home/rcw/anaconda3/include/qt/QtGui/QRgb:
+
+/usr/include/c++/11/bits/istream.tcc:
+
+/usr/include/c++/11/istream:
 
 /home/rcw/anaconda3/include/qt/QtCore/qlocale.h:
 
