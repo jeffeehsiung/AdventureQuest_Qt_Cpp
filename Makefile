@@ -1,14 +1,40 @@
+TITLE_COLOR = \033[32m
+RESET_COLOR = \033[0m
+
+# Compiler to use
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall
 
-QT_INCLUDE = /usr/local/Cellar/qt/6.6.0/lib/QtWidgets
-QT_LIB = /usr/local/Cellar/qt/6.6.0/lib
-GRAPHICS_LIB = -lOpenGL  # Include the appropriate flags for your graphics library
+# Flags for compiler
+CXXFLAGS = -Wall -std=c++20 -Werror -fdiagnostics-color=auto
 
-all: mario_app
+# Source files
+SRCS = $(wildcard *.cpp)
 
-your_app: main.cpp
-    $(CXX) $(CXXFLAGS) -I$(QT_INCLUDE) -L$(QT_LIB) -o $@ $< -lQt5Widgets $(GRAPHICS_LIB)
+# Object files
+OBJS = $(SRCS:.cpp=.o)
 
+# Header files
+HDRS = $(wildcard headers/*.h)
+
+# Executable name
+EXEC = main
+
+# Build rules
+# from all cpp files, create object files and link into executable
+$(EXEC): $(OBJS)
+	@echo "$(TITLE_COLOR)\n***** compiling and linking all source files *****$(RESET_COLOR)"
+	$(CXX) $(CXXFLAGS) $(SRCS) -Iheaders -o $(EXEC)
+
+# Rule for creating object files from cpp source files
+%.o: %.cpp $(HDRS)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+all: $(EXEC)
+
+run: $(EXEC)
+	@echo "$(TITLE_COLOR)\n***** Running application *****$(RESET_COLOR)"
+	./$(EXEC)
+
+# Cleanup object files, executables
 clean:
-    rm -f mario_app
+	rm -f $(OBJS) $(EXEC)
