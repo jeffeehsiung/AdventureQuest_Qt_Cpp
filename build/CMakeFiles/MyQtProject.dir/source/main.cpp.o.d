@@ -272,23 +272,24 @@ CMakeFiles/MyQtProject.dir/source/main.cpp.o: \
  /home/rcw/anaconda3/include/qt/QtCore/qhash.h \
  /usr/include/c++/11/variant \
  /home/rcw/anaconda3/include/qt/QtCore/qshareddata.h \
- /home/rcw/works/team-a4-fa/headers/GameModel.h \
- /home/rcw/anaconda3/include/qt/QtCore/QObject \
- /home/rcw/anaconda3/include/qt/QtCore/qobject.h \
- /home/rcw/works/team-a4-fa/headers/../headers/world.h \
- /home/rcw/works/team-a4-fa/headers/../headers/world_global.h \
- /usr/include/c++/11/memory \
- /usr/include/c++/11/bits/stl_raw_storage_iter.h \
- /usr/include/c++/11/bits/align.h /usr/include/c++/11/bits/unique_ptr.h \
- /usr/include/c++/11/ostream /usr/include/c++/11/ios \
- /usr/include/c++/11/bits/basic_ios.h \
+ /usr/include/c++/11/iostream /usr/include/c++/11/ostream \
+ /usr/include/c++/11/ios /usr/include/c++/11/bits/basic_ios.h \
  /usr/include/c++/11/bits/locale_facets.h /usr/include/c++/11/cwctype \
  /usr/include/wctype.h /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_base.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/ctype_inline.h \
  /usr/include/c++/11/bits/locale_facets.tcc \
  /usr/include/c++/11/bits/basic_ios.tcc \
- /usr/include/c++/11/bits/ostream.tcc \
+ /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
+ /usr/include/c++/11/bits/istream.tcc \
+ /home/rcw/works/team-a4-fa/source/../headers/GameModel.h \
+ /home/rcw/anaconda3/include/qt/QtCore/QObject \
+ /home/rcw/anaconda3/include/qt/QtCore/qobject.h \
+ /home/rcw/works/team-a4-fa/source/../headers/../headers/world.h \
+ /home/rcw/works/team-a4-fa/source/../headers/../headers/world_global.h \
+ /usr/include/c++/11/memory \
+ /usr/include/c++/11/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/11/bits/align.h /usr/include/c++/11/bits/unique_ptr.h \
  /usr/include/c++/11/bits/shared_ptr.h \
  /usr/include/c++/11/bits/shared_ptr_base.h \
  /usr/include/c++/11/ext/concurrence.h \
