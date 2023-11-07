@@ -1,0 +1,16 @@
+# ignore all operating system generated files #
+.DS_Store
+Thumbs.db
+
+# ignore all vscode generated files #
+.vscode
+```
+# ignore all .idea generated files #
+.idea
+
+# ignore all compiled C++ files #
+*.o
+
+# ignore all text and pdf files #
+*.txt
+*.pdf
