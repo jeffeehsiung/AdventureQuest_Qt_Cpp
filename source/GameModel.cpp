@@ -11,5 +11,15 @@ GameModel::~GameModel() {
 
 void GameModel::createWorld(const QString& filename, unsigned int nrOfEnemies, unsigned int nrOfHealthpacks, float pRatio) {
     myWorld.createWorld(filename, nrOfEnemies, nrOfHealthpacks, pRatio);
-    // You may emit signals or perform additional initialization here.
+
+    // Load the image
+    QPixmap pixmap(filename);
+
+    // Create a QGraphicsPixmapItem with the QPixmap
+    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pixmap);
+
+    // Add the QGraphicsPixmapItem to the QGraphicsScene
+    scene->addItem(item);
+
+
 }

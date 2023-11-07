@@ -9,7 +9,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 # Find the Qt5 package
-find_package(Qt5 COMPONENTS Widgets Core Gui REQUIRED)
+find_package(Qt6 COMPONENTS Widgets Core Gui REQUIRED)
 
 # Include the current directory for the generated files like ui_*.h files
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -22,11 +22,15 @@ file(GLOB HEADERS "headers/*.h")
 add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
 # Link the Qt5 libraries
-target_link_libraries(${PROJECT_NAME} Qt5::Widgets Qt5::Core Qt5::Gui)
+target_link_libraries(${PROJECT_NAME} Qt6::Widgets Qt6::Core Qt6::Gui)
 
 
 # Include headers directory
 target_include_directories(${PROJECT_NAME} PRIVATE headers)
 
-# Copy assets directory to build directory
-file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+# Post-build copy command
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/assets" "${CMAKE_BINARY_DIR}/assets"
+    COMMENT "Copying assets to build directory"
+)

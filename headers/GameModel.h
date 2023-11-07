@@ -3,6 +3,8 @@
 #define GAMEMODEL_H
 
 #include <QObject>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
 #include "../headers/world.h"
 
 class GameModel : public QObject {
@@ -16,12 +18,16 @@ public:
     void createWorld(const QString& filename, unsigned int nrOfEnemies, unsigned int nrOfHealthpacks, float pRatio);
 
     // Further methods ...
+    QGraphicsScene* getScene() {
+        return scene;
+    }
 
 signals:
     void modelUpdated();
 
 private:
     World myWorld;
+    QGraphicsScene* scene;  // Added QGraphicsScene member
 };
 
 #endif // GAMEMODEL_H
