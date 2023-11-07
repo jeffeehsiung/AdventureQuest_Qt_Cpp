@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
     GameModel *model = new GameModel();
-    model->createWorld("world_image.png", 10, 5, 0.25); // Example usage
+    model->createWorld("assets/world_images/maze1.png", 10, 5, 0.25); // Example usage
 
     GameView *view = new GameView(model);
     GameController *controller = new GameController(model, view);
