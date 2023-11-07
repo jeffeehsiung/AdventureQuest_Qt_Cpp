@@ -16,6 +16,3 @@ Thumbs.db
 
 # ignore all .json files #
 *.json
-
-# ignore all build files #
-build/
