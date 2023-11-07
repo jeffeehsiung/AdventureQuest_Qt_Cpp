@@ -1,50 +1,74 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'GameModel.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.2)
+** Created by: The Qt Meta Object Compiler version 68 (Qt 6.6.0)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include <memory>
 #include "../../../headers/GameModel.h"
-#include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
+
+#if __has_include(<QtCore/qtmochelpers.h>)
+#include <QtCore/qtmochelpers.h>
+#else
+QT_BEGIN_MOC_NAMESPACE
+#endif
+
+
+#include <memory>
+
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'GameModel.h' doesn't include <QObject>."
-#elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.15.2. It"
+#elif Q_MOC_OUTPUT_REVISION != 68
+#error "This file was generated using the moc from 6.6.0. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
 
-QT_BEGIN_MOC_NAMESPACE
+#ifndef Q_CONSTINIT
+#define Q_CONSTINIT
+#endif
+
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_GameModel_t {
-    QByteArrayData data[3];
-    char stringdata0[24];
-};
-#define QT_MOC_LITERAL(idx, ofs, len) \
-    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_GameModel_t, stringdata0) + ofs \
-        - idx * sizeof(QByteArrayData)) \
-    )
-static const qt_meta_stringdata_GameModel_t qt_meta_stringdata_GameModel = {
-    {
-QT_MOC_LITERAL(0, 0, 9), // "GameModel"
-QT_MOC_LITERAL(1, 10, 12), // "modelUpdated"
-QT_MOC_LITERAL(2, 23, 0) // ""
+QT_WARNING_DISABLE_GCC("-Wuseless-cast")
+namespace {
 
+#ifdef QT_MOC_HAS_STRINGDATA
+struct qt_meta_stringdata_CLASSGameModelENDCLASS_t {};
+static constexpr auto qt_meta_stringdata_CLASSGameModelENDCLASS = QtMocHelpers::stringData(
+    "GameModel",
+    "modelUpdated",
+    ""
+);
+#else  // !QT_MOC_HAS_STRING_DATA
+struct qt_meta_stringdata_CLASSGameModelENDCLASS_t {
+    uint offsetsAndSizes[6];
+    char stringdata0[10];
+    char stringdata1[13];
+    char stringdata2[1];
+};
+#define QT_MOC_LITERAL(ofs, len) \
+    uint(sizeof(qt_meta_stringdata_CLASSGameModelENDCLASS_t::offsetsAndSizes) + ofs), len 
+Q_CONSTINIT static const qt_meta_stringdata_CLASSGameModelENDCLASS_t qt_meta_stringdata_CLASSGameModelENDCLASS = {
+    {
+        QT_MOC_LITERAL(0, 9),  // "GameModel"
+        QT_MOC_LITERAL(10, 12),  // "modelUpdated"
+        QT_MOC_LITERAL(23, 0)   // ""
     },
-    "GameModel\0modelUpdated\0"
+    "GameModel",
+    "modelUpdated",
+    ""
 };
 #undef QT_MOC_LITERAL
+#endif // !QT_MOC_HAS_STRING_DATA
+} // unnamed namespace
 
-static const uint qt_meta_data_GameModel[] = {
+Q_CONSTINIT static const uint qt_meta_data_CLASSGameModelENDCLASS[] = {
 
  // content:
-       8,       // revision
+      12,       // revision
        0,       // classname
        0,    0, // classinfo
        1,   14, // methods
@@ -54,8 +78,8 @@ static const uint qt_meta_data_GameModel[] = {
        0,       // flags
        1,       // signalCount
 
- // signals: name, argc, parameters, tag, flags
-       1,    0,   19,    2, 0x06 /* Public */,
+ // signals: name, argc, parameters, tag, flags, initial metatype offsets
+       1,    0,   20,    2, 0x06,    1 /* Public */,
 
  // signals: parameters
     QMetaType::Void,
@@ -63,11 +87,26 @@ static const uint qt_meta_data_GameModel[] = {
        0        // eod
 };
 
+Q_CONSTINIT const QMetaObject GameModel::staticMetaObject = { {
+    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
+    qt_meta_stringdata_CLASSGameModelENDCLASS.offsetsAndSizes,
+    qt_meta_data_CLASSGameModelENDCLASS,
+    qt_static_metacall,
+    nullptr,
+    qt_incomplete_metaTypeArray<qt_meta_stringdata_CLASSGameModelENDCLASS_t,
+        // Q_OBJECT / Q_GADGET
+        QtPrivate::TypeAndForceComplete<GameModel, std::true_type>,
+        // method 'modelUpdated'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>
+    >,
+    nullptr
+} };
+
 void GameModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
         auto *_t = static_cast<GameModel *>(_o);
-        Q_UNUSED(_t)
+        (void)_t;
         switch (_id) {
         case 0: _t->modelUpdated(); break;
         default: ;
@@ -76,24 +115,14 @@ void GameModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         int *result = reinterpret_cast<int *>(_a[0]);
         {
             using _t = void (GameModel::*)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&GameModel::modelUpdated)) {
+            if (_t _q_method = &GameModel::modelUpdated; *reinterpret_cast<_t *>(_a[1]) == _q_method) {
                 *result = 0;
                 return;
             }
         }
     }
-    Q_UNUSED(_a);
+    (void)_a;
 }
-
-QT_INIT_METAOBJECT const QMetaObject GameModel::staticMetaObject = { {
-    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
-    qt_meta_stringdata_GameModel.data,
-    qt_meta_data_GameModel,
-    qt_static_metacall,
-    nullptr,
-    nullptr
-} };
-
 
 const QMetaObject *GameModel::metaObject() const
 {
@@ -103,7 +132,7 @@ const QMetaObject *GameModel::metaObject() const
 void *GameModel::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_GameModel.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_CLASSGameModelENDCLASS.stringdata0))
         return static_cast<void*>(this);
     return QObject::qt_metacast(_clname);
 }
@@ -119,7 +148,7 @@ int GameModel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         _id -= 1;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         if (_id < 1)
-            *reinterpret_cast<int*>(_a[0]) = -1;
+            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
         _id -= 1;
     }
     return _id;
@@ -131,4 +160,3 @@ void GameModel::modelUpdated()
     QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
 }
 QT_WARNING_POP
-QT_END_MOC_NAMESPACE

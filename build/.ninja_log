@@ -1,0 +1,17 @@
+# ninja log v5
+3183	12143	1699359570932935758	CMakeFiles/MyQtProject.dir/MyQtProject_autogen/mocs_compilation.cpp.o	769e42863a4bff63
+7	3183	1699359561935766289	/Users/jeffeehsiung/Desktop/Toledo/advance programming/lab/team-a4-fa/build/MyQtProject_autogen/mocs_compilation.cpp	dbc2886b664b3bca
+3187	10633	1699359569416123443	CMakeFiles/MyQtProject.dir/source/GameModel.cpp.o	1d712b756562b399
+7	3183	1699359561935766289	MyQtProject_autogen/mocs_compilation.cpp	dbc2886b664b3bca
+3188	11493	1699359570262934889	CMakeFiles/MyQtProject.dir/source/GameView.cpp.o	2445b2e4efe1073f
+3185	11378	1699359570167539919	CMakeFiles/MyQtProject.dir/source/GameController.cpp.o	53327cb5e6dadda5
+3190	11315	1699359570103809460	CMakeFiles/MyQtProject.dir/source/Tile.cpp.o	5f8f8f53a94d7794
+3193	13574	1699359572365948135	CMakeFiles/MyQtProject.dir/source/world.cpp.o	b9a8f4877c1a5fb
+7	3183	1699359561935766289	/Users/jeffeehsiung/Desktop/Toledo/advance programming/lab/team-a4-fa/build/MyQtProject_autogen/timestamp	dbc2886b664b3bca
+7	3183	1699359561935766289	MyQtProject_autogen/timestamp	dbc2886b664b3bca
+3191	12422	1699359571202731470	CMakeFiles/MyQtProject.dir/source/main.cpp.o	f29ecf55ef7bb698
+13574	13999	1699359572800897118	MyQtProject	dc223f1e58c9ed50
+49	140	1699359972025789601	MyQtProject_autogen/timestamp	dbc2886b664b3bca
+49	140	1699359972025789601	MyQtProject_autogen/mocs_compilation.cpp	dbc2886b664b3bca
+49	140	1699359972025789601	/Users/jeffeehsiung/Desktop/Toledo/advance programming/lab/team-a4-fa/build/MyQtProject_autogen/timestamp	dbc2886b664b3bca
+49	140	1699359972025789601	/Users/jeffeehsiung/Desktop/Toledo/advance programming/lab/team-a4-fa/build/MyQtProject_autogen/mocs_compilation.cpp	dbc2886b664b3bca
