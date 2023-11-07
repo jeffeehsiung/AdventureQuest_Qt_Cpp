@@ -1,5 +1,0 @@
-/Users/jeffeehsiung/Desktop/Toledo/advance programming/lab/team-a4-fa/build/CMakeFiles/MyQtProject.dir
-/Users/jeffeehsiung/Desktop/Toledo/advance programming/lab/team-a4-fa/build/CMakeFiles/edit_cache.dir
-/Users/jeffeehsiung/Desktop/Toledo/advance programming/lab/team-a4-fa/build/CMakeFiles/rebuild_cache.dir
-/Users/jeffeehsiung/Desktop/Toledo/advance programming/lab/team-a4-fa/build/CMakeFiles/MyQtProject_autogen_timestamp_deps.dir
-/Users/jeffeehsiung/Desktop/Toledo/advance programming/lab/team-a4-fa/build/CMakeFiles/MyQtProject_autogen.dir
