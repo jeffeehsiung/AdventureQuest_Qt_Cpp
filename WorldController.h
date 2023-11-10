@@ -1,24 +1,24 @@
-// ../headers/GameController.h
-#ifndef GAMECONTROLLER_H
-#define GAMECONTROLLER_H
+//WorldController.h
+#ifndef WorldCONTROLLER_H
+#define WorldCONTROLLER_H
 
 #include "world_global.h"
 #include <QObject>
 
-class GameModel;
-class GameView;
+class WorldModel;
+class WorldView;
 
-class WORLDSHARED_EXPORT GameController : public QObject {
+class WORLDSHARED_EXPORT WorldController : public QObject {
     Q_OBJECT
 
 public:
-    GameController(GameModel *model, GameView *view, QObject *parent = nullptr);
+    WorldController(WorldModel *model, WorldView *view, QObject *parent = nullptr);
 
     // Methods to handle user input, such as keypresses for moving the protagonist
 
 private:
-    GameModel *gameModel;
-    GameView *gameView;
+    WorldModel *worldModel;
+    WorldView *worldView;
 };
 
-#endif // GAMECONTROLLER_H
+#endif // WorldCONTROLLER_H

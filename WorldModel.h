@@ -1,18 +1,18 @@
-// GameModel.h
-#ifndef GAMEMODEL_H
-#define GAMEMODEL_H
+// WorldModel.h
+#ifndef WorldMODEL_H
+#define WorldMODEL_H
 
 #include <QObject>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
-#include "../headers/world.h"
+#include "world.h"
 
-class GameModel : public QObject {
+class WorldModel : public QObject {
     Q_OBJECT
 
 public:
-    explicit GameModel(QObject *parent = nullptr);
-    ~GameModel();
+    explicit WorldModel(QObject *parent = nullptr);
+    ~WorldModel();
 
     // Add methods to interact with the World, Tiles, and Characters.
     void createWorld(const QString& filename, unsigned int nrOfEnemies, unsigned int nrOfHealthpacks, float pRatio);
@@ -30,4 +30,4 @@ private:
     QGraphicsScene* scene;  // Added QGraphicsScene member
 };
 
-#endif // GAMEMODEL_H
+#endif // WorldMODEL_H

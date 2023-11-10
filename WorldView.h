@@ -1,22 +1,22 @@
-// ../headers/GameView.h
-#ifndef GAMEVIEW_H
-#define GAMEVIEW_H
+//WorldView.h
+#ifndef WorldVIEW_H
+#define WorldVIEW_H
 
 #include "world_global.h"
 #include <QGraphicsView>
-class GameModel;
+class WorldModel;
 
-class WORLDSHARED_EXPORT GameView : public QGraphicsView {
+class WORLDSHARED_EXPORT WorldView : public QGraphicsView {
     Q_OBJECT
 
 public:
-    explicit GameView(GameModel *model, QWidget *parent = nullptr);
+    explicit WorldView(WorldModel *model, QWidget *parent = nullptr);
 
 public slots:
     void updateView();
 
 private:
-    GameModel *gameModel;
+    WorldModel *worldModel;
 };
 
-#endif // GAMEVIEW_H
+#endif // WorldVIEW_H
