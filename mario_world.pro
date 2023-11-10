@@ -30,15 +30,19 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
+RESOURCES += \
+    images.qrc
+
 TRANSLATIONS += \
     mario_world_en_US.ts
 CONFIG += lrelease
 CONFIG += embed_translations
 
-RESOURCES += \
-    images.qrc
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    README.md
