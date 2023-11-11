@@ -47,6 +47,6 @@ int main(int argc, char *argv[])
 
     view->show();
 
-    w.show();
+    window.show();
     return a.exec();    // enter the q-event loop
 }

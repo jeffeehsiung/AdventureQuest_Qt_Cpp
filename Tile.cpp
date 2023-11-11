@@ -1,5 +1,5 @@
 // Tile.cpp
-#include "../headers/Tile.h"
+#include "Tile.h"
 #include <QPainter>
 
 TileGraphicsItem::TileGraphicsItem(int x, int y, float value, QGraphicsItem *parent)

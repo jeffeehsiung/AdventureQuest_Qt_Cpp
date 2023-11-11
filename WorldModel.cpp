@@ -1,15 +1,15 @@
-// GameModel.cpp
-#include "GameModel.h"
+// WorldModel.cpp
+#include "WorldModel.h"
 
-GameModel::GameModel(QObject *parent) : QObject(parent) {
-    // Initialize your game model here.
+WorldModel::WorldModel(QObject *parent) : QObject(parent) {
+    // Initialize your World model here.
 }
 
-GameModel::~GameModel() {
-    // Clean up your game model here if needed.
+WorldModel::~WorldModel() {
+    // Clean up your World model here if needed.
 }
 
-void GameModel::createWorld(const QString& filename, unsigned int nrOfEnemies, unsigned int nrOfHealthpacks, float pRatio) {
+void WorldModel::createWorld(const QString& filename, unsigned int nrOfEnemies, unsigned int nrOfHealthpacks, float pRatio) {
     myWorld.createWorld(filename, nrOfEnemies, nrOfHealthpacks, pRatio);
 
     // Load the image

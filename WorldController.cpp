@@ -1,10 +1,10 @@
-// GameController.cpp
-#include "../headers/GameController.h"
-#include "../headers/GameModel.h"
-#include "../headers/GameView.h"
+// WorldController.cpp
+#include "WorldController.h"
+#include "WorldModel.h"
+#include "WorldView.h"
 
-GameController::GameController(GameModel *model, GameView *view, QObject *parent)
-    : QObject(parent), gameModel(model), gameView(view) {
+WorldController::WorldController(WorldModel *model, WorldView *view, QObject *parent)
+    : QObject(parent) {
     // Connect the view's interaction signals to the corresponding slots for handling in the controller
-    // Example: connect(gameView, &GameView::someSignal, this, &GameController::someSlot);
+    // Example: connect(WorldView, &WorldView::someSignal, this, &WorldController::someSlot);
 }
