@@ -1,29 +1,30 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
 
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
+namespace Ui {
+  class MainWindow;
+}
 
 class MainWindow : public QMainWindow
-{
-    Q_OBJECT //moc transformer ( qobjects from q language to c++)
+  {
+    Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = nullptr);
+  public:
+    explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-public slots: // not plain c++
-    void zoomIn();  // will be connected to slots
-    void on_action();
+  public slots:
+    void zoomIn();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_actionSave_triggered();
+
+    void on_pushButton_2_clicked();
 
 private:
-    Ui::MainWindow *ui; // to access the ui form that is compiled by the auto compiler uic
-};
+    Ui::MainWindow *ui;
+  };
+
 #endif // MAINWINDOW_H
