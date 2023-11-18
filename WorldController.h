@@ -20,9 +20,9 @@ class WorldController : public QObject
         int getHeight() const;
         int getWidth() const;
 
+        std::unique_ptr<Protagonist> getProt(char id) const;
         void addProtagonist(ProtagonistModel*);
         void removeProtagonist(ProtagonistModel*);
-        std::unique_ptr<Protagonist> getProt(char id) const;
         char getActiveProtagonistAmount() const;
 
         bool isHealthPack(int x, int y, bool kill);
