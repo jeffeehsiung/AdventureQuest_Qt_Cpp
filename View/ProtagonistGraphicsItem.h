@@ -2,7 +2,7 @@
 #define PROTAGONISTGRAPHICSITEM_H
 
 #include "EntityGraphicsItem.h"
-#include "ProtagonistModel.h"
+#include "Model/ProtagonistModel.h"
 
 class ProtagonistGraphicsItem : public EntityGraphicsItem {
 public:

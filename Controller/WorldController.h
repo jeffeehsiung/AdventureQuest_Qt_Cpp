@@ -1,8 +1,8 @@
 #ifndef WORLDCONTROLLER_H
 #define WORLDCONTROLLER_H
 
-#include "world.h"
-#include "structs.h"
+#include "Model/world.h"
+#include "Model/structs.h"
 
 
 #include <iostream>
