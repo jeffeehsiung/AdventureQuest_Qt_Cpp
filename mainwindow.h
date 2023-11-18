@@ -2,29 +2,26 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGraphicsView>
+#include "GameView.h" // Replace with the correct path if necessary
 
 namespace Ui {
-  class MainWindow;
+    class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-  {
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
-  public:
-    explicit MainWindow(QWidget *parent = 0);
+public:
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-  public slots:
-    void zoomIn();
-
-private slots:
-    void on_actionSave_triggered();
-
-    void on_pushButton_2_clicked();
+    void setupViews();
 
 private:
-    Ui::MainWindow *ui;
-  };
+    QGraphicsView* graphicsView;            // Pointer to a QGraphicsView
+    // GameView* viewController;     // Pointer to a GameViewController
+    Ui::MainWindow* ui;                     // Pointer to the UI class for MainWindow
+};
 
 #endif // MAINWINDOW_H
