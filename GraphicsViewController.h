@@ -1,20 +1,20 @@
+// GraphicsViewController.h
+
 #ifndef GRAPHICSVIEWCONTROLLER_H
 #define GRAPHICSVIEWCONTROLLER_H
 
 #include "ViewController.h"
-#include <QGraphicsView>
+#include "Game2DView.h"
+#include "EntityGraphicsItem.h"
 
-class GraphicsViewController : public ViewController {
-private:
-    QGraphicsView* graphicsView;
-
+class GraphicsViewController : public ViewController<Game2DView, EntityGraphicsItem> {
 public:
-    GraphicsViewController(QGraphicsView* view) : graphicsView(view) {}
+    using ViewController::ViewController;  // Inherit constructors
 
-    void updateView() override {
-        // Implement how the graphical elements are updated and rendered
-        graphicsView->viewport()->update();
+    void complexAnimation() {
+        // Complex animation logic specific to the Game2DView
     }
+    // ...other specialized methods for graphics...
 };
 
 #endif // GRAPHICSVIEWCONTROLLER_H

@@ -1,20 +1,21 @@
+// TextViewController.h
+
 #ifndef TEXTVIEWCONTROLLER_H
 #define TEXTVIEWCONTROLLER_H
 
 #include "ViewController.h"
-#include <QTextEdit>
+#include "GameTextView.h"
+#include "EntityTextItem.h"
 
-class TextViewController : public ViewController {
-private:
-    QTextEdit* textView;
-
+class TextViewController : public ViewController<GameTextView, EntityTextItem> {
 public:
-    TextViewController(QTextEdit* view) : textView(view) {}
+    using ViewController::ViewController;  // Inherit constructors
 
-    void updateView() override {
-        // Implement how the text elements are updated, e.g., refreshing the text display
-        textView->update();
+    void complexTextualDescription() {
+        // Complex textual logic specific to the GameTextView
     }
+
+    // ...other specialized methods for text...
 };
 
 #endif // TEXTVIEWCONTROLLER_H

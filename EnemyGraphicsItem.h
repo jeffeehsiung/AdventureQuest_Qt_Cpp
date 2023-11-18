@@ -7,7 +7,6 @@
 class EnemyGraphicsItem : public EntityGraphicsItem {
 public:
     EnemyGraphicsItem(EnemyModel* enemyModel, QGraphicsItem* parent = nullptr);
-    // You can add more functionality specific to the enemy here if needed
 };
 
 #endif // ENEMYGRAPHICSITEM_H

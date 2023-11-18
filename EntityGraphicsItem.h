@@ -14,15 +14,21 @@ public:
     explicit EntityGraphicsItem(Entity* entity, const QString& imagePath, QGraphicsItem* parent = nullptr)
         : QGraphicsItem(parent), entity(entity), image(imagePath) {}
 
-    // Default implementation of boundingRect() based on the image size
+    // Virtual destructor for dynamic binding
+    virtual ~EntityGraphicsItem() {}
+
+    /**
+     * The follwing methods are virtual and will be dynamically bound at runtime
+    */
+
+    // These methods are virtual and will be dynamically bound at runtime
     QRectF boundingRect() const override {
         return QRectF(0, 0, image.width(), image.height());
     }
 
-    // Default implementation of paint() that draws the image
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override {
-        Q_UNUSED(option)
-        Q_UNUSED(widget)
+        Q_UNUSED(option);
+        Q_UNUSED(widget);
         painter->drawPixmap(0, 0, image);
     }
 };
