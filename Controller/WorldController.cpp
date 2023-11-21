@@ -1,10 +1,11 @@
 #include "worldcontroller.h"
 #include <QKeyEvent>
 
+
 WorldController::WorldController(QString map, int nrOfEnemies, int nrOfHealthpacks, float pRatio)
     : world(std::make_unique<World>(map, nrOfEnemies, nrOfHealthpacks, pRatio)),
-      height(world->getHeight()),
-      width(world->getWidth()),
+      height(world->getRows()),
+      width(world->getCols()),
       exit(world->getExit()),
       start(world->getStart())
 {

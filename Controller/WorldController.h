@@ -9,6 +9,7 @@
 #include <QObject>
 #include <QMainWindow>
 #include <tuple>
+#include "ProtagnistModel.h"
 
 class WorldController : public QObject
 {
