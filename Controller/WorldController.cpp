@@ -22,7 +22,7 @@ int WorldController::getWidth() const
     return width;
 }
 
-std::unique_ptr<Protagonist> WorldController::getProt(char id) const
+std::unique_ptr<Protagonist> WorldController::getProtagonist(char id) const
 {
     // Implement logic to get a protagonist by ID
     return nullptr;  // Replace with actual implementation
