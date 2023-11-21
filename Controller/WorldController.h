@@ -59,7 +59,7 @@ private:
         int width;
         coordinate exit;
         coordinate start;
-        std::array<std::unique_ptr<ProtagonistModel>,4> protagonists;
+        std::array<std::unique_ptr<ProtagonistModel>,2> protagonists;
         std::vector<std::unique_ptr<EnemyModel>> enemies;
         std::vector<std::unique_ptr<poisonedTile>> poisonedTiles;
         
