@@ -76,6 +76,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_000.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_000.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_000.png \
+    images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_000.png \
+    images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_001.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_001.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_001.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_001.png \
@@ -88,6 +90,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_002.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_002.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_002.png \
+    images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_002.png \
+    images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_003.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_003.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_003.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_003.png \
@@ -100,6 +104,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_004.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_004.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_004.png \
+    images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_004.png \
+    images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_005.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_005.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_005.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_005.png \
@@ -112,6 +118,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_006.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_006.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_006.png \
+    images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_006.png \
+    images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_007.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_007.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_007.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_007.png \
@@ -124,6 +132,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_008.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_008.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_008.png \
+    images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_008.png \
+    images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_009.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_009.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_009.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_009.png \
@@ -136,6 +146,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_010.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_010.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_010.png \
+    images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_010.png \
+    images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_011.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_011.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_011.png \
     images/enemy_golem/PNG Sequences/Attacking/Golem_01_Attacking_011.png \
@@ -148,6 +160,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_000.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_000.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_000.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_000.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_001.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_001.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_001.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_001.png \
@@ -160,6 +174,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_002.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_002.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_002.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_002.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_003.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_003.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_003.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_003.png \
@@ -172,6 +188,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_004.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_004.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_004.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_004.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_005.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_005.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_005.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_005.png \
@@ -184,6 +202,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_006.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_006.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_006.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_006.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_007.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_007.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_007.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_007.png \
@@ -196,6 +216,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_008.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_008.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_008.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_008.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_009.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_009.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_009.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_009.png \
@@ -208,6 +230,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_010.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_010.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_010.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_010.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_011.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_011.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_011.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_011.png \
@@ -220,6 +244,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_012.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_012.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_012.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_012.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_013.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_013.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_013.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_013.png \
@@ -232,6 +258,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_014.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_014.png \
     images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_014.png \
+    images/enemy_golem/PNG Sequences/Dying/Golem_01_Dying_014.png \
+    images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_000.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_000.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_000.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_000.png \
@@ -244,6 +272,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_001.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_001.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_001.png \
+    images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_001.png \
+    images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_002.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_002.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_002.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_002.png \
@@ -256,6 +286,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_003.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_003.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_003.png \
+    images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_003.png \
+    images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_004.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_004.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_004.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_004.png \
@@ -268,6 +300,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_005.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_005.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_005.png \
+    images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_005.png \
+    images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_006.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_006.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_006.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_006.png \
@@ -280,6 +314,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_007.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_007.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_007.png \
+    images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_007.png \
+    images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_008.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_008.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_008.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_008.png \
@@ -292,6 +328,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_009.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_009.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_009.png \
+    images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_009.png \
+    images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_010.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_010.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_010.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_010.png \
@@ -304,6 +342,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_011.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_011.png \
     images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_011.png \
+    images/enemy_golem/PNG Sequences/Hurt/Golem_01_Hurt_011.png \
+    images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_000.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_000.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_000.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_000.png \
@@ -316,6 +356,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_001.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_001.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_001.png \
+    images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_001.png \
+    images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_002.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_002.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_002.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_002.png \
@@ -328,6 +370,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_003.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_003.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_003.png \
+    images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_003.png \
+    images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_004.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_004.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_004.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_004.png \
@@ -340,6 +384,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_005.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_005.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_005.png \
+    images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_005.png \
+    images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_006.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_006.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_006.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_006.png \
@@ -352,6 +398,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_007.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_007.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_007.png \
+    images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_007.png \
+    images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_008.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_008.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_008.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_008.png \
@@ -364,6 +412,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_009.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_009.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_009.png \
+    images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_009.png \
+    images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_010.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_010.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_010.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_010.png \
@@ -376,6 +426,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_011.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_011.png \
     images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_011.png \
+    images/enemy_golem/PNG Sequences/Idle Blink/Golem_01_Idle Blinking_011.png \
+    images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_000.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_000.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_000.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_000.png \
@@ -388,6 +440,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_001.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_001.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_001.png \
+    images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_001.png \
+    images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_002.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_002.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_002.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_002.png \
@@ -400,6 +454,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_003.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_003.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_003.png \
+    images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_003.png \
+    images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_004.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_004.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_004.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_004.png \
@@ -412,6 +468,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_005.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_005.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_005.png \
+    images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_005.png \
+    images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_006.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_006.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_006.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_006.png \
@@ -424,6 +482,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_007.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_007.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_007.png \
+    images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_007.png \
+    images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_008.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_008.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_008.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_008.png \
@@ -436,6 +496,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_009.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_009.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_009.png \
+    images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_009.png \
+    images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_010.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_010.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_010.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_010.png \
@@ -448,6 +510,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_011.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_011.png \
     images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_011.png \
+    images/enemy_golem/PNG Sequences/Idle/Golem_01_Idle_011.png \
+    images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_000.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_000.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_000.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_000.png \
@@ -460,6 +524,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_001.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_001.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_001.png \
+    images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_001.png \
+    images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_002.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_002.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_002.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_002.png \
@@ -472,6 +538,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_003.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_003.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_003.png \
+    images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_003.png \
+    images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_004.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_004.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_004.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_004.png \
@@ -484,6 +552,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_005.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_005.png \
     images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_005.png \
+    images/enemy_golem/PNG Sequences/Jump Loop/Golem_01_Jump Loop_005.png \
+    images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_000.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_000.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_000.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_000.png \
@@ -496,6 +566,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_001.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_001.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_001.png \
+    images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_001.png \
+    images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_002.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_002.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_002.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_002.png \
@@ -508,6 +580,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_003.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_003.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_003.png \
+    images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_003.png \
+    images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_004.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_004.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_004.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_004.png \
@@ -520,6 +594,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_005.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_005.png \
     images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_005.png \
+    images/enemy_golem/PNG Sequences/Jump Start/Golem_01_Jump Start_005.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_000.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_000.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_000.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_000.png \
@@ -532,6 +608,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_001.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_001.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_001.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_001.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_002.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_002.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_002.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_002.png \
@@ -544,6 +622,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_003.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_003.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_003.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_003.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_004.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_004.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_004.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_004.png \
@@ -556,6 +636,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_005.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_005.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_005.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_005.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_006.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_006.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_006.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_006.png \
@@ -568,6 +650,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_007.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_007.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_007.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_007.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_008.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_008.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_008.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_008.png \
@@ -580,6 +664,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_009.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_009.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_009.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_009.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_010.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_010.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_010.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_010.png \
@@ -592,6 +678,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_011.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_011.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_011.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_011.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_012.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_012.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_012.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_012.png \
@@ -604,6 +692,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_013.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_013.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_013.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_013.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_014.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_014.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_014.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_014.png \
@@ -616,6 +706,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_015.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_015.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_015.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_015.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_016.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_016.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_016.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_016.png \
@@ -628,6 +720,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_017.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_017.png \
     images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_017.png \
+    images/enemy_golem/PNG Sequences/Taunt/Golem_01_Taunt_017.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_000.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_000.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_000.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_000.png \
@@ -640,6 +734,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_001.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_001.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_001.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_001.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_002.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_002.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_002.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_002.png \
@@ -652,6 +748,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_003.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_003.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_003.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_003.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_004.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_004.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_004.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_004.png \
@@ -664,6 +762,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_005.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_005.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_005.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_005.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_006.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_006.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_006.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_006.png \
@@ -676,6 +776,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_007.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_007.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_007.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_007.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_008.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_008.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_008.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_008.png \
@@ -688,6 +790,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_009.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_009.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_009.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_009.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_010.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_010.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_010.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_010.png \
@@ -700,6 +804,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_011.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_011.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_011.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_011.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_012.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_012.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_012.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_012.png \
@@ -712,6 +818,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_013.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_013.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_013.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_013.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_014.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_014.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_014.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_014.png \
@@ -724,6 +832,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_015.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_015.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_015.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_015.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_016.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_016.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_016.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_016.png \
@@ -736,6 +846,8 @@ DISTFILES += \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_017.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_017.png \
     images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_017.png \
+    images/enemy_golem/PNG Sequences/Walking/Golem_01_Walking_017.png \
+    images/enemy_golem/Vector Parts/Animations.scml \
     images/enemy_golem/Vector Parts/Animations.scml \
     images/enemy_golem/Vector Parts/Animations.scml \
     images/enemy_golem/Vector Parts/Animations.scml \
@@ -748,6 +860,8 @@ DISTFILES += \
     images/enemy_golem/Vector Parts/Body.png \
     images/enemy_golem/Vector Parts/Body.png \
     images/enemy_golem/Vector Parts/Body.png \
+    images/enemy_golem/Vector Parts/Body.png \
+    images/enemy_golem/Vector Parts/Face 01.png \
     images/enemy_golem/Vector Parts/Face 01.png \
     images/enemy_golem/Vector Parts/Face 01.png \
     images/enemy_golem/Vector Parts/Face 01.png \
@@ -760,6 +874,8 @@ DISTFILES += \
     images/enemy_golem/Vector Parts/Face 02.png \
     images/enemy_golem/Vector Parts/Face 02.png \
     images/enemy_golem/Vector Parts/Face 02.png \
+    images/enemy_golem/Vector Parts/Face 02.png \
+    images/enemy_golem/Vector Parts/Face 03.png \
     images/enemy_golem/Vector Parts/Face 03.png \
     images/enemy_golem/Vector Parts/Face 03.png \
     images/enemy_golem/Vector Parts/Face 03.png \
@@ -772,6 +888,8 @@ DISTFILES += \
     images/enemy_golem/Vector Parts/Head.png \
     images/enemy_golem/Vector Parts/Head.png \
     images/enemy_golem/Vector Parts/Head.png \
+    images/enemy_golem/Vector Parts/Head.png \
+    images/enemy_golem/Vector Parts/Left Arm.png \
     images/enemy_golem/Vector Parts/Left Arm.png \
     images/enemy_golem/Vector Parts/Left Arm.png \
     images/enemy_golem/Vector Parts/Left Arm.png \
@@ -784,6 +902,8 @@ DISTFILES += \
     images/enemy_golem/Vector Parts/Left Hand.png \
     images/enemy_golem/Vector Parts/Left Hand.png \
     images/enemy_golem/Vector Parts/Left Hand.png \
+    images/enemy_golem/Vector Parts/Left Hand.png \
+    images/enemy_golem/Vector Parts/Left Leg.png \
     images/enemy_golem/Vector Parts/Left Leg.png \
     images/enemy_golem/Vector Parts/Left Leg.png \
     images/enemy_golem/Vector Parts/Left Leg.png \
@@ -796,6 +916,8 @@ DISTFILES += \
     images/enemy_golem/Vector Parts/Right Arm.png \
     images/enemy_golem/Vector Parts/Right Arm.png \
     images/enemy_golem/Vector Parts/Right Arm.png \
+    images/enemy_golem/Vector Parts/Right Arm.png \
+    images/enemy_golem/Vector Parts/Right Hand.png \
     images/enemy_golem/Vector Parts/Right Hand.png \
     images/enemy_golem/Vector Parts/Right Hand.png \
     images/enemy_golem/Vector Parts/Right Hand.png \
@@ -808,6 +930,8 @@ DISTFILES += \
     images/enemy_golem/Vector Parts/Right Leg.png \
     images/enemy_golem/Vector Parts/Right Leg.png \
     images/enemy_golem/Vector Parts/Right Leg.png \
+    images/enemy_golem/Vector Parts/Right Leg.png \
+    images/enemy_golem/Vector Parts/Weapon.png \
     images/enemy_golem/Vector Parts/Weapon.png \
     images/enemy_golem/Vector Parts/Weapon.png \
     images/enemy_golem/Vector Parts/Weapon.png \
