@@ -43,3 +43,10 @@ Welcome to [Project Name]! 🌟
 1. Clone the repository.
    ```bash
    git clone https://gitlab.kuleuven.be/groep-t/courses/apt/2324/team-a4-fa.git
+
+## Acknowledgements
+[PNG Images](https://pngimg.com/images/heroes/mario)
+
+## UML
+### 2023.11.14
+<img src="UML_v1.png" width="1000">
