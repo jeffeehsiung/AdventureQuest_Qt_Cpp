@@ -6,8 +6,8 @@ WorldController::WorldController(QString map, int nrOfEnemies, int nrOfHealthpac
     : world(std::make_unique<World>(map, nrOfEnemies, nrOfHealthpacks, pRatio)),
       height(world->getRows()),
       width(world->getCols()),
-      exit(world->getExit()),
-      start(world->getStart())
+      exit(0,0),
+      start(1,1)
 {
     // Initialize other member variables if needed
 }
@@ -28,14 +28,42 @@ std::unique_ptr<Protagonist> WorldController::getProt(char id) const
     return nullptr;  // Replace with actual implementation
 }
 
-void WorldController::addProtagonist(ProtagonistModel* /*model*/)
+void WorldController::addProtagonist(ProtagonistModel* model)
 {
-    // Implement logic to add a protagonist
+    if (model == nullptr)
+    {
+        std::cerr << "Error: Null protagonist model provided." << std::endl;
+        return;
+    }
+
+    for (auto& protagonistModel : protagonists)
+    {
+        if (!protagonistModel)
+        {
+            protagonistModel = std::unique_ptr<ProtagonistModel>(model);
+            return;
+        }
+    }
 }
 
-void WorldController::removeProtagonist(ProtagonistModel* /*model*/)
+void WorldController::removeProtagonist(ProtagonistModel* model)
 {
-    // Implement logic to remove a protagonist
+    if (model == nullptr)
+    {
+        std::cerr << "Error: Null protagonist model provided." << std::endl;
+        return;
+    }
+
+    for (auto& protagonistModel : protagonists)
+    {
+        if (protagonistModel.get() == model)
+        {
+            protagonistModel.reset(); // Reset the unique_ptr to remove the model
+            return;
+        }
+    }
+    // If the model is not found, print an error
+    std::cerr << "Error: Protagonist model not found in the array." << std::endl;
 }
 
 char WorldController::getActiveProtagonistAmount() const

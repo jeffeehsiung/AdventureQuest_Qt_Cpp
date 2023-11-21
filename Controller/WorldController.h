@@ -21,7 +21,7 @@ class WorldController : public QObject
         int getHeight() const;
         int getWidth() const;
 
-        std::unique_ptr<Protagonist> getProt(char id) const;
+        std::unique_ptr<ProtagonistModel> getProtagonist(char id) const;
         void addProtagonist(ProtagonistModel*);
         void removeProtagonist(ProtagonistModel*);
         char getActiveProtagonistAmount() const;
