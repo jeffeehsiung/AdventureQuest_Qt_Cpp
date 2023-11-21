@@ -1,20 +1,28 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 
+#include "worldcontroller.h"
 #include <QObject>
-#include "WorldController.h"
-// ... Other includes ...
+#include <QKeyEvent>
 
-class GameController : public QObject {
+class GameController : public QObject
+{
     Q_OBJECT
-    // ... Other members ...
 
 public:
-    explicit GameController(QObject *parent = nullptr) : QObject(parent) {
-        // Initialize the game world and entities
-    }
+    GameController();
 
-    // Methods that interact with World, Protagonist, and Enemies
+    void startGame(const QString &map);
+
+private:
+    WorldController worldController;
+
+public slots:
+    void handleKeyPress(QKeyEvent *event);
+
+private slots:
+    void handleGameOver();
+    void handlePoisonLevelUpdated(float poisonLevel);
 };
 
 #endif // GAMECONTROLLER_H
