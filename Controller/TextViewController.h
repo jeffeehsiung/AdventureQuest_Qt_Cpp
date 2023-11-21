@@ -4,8 +4,8 @@
 #define TEXTVIEWCONTROLLER_H
 
 #include "ViewController.h"
-#include "GameTextView.h"
-#include "EntityTextItem.h"
+#include "View/GameTextView.h"
+#include "View/EntityTextItem.h"
 
 class TextViewController : public ViewController<GameTextView, EntityTextItem> {
 public:

@@ -4,8 +4,8 @@
 #define GRAPHICSVIEWCONTROLLER_H
 
 #include "ViewController.h"
-#include "Game2DView.h"
-#include "EntityGraphicsItem.h"
+#include "View/Game2DView.h"
+#include "View/EntityGraphicsItem.h"
 
 class GraphicsViewController : public ViewController<Game2DView, EntityGraphicsItem> {
 public:

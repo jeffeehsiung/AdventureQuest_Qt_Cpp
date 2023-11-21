@@ -2,7 +2,7 @@
 #define ENEMYGRAPHICSITEM_H
 
 #include "EntityGraphicsItem.h"
-#include "EnemyModel.h"
+#include "Model/EnemyModel.h"
 
 class EnemyGraphicsItem : public EntityGraphicsItem {
 public:

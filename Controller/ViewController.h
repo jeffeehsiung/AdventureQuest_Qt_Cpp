@@ -2,7 +2,7 @@
 #define VIEWCONTROLLER_H
 
 #include <memory>
-#include "GameView.h"
+#include "View/GameView.h"
 
 template <typename View, typename EntityItem>
 class ViewController {
