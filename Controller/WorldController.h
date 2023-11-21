@@ -1,8 +1,8 @@
 #ifndef WORLDCONTROLLER_H
 #define WORLDCONTROLLER_H
 
-#include "Model/world.h"
-#include "Model/structs.h"
+#include "world.h"
+#include "structs.h"
 
 
 #include <iostream>
@@ -15,7 +15,7 @@ class WorldController : public QObject
     Q_OBJECT
 
     public:
-        WorldController(QString map);
+        WorldController(QString map, int nrOfEnemies, int nrOfHealthpacks, float pRatio);
 
         int getHeight() const;
         int getWidth() const;
@@ -33,7 +33,6 @@ class WorldController : public QObject
         const vector<unique_ptr<Enemy> > &getEnemies() const;
         const vector<unique_ptr<Tile> > &getHealthpacks() const;
 
-
         std::unique_ptr<Tile> getTile(int x, int y);
         std::unique_ptr<Enemy> isEnemy(int x, int y, bool kill, bool fast);
         std::unique_ptr<Enemy> getEnemy(int x, int y);
@@ -45,17 +44,12 @@ class WorldController : public QObject
 
         const std::vector<std::unique_ptr<poisonedTile> > &getPoisonedTiles() const;
 
-
         void deleteEnemy(int x, int y);
 
         void deletePsnTile(int x, int y);
 
-
         coordinate getStart();
         coordinate getExit();
-
-        
-
 private:
         std::unique_ptr<World> world;
         std::vector<std::unique_ptr<Tile>> tiles;       
