@@ -2,10 +2,9 @@
 #define VIEWTYPE_H
 
 enum class ViewType {
-    Game2D,
-    GameText,
-    GameAR,
-    GameVR
+    Game2DView,
+    GameTextView,
+    GameOverlayView
 };
 
 #endif // VIEWTYPE_H

@@ -6,7 +6,9 @@
 
 QT       += core gui
 CONFIG += c++17
+QMAKE_CXXFLAGS += -fconcepts-diagnostics-depth=200
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 
 TARGET = demo1
 TEMPLATE = app
