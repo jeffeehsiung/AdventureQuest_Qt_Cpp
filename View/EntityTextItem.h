@@ -3,7 +3,7 @@
 
 #include <QGraphicsTextItem>
 #include <QString>
-#include "Entity.h"
+#include "Model/Entity.h"
 
 class EntityTextItem : public QGraphicsTextItem {
 protected:
@@ -34,3 +34,5 @@ public:
     // Returns the text to be displayed
     virtual QString getText() const = 0;
 };
+
+#endif

@@ -3,7 +3,7 @@
 
 #include <QTextEdit>
 #include "GameView.h"
-// ... other includes ...
+#include "EntityTextItem.h"
 
 class GameTextView : public QTextEdit, public GameView {
     Q_OBJECT
@@ -27,6 +27,11 @@ public:
     void zoomOut() override;
     void animateEntityAction(const QString& action) override;
 
+    // Getter for entityTextItems
+    const std::vector<std::unique_ptr<EntityTextItem>>& getEntityTextItems() const {
+        return entityTextItems;
+    }
+
 private:
     QString generateTextBackground() {
         // Generate and return a QString representing the text-based background
@@ -34,7 +39,8 @@ private:
         // ... generate your background ...
         return background;
     }
-   
+    // Private member variable to store EntityTextItems
+    std::vector<std::unique_ptr<EntityTextItem>> entityTextItems;
 };
 
 #endif // GAMETEXTVIEW_H

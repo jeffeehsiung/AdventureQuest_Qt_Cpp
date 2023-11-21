@@ -9,7 +9,7 @@ public:
 
     // Pure virtual functions that must be implemented by any subclass
     virtual void attack() = 0;
-    virtual void takeDamage() = 0;
+    virtual void takeDamage(int damage) = 0;
     virtual coordinate getPosition() const = 0;
     virtual void setPosition(coordinate position) = 0;
     virtual void move(int deltaX, int deltaY) = 0;

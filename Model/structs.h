@@ -9,3 +9,5 @@ struct coordinate {
     int xCoordinate;
     int yCoordinate;
 };
+
+#endif
