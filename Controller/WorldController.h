@@ -49,14 +49,18 @@ class WorldController : public QObject
         coordinate getExit();
 private:
         std::unique_ptr<World> world;
-        std::vector<std::unique_ptr<Tile>> tiles;       
-        std::vector<std::unique_ptr<Tile>> walkedOnTiles;
         int height;
         int width;
         coordinate exit = coordinate(1,1);
         coordinate start = coordinate(0,0);
-        std::array<std::unique_ptr<ProtagonistModel>,2> protagonists;
+        std::vector<std::unique_ptr<Tile>> tiles;
+        std::vector<std::unique_ptr<Tile>> healthPacks;
         std::vector<std::unique_ptr<EnemyModel>> enemies;
+        std::vector<std::unique_ptr<Tile>> walkedOnTiles;
+
+
+        std::array<std::unique_ptr<ProtagonistModel>,2> protagonists;
+
         
 public slots:
         void handleKeyPress(QKeyEvent* event);

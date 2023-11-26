@@ -10,6 +10,19 @@ WorldController::WorldController(QString map, int nrOfEnemies, int nrOfHealthpac
     width = world->getCols() - 1;
     exit = coordinate(5,5);
     start = coordinate(0,0);
+
+    tiles = world -> getTiles();
+    healthPacks = world ->getHealthPacks();
+
+    for ( auto &enemy : world->getEnemies() )
+    {
+        std::unique_ptr<EnemyModel> enemyModel = std::make_unique<EnemyModel>(enemy.get());
+        enemies.push_back(enemyModel);
+    }
+
+    //only on first world
+    auto protagonist = world ->getProtagonist();
+    protagonists[0] = std::make_unique<ProtagonistModel>(protagonist.get());
 }
 
 int WorldController::getHeight() const
@@ -20,12 +33,6 @@ int WorldController::getHeight() const
 int WorldController::getWidth() const
 {
     return width;
-}
-
-std::unique_ptr<Protagonist> WorldController::getProtagonist(char id) const
-{
-    // Implement logic to get a protagonist by ID
-    return nullptr;  // Replace with actual implementation
 }
 
 void WorldController::addProtagonist(ProtagonistModel* model)

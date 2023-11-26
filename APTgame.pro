@@ -23,7 +23,7 @@ HEADERS  += mainwindow.h\
             model/structs.h\
             model/ProtagonistModel.h\
             model/Entity.h\
-            model/Enemy.h\
+            model/EnemyModel.h\
 
 FORMS    += mainwindow.ui
 
