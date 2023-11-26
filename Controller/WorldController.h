@@ -10,8 +10,6 @@
 #include <iostream>
 #include <QObject>
 #include <QMainWindow>
-#include <tuple>
-
 
 class WorldController : public QObject
 {

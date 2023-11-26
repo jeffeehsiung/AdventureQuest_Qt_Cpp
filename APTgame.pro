@@ -10,7 +10,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-        controller/worldcontroller.cpp\
+        controller/WorldController.cpp\
+        controller/GameController.cpp\
         model/world.cpp\
         model/EnemyModel.cpp\
         model/ProtagonistModel.cpp\
@@ -18,7 +19,8 @@ SOURCES += main.cpp\
 
 
 HEADERS  += mainwindow.h\
-            controller/worldcontroller.h\
+            controller/WorldController.h\
+            controller/GameController.h\
             model/world.h\
             model/structs.h\
             model/ProtagonistModel.h\

@@ -1,4 +1,4 @@
-#include "worldcontroller.h"
+#include "WorldController.h"
 #include <QKeyEvent>
 
 
