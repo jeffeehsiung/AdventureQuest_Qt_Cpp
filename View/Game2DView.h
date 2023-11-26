@@ -15,6 +15,7 @@ private:
     QGraphicsScene* scene;
     QPixmap backgroundPixmap;
     std::vector<std::unique_ptr<EntityGraphicsItem>> entityGraphicsItems; // Vector to hold unique pointers to entity graphics items
+     std::vector<coordinate> entityPositions; // Vector to store entity positions
 
 public:
     Game2DView(QWidget* parent = nullptr) : QGraphicsView(parent) {
@@ -28,15 +29,14 @@ public:
         // Configure the scene and view as necessary
     }
 
-    void addEntity(std::unique_ptr<EntityGraphicsItem> item);
-
     // Implement GameView interface methods here, if any
+    void addEntity(std::unique_ptr<EntityGraphicsItem> item);
     void updateView() override;
     void drawWorld() override;
     void switchView() override;
     void zoomIn() override;
     void zoomOut() override;
-    void animateEntityAction(const QString& action) override;
+    void animateEntityAction(const QString& entity) override;
 
 
 };

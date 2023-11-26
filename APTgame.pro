@@ -1608,16 +1608,23 @@ DISTFILES += \
     images/penemy_wraith_poison/Explosion_8.png \
     images/penemy_wraith_poison/Explosion_9.png \
     images/protagonist.png \
+    images/protagonist_fighter/Attack/01.png \
+    images/protagonist_fighter/Attack/02.png \
+    images/protagonist_fighter/Attack/03.png \
     images/protagonist_fighter/Attack_1.png \
     images/protagonist_fighter/Attack_2.png \
     images/protagonist_fighter/Attack_3.png \
     images/protagonist_fighter/Dead.png \
+    images/protagonist_fighter/Dying/01.png \
     images/protagonist_fighter/Hurt.png \
+    images/protagonist_fighter/Hurt/01.png \
     images/protagonist_fighter/Idle.png \
+    images/protagonist_fighter/Idle/01.png \
     images/protagonist_fighter/Jump.png \
     images/protagonist_fighter/Run.png \
     images/protagonist_fighter/Shield.png \
     images/protagonist_fighter/Walk.png \
+    images/protagonist_fighter/Walking/01.png \
     images/protagonist_heal/Explosion_1.png \
     images/protagonist_heal/Explosion_10.png \
     images/protagonist_heal/Explosion_2.png \
