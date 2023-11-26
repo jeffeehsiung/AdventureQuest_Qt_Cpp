@@ -24,12 +24,33 @@ void Game2DView::updateView() {
 
         // Now, you can use currentPosition to update the position of the EntityGraphicsItem
         // For example:
-        // entityGraphicsItems[i]->setPos(currentPosition.xCoordinate, currentPosition.yCoordinate);
+        entityGraphicsItems[i]->setPosition(currentPosition);
     }
 
     // You can add more logic here to update other aspects of the view
     // For example, you might update the game state, handle collisions,
     // or perform other view-related updates
+}
+
+// Implement the switchView method
+void Game2DView::switchView() {
+    // Check the current view and switch to the other view
+    // if (currentView == ViewA) {
+    //     // Switch to View B
+    //     currentView = ViewB;
+
+    //     // Update the scene or perform any actions specific to View B
+    //     // For example, you can load different game elements or change the camera position.
+    // } else {
+    //     // Switch to View A
+    //     currentView = ViewA;
+
+    //     // Update the scene or perform any actions specific to View A
+    //     // For example, you can switch back to the default view.
+    // }
+
+    // You may need to reconfigure the scene or update the display based on the new view.
+    // For example, you can change the background, reposition entities, or adjust zoom levels.
 }
 
 void Game2DView::drawWorld() {

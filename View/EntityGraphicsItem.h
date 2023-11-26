@@ -75,7 +75,6 @@ public:
     // Pure virtual functions for animations
     inline void setPosition(const coordinate& newPosition){
         // Set the position based on the 'newPosition' coordinate
-        setPos(newPosition.xCoordinate, newPosition.yCoordinate);
     }
 
     inline void nextFrame() {
