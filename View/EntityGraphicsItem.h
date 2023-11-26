@@ -3,7 +3,7 @@
 
 #include <QGraphicsItem>
 #include <QPixmap>
-#include "Entity.h"
+#include "Model/Entity.h"
 
 class EntityGraphicsItem : public QGraphicsItem {
 protected:
