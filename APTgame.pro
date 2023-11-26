@@ -1,9 +1,3 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2016-11-09T11:11:10
-#
-#-------------------------------------------------
-
 QT       += core gui
 CONFIG += c++17
 QMAKE_CXXFLAGS += -fconcepts-diagnostics-depth=200
@@ -16,10 +10,20 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
+        controller/worldcontroller.cpp\
+        model/world.cpp\
+        model/EnemyModel.cpp\
+        model/ProtagonistModel.cpp\
+
 
 
 HEADERS  += mainwindow.h\
-            world.h\
+            controller/worldcontroller.h\
+            model/world.h\
+            model/structs.h\
+            model/ProtagonistModel.h\
+            model/Entity.h\
+            model/Enemy.h\
 
 FORMS    += mainwindow.ui
 

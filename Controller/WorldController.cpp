@@ -3,13 +3,13 @@
 
 
 WorldController::WorldController(QString map, int nrOfEnemies, int nrOfHealthpacks, float pRatio)
-    : world(std::make_unique<World>(map, nrOfEnemies, nrOfHealthpacks, pRatio)),
-      height(world->getRows()),
-      width(world->getCols()),
-      exit(0,0),
-      start(1,1)
+    : world(std::make_unique<World>())
 {
-    // Initialize other member variables if needed
+    world -> createWorld(map, nrOfEnemies, nrOfHealthpacks, pRatio);
+    height = world->getRows() - 1;
+    width = world->getCols() - 1;
+    exit = coordinate(5,5);
+    start = coordinate(0,0);
 }
 
 int WorldController::getHeight() const
