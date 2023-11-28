@@ -1,6 +1,8 @@
 #include "TileGraphicsItem.h"
 #include <QDir>
 
+// the naming should be changed to TileGraphicsItem
+
 TileGraphicsItem::TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
     : EntityGraphicsItem(tileModel, parent), baseFramesDir(baseFramesDir) {
     loadAnimationFrames();
