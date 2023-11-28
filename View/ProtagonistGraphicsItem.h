@@ -6,7 +6,7 @@
 
 class ProtagonistGraphicsItem : public EntityGraphicsItem {
 public:
-    ProtagonistGraphicsItem(ProtagonistModel* protagonistModel, QGraphicsItem* parent = nullptr);
+    ProtagonistGraphicsItem(ProtagonistModel* protagonistModel, QGraphicsItem* parent= nullptr);
 };
 
 #endif // PROTAGONISTGRAPHICSITEM_H

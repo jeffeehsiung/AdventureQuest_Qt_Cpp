@@ -47,7 +47,6 @@ template<typename T>
 concept validNodeType = validPosType<T> && requires(T t)
 {
   {T::f} -> std::same_as<float&>;
-  {T::g} -> std::same_as<float&>;
   {T::h} -> std::same_as<float&>;
   {T::visited} -> std::same_as<bool&>;
   {T::prev} -> std::same_as<T*&>;
@@ -55,7 +54,7 @@ concept validNodeType = validPosType<T> && requires(T t)
 };
 
 template <validNodeType T, validPosType U>
-std::vector<int> A_star(std::vector<T> & Nodes, const U * start, const U * destination, Comparator<T>& comp, unsigned int width, float heurWeight)
+std::vector<int> A_star(std::vector<T> & Nodes, const U * start, const U * destination, Comparator<T>& comp, unsigned int width, float heurWeight, float minimalCost)
 {
   pq<T> openList(comp);
   std::vector<int> path;
@@ -73,7 +72,7 @@ std::vector<int> A_star(std::vector<T> & Nodes, const U * start, const U * desti
         qCDebug(pathfinderCategory)<< "Checking : " << deltaX << ", " << deltaY;
         if (!(deltaX == 0 && deltaY == 0)){
           qCDebug(pathfinderCategory) << "Checking neighbour : " << deltaX << ", " << deltaY;
-          checkNeighbour(Nodes, width, currentX+deltaX, currentY+deltaY, destination, parent, openList, heurWeight);
+          checkNeighbour(Nodes, width, currentX+deltaX, currentY+deltaY, destination, parent, openList, heurWeight, minimalCost);
         }
       }
     if (openList.empty())
@@ -119,7 +118,7 @@ std::vector<int> A_star(std::vector<T> & Nodes, const U * start, const U * desti
 
 
 template <validNodeType T, typename U>
-void checkNeighbour(std::vector<T> & Nodes, int width, int nX, int nY,  const U *destination, T* parent, pq<T> &openList, float heurWeight)
+void checkNeighbour(std::vector<T> & Nodes, int width, int nX, int nY,  const U *destination, T* parent, pq<T> &openList, float heurWeight, float minimalCost)
 {
   int height = Nodes.size() / width;
   unsigned int currentX = parent->getXPos();
@@ -131,7 +130,7 @@ void checkNeighbour(std::vector<T> & Nodes, int width, int nX, int nY,  const U 
     {
       int manhDist = abs(static_cast<int>(destination->getXPos())-nX) + abs(static_cast<int>(destination->getYPos())-nY);
       float f = (std::fabs(Nodes.at(currentY*width+currentX).getValue() -
-                           Nodes.at(nY*width+nX).getValue())) + 1.0f;
+                           Nodes.at(nY*width+nX).getValue())) + minimalCost;
       qCDebug(pathfinderCategory) << "Manhattan distance from " << Nodes.at(currentY*width+currentX).getValue() << "x"
                                   <<   Nodes.at(nY*width+nX).getValue() << ";" << currentX << "x" << currentY << ";"
                                   << destination->getXPos() << "," << destination->getYPos() <<" to " << nX << "," << nY << " is " << manhDist

@@ -2,6 +2,7 @@
 #define GAMEVIEW_H
 
 #include <QString>
+#include "Model/structs.h"
 
 class GameView {
 public:
