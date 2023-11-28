@@ -17,12 +17,10 @@ public:
     }
 
     // derived class specific addEntity method here to add EntityTextItems to the text edit
-    void addEntity(std::unique_ptr<EntityTextItem> item);
-    
+    using GameView::addEntity;
+    void addEntity(const Entity& entity);
     // Implement GameView interface methods here, if any
     void updateView() override;
-    void drawWorld() override;
-    void switchView() override;
     void zoomIn() override;
     void zoomOut() override;
     void animateEntityAction(const QString& action) override;
@@ -31,6 +29,10 @@ public:
     const std::vector<std::unique_ptr<EntityTextItem>>& getEntityTextItems() const {
         return entityTextItems;
     }
+
+signals:
+    // Signal to indicate that the scene needs updating
+    void updateSceneSignal();
 
 private:
     QString generateTextBackground() {

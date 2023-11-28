@@ -1,17 +1,18 @@
 #include "GameTextView.h"
 
 // member functions...
-void GameTextView::addEntity(std::unique_ptr<EntityTextItem> item) {
-    // Add the item to the text edit
-    this->append(item->getText());
-    // Store the unique pointer
-    entityTextItems.push_back(std::move(item));
+void GameTextView::addEntity(const Entity& entity) {
+    std::unique_ptr<EntityTextItem> entityTextItem = std::make_unique<EntityTextItem>(entity);
+    entityTextItems.push_back(std::move(entityTextItem));
 }
 
 void GameTextView::updateView() {
-    // Update the view as necessary
+    // Update the scene to reflect the changes
+    emit updateSceneSignal(); // Emit the signal to indicate that the scene needs updating
 }
 
-void GameTextView::drawWorld() {
-    // Draw the world as necessary
-}
+void GameTextView::animateEntityAction(QString const&){}
+void GameTextView::zoomIn(){}
+void GameTextView::zoomOut(){}
+
+

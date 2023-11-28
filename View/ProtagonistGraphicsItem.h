@@ -3,10 +3,17 @@
 
 #include "EntityGraphicsItem.h"
 #include "Model/ProtagonistModel.h"
+#include <QString>
 
 class ProtagonistGraphicsItem : public EntityGraphicsItem {
 public:
-    ProtagonistGraphicsItem(ProtagonistModel* protagonistModel, QGraphicsItem* parent= nullptr);
+    ProtagonistGraphicsItem(ProtagonistModel& protagonistModel, const QString& baseFramesDir, QGraphicsRectItem* parent = nullptr);
+
+private:
+    QString baseFramesDir;
+    void loadAnimationFrames();
+    void loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames);
+
 };
 
 #endif // PROTAGONISTGRAPHICSITEM_H

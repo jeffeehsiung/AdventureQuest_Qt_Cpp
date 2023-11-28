@@ -6,8 +6,22 @@ void ProtagonistModel::attack() {
     // Protagonist's attack implementation
 }
 
-void ProtagonistModel::takeDamage(int damage) {
-    // Protagonist's take damage implementation
+void ProtagonistModel::takeDamage(float damage) {
+    if (protagonist) {
+        // Get current health
+        float currentHealth = protagonist->getHealth();
+
+        // Calculate new health after taking damage
+        float newHealth = currentHealth - damage;
+
+        // Ensure new health is not less than zero
+        newHealth = std::max(0.0f, newHealth);
+
+        // Update Protagonist's health
+        protagonist->setHealth(newHealth);
+
+        // Additional logic can be added here as needed
+    }
 }
 
 coordinate ProtagonistModel::getPosition() const {

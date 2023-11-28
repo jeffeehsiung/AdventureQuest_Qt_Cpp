@@ -12,7 +12,7 @@ public:
     ProtagonistModel(Protagonist* protagonist); // Constructor declaration
 
     void attack() override;
-    void takeDamage(int damage) override;
+    void takeDamage(float damage) override;
     coordinate getPosition() const override;
     void setPosition(coordinate position) override;
     void move(int deltaX, int deltaY) override;
