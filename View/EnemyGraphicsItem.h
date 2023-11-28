@@ -6,7 +6,7 @@
 
 class EnemyGraphicsItem : public EntityGraphicsItem {
 public:
-    EnemyGraphicsItem(EnemyModel* enemyModel, const QString& baseFramesDir, QGraphicsRectItem* parent = nullptr);
+    EnemyGraphicsItem(const EnemyModel& enemyModel, const QString& baseFramesDir, QGraphicsRectItem* parent = nullptr);
 
 private:
     QString baseFramesDir;

@@ -7,10 +7,10 @@
 
 class EntityTextItem : public QGraphicsTextItem {
 protected:
-    Entity* entity;  // Pointer to the entity model
+    const Entity& entity;  // Pointer to the entity model
 
 public:
-    explicit EntityTextItem(Entity* entity, QGraphicsItem* parent = nullptr)
+    explicit EntityTextItem(const Entity& entity, QGraphicsItem* parent = nullptr)
         : QGraphicsTextItem(parent), entity(entity) {}
 
     // Virtual destructor for dynamic binding
@@ -30,9 +30,6 @@ public:
         Q_UNUSED(option);
         Q_UNUSED(widget);
     }
-
-    // Returns the text to be displayed
-    virtual QString getText() const = 0;
 };
 
 #endif

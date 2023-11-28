@@ -29,8 +29,8 @@ private:
 
 public:
     Game2DView(QWidget* parent = nullptr);
-
-    void addEntity(std::unique_ptr<Entity> entity);
+    using GameView::addEntity;
+    void addEntity(const Entity& entity);
     void animateEntityAction(const QString& entity) override;
     void updateView() override;
     void zoomIn() override;

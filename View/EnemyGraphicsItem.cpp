@@ -4,7 +4,7 @@
 //QString EntityGraphicsItem::baseFramesDir = "images/enemy_golem/PNG Sequences/";
 
 
-EnemyGraphicsItem::EnemyGraphicsItem(EnemyModel* enemyModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
+EnemyGraphicsItem::EnemyGraphicsItem(const EnemyModel& enemyModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
     : EntityGraphicsItem(enemyModel, parent), baseFramesDir(baseFramesDir) {
     loadAnimationFrames();
 }

@@ -12,12 +12,10 @@ Game2DView::Game2DView(QWidget* parent)
 }
 
 // member functions...
-void Game2DView::addEntity(std::unique_ptr<Entity> entity) {
-    if (entity) {
-        std::unique_ptr<EntityGraphicsItem> entityGraphicsItem = std::make_unique<EntityGraphicsItem>(std::move(entity));;
-        addItem(entityGraphicsItem.get());  // Add the item to the QGraphicsScene
-        entityGraphicsItems.push_back(std::move(entityGraphicsItem));  // Store the item in the vector
-    }
+void Game2DView::addEntity(const Entity& entity) {
+    std::unique_ptr<EntityGraphicsItem> entityGraphicsItem = std::make_unique<EntityGraphicsItem>(entity);
+    addItem(entityGraphicsItem.get());  // Add the item to the QGraphicsScene
+    entityGraphicsItems.push_back(std::move(entityGraphicsItem));  // Store the item in the vector
 }
 
 void Game2DView::animateEntityAction(const QString& entity) {

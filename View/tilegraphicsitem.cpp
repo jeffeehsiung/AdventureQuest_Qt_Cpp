@@ -1,7 +1,7 @@
 #include "TileGraphicsItem.h"
 #include <QDir>
 
-TileGraphicsItem::TileGraphicsItem(TileModel* tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
+TileGraphicsItem::TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
     : EntityGraphicsItem(tileModel, parent), baseFramesDir(baseFramesDir) {
     loadAnimationFrames();
     updatePosition(); // Set the position based on tile's X and Y positions

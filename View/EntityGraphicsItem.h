@@ -20,8 +20,8 @@
 
 class EntityGraphicsItem : public QGraphicsRectItem, public QObject {
 protected:
-    Entity* entity;  // Raw pointer to entity model (abstract)
-    QPixmap image;   // Image representing the entity
+    const Entity& entity;   // Raw pointer to entity model (abstract)
+    QPixmap image;          // Image representing the entity
 
     // Animation properties
     enum AnimationState { IDLE, MOVING, ATTACK, HURT, DYING, HEAL };
@@ -39,7 +39,7 @@ protected:
     static constexpr int commonHeight = 30; // Set your desired height
 
 public:
-    explicit EntityGraphicsItem(Entity* entity, QGraphicsRectItem* parent = nullptr)
+    explicit EntityGraphicsItem(const Entity& entity, QGraphicsRectItem* parent = nullptr)
         : QGraphicsRectItem(parent), entity(entity), animationState(IDLE), currentFrameIndex(0) {
         animationTimer = new QTimer(this);
         connect(animationTimer, &QTimer::timeout, this, &EntityGraphicsItem::nextFrame);
@@ -85,15 +85,13 @@ public:
         update(); // Trigger a repaint of the graphics item
     }
 
-    inline Entity* getEntity() const{
+    inline const Entity& getEntity() const{
         return entity;
     }
 
     inline void updatePosition() {
-        if (entity) {
-            coordinate pos = entity->getPosition();
-            setPos(pos.xCoordinate, pos.yCoordinate);
-        }
+        coordinate pos = entity.getPosition();
+        setPos(pos.xCoordinate, pos.yCoordinate);
     }
 
 

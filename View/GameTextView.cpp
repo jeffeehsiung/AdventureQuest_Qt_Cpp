@@ -1,11 +1,9 @@
 #include "GameTextView.h"
 
 // member functions...
-void GameTextView::addEntity(std::unique_ptr<Entity> entity) {
-    if(entity){
-        std::unique_ptr<EntityTextItem> entityTextItem = std::make_unique<EntityTextItem>(std::move(entity));
-        entityTextItems.push_back(std::move(entityTextItem));
-    }
+void GameTextView::addEntity(const Entity& entity) {
+    std::unique_ptr<EntityTextItem> entityTextItem = std::make_unique<EntityTextItem>(entity);
+    entityTextItems.push_back(std::move(entityTextItem));
 }
 
 void GameTextView::updateView() {

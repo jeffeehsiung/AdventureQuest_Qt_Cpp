@@ -17,8 +17,6 @@
 */
 template <typename ViewType>
 class ViewController : public QObject {
-    Q_OBJECT
-
 public:
     // Constructor that takes ownership of a view
     ViewController() : QObject(nullptr), currentViewIndex(0) {
@@ -27,8 +25,8 @@ public:
         addView<GameTextView>();
 
         // Connect signals and slots for synchronization
-        for (auto* view : views) {
-            connect(view, &ViewType::updateSceneSignal, this, &ViewController::updateViews);
+        for (auto& view : views) {
+            connect(view.get(), &ViewType::updateSceneSignal, this, &ViewController::updateViews);
         }
 
         // Set the initial view
@@ -49,7 +47,7 @@ public slots:
 private slots:
     // Slot to update all views based on game state
     void updateViews() {
-        for (auto* view : views) {
+        for (auto& view : views) {
             view->updateView();
         }
     }
@@ -58,12 +56,12 @@ private:
     /**
      * Keep track of multiple views and update all of them when needed
     **/
-    std::vector<ViewType*> views;
+    std::vector<std::unique_ptr<ViewType>> views;
     int currentViewIndex;
 
     template<typename T>
     void addView() {
-        views.push_back(new T);
+        views.push_back(std::make_unique<T>());
     }
 
     void setCurrentView(int index) {

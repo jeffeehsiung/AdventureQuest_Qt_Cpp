@@ -7,7 +7,7 @@
 
 class TileGraphicsItem : public EntityGraphicsItem {
 public:
-    TileGraphicsItem(TileModel* tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent = nullptr);
+    TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent = nullptr);
 
     // Implement any Tile-specific functionality or behavior here, if needed
 private:

@@ -14,9 +14,7 @@ public:
 
     // Templated addEntity function to accept different entity types
     template<typename EntityType>
-    void addEntity(std::unique_ptr<EntityType> entity) {
-        // Implement this in derived classes
-    }
+    void addEntity(const EntityType& entity){}
 };
 
 #endif // GAMEVIEW_H

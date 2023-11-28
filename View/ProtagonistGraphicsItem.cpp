@@ -3,7 +3,7 @@
 
 //QString EntityGraphicsItem::baseFramesDir = "images/protagonist_fighter/";
 
-ProtagonistGraphicsItem::ProtagonistGraphicsItem(ProtagonistModel* protagonistModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
+ProtagonistGraphicsItem::ProtagonistGraphicsItem(ProtagonistModel& protagonistModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
     : EntityGraphicsItem(protagonistModel, parent), baseFramesDir(baseFramesDir) {
     loadAnimationFrames();
 }
