@@ -12,20 +12,20 @@ Game2DView::Game2DView(QWidget* parent)
 }
 
 // member functions...
-void Game2DView::addEntity(std::unique_ptr<EntityGraphicsItem> entityGraphicsItem) {
-    if (entityGraphicsItem) {
+void Game2DView::addEntity(std::unique_ptr<Entity> entity) {
+    if (entity) {
+        std::unique_ptr<EntityGraphicsItem> entityGraphicsItem = std::make_unique<EntityGraphicsItem>(std::move(entity));;
         addItem(entityGraphicsItem.get());  // Add the item to the QGraphicsScene
         entityGraphicsItems.push_back(std::move(entityGraphicsItem));  // Store the item in the vector
     }
 }
-
 
 void Game2DView::animateEntityAction(const QString& entity) {
     // Implementation for graphical animation of an entity action
 }
 
 
-void Game2DView::drawWorld() {
+void Game2DView::updateView() {
     // Clear any existing items in the scene, if necessary
     clear();
     setBackground(currentBackgroundNumber);
@@ -47,7 +47,7 @@ void Game2DView::drawWorld() {
     // Additional drawing code here, if needed
     // For example, drawing UI elements, score, etc.
     // Update the scene to reflect the changes
-    update();
+    emit updateSceneSignal(); // Emit the signal to indicate that the scene needs updating
 }
 
 
@@ -70,17 +70,6 @@ void Game2DView::setBackground(int backgroundNumber) {
 }
 
 
-void Game2DView::updateScene() {
-    // Replace with game logic to update entity positions
-    for (const auto& entityGraphicsItem : entityGraphicsItems) {
-        if(entityGraphicsItem){
-            // Update entity positions based on game logic
-            entityGraphicsItem->updatePosition();
-        }
-    }
-    update();
-}
-
 void Game2DView::updateZoom() {
     qreal scaleFactor = qPow(2.0, zoomLevel);
 
@@ -91,7 +80,6 @@ void Game2DView::updateZoom() {
         }
     }
 }
-
 
 void Game2DView::zoomIn() {
     zoomLevel += 0.1; // Increase the zoom level

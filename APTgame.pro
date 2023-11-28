@@ -21,6 +21,7 @@ SOURCES += main.cpp\
 
 
 HEADERS  += MainWindow.h\
+    Controller/ViewController.h \
     Model/EnemyModel.h \
     Model/Entity.h \
     Model/ProtagonistModel.h \

@@ -2,43 +2,76 @@
 #define VIEWCONTROLLER_H
 
 #include <memory>
-#include "View/GameView.h"
-#include "GraphicsViewController.h" // Include your GraphicsViewController header
-#include "TextualViewController.h"   // Include your TextualViewController header
+#include <QObject>
+#include <QWidget>
+#include <vector>
+#include "View/Game2DView.h"
+#include "View/GameTextView.h"
 
-template <typename View, typename EntityItem>
-class ViewController {
-private:
-    std::unique_ptr<View> view;
-    std::unique_ptr<GraphicsViewController> graphicsViewController;
-    std::unique_ptr<TextualViewController> textualViewController;
-    bool isGraphicsViewActive; // Flag to track the active view
+/**
+ * The header file you provided for the ViewController class is a template class.
+ * Typically, for template classes, the implementation (i.e., the function definitions)
+ * is included in the header file itself. This is because the compiler needs access to
+ * the template code during compilation to generate the necessary code for the specific
+ * template parameter types.
+*/
+template <typename ViewType>
+class ViewController : public QObject {
+    Q_OBJECT
 
 public:
     // Constructor that takes ownership of a view
-    ViewController(std::unique_ptr<View> view)
-        : view(std::move(view)), isGraphicsViewActive(true) {
-        // Initialize GraphicsViewController and TextualViewController
-        graphicsViewController = std::make_unique<GraphicsViewController>(view.get());
-        textualViewController = std::make_unique<TextualViewController>(/* Any necessary parameters */);
-    }
+    ViewController() : QObject(nullptr), currentViewIndex(0) {
+        // Initialize and configure your views here
+        addView<Game2DView>();
+        addView<GameTextView>();
 
-    // Method to add an entity to the view
-    void addEntity(std::unique_ptr<EntityItem> item) {
-        view->addEntity(std::move(item));
-    }
-
-    // Method to switch between graphical and textual views
-    void switchView() {
-        if (isGraphicsViewActive) {
-            textualViewController->displayTextualView();
-        } else {
-            graphicsViewController->displayGraphicsView();
+        // Connect signals and slots for synchronization
+        for (auto* view : views) {
+            connect(view, &ViewType::updateSceneSignal, this, &ViewController::updateViews);
         }
-        isGraphicsViewActive = !isGraphicsViewActive;
+
+        // Set the initial view
+        setCurrentView(currentViewIndex);
     }
 
-    // ...other methods as needed to interact with the view
+    QWidget* getCurrentView() const {
+        return views[currentViewIndex];
+    }
+
+public slots:
+    // Slot to switch views
+    void switchView() {
+        currentViewIndex = (currentViewIndex + 1) % views.size();
+        setCurrentView(currentViewIndex);
+    }
+
+private slots:
+    // Slot to update all views based on game state
+    void updateViews() {
+        for (auto* view : views) {
+            view->updateView();
+        }
+    }
+
+private:
+    /**
+     * Keep track of multiple views and update all of them when needed
+    **/
+    std::vector<ViewType*> views;
+    int currentViewIndex;
+
+    template<typename T>
+    void addView() {
+        views.push_back(new T);
+    }
+
+    void setCurrentView(int index) {
+        for (int i = 0; i < views.size(); ++i) {
+            views[i]->setVisible(i == index);
+        }
+        updateViews();
+    }
 };
 
 #endif // VIEWCONTROLLER_H
