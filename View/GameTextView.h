@@ -18,11 +18,9 @@ public:
 
     // derived class specific addEntity method here to add EntityTextItems to the text edit
     void addEntity(std::unique_ptr<EntityTextItem> item);
-    
     // Implement GameView interface methods here, if any
-    void updateView() override;
+    void updateScene() override;
     void drawWorld() override;
-    void switchView() override;
     void zoomIn() override;
     void zoomOut() override;
     void animateEntityAction(const QString& action) override;

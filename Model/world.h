@@ -74,7 +74,7 @@ public:
     void setXPos(int newPos) override {if (xPos != newPos){xPos = newPos; emit posChanged(xPos, yPos);}}
     void setYPos(int newPos) override {if (yPos != newPos){yPos = newPos; emit posChanged(xPos, yPos);}}
     void setPos(int newX, int newY) {if (xPos != newX || yPos != newY) {xPos = newX; yPos = newY; emit posChanged(xPos, yPos);}}
-    float getHealth() const {return health;};
+    float getHealth() const {return health;}
     void setHealth(float value) {health = value; emit healthChanged(static_cast<int>(health));}
 
     float getEnergy() const {return energy;}
@@ -102,8 +102,8 @@ public:
     std::vector<std::unique_ptr<Enemy>> getEnemies();
     std::vector<std::unique_ptr<Tile>> getHealthPacks();
     std::unique_ptr<Protagonist> getProtagonist() const;
-    int getRows() const {return rows;};
-    int getCols() const {return cols;};
+    int getRows() const {return rows;}
+    int getCols() const {return cols;}
 
 private:
     int rows, cols;

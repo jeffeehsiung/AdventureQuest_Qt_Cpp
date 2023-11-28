@@ -8,7 +8,7 @@ void GameTextView::addEntity(std::unique_ptr<EntityTextItem> item) {
     entityTextItems.push_back(std::move(item));
 }
 
-void GameTextView::updateView() {
+void GameTextView::updateScene() {
     // Update the view as necessary
 }
 
@@ -16,7 +16,6 @@ void GameTextView::drawWorld() {
     // Draw the world as necessary
 }
 
-void GameTextView::switchView(){}
 void GameTextView::animateEntityAction(QString const&){}
 void GameTextView::zoomIn(){}
 void GameTextView::zoomOut(){}

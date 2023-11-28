@@ -16,14 +16,15 @@ SOURCES += main.cpp\
     View/GameTextView.cpp \
     View/ProtagonistGraphicsItem.cpp \
         MainWindow.cpp \
+    View/tilegraphicsitem.cpp
 
 
 
 HEADERS  += MainWindow.h\
     Model/EnemyModel.h \
     Model/Entity.h \
-    Model/HealthPackModel.h \
     Model/ProtagonistModel.h \
+    Model/TileModel.h \
     Model/structs.h \
     Model/world.h \
     Model/world_global.h \
@@ -33,7 +34,8 @@ HEADERS  += MainWindow.h\
     View/Game2DView.h \
     View/GameTextView.h \
     View/GameView.h \
-    View/ProtagonistGraphicsItem.h
+    View/ProtagonistGraphicsItem.h \
+    View/tilegraphicsitem.h
 
 FORMS    += mainwindow.ui
 

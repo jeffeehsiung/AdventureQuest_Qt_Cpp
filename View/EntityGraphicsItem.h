@@ -1,7 +1,7 @@
 #ifndef ENTITYGRAPHICSITEM_H
 #define ENTITYGRAPHICSITEM_H
 
-#include <QGraphicsItem>
+#include <QGraphicsRectItem>
 #include <QPixmap>
 #include <QPainter>
 #include <QTimer>
@@ -18,7 +18,7 @@
  *      which will populate the frame vectors (idleFrames, moveFrames, etc.) with their specific frames.
 **/
 
-class EntityGraphicsItem : public QGraphicsItem, public QObject {
+class EntityGraphicsItem : public QGraphicsRectItem, public QObject {
 protected:
     Entity* entity;  // Raw pointer to entity model (abstract)
     QPixmap image;   // Image representing the entity
@@ -35,11 +35,16 @@ protected:
     std::vector<QPixmap> healFrames;
     std::vector<QPixmap>::size_type currentFrameIndex;
 
+    static constexpr int commonWidth = 30; // Set your desired width
+    static constexpr int commonHeight = 30; // Set your desired height
+
 public:
-    explicit EntityGraphicsItem(Entity* entity, QGraphicsItem* parent = nullptr)
-        : QGraphicsItem(parent), entity(entity), animationState(IDLE), currentFrameIndex(0) {
+    explicit EntityGraphicsItem(Entity* entity, QGraphicsRectItem* parent = nullptr)
+        : QGraphicsRectItem(parent), entity(entity), animationState(IDLE), currentFrameIndex(0) {
         animationTimer = new QTimer(this);
         connect(animationTimer, &QTimer::timeout, this, &EntityGraphicsItem::nextFrame);
+        // Set a common size for all EntityGraphicsItems
+        setRect(0, 0, commonWidth, commonHeight);
     }
 
     virtual ~EntityGraphicsItem() {
@@ -94,13 +99,17 @@ public:
 
     // Graphics item methods
     QRectF boundingRect() const override {
-        return QRectF(0, 0, image.width(), image.height());
+        return QRectF(0, 0, commonWidth, commonHeight);
     }
 
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override {
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override {
         Q_UNUSED(option);
         Q_UNUSED(widget);
-        painter->drawPixmap(0, 0, image);
+
+        int x = (commonWidth - image.width()) / 2;
+        int y = (commonWidth - image.height()) / 2;
+
+        painter->drawPixmap(x, y, image);
     }
 
 protected:

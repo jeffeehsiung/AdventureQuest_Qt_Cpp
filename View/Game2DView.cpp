@@ -1,12 +1,24 @@
 #include "Game2DView.h"
 
-// Constructor and other member functions...
-void Game2DView::addEntity(std::unique_ptr<EntityGraphicsItem> item) {
-    if (item) {
-        scene->addItem(item.get());  // Add the item to the QGraphicsScene
-        entityGraphicsItems.push_back(std::move(item));  // Transfer ownership to the vector
+Game2DView::Game2DView(QWidget* parent)
+    : QGraphicsScene(parent), currentBackgroundNumber(1), zoomLevel(1.0) {
+    // Load background images
+    defaultBackground.load(":/images/world_images/worldmap4.png");
+    easyBackground.load(":/images/world_images/maze1.png");
+    mediumBackground.load(":/images/world_images/maze2.png");
+    hardBackground.load(":/images/world_images/maze3.png");
+    // Set default background or based on initial game state
+    setBackgroundBrush(QBrush(defaultBackground));
+}
+
+// member functions...
+void Game2DView::addEntity(std::unique_ptr<EntityGraphicsItem> entityGraphicsItem) {
+    if (entityGraphicsItem) {
+        addItem(entityGraphicsItem.get());  // Add the item to the QGraphicsScene
+        entityGraphicsItems.push_back(std::move(entityGraphicsItem));  // Store the item in the vector
     }
 }
+
 
 void Game2DView::animateEntityAction(const QString& entity) {
     // Implementation for graphical animation of an entity action
@@ -15,21 +27,29 @@ void Game2DView::animateEntityAction(const QString& entity) {
 
 void Game2DView::drawWorld() {
     // Clear any existing items in the scene, if necessary
-    scene->clear();
+    clear();
     setBackground(currentBackgroundNumber);
 
-    // Add entities to the scene
-    for (auto& entityGraphicsItem : entityGraphicsItems) {
+    // Iterate through the collection of entity graphics items
+    for (const auto& entityGraphicsItem : entityGraphicsItems) {
         if (entityGraphicsItem) {
             entityGraphicsItem->updatePosition();
-            scene->addItem(entityGraphicsItem.get());
+
+            EntityGraphicsItem* typedEntityItem = dynamic_cast<EntityGraphicsItem*>(entityGraphicsItem.get());
+            if (typedEntityItem) {
+                // It's a valid EntityGraphicsItem
+                addItem(typedEntityItem);
+            }
+            // Add more conditions for other derived classes as needed
         }
     }
+
     // Additional drawing code here, if needed
     // For example, drawing UI elements, score, etc.
     // Update the scene to reflect the changes
-    scene->update();
+    update();
 }
+
 
 void Game2DView::setBackground(int backgroundNumber) {
     /**
@@ -50,35 +70,38 @@ void Game2DView::setBackground(int backgroundNumber) {
 }
 
 
-void Game2DView::updateView() {
+void Game2DView::updateScene() {
     // Replace with game logic to update entity positions
-    for (auto& entityGraphicsItem : entityGraphicsItems) {
-        // Update entity positions based on game logic
-        entityGraphicsItem->updatePosition();
+    for (const auto& entityGraphicsItem : entityGraphicsItems) {
+        if(entityGraphicsItem){
+            // Update entity positions based on game logic
+            entityGraphicsItem->updatePosition();
+        }
     }
-    scene->update();
+    update();
 }
 
+void Game2DView::updateZoom() {
+    qreal scaleFactor = qPow(2.0, zoomLevel);
+
+    // Iterate through the collection of entity graphics items
+    for (const auto& entityGraphicsItem : entityGraphicsItems) {
+        if (entityGraphicsItem) {
+            entityGraphicsItem->setScale(scaleFactor);
+        }
+    }
+}
+
+
 void Game2DView::zoomIn() {
-    // Get the current transformation matrix
-    QTransform currentTransform = transform();
-
-    // Scale the current transformation matrix to zoom in (e.g., by a factor of 1.2)
-    currentTransform.scale(1.2, 1.2); // You can adjust the scaling factor as needed
-
-    // Apply the updated transformation matrix to the view
-    setTransform(currentTransform);
+    zoomLevel += 0.1; // Increase the zoom level
+    updateZoom();
 }
 
 void Game2DView::zoomOut() {
-    // Get the current transformation matrix
-    QTransform currentTransform = transform();
-
-    // Scale the current transformation matrix to zoom out (e.g., by a factor of 0.8)
-    currentTransform.scale(0.8, 0.8); // You can adjust the scaling factor as needed
-
-    // Apply the updated transformation matrix to the view
-    setTransform(currentTransform);
+    zoomLevel -= 0.1; // Decrease the zoom level
+    updateZoom();
 }
+
 
 
