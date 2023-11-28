@@ -1,69 +1,62 @@
 #include "Game2DView.h"
 
 // Constructor and other member functions...
-
 void Game2DView::addEntity(std::unique_ptr<EntityGraphicsItem> item) {
-    QGraphicsItem* rawPtr = item.get();  // Get the raw pointer to add to the scene
-    scene->addItem(rawPtr);  // Add the raw pointer to the scene
-    entityGraphicsItems.push_back(std::move(item));  // Store the unique pointer
-}
-
-void Game2DView::updateView() {
-    // Iterate through the entityGraphicsItems vector and update their positions
-    for (size_t i = 0; i < entityGraphicsItems.size(); ++i) {
-        // Get the current position of the entity
-        coordinate currentPosition = entityPositions[i];
-
-        // Update the position (this is just a hypothetical example)
-        // Move the entity to the right by 1 unit and down by 1 unit
-        currentPosition.xCoordinate += 1;
-        currentPosition.yCoordinate += 1;
-
-        // Update the position in the entityPositions vector
-        entityPositions[i] = currentPosition;
-
-        // Now, you can use currentPosition to update the position of the EntityGraphicsItem
-        // For example:
-        entityGraphicsItems[i]->setPosition(currentPosition);
+    if (item) {
+        scene->addItem(item.get());  // Add the item to the QGraphicsScene
+        entityGraphicsItems.push_back(std::move(item));  // Transfer ownership to the vector
     }
-
-    // You can add more logic here to update other aspects of the view
-    // For example, you might update the game state, handle collisions,
-    // or perform other view-related updates
 }
 
-// Implement the switchView method
-void Game2DView::switchView() {
-    // Check the current view and switch to the other view
-    // if (currentView == ViewA) {
-    //     // Switch to View B
-    //     currentView = ViewB;
-
-    //     // Update the scene or perform any actions specific to View B
-    //     // For example, you can load different game elements or change the camera position.
-    // } else {
-    //     // Switch to View A
-    //     currentView = ViewA;
-
-    //     // Update the scene or perform any actions specific to View A
-    //     // For example, you can switch back to the default view.
-    // }
-
-    // You may need to reconfigure the scene or update the display based on the new view.
-    // For example, you can change the background, reposition entities, or adjust zoom levels.
+void Game2DView::animateEntityAction(const QString& entity) {
+    // Implementation for graphical animation of an entity action
 }
+
 
 void Game2DView::drawWorld() {
-    // Create a QGraphicsPixmapItem to represent the background image
-    QGraphicsPixmapItem* backgroundItem = new QGraphicsPixmapItem(backgroundPixmap);
+    // Clear any existing items in the scene, if necessary
+    scene->clear();
+    setBackground(currentBackgroundNumber);
 
-    // Set the position of the background image to (0, 0)
-    backgroundItem->setPos(0, 0);
+    // Add entities to the scene
+    for (auto& entityGraphicsItem : entityGraphicsItems) {
+        if (entityGraphicsItem) {
+            entityGraphicsItem->updatePosition();
+            scene->addItem(entityGraphicsItem.get());
+        }
+    }
+    // Additional drawing code here, if needed
+    // For example, drawing UI elements, score, etc.
+    // Update the scene to reflect the changes
+    scene->update();
+}
 
-    // Add the background image to the scene
-    scene->addItem(backgroundItem);
+void Game2DView::setBackground(int backgroundNumber) {
+    /**
+     * should be dependent on game state passed into the view controller
+     * then the controller based on game state assign the correspodning number to Game2DView
+     * game2DViewInstance->setBackground(2); // Switch to the second background
+     * */
+    switch(backgroundNumber) {
+    case 1: setBackgroundBrush(QBrush(defaultBackground)); break;
+    case 2: setBackgroundBrush(QBrush(easyBackground)); break;
+    case 3: setBackgroundBrush(QBrush(mediumBackground)); break;
+    case 4: setBackgroundBrush(QBrush(hardBackground)); break;
+    default: setBackgroundBrush(QBrush(defaultBackground));
+        break;
+    }
+    currentBackgroundNumber = backgroundNumber;
+    update();  // Refresh the view
+}
 
-    // You can add more game elements (e.g., entities, obstacles, etc.) to the scene
+
+void Game2DView::updateView() {
+    // Replace with game logic to update entity positions
+    for (auto& entityGraphicsItem : entityGraphicsItems) {
+        // Update entity positions based on game logic
+        entityGraphicsItem->updatePosition();
+    }
+    scene->update();
 }
 
 void Game2DView::zoomIn() {
@@ -88,7 +81,4 @@ void Game2DView::zoomOut() {
     setTransform(currentTransform);
 }
 
-void Game2DView::animateEntityAction(const QString& entity) {
-    // Implementation for graphical animation of an entity action
-}
 

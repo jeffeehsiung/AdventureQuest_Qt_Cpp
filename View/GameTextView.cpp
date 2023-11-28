@@ -15,3 +15,10 @@ void GameTextView::updateView() {
 void GameTextView::drawWorld() {
     // Draw the world as necessary
 }
+
+void GameTextView::switchView(){}
+void GameTextView::animateEntityAction(QString const&){}
+void GameTextView::zoomIn(){}
+void GameTextView::zoomOut(){}
+
+
