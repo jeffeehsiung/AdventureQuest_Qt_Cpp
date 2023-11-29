@@ -51,7 +51,7 @@ private:
 
     bool isGamePaused;
 
-    void setupUI(QGraphicsScene* graphicsScene);
+    void setupUI();
 
 private slots:
     void onStartButtonClicked();

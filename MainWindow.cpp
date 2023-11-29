@@ -58,7 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
     game2DView->addEntity(*protagonistModel);
     setupUI(game2DView);*/
 
-    setupUI(game2DView);
+    setupUI();
     setCentralWidget(centralWidget);
     pauseButton->setEnabled(false);
     pauseButton->setStyleSheet("background-color: grey;");

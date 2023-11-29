@@ -2,6 +2,8 @@
 #define GAMETEXTVIEW_H
 
 #include <QTextEdit>
+#include <vector>
+#include <memory>
 #include "GameView.h"
 #include "EntityTextItem.h"
 
@@ -9,9 +11,10 @@ class GameTextView : public QTextEdit, public GameView {
     Q_OBJECT
 
 public:
-    GameTextView(QTextEdit* parent = nullptr) : QTextEdit(parent) {
+    GameTextView(QWidget* parent = nullptr) : QTextEdit(parent) {
+        setReadOnly(true);
         QString textBackground = generateTextBackground();
-        this->setText(textBackground);
+        this->setPlainText(textBackground);
     }
 
     void addEntity(const Entity& entity) override;
@@ -30,10 +33,6 @@ public:
     void zoomOut() override;
     void updateView() override;
 
-    const std::vector<std::unique_ptr<EntityTextItem>>& getEntityTextItems() const {
-        return entityTextItems;
-    }
-
 signals:
     /**
      * @brief updateSceneSignal
@@ -46,14 +45,10 @@ signals:
     void updateSceneSignal() override;
 
 private:
-    QString generateTextBackground() {
-        // Generate and return a QString representing the text-based background
-        QString background;
-        // ... generate your background ...
-        return background;
-    }
-
+    QString generateTextBackground();
+    void displayScene(const QString& sceneString);
     std::vector<std::unique_ptr<EntityTextItem>> entityTextItems;
+    QString sceneString;
 };
 
 #endif // GAMETEXTVIEW_H

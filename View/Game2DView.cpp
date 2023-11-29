@@ -15,7 +15,7 @@ void Game2DView::initializeView(const WorldController& worldController) {
         scene = new QGraphicsScene(this);
         setScene(scene);
     }
-    currentBackgroundNumber = worldController.getDifficulty();
+
     setBackground(currentBackgroundNumber);
 
     // Extract entities from the WorldController
@@ -125,6 +125,7 @@ void Game2DView::updateZoom() {
             entityGraphicsItem->updatePosition();
         }
     }
+    updateView();
 }
 
 void Game2DView::zoomIn() {

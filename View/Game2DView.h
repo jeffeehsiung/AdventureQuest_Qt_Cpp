@@ -6,16 +6,18 @@
 #include <QPixmap>
 #include "GameView.h"
 #include "EntityGraphicsItem.h"
+#include "TileGraphicsItem.h"
+#include "ProtagonistGraphicsItem.h"
+#include "EnemyGraphicsItem.h"
 
 class Game2DView : public QGraphicsView, public GameView {
     Q_OBJECT
 public:
-    Game2DView(QWidget* parent) : QGraphicsView(parent), scene(nullptr), currentBackgroundNumber(1), zoomLevel(1.0) {
+    Game2DView(QWidget* parent, int difficulty) : QGraphicsView(parent), scene(nullptr), currentBackgroundNumber(difficulty), zoomLevel(1.0) {
         defaultBackground.load(":/images/world_images/worldmap4.png");
         easyBackground.load(":/images/world_images/maze1.png");
         mediumBackground.load(":/images/world_images/maze2.png");
         hardBackground.load(":/images/world_images/maze3.png");
-        setBackgroundBrush(QBrush(currentBackgroundNumber));
     }
 
     virtual ~Game2DView(){
