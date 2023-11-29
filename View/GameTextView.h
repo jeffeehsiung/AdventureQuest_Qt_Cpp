@@ -9,7 +9,7 @@ class GameTextView : public QTextEdit, public GameView {
     Q_OBJECT
 
 public:
-    GameTextView(QWidget* parent = nullptr) : QTextEdit(parent) {
+    GameTextView(QTextEdit* parent = nullptr) : QTextEdit(parent) {
         // Set the common text-based background
         QString textBackground = generateTextBackground();
         this->setText(textBackground);
@@ -24,6 +24,7 @@ public:
     void zoomIn() override;
     void zoomOut() override;
     void animateEntityAction(const QString& action) override;
+    void setBackground(int backgroundNumber) override;
 
     // Getter for entityTextItems
     const std::vector<std::unique_ptr<EntityTextItem>>& getEntityTextItems() const {

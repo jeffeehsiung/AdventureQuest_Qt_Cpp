@@ -1,5 +1,15 @@
 ﻿#include "MainWindow.h"
 
+/** for testing */
+#include "View/Game2DView.h"
+#include "View/GameTextView.h"
+#include "Controller/ViewController.h"
+#include "Model/TileModel.h"
+#include "Model/ProtagonistModel.h"
+#include "Model/EnemyModel.h"
+#include "Model/world.h"
+/** above include is for testing */
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
     centralWidget(new QWidget(this)),
@@ -30,6 +40,34 @@ MainWindow::MainWindow(QWidget *parent)
     textualMessageWidget(new QTextEdit(this)),
     isGamePaused(false)
 {
+/** for testing only. haven't tried */
+    // Create a vector of EnemyModel pointers
+    std::vector<EnemyModel*> enemyModels;
+    // Create a vector of TileModel pointers
+    std::vector<TileModel*> tileModels;
+    // Create a vector of ProtagonistModel pointers
+    std::vector<ProtagonistModel*> protagonistModels;
+    // Manually create and initialize enemy models
+    // For example:
+    EnemyModel* enemyModel1 = new EnemyModel(new Enemy(1, 2, 50.0f));
+    EnemyModel* enemyModel2 = new EnemyModel(new Enemy(3, 4, 60.0f));
+    enemyModels.push_back(enemyModel1);
+    enemyModels.push_back(enemyModel2);
+    // Manually create and initialize tile models
+    // For example:
+//    TileModel* tileModel1 = new TileModel(std::make_unique<Tile>(0, 0, 0.5f));
+//    TileModel* tileModel2 = new TileModel(std::make_unique<Tile>(1, 1, 0.7f));
+//    tileModels.push_back(tileModel1);
+//    tileModels.push_back(tileModel2);
+    // Manually create and initialize protagonist models
+    // For example:
+    ProtagonistModel* protagonistModel = new ProtagonistModel(new Protagonist());
+    protagonistModels.push_back(protagonistModel);
+    QGraphicsScene* scene = new QGraphicsScene(this);
+    Game2DView* game2DView = new Game2DView(scene);
+    ViewController<Game2DView> viewController( enemyModels, tileModels, protagonistModels);
+/***/
+
     setupUI();
     setCentralWidget(centralWidget);
     pauseButton->setEnabled(false);
@@ -67,8 +105,8 @@ void MainWindow::setupUI()
 
     // Set up the graphics view on the first tab
     graphicsView->setStyleSheet("background-color: black;");
-    QGraphicsScene *graphicsScene = new QGraphicsScene(this);
-    graphicsView->setScene(graphicsScene);
+//    QGraphicsScene *graphicsScene = new QGraphicsScene(this);
+//    graphicsView->setScene(graphicsScene);
     QVBoxLayout *graphicsLayout = new QVBoxLayout();
     graphicsLayout->addWidget(graphicsView);
 

@@ -11,8 +11,20 @@ WorldController::WorldController(QString map, int nrOfEnemies, int nrOfHealthpac
     exit = coordinate(5,5);
     start = coordinate(0,0);
 
-    tiles = world -> getTiles();
-    healthPacks = world ->getHealthPacks();
+    // tiles = world -> getTiles();
+    // healthPacks = world ->getHealthPacks();
+
+    for ( auto &tile : world->getTiles() )
+    {
+        std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(tile.get());
+        tiles.push_back(tileModel);
+    }
+
+    for ( auto &healthPack : world->getHealthPacks() )
+    {
+        std::unique_ptr<TileModel> healthPackModel = std::make_unique<TileModel>(healthPack.get());
+        healthPacks.push_back(healthPackModel);
+    }
 
     for ( auto &enemy : world->getEnemies() )
     {
@@ -100,3 +112,25 @@ void WorldController::handlePoisonLevelUpdated(float /*poisonLevel*/)
 {
     // Implement poison level update handling logic
 }
+
+std::unique_ptr<ProtagonistModel> WorldController::getProtagonist(char id) const
+{
+    return std::unique_ptr<ProtagonistModel>();
+}
+
+std::unique_ptr<TileModel> WorldController::getTile(int x, int y)
+{
+    return std::unique_ptr<TileModel>();
+}
+
+std::unique_ptr<EnemyModel> WorldController::getEnemy(int x, int y)
+{
+    return std::unique_ptr<EnemyModel>();
+}
+
+std::unique_ptr<TileModel> WorldController::getHealthPack(int x, int y)
+{
+    return std::unique_ptr<TileModel>();
+}
+
+

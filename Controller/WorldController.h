@@ -1,10 +1,11 @@
 #ifndef WORLDCONTROLLER_H
 #define WORLDCONTROLLER_H
 
-#include "model/world.h"
-#include "model/structs.h"
-#include "model/ProtagonistModel.h"
-#include "model/EnemyModel.h"
+#include "Model/world.h"
+#include "Model/structs.h"
+#include "Model/ProtagonistModel.h"
+#include "Model/EnemyModel.h"
+#include "Model/TileModel.h"
 
 
 #include <iostream>
@@ -28,14 +29,14 @@ class WorldController : public QObject
 
         bool isHealthPack(int x, int y, bool kill);
         bool isPoisined(int x, int y);
-        std::unique_ptr<Tile> getHealthPack(int x, int y);
+        std::unique_ptr<TileModel> getHealthPack(int x, int y);
 
-        std::unique_ptr<Tile> getTile(int x, int y);
-        std::unique_ptr<Enemy> isEnemy(int x, int y, bool kill, bool fast);
-        std::unique_ptr<Enemy> getEnemy(int x, int y);
-        const std::vector<std::unique_ptr<Tile> > &getWalkedOnTiles() const;
+        std::unique_ptr<TileModel> getTile(int x, int y);
+        std::unique_ptr<EnemyModel> isEnemy(int x, int y, bool kill, bool fast);
+        std::unique_ptr<EnemyModel> getEnemy(int x, int y);
+        const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
 
-        void setWalkedOnTiles(std::unique_ptr<Tile> newWalkedOnTiles);
+        void setWalkedOnTiles(std::unique_ptr<TileModel> newWalkedOnTiles);
 
         void poisonTilesAround(int x , int y, int spread, std::unique_ptr<PEnemy> parent);
 
@@ -51,10 +52,10 @@ private:
         int width;
         coordinate exit = coordinate(1,1);
         coordinate start = coordinate(0,0);
-        std::vector<std::unique_ptr<Tile>> tiles;
-        std::vector<std::unique_ptr<Tile>> healthPacks;
+        std::vector<std::unique_ptr<TileModel>> tiles;
+        std::vector<std::unique_ptr<TileModel>> healthPacks;
         std::vector<std::unique_ptr<EnemyModel>> enemies;
-        std::vector<std::unique_ptr<Tile>> walkedOnTiles;
+        std::vector<std::unique_ptr<TileModel>> walkedOnTiles;
 
 
         std::array<std::unique_ptr<ProtagonistModel>,2> protagonists;

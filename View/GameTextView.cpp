@@ -15,4 +15,5 @@ void GameTextView::animateEntityAction(QString const&){}
 void GameTextView::zoomIn(){}
 void GameTextView::zoomOut(){}
 
+void GameTextView::setBackground(int backgroundNumber){}
 

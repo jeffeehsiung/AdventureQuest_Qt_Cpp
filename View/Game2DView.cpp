@@ -1,6 +1,6 @@
 #include "Game2DView.h"
 
-Game2DView::Game2DView(QWidget* parent)
+Game2DView::Game2DView(QGraphicsScene* parent)
     : QGraphicsScene(parent), currentBackgroundNumber(1), zoomLevel(1.0) {
     // Load background images
     defaultBackground.load(":/images/world_images/worldmap4.png");
@@ -88,6 +88,19 @@ void Game2DView::zoomOut() {
     zoomLevel -= 0.1; // Decrease the zoom level
     updateZoom();
 }
+
+void Game2DView::setVisible(bool visible) {
+    // Implement the logic to set the visibility of the view here
+    // For example, you can show or hide the QGraphicsScene based on the 'visible' parameter.
+    if (visible) {
+        // Show the QGraphicsScene
+        setSceneRect(0, 0, 300, 300);
+    } else {
+        // Hide the QGraphicsScene
+        setSceneRect(0, 0, 0, 0);
+    }
+}
+
 
 
 

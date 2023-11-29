@@ -1,7 +1,7 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 
-#include "worldcontroller.h"
+#include "WorldController.h"
 #include <QObject>
 #include <QKeyEvent>
 

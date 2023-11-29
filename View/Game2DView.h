@@ -25,16 +25,17 @@ private:
     std::vector<std::unique_ptr<EntityGraphicsItem>> entityGraphicsItems;
 
     void updateZoom();
-    void setBackground(int backgroundNumber);
 
 public:
-    Game2DView(QWidget* parent = nullptr);
+    Game2DView(QGraphicsScene* parent = nullptr);
     using GameView::addEntity;
     void addEntity(const Entity& entity);
     void animateEntityAction(const QString& entity) override;
     void updateView() override;
     void zoomIn() override;
     void zoomOut() override;
+    void setBackground(int backgroundNumber) override;
+    void setVisible(bool visible);
 
 signals:
     // Signal to indicate that the scene needs updating

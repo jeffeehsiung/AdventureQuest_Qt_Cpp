@@ -11,6 +11,7 @@ public:
     virtual void zoomIn() = 0;
     virtual void zoomOut() = 0;
     virtual void animateEntityAction(const QString& action) = 0;
+    virtual void setBackground(int backgroundNumber) = 0;
 
     // Templated addEntity function to accept different entity types
     template<typename EntityType>
