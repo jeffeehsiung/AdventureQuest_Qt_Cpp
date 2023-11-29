@@ -20,11 +20,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    QGraphicsView *graphicsView;
 
 private:
     QWidget *centralWidget;
-//    QGraphicsView *graphicsView;
+    QGraphicsView *graphicsView;
     QGraphicsView *textualView;
     QPushButton *startButton;
     QPushButton *pauseButton;
@@ -52,7 +51,7 @@ private:
 
     bool isGamePaused;
 
-    void setupUI();
+    void setupUI(QGraphicsScene* graphicsScene);
 
 private slots:
     void onStartButtonClicked();

@@ -1,51 +1,82 @@
 #include "Game2DView.h"
 
-Game2DView::Game2DView(QGraphicsScene* parent)
-    : QGraphicsScene(parent), currentBackgroundNumber(1), zoomLevel(1.0) {
-    // Load background images
-    defaultBackground.load(":/images/world_images/worldmap4.png");
-    easyBackground.load(":/images/world_images/maze1.png");
-    mediumBackground.load(":/images/world_images/maze2.png");
-    hardBackground.load(":/images/world_images/maze3.png");
-    // Set default background or based on initial game state
-    setBackgroundBrush(QBrush(defaultBackground));
-}
-
-// member functions...
 void Game2DView::addEntity(const Entity& entity) {
     std::unique_ptr<EntityGraphicsItem> entityGraphicsItem = std::make_unique<EntityGraphicsItem>(entity);
-    addItem(entityGraphicsItem.get());  // Add the item to the QGraphicsScene
-    entityGraphicsItems.push_back(std::move(entityGraphicsItem));  // Store the item in the vector
+    scene->addItem(entityGraphicsItem.get());
+    entityGraphicsItems.push_back(std::move(entityGraphicsItem));
 }
 
 void Game2DView::animateEntityAction(const QString& entity) {
     // Implementation for graphical animation of an entity action
 }
 
-
-void Game2DView::updateView() {
-    // Clear any existing items in the scene, if necessary
-    clear();
+void Game2DView::initializeView(const WorldController& worldController) {
+    if (!scene) {
+        scene = new QGraphicsScene(this);
+        setScene(scene);
+    }
+    currentBackgroundNumber = worldController.getDifficulty();
     setBackground(currentBackgroundNumber);
 
-    // Iterate through the collection of entity graphics items
-    for (const auto& entityGraphicsItem : entityGraphicsItems) {
-        if (entityGraphicsItem) {
-            entityGraphicsItem->updatePosition();
+    // Extract entities from the WorldController
+    const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getTiles();
+    const std::vector<std::unique_ptr<TileModel>>& healthPacks = worldController.getHealthPacks();
+    const std::vector<std::unique_ptr<EnemyModel>>& enemies = worldController.getEnemies();
+    const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = worldController.getProtagonists();
 
-            EntityGraphicsItem* typedEntityItem = dynamic_cast<EntityGraphicsItem*>(entityGraphicsItem.get());
-            if (typedEntityItem) {
-                // It's a valid EntityGraphicsItem
-                addItem(typedEntityItem);
-            }
-            // Add more conditions for other derived classes as needed
-        }
+    /** baseFramesDir for tile is constant */
+    QString tileBase = ":/images/tiles/Idle/";
+    for (const auto& tile : tiles) {
+        std::unique_ptr<EntityGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
+        scene->addItem(tileGraphicsItem.get());
+        entityGraphicsItems.push_back(std::move(tileGraphicsItem));
     }
 
-    // Additional drawing code here, if needed
-    // For example, drawing UI elements, score, etc.
-    // Update the scene to reflect the changes
-    emit updateSceneSignal(); // Emit the signal to indicate that the scene needs updating
+    /** baseFramesDir for healthpack is constant */
+    QString healthpackBase = ":/images/healthpack/";
+    for (const auto& healthPack : healthPacks) {
+        std::unique_ptr<EntityGraphicsItem> healthPackGraphicsItem = std::make_unique<TileGraphicsItem>(*healthPack, healthpackBase);
+        scene->addItem(healthPackGraphicsItem.get());
+        entityGraphicsItems.push_back(std::move(healthPackGraphicsItem));
+    }
+
+    /** baseFramesDir for enemy depends on type of enemy */
+    QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
+    QString enemyBase = ":/images/enemy_golem/PNG Sequences/";
+    for (const auto& enemy : enemies) {
+        QString enemyBaseDir;
+        if (worldController.isPoisoned((enemy->getPosition()).xCoordinate,(enemy->getPosition()).yCoordinate)){
+            enemyBaseDir = penemyBase;
+        }else{
+            enemyBaseDir = enemyBase;
+        }
+        std::unique_ptr<EnemyGraphicsItem> enemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*enemy, enemyBaseDir);
+        scene->addItem(enemyGraphicsItem.get());
+        entityGraphicsItems.push_back(std::move(enemyGraphicsItem));
+    }
+
+    /** baseFramesDir for protagonist depends on numbers of protagonist*/
+    QString pro1Base = ":/images/protagonist_fighter/";
+    QString pro2Base = ":/images/protagonist_samurai/";
+    QString pro3Base = ":/images/protagonist_shinobi/";
+    for (size_t i = 0; i < protagonists.size(); ++i) {
+        QString protagonistBase; // Variable to hold the base frame directory
+        if (i == 0) {
+            protagonistBase = pro1Base;
+        } else if (i == 1) {
+            protagonistBase = pro1Base;
+        } else if (i == 2){
+            protagonistBase = pro2Base;
+        } else if (i == 3){
+            protagonistBase = pro3Base;
+        } else {
+            protagonistBase = pro1Base;
+        }
+        std::unique_ptr<ProtagonistGraphicsItem> protagonistGraphicsItem = std::make_unique<ProtagonistGraphicsItem>(*protagonists[i], protagonistBase);
+        scene->addItem(protagonistGraphicsItem.get());
+        entityGraphicsItems.push_back(std::move(protagonistGraphicsItem));
+    }
+    updateView();
 }
 
 
@@ -67,40 +98,56 @@ void Game2DView::setBackground(int backgroundNumber) {
     update();  // Refresh the view
 }
 
+void Game2DView::updateView() {
+    scene->clear();
+    setBackground(currentBackgroundNumber);
+    for (const auto& entityGraphicsItem : entityGraphicsItems) {
+        if (entityGraphicsItem) {
+            entityGraphicsItem->updatePosition();
+            EntityGraphicsItem* typedEntityItem = dynamic_cast<EntityGraphicsItem*>(entityGraphicsItem.get());
+            if (typedEntityItem) {
+                scene->addItem(typedEntityItem);
+            }
+        }
+    }
+    emit updateSceneSignal();
+}
 
 void Game2DView::updateZoom() {
     qreal scaleFactor = qPow(2.0, zoomLevel);
 
-    // Iterate through the collection of entity graphics items
+    // Set the zoom level for the view
+    setTransform(QTransform::fromScale(scaleFactor, scaleFactor));
+
+    // Update the position of the graphics items to keep them in the center of the view
     for (const auto& entityGraphicsItem : entityGraphicsItems) {
         if (entityGraphicsItem) {
-            entityGraphicsItem->setScale(scaleFactor);
+            entityGraphicsItem->updatePosition();
         }
     }
 }
 
 void Game2DView::zoomIn() {
     zoomLevel += 0.1; // Increase the zoom level
+
+    // Limit the zoom level if needed
+    if (zoomLevel > 2.0) {
+        zoomLevel = 2.0;
+    }
+
     updateZoom();
 }
 
 void Game2DView::zoomOut() {
     zoomLevel -= 0.1; // Decrease the zoom level
+
+    // Limit the zoom level if needed
+    if (zoomLevel < 0.5) {
+        zoomLevel = 0.5;
+    }
+
     updateZoom();
 }
-
-void Game2DView::setVisible(bool visible) {
-    // Implement the logic to set the visibility of the view here
-    // For example, you can show or hide the QGraphicsScene based on the 'visible' parameter.
-    if (visible) {
-        // Show the QGraphicsScene
-        setSceneRect(0, 0, 300, 300);
-    } else {
-        // Hide the QGraphicsScene
-        setSceneRect(0, 0, 0, 0);
-    }
-}
-
 
 
 

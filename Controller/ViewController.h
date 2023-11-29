@@ -7,9 +7,7 @@
 #include <vector>
 #include "View/Game2DView.h"
 #include "View/GameTextView.h"
-#include "Model/EnemyModel.h"
-#include "Model/ProtagonistModel.h"
-#include "Model/TileModel.h"
+#include "Controller/WorldController.h"
 
 
 /**
@@ -19,26 +17,11 @@
  * the template code during compilation to generate the necessary code for the specific
  * template parameter types.
 */
-template <typename ViewType>
 class ViewController : public QObject {
 public:
     // Constructor that takes ownership of a view
-    ViewController(
-//                   QGraphicsView* graphicsView,
-                   const std::vector<EnemyModel*>& enemyModels,
-                   const std::vector<TileModel*>& tileModels,
-                   const std::vector<ProtagonistModel*>& protagonistModels)
-        : QObject(nullptr), currentViewIndex(0),
-//        graphicsView(graphicsView),
-        enemyModels(enemyModels),
-        tileModels(tileModels),
-        protagonistModels(protagonistModels) {
-        // Initialize and configure your views here
-        addView<Game2DView>();
-//        addView<GameTextView>();
-
-//        // Create a QGraphicsScene
-//        QGraphicsScene* scene = new QGraphicsScene(this);
+    ViewController(WorldController worldController)
+        : QObject(nullptr), currentViewIndex(0) {
 
         // Connect signals and slots for synchronization
         for (auto& view : views) {

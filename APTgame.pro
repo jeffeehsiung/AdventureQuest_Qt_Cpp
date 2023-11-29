@@ -16,7 +16,7 @@ SOURCES += main.cpp\
     View/GameTextView.cpp \
     View/ProtagonistGraphicsItem.cpp \
         MainWindow.cpp \
-    View/tilegraphicsitem.cpp
+    View/TileGraphicsItem.cpp
 
 
 
@@ -36,7 +36,7 @@ HEADERS  += MainWindow.h\
     View/GameTextView.h \
     View/GameView.h \
     View/ProtagonistGraphicsItem.h \
-    View/tilegraphicsitem.h
+    View/TileGraphicsItem.h
 
 FORMS    += mainwindow.ui
 

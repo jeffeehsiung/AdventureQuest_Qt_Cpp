@@ -549,6 +549,7 @@
         <file>images/xenemy_wraith_attack/7.png</file>
         <file>images/xenemy_wraith_attack/8.png</file>
         <file>images/xenemy_wraith_attack/9.png</file>
+        <file>images/tiles/Idle/00.png</file>
+        <file>images/tiles/Moving/00.png</file>
     </qresource>
 </RCC>
-

@@ -3,6 +3,7 @@
 
 #include "Model/world.h"
 #include "Model/structs.h"
+#include "Model/Entity.h"
 #include "Model/ProtagonistModel.h"
 #include "Model/EnemyModel.h"
 #include "Model/TileModel.h"
@@ -28,7 +29,7 @@ class WorldController : public QObject
         char getActiveProtagonistAmount() const;
 
         bool isHealthPack(int x, int y, bool kill);
-        bool isPoisined(int x, int y);
+        bool isPoisoned(int x, int y);
         std::unique_ptr<TileModel> getHealthPack(int x, int y);
 
         std::unique_ptr<TileModel> getTile(int x, int y);
