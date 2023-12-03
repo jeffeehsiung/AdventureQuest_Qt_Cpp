@@ -1,15 +1,5 @@
 ﻿#include "MainWindow.h"
 
-/** for testing
-#include "View/Game2DView.h"
-#include "View/GameTextView.h"
-#include "Controller/ViewController.h"
-#include "Model/TileModel.h"
-#include "Model/ProtagonistModel.h"
-#include "Model/EnemyModel.h"
-#include "Model/world.h"
- above include is for testing */
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
     centralWidget(new QWidget(this)),
@@ -38,26 +28,9 @@ MainWindow::MainWindow(QWidget *parent)
     difficultyLevelLabel(new QLabel("Difficulty Level", this)),
     graphicsMessageWidget(new QTextEdit(this)),
     textualMessageWidget(new QTextEdit(this)),
-    isGamePaused(false)
+    isGamePaused(false),
+    gameController(new GameController(this))
 {
-/** for testing only.
-    // Create a vector of EnemyModel pointers
-    std::vector<EnemyModel*> enemyModels;
-    std::vector<TileModel*> tileModels;
-    std::vector<ProtagonistModel*> protagonistModels;
-    EnemyModel* enemyModel1 = new EnemyModel(new Enemy(1, 2, 50.0f));
-    EnemyModel* enemyModel2 = new EnemyModel(new Enemy(3, 4, 60.0f));
-    enemyModels.push_back(enemyModel1);
-    enemyModels.push_back(enemyModel2);
-
-    ProtagonistModel* protagonistModel = new ProtagonistModel(new Protagonist());
-    protagonistModels.push_back(protagonistModel);
-    Game2DView* game2DView = new Game2DView();
-    game2DView->addEntity(*enemyModel1);
-    game2DView->addEntity(*enemyModel2);
-    game2DView->addEntity(*protagonistModel);
-    setupUI(game2DView);*/
-
     setupUI();
     setCentralWidget(centralWidget);
     pauseButton->setEnabled(false);
@@ -78,9 +51,7 @@ MainWindow::~MainWindow()
 {
     // Destructor
 }
-/** for testing only
- *  void MainWindow::setupUI(QGraphicsScene* graphicsScene)
- *  */
+
 void MainWindow::setupUI()
 {
     // Set the window title
@@ -192,6 +163,15 @@ void MainWindow::onStartButtonClicked()
 
     difficultyLevelComboBox->setEnabled(false);
     difficultyLevelComboBox->setStyleSheet("background-color: grey;");
+
+    // Interact with game controller
+    gameController->readGameStarted(true);
+    gameController->readGamePaused(false);
+    gameController->readGameAutoplayed(false);
+    gameController->readGameNumberOfPlayers(numberOfPlayers);
+    gameController->readGameDifficultyLevel(difficultyLevel);
+
+    gameController->printAllGameInfo();
 }
 
 void MainWindow::onPauseButtonClicked()
@@ -211,12 +191,16 @@ void MainWindow::onPauseButtonClicked()
         autoPlayButton->setStyleSheet("background-color: grey;");
         isGamePaused = true;
     }
+    gameController->readGamePaused(isGamePaused);
+    gameController->printAllGameInfo();
 }
 
 void MainWindow::onAutoPlayButtonClicked()
 {
     graphicsMessageWidget->append("Auto playing...");
     textualMessageWidget->append("Auto playing...");
+    gameController->readGameAutoplayed(true);
+    gameController->printAllGameInfo();
 }
 
 void MainWindow::onQuitButtonClicked()
@@ -231,16 +215,23 @@ void MainWindow::onQuitButtonClicked()
     pauseButton->setEnabled(false);
     pauseButton->setStyleSheet("background-color: grey;");
     isGamePaused = false;
+    gameController->readGamePaused(isGamePaused);
 
     autoPlayButton->setEnabled(false);
     autoPlayButton->setStyleSheet("background-color: grey;");
+    gameController->readGameAutoplayed(false);
 
     quitButton->setEnabled(false);
     quitButton->setStyleSheet("background-color: grey;");
+    gameController->readGameStarted(false);
 
     playerNumberComboBox->setEnabled(true);
     playerNumberComboBox->setStyleSheet("");
+    gameController->readGameNumberOfPlayers("0");
 
     difficultyLevelComboBox->setEnabled(true);
     difficultyLevelComboBox->setStyleSheet("");
+    gameController->readGameDifficultyLevel("Not Selected");
+
+    gameController->printAllGameInfo();
 }
