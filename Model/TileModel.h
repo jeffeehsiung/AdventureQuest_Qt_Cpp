@@ -3,6 +3,7 @@
 
 #include "Entity.h"
 #include "world.h"
+#include <memory>
 
 class TileModel : public Entity {
 public:
@@ -10,15 +11,18 @@ public:
      *  to be used in TileGraphicsItem
     **/
     TileModel(std::unique_ptr<Tile> tile) : tile(std::move(tile)) {}
-    void attack() override;
+    
+    // Functions to expose Tile functionality
+    void setPosition(coordinate position) override;
+    void coordinate getPosition() const override;
+    float getValue() const;
+    void setValue(float value);
+    std::string serialize() const;
+
+    // Functions unused by TileModel
+    void attack() override{}
     void takeDamage(float damage) override{}
-    void setPosition(coordinate position) override{}
     void move(int deltaX, int deltaY) override{}
-    float getHealth() const{}
-    void setHealth(float newHealth){}
-    inline coordinate getPosition() const override{
-        return coordinate(tile->getXPos(), tile->getYPos());
-    }
 
 private:
     std::unique_ptr<Tile> tile;

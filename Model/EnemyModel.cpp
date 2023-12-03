@@ -1,6 +1,7 @@
 #include "EnemyModel.h"
 
-EnemyModel::EnemyModel(Enemy* enemy) : enemy(enemy), health(100.0f) {
+/** Enemy Class */
+EnemyModel::EnemyModel(std::unique_ptr<Enemy> enemy) : enemy(std::move(enemy)), health(100.0f) {
     // Assuming each enemy starts with a health of 100.0f
 }
 
@@ -34,10 +35,47 @@ void EnemyModel::move(int deltaX, int deltaY) {
     enemy->setYPos(enemy->getYPos() + deltaY);
 }
 
-float EnemyModel::getHealth() const {
-    return health;
+// Enemy specific functions
+bool EnemyModel::isDefeated() const {
+    return enemy->getDefeated();
 }
 
-void EnemyModel::setHealth(float newHealth) {
-    health = std::max(0.0f, newHealth); // Ensure health does not go below 0
+void EnemyModel::setDefeated(bool defeated) {
+    enemy->setDefeated(defeated);
 }
+
+std::string EnemyModel::serialize() const {
+    return enemy->serialize();
+}
+
+/** PEnemy Class */
+
+PEnemyModel::PEnemyModel(std::unique_ptr<PEnemy> penemy)
+    : EnemyModel(std::move(penemy)), penemy(dynamic_cast<PEnemy*>(enemy.get())) {}
+
+void PEnemyModel::attack() {
+    // Implementation of how a poisoned enemy attacks
+}
+
+void PEnemyModel::takeDamage(float damage) {
+    // penemy->reduceHealth(damage); // Assuming PEnemy class has reduceHealth method
+    // Consider poison effects if relevant
+}
+
+bool PEnemyModel::poison() {
+    return penemy->poison();
+}
+
+float PEnemyModel::getPoisonLevel() const {
+    return penemy->getPoisonLevel();
+}
+
+void PEnemyModel::setPoisonLevel(float poisonLevel) {
+    penemy->setPoisonLevel(poisonLevel);
+}
+
+std::string PEnemyModel::serialize() const {
+    return penemy->serialize();
+}
+
+

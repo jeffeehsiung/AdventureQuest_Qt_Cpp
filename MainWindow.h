@@ -13,7 +13,7 @@
 #include <QComboBox>
 #include <QTabWidget>
 
-#include "GameController.h"
+#include "Controller/GameController.h"
 
 class MainWindow : public QMainWindow
 {
@@ -62,6 +62,7 @@ private slots:
     void onPauseButtonClicked();
     void onAutoPlayButtonClicked();
     void onQuitButtonClicked();
+    void onViewTabChanged(int index);
 };
 
 #endif // MAINWINDOW_H

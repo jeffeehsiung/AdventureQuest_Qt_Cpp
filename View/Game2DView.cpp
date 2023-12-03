@@ -22,6 +22,7 @@ void Game2DView::initializeView(const WorldController& worldController) {
     const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getTiles();
     const std::vector<std::unique_ptr<TileModel>>& healthPacks = worldController.getHealthPacks();
     const std::vector<std::unique_ptr<EnemyModel>>& enemies = worldController.getEnemies();
+    const std::vector<std::unique_ptr<EnemyModel>>& penemies = worldController.getPEnemies();
     const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = worldController.getProtagonists();
 
     /** baseFramesDir for tile is constant */

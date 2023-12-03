@@ -1,6 +1,7 @@
 #include "ProtagonistModel.h"
 
-ProtagonistModel::ProtagonistModel(Protagonist* protagonist) : protagonist(protagonist) {}
+ProtagonistModel::ProtagonistModel(std::unique_ptr<Protagonist> protagonist)
+    : protagonist(std::move(protagonist)) {}
 
 void ProtagonistModel::attack() {
     // Protagonist's attack implementation
@@ -37,3 +38,30 @@ void ProtagonistModel::move(int deltaX, int deltaY) {
     protagonist->setXPos(protagonist->getXPos() + deltaX);
     protagonist->setYPos(protagonist->getYPos() + deltaY);
 }
+
+float ProtagonistModel::getHealth() const {
+    // Return the current health of the protagonist.
+    return protagonist->getHealth();
+}
+
+void ProtagonistModel::setHealth(float health) {
+    // Set the health of the protagonist.
+    protagonist->setHealth(health);
+}
+
+float ProtagonistModel::getEnergy() const {
+    // Return the current energy of the protagonist.
+    return protagonist->getEnergy();
+}
+
+void ProtagonistModel::setEnergy(float energy) {
+    // Set the energy level of the protagonist.
+    protagonist->setEnergy(energy);
+}
+
+std::string ProtagonistModel::serialize() const {
+    // Serialize the current state of the protagonist.
+    return protagonist->serialize();
+}
+
+

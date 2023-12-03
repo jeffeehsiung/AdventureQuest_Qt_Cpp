@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(pauseButton, &QPushButton::clicked, this, &MainWindow::onPauseButtonClicked);
     connect(autoPlayButton, &QPushButton::clicked, this, &MainWindow::onAutoPlayButtonClicked);
     connect(quitButton, &QPushButton::clicked, this, &MainWindow::onQuitButtonClicked);
+    connect(viewTabs, &QTabWidget::currentChanged, this, &MainWindow::onViewTabChanged);
 }
 
 
@@ -172,6 +173,8 @@ void MainWindow::onStartButtonClicked()
     gameController->readGameDifficultyLevel(difficultyLevel);
 
     gameController->printAllGameInfo();
+    gameController->decideNextMove();
+    gameController->initializeWorld();
 }
 
 void MainWindow::onPauseButtonClicked()
@@ -234,4 +237,15 @@ void MainWindow::onQuitButtonClicked()
     gameController->readGameDifficultyLevel("Not Selected");
 
     gameController->printAllGameInfo();
+}
+
+void MainWindow::onViewTabChanged(int index)
+{
+    if (index == 0) {
+        // switch to graphics view
+        gameController->switchTo2DView();
+    } else if (index == 1) {
+        // switch to textual view
+        gameController->switchToTextView();
+    }
 }

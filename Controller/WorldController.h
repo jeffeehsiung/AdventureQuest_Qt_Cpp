@@ -18,57 +18,84 @@ class WorldController : public QObject
     Q_OBJECT
 
     public:
-        WorldController(QString map, int nrOfEnemies, int nrOfHealthpacks, float pRatio);
+        WorldController(QString map, int nrOfEnemies, int gameDifficultyIdx, float pRatio);
 
-        int getHeight() const;
-        int getWidth() const;
+        int getRows() const;
+        int getCols() const;
 
-        std::unique_ptr<ProtagonistModel> getProtagonist(char id) const;
-        void addProtagonist(ProtagonistModel*);
-        void removeProtagonist(ProtagonistModel*);
-        char getActiveProtagonistAmount() const;
+        void addProtagonist(ProtagonistModel&);
+        void removeProtagonist(ProtagonistModel&);
 
-        bool isHealthPack(int x, int y, bool kill);
-        bool isPoisoned(int x, int y);
-        std::unique_ptr<TileModel> getHealthPack(int x, int y);
+        /**
+         * get single entity functions
+        */
 
-        std::unique_ptr<TileModel> getTile(int x, int y);
-        std::unique_ptr<EnemyModel> isEnemy(int x, int y, bool kill, bool fast);
-        std::unique_ptr<EnemyModel> getEnemy(int x, int y);
-        const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
+        /**
+         * get vector of entities functions
+         */
+        std::vector<std::unique_ptr<TileModel>> getTiles() const;
+        std::vector<std::unique_ptr<TileModel>> getHealthPacks() const;
+        std::vector<std::unique_ptr<EnemyModel>> getEnemies() const;
+        std::vector<std::unique_ptr<PEnemyModel>> getPEnemies() const;
+        std::vector<std::unique_ptr<XEnemyModel>> getXEnemies() const;
+        std::array<std::unique_ptr<ProtagonistModel>,2> getProtagonists() const;
 
-        void setWalkedOnTiles(std::unique_ptr<TileModel> newWalkedOnTiles);
+        /**
+         * type of tiles check
+         */
+        bool isHealthPack(coordinate);
+        bool isPoisonedTiles(coordinate);
+        /**
+         * type of enemy check
+         */
+        bool isEnemy(coordinate);
+        bool isPEnemy(coordinate);
+        bool isXEnemy(coordinate);
 
-        void poisonTilesAround(int x , int y, int spread, std::unique_ptr<PEnemy> parent);
+        int getNumOfProtagonists() const;
 
-        void deleteEnemy(int x, int y);
+        /**
+         * PEnemy poisened tiles
+         */
+        void setAffectedTiles(coordinate, int spread, std::unique_ptr<PEnemy> pEnemy);
 
-        void deletePsnTile(int x, int y);
+        /**
+         * defeated functions
+         */
 
+        void deleteEnemy(coordinate);
+        void deletePsnTile(coordinate);
+
+        /**
+         * healthpack functions
+         */
+        void removeHealthpack(coordinate);
+
+        /**
+         * start and exit position functions
+         */
         coordinate getStart();
         coordinate getExit();
+
+        /**
+         * Path: walked path getter and setter
+         * TODO: missing setter
+         */
+        const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
 private:
         std::unique_ptr<World> world;
-        int height;
-        int width;
+        const int rows;
+        const int cols;
+        const int gameDifficultyIdx;
         coordinate exit = coordinate(1,1);
         coordinate start = coordinate(0,0);
         std::vector<std::unique_ptr<TileModel>> tiles;
         std::vector<std::unique_ptr<TileModel>> healthPacks;
-        std::vector<std::unique_ptr<EnemyModel>> enemies;
         std::vector<std::unique_ptr<TileModel>> walkedOnTiles;
-
-
+        std::vector<std::unique_ptr<EnemyModel>> enemies;
+        std::vector<std::unique_ptr<PEnemyModel>> penemies;
+        std::vector<std::unique_ptr<XEnemyModel>> xenemies;
         std::array<std::unique_ptr<ProtagonistModel>,2> protagonists;
-
-        
-public slots:
-        void handleKeyPress(QKeyEvent* event);
-        void resetWorld();
-
-private slots:
-        void handleGameOver();
-        void handlePoisonLevelUpdated(float poisonLevel);
 
 };
 
