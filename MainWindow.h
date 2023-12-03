@@ -13,6 +13,8 @@
 #include <QComboBox>
 #include <QTabWidget>
 
+#include "GameController.h"
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -50,6 +52,8 @@ private:
     QTextEdit *textualMessageWidget;
 
     bool isGamePaused;
+
+    GameController *gameController;
 
     void setupUI();
 
