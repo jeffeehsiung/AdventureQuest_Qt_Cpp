@@ -3,7 +3,9 @@
 #include "Controller/ViewController.h"
 
 GameController::GameController(QObject *parent)
-    : QObject(parent){}
+    : QObject(parent){
+//    initializeWorld();
+}
 
 GameController::~GameController() {
     // Destructor for clean-up if necessary
@@ -40,15 +42,15 @@ void GameController::printAllGameInfo() {
 
 void GameController::decideGameParameters() {
     if (gameDifficultyLevel == "Easy") {
-        gameMap = "worldmap.png";
+        gameMap = ":/images/world_images/worldmap.png";
         gameDifficultyIdx = 1;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 1.0 : 2.0;
     } else if (gameDifficultyLevel == "Medium") {
-        gameMap = "worldmap.png";
+        gameMap = ":/images/world_images/worldmap.png";
         gameDifficultyIdx = 2;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 2.0 : 4.0;
     } else if (gameDifficultyLevel == "Hard") {
-        gameMap = "worldmap4.png";
+        gameMap = ":/images/world_images/worldmap4.png";
         gameDifficultyIdx = 3;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 3.0 : 6.0;
     }

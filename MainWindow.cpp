@@ -47,11 +47,24 @@ MainWindow::MainWindow(QWidget *parent)
     connect(viewTabs, &QTabWidget::currentChanged, this, &MainWindow::onViewTabChanged);
 }
 
+//MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), isGamePaused(false) {
+//    centralWidget = new QWidget(this);
+//    setCentralWidget(centralWidget);
 
-MainWindow::~MainWindow()
-{
-    // Destructor
+//    gameController = new GameController(this);
+//    setupUI();
+
+//    connect(startButton, &QPushButton::clicked, this, &MainWindow::onStartButtonClicked);
+//    connect(pauseButton, &QPushButton::clicked, this, &MainWindow::onPauseButtonClicked);
+//    connect(autoPlayButton, &QPushButton::clicked, this, &MainWindow::onAutoPlayButtonClicked);
+//    connect(quitButton, &QPushButton::clicked, this, &MainWindow::onQuitButtonClicked);
+//    connect(viewTabs, &QTabWidget::currentChanged, this, &MainWindow::onViewTabChanged);
+//}
+
+MainWindow::~MainWindow() {
+    delete gameController;
 }
+
 
 void MainWindow::setupUI()
 {
@@ -249,3 +262,4 @@ void MainWindow::onViewTabChanged(int index)
         gameController->switchToTextView();
     }
 }
+

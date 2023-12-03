@@ -1,4 +1,49 @@
-﻿#ifndef MAINWINDOW_H
+﻿//#ifndef MAINWINDOW_H
+//#define MAINWINDOW_H
+
+//#include <QMainWindow>
+//#include <QGraphicsView>
+//#include <QPushButton>
+//#include <QSlider>
+//#include <QLabel>
+//#include <QComboBox>
+//#include <QTextEdit>
+//#include <QTabWidget>
+//#include "Controller/GameController.h"
+
+//class MainWindow : public QMainWindow
+//{
+//    Q_OBJECT
+
+//public:
+//    explicit MainWindow(QWidget *parent = nullptr);
+//    ~MainWindow();
+
+//private:
+//    GameController *gameController;
+//    QWidget *centralWidget;
+//    QTabWidget *viewTabs;
+//    QGraphicsView *graphicsView, *textualView;
+//    QPushButton *startButton, *pauseButton, *quitButton, *autoPlayButton;
+//    QComboBox *playerNumberComboBox, *difficultyLevelComboBox;
+//    QTextEdit *graphicsMessageWidget, *textualMessageWidget;
+//    bool isGamePaused;
+
+//    void setupUI();
+//    void updateButtonStates();
+
+//private slots:
+//    void onStartButtonClicked();
+//    void onPauseButtonClicked();
+//    void onAutoPlayButtonClicked();
+//    void onQuitButtonClicked();
+//    void onViewTabChanged(int index);
+//};
+
+//#endif // MAINWINDOW_H
+
+
+#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
