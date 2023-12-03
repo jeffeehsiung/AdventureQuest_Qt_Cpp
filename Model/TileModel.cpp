@@ -1,9 +1,5 @@
 #include "TileModel.h"
 
-// Constructor
-TileModel::TileModel(std::unique_ptr<Tile> tile)
-    : tile(std::move(tile)) {}
-
 // Get the position of the tile
 coordinate TileModel::getPosition() const {
     return coordinate(tile->getXPos(), tile->getYPos());

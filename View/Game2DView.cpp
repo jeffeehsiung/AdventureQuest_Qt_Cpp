@@ -10,19 +10,22 @@ void Game2DView::animateEntityAction(const QString& entity) {
     // Implementation for graphical animation of an entity action
 }
 
-void Game2DView::initializeView(const WorldController& worldController) {
+void Game2DView::initializeView() {
     if (!scene) {
         scene = new QGraphicsScene(this);
         setScene(scene);
     }
 
-    setBackground(currentBackgroundNumber);
+    // Get the singleton instance of WorldController
+    auto& worldController = WorldController::getInstance();
+
+    setBackground(worldController.getDifficultyIdx());
 
     // Extract entities from the WorldController
     const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getTiles();
     const std::vector<std::unique_ptr<TileModel>>& healthPacks = worldController.getHealthPacks();
     const std::vector<std::unique_ptr<EnemyModel>>& enemies = worldController.getEnemies();
-    const std::vector<std::unique_ptr<EnemyModel>>& penemies = worldController.getPEnemies();
+    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = worldController.getPEnemies();
     const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = worldController.getProtagonists();
 
     /** baseFramesDir for tile is constant */
@@ -41,19 +44,20 @@ void Game2DView::initializeView(const WorldController& worldController) {
         entityGraphicsItems.push_back(std::move(healthPackGraphicsItem));
     }
 
-    /** baseFramesDir for enemy depends on type of enemy */
-    QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
+    /** baseFramesDir for enemy is constant */
     QString enemyBase = ":/images/enemy_golem/PNG Sequences/";
     for (const auto& enemy : enemies) {
-        QString enemyBaseDir;
-        if (worldController.isPoisoned((enemy->getPosition()).xCoordinate,(enemy->getPosition()).yCoordinate)){
-            enemyBaseDir = penemyBase;
-        }else{
-            enemyBaseDir = enemyBase;
-        }
-        std::unique_ptr<EnemyGraphicsItem> enemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*enemy, enemyBaseDir);
+        std::unique_ptr<EnemyGraphicsItem> enemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*enemy, enemyBase);
         scene->addItem(enemyGraphicsItem.get());
         entityGraphicsItems.push_back(std::move(enemyGraphicsItem));
+    }
+
+    /** baseFramesDir for penemy is constant */
+    QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
+    for (const auto& penemy : penemies) {
+        std::unique_ptr<EnemyGraphicsItem> penemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*penemy, penemyBase);
+        scene->addItem(penemyGraphicsItem.get());
+        entityGraphicsItems.push_back(std::move(penemyGraphicsItem));
     }
 
     /** baseFramesDir for protagonist depends on numbers of protagonist*/

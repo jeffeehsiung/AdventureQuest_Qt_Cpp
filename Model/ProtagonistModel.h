@@ -21,7 +21,9 @@ public:
 
     // Additional functionalities specific to ProtagonistModel
     float getHealth() const;
+    void setHealth(float health);
     float getEnergy() const;
+    void setEnergy(float energy);
     std::string serialize() const;
 };
 

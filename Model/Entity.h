@@ -1,7 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "structs.h"
+#include "Model/structs.h"
 
 class Entity{
 public:

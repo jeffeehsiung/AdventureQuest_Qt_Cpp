@@ -1,10 +1,12 @@
 #include "Controller/WorldController.h"
 #include <QKeyEvent>
 
+WorldController::WorldController()
+    : world(std::make_unique<World>()) {
+    // Basic initializations, if any
+}
+void WorldController::createWorld(QString map, int nrOfEnemies, int gameDifficultyIdx, float pRatio) {
 
-WorldController::WorldController(QString map, int nrOfEnemies, int gameDifficultyIdx, float pRatio)
-    : world(std::make_unique<World>())
-{
     /**
      * given gameDifficultyIdx assign the number of healthpacks
     */
@@ -24,7 +26,7 @@ WorldController::WorldController(QString map, int nrOfEnemies, int gameDifficult
         break;
     }
     difficultyIdx = gameDifficultyIdx;
-    
+
     /**
      * createworld
      * */
@@ -35,44 +37,30 @@ WorldController::WorldController(QString map, int nrOfEnemies, int gameDifficult
     /**
      * create tilemodels, enemymodels, penemymodels, xenemymodels, and protagonistmodels based on created world
      * */
-    for ( auto &tile : world->getTiles() )
-    {
-        std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(tile.get());
-        tiles.push_back(tileModel);
+    for (auto &tile : world->getTiles()) {
+        std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(std::move(tile));
+        tiles.push_back(std::move(tileModel));
     }
 
-    for ( auto &healthPack : world->getHealthPacks() )
-    {
-        std::unique_ptr<TileModel> healthPackModel = std::make_unique<TileModel>(healthPack.get());
-        healthPacks.push_back(healthPackModel);
+    for ( auto &healthPack : world->getHealthPacks() ){
+        std::unique_ptr<TileModel> healthPackModel = std::make_unique<TileModel>(std::move(healthPack));
+        healthPacks.push_back(std::move(healthPackModel));
     }
 
-    for ( auto &enemy : world->getEnemies() )
-    {
-        std::unique_ptr<EnemyModel> enemyModel = std::make_unique<EnemyModel>(enemy.get());
-        enemies.push_back(enemyModel);
-    }
-
-    for ( auto &penemy : world->getPEnemies() )
-    {
-        std::unique_ptr<EnemyModel> penemyModel = std::make_unique<PEnemyModel>(penemy.get());
-        penemies.push_back(penemyModel);
-    }
-
-    for ( auto &xenemy : world->getXEnemies() )
-    {
-        std::unique_ptr<EnemyModel> xenemyModel = std::make_unique<XEnemyModel>(xenemy.get());
-        penemies.push_back(xenemyModel);
+    for (auto &enemy : world->getEnemies()) {
+        if (auto pEnemyRaw = dynamic_cast<PEnemy*>(enemy.get())) {
+            penemies.push_back(std::make_unique<PEnemyModel>(std::unique_ptr<PEnemy>(pEnemyRaw)));
+            enemy.release(); // Important to prevent double free
+        } else {
+            enemies.push_back(std::make_unique<EnemyModel>(std::move(enemy)));
+        }
     }
 
     /**
      * first and invidivual protagonist player
      */
-    for ( auto &protagonist : world->getProtagonist() )
-    {
-        std::unique_ptr<EnemyModel> protagonist = std::make_unique<ProtagonistModel>(protagonist.get());
-        protagonists.push_back(protagonist);
-    }
+    std::unique_ptr<ProtagonistModel> protagonist = std::make_unique<ProtagonistModel>(world->getProtagonist());
+    protagonists.push_back(std::move(protagonist));
 }
 
 /**
@@ -112,10 +100,10 @@ const std::vector<std::unique_ptr<PEnemyModel> > &WorldController::getPEnemies()
     return penemies;
 }
 
-const std::vector<std::unique_ptr<XEnemyModel> > &WorldController::getXEnemies() const
-{
-    return xenemies;
-}
+// const std::vector<std::unique_ptr<XEnemyModel> > &WorldController::getXEnemies() const
+// {
+//     return xenemies;
+// }
 
 const std::vector<std::unique_ptr<ProtagonistModel> > &WorldController::getProtagonists() const
 {
@@ -178,22 +166,27 @@ bool WorldController::isPEnemy(coordinate coord)
     return false;
 }
 
-bool WorldController::isXEnemy(coordinate coord)
-{
-    for ( auto &xenemy : xenemies )
-    {
-        if ( xenemy->getPosition() == coord )
-        {
-            return true;
-        }
-    }
-    return false;
-}
+// bool WorldController::isXEnemy(coordinate coord)
+// {
+//     for ( auto &xenemy : xenemies )
+//     {
+//         if ( xenemy->getPosition() == coord )
+//         {
+//             return true;
+//         }
+//     }
+//     return false;
+// }
 
 int WorldController::getNumOfProtagonists() const
 {
     /** return the size of protagonist vector */
     return protagonists.size();
+}
+
+int WorldController::getDifficultyIdx() const
+{
+    return difficultyIdx;
 }
 
 /**
@@ -210,7 +203,7 @@ void WorldController::setAffectedTiles(coordinate coord, int spread, std::unique
         if ( tile->getPosition() == coord )
         {
             // tile->setPoisoned(true); /** TODO: implement */
-            tile->setPoisonLevel(pEnemy->getPoisonLevel());
+            tile->setValue(pEnemy->getPoisonLevel());
             // tile->setPoisonSpread(spread); /** TODO: implement */
         }
     }
@@ -298,6 +291,7 @@ const std::vector<std::unique_ptr<TileModel> > &WorldController::getWalkedOnTile
 {
     return walkedOnTiles;
 }
+
 
 
 

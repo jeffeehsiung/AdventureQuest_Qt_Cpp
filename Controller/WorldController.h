@@ -18,7 +18,15 @@ class WorldController : public QObject
     Q_OBJECT
 
     public:
-        WorldController(QString map, int nrOfEnemies, int gameDifficultyIdx, float pRatio);
+        static WorldController& getInstance() {
+            static WorldController instance;
+            return instance;
+        }
+
+        WorldController(WorldController const&) = delete;
+        void operator=(WorldController const&) = delete;
+
+        void createWorld(QString map, int nrOfEnemies, int gameDifficultyIdx, float pRatio);
 
         int getRows() const;
         int getCols() const;
@@ -33,12 +41,12 @@ class WorldController : public QObject
         /**
          * get vector of entities functions
          */
-        std::vector<std::unique_ptr<TileModel>> getTiles() const;
-        std::vector<std::unique_ptr<TileModel>> getHealthPacks() const;
-        std::vector<std::unique_ptr<EnemyModel>> getEnemies() const;
-        std::vector<std::unique_ptr<PEnemyModel>> getPEnemies() const;
-        std::vector<std::unique_ptr<XEnemyModel>> getXEnemies() const;
-        std::array<std::unique_ptr<ProtagonistModel>,2> getProtagonists() const;
+        const std::vector<std::unique_ptr<TileModel>>& getTiles() const;
+        const std::vector<std::unique_ptr<TileModel>>& getHealthPacks() const;
+        const std::vector<std::unique_ptr<EnemyModel>>& getEnemies() const;
+        const std::vector<std::unique_ptr<PEnemyModel>>& getPEnemies() const;
+//      const std::vector<std::unique_ptr<XEnemyModel>> getXEnemies() const;
+        const std::vector<std::unique_ptr<ProtagonistModel>>& getProtagonists() const;
 
         /**
          * type of tiles check
@@ -53,11 +61,12 @@ class WorldController : public QObject
         bool isXEnemy(coordinate);
 
         int getNumOfProtagonists() const;
+        int getDifficultyIdx() const;
 
         /**
          * PEnemy poisened tiles
          */
-        void setAffectedTiles(coordinate, int spread, std::unique_ptr<PEnemy> pEnemy);
+        void setAffectedTiles(coordinate, int spread, std::unique_ptr<PEnemyModel> pEnemy);
 
         /**
          * defeated functions
@@ -83,10 +92,11 @@ class WorldController : public QObject
          */
         const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
 private:
+        WorldController();
         std::unique_ptr<World> world;
-        const int rows;
-        const int cols;
-        const int gameDifficultyIdx;
+        int rows;
+        int cols;
+        int difficultyIdx;
         coordinate exit = coordinate(1,1);
         coordinate start = coordinate(0,0);
         std::vector<std::unique_ptr<TileModel>> tiles;
@@ -94,8 +104,8 @@ private:
         std::vector<std::unique_ptr<TileModel>> walkedOnTiles;
         std::vector<std::unique_ptr<EnemyModel>> enemies;
         std::vector<std::unique_ptr<PEnemyModel>> penemies;
-        std::vector<std::unique_ptr<XEnemyModel>> xenemies;
-        std::array<std::unique_ptr<ProtagonistModel>,2> protagonists;
+//        std::vector<std::unique_ptr<XEnemyModel>> xenemies;
+        std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
 
 };
 

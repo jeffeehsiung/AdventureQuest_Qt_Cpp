@@ -2,10 +2,12 @@
 #define GAMETEXTVIEW_H
 
 #include <QTextEdit>
+#include <QDebug>
 #include <vector>
 #include <memory>
-#include "GameView.h"
-#include "EntityTextItem.h"
+#include "View/GameView.h"
+#include "View/EntityTextItem.h"
+#include "Controller/WorldController.h"  // Include WorldController
 
 class GameTextView : public QTextEdit, public GameView {
     Q_OBJECT
@@ -13,8 +15,6 @@ class GameTextView : public QTextEdit, public GameView {
 public:
     GameTextView(QWidget* parent = nullptr) : QTextEdit(parent) {
         setReadOnly(true);
-        QString textBackground = generateTextBackground();
-        this->setPlainText(textBackground);
     }
 
     void addEntity(const Entity& entity) override;
@@ -27,7 +27,7 @@ public:
      * based on which iteratively create grahpicsRectItems or entityTextItem(string) and
      * add it to the scene
      */
-    void initializeView(const WorldController& worldController) override;
+    void initializeView() override;
     void setBackground(int backgroundNumber) override;
     void zoomIn() override;
     void zoomOut() override;

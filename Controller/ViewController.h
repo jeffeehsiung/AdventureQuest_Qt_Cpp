@@ -11,10 +11,13 @@ class ViewController : public QObject {
     Q_OBJECT
 
 public:
-    explicit ViewController(QObject *parent = nullptr);
-    ~ViewController();
+    static ViewController& getInstance() {
+        static ViewController instance;
+        return instance;
+    }
 
-    void setWorldController(std::shared_ptr<WorldController> worldController);
+    ViewController(ViewController const&) = delete;
+    void operator=(ViewController const&) = delete;
 
 public slots:
     void switchTo2DView();
@@ -25,13 +28,16 @@ signals:
     void viewSwitched(GameView* currentView);
 
 private:
-    std::shared_ptr<WorldController> worldController;
+    ViewController(QObject *parent = nullptr);
+    ~ViewController();
+
+    void initializeViews();
+    void syncState();
+
     std::unique_ptr<Game2DView> game2DView;
     std::unique_ptr<GameTextView> gameTextView;
     GameView* currentView;
 
-    void syncState();
-    void initializeViews();
 };
 
 #endif // VIEWCONTROLLER_H

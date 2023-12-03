@@ -1,18 +1,9 @@
 #include "GameController.h"
+#include "Controller/WorldController.h"
+#include "Controller/ViewController.h"
 
 GameController::GameController(QObject *parent)
-    : QObject(parent),
-      isGameStarted(false),
-      isGamePaused(false),
-      isGameAutoplayed(false),
-      gameNumberOfPlayers("1"),
-      gameDifficultyLevel("Easy"),
-      gameDifficultyIdx(1),
-      gamePRatio(1.0),
-      worldController(std::make_unique<WorldController>()),
-      viewController(std::make_unique<ViewController>()) {
-
-}
+    : QObject(parent){}
 
 GameController::~GameController() {
     // Destructor for clean-up if necessary
@@ -48,41 +39,40 @@ void GameController::printAllGameInfo() {
 }
 
 void GameController::decideGameParameters() {
-    switch (gameDifficultyLevel) {
-    case "Easy":
+    if (gameDifficultyLevel == "Easy") {
         gameMap = "worldmap.png";
         gameDifficultyIdx = 1;
-        gamePRatio = gameNumberOfPlayers == 1 ? 1.0 : 2.0;
-        break;
-    case "Medium":
+        gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 1.0 : 2.0;
+    } else if (gameDifficultyLevel == "Medium") {
         gameMap = "worldmap.png";
         gameDifficultyIdx = 2;
-        gamePRatio = gameNumberOfPlayers == 1 ? 2.0 : 4.0;
-        break;
-    case "Hard":
+        gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 2.0 : 4.0;
+    } else if (gameDifficultyLevel == "Hard") {
         gameMap = "worldmap4.png";
         gameDifficultyIdx = 3;
-        gamePRatio = gameNumberOfPlayers == 1 ? 3.0 : 6.0;
-        break;
-    default:
-        break;
+        gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 3.0 : 6.0;
     }
+
 }
 
 void GameController::initializeWorld() {
-    decideGameParameters(); // Ensure parameters are decided before initialization
-    worldController->createWorld(gameMap, gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
-    viewController->setWorldController(worldController.get());
-    // If the game should start immediately, you can call switchTo2DView or switchToTextView here
+    decideGameParameters();
+    auto& worldController = WorldController::getInstance();
+    worldController.createWorld(gameMap, gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
+
+    auto& viewController = ViewController::getInstance();
+    viewController.switchTo2DView(); // Optional: switch to initial view
 }
+
 
 // Methods to switch between views
 
 void GameController::switchTo2DView() {
-    viewController->switchTo2DView();
+    auto& viewController = ViewController::getInstance();
+    viewController.switchTo2DView();
 }
 
 void GameController::switchToTextView() {
-    viewController->switchToTextView();
+    auto& viewController = ViewController::getInstance();
+    viewController.switchToTextView();
 }
-

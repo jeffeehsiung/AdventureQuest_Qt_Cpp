@@ -4,10 +4,6 @@
 #include <QObject>
 #include <QString>
 #include <QDebug>
-#include <memory> // for std::unique_ptr
-
-#include "Controller/WorldController.h"
-#include "Controller/ViewController.h"
 
 class GameController : public QObject {
     Q_OBJECT
@@ -37,11 +33,8 @@ private:
     QString gameNumberOfPlayers;
     QString gameDifficultyLevel;
     QString gameMap;
-    int difficultyIdx;
+    int gameDifficultyIdx;
     float gamePRatio;
-
-    std::unique_ptr<WorldController> worldController;
-    std::unique_ptr<ViewController> viewController;
 };
 
 #endif // GAMECONTROLLER_H

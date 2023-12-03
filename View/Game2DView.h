@@ -4,20 +4,26 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QPixmap>
-#include "GameView.h"
-#include "EntityGraphicsItem.h"
-#include "TileGraphicsItem.h"
-#include "ProtagonistGraphicsItem.h"
-#include "EnemyGraphicsItem.h"
+#include "View/GameView.h"
+#include "View/EntityGraphicsItem.h"
+#include "View/TileGraphicsItem.h"
+#include "View/ProtagonistGraphicsItem.h"
+#include "View/EnemyGraphicsItem.h"
+#include "Controller/WorldController.h"  // Include WorldController
 
 class Game2DView : public QGraphicsView, public GameView {
     Q_OBJECT
 public:
-    Game2DView(QWidget* parent, int difficulty) : QGraphicsView(parent), scene(nullptr), currentBackgroundNumber(difficulty), zoomLevel(1.0) {
+    explicit Game2DView(QWidget* parent = nullptr)
+        : QGraphicsView(parent){
         defaultBackground.load(":/images/world_images/worldmap4.png");
         easyBackground.load(":/images/world_images/maze1.png");
         mediumBackground.load(":/images/world_images/maze2.png");
         hardBackground.load(":/images/world_images/maze3.png");
+
+        zoomLevel = 1.0;
+        scene = new QGraphicsScene(this);
+        setScene(scene);
     }
 
     virtual ~Game2DView(){
@@ -34,7 +40,7 @@ public:
      * based on which iteratively create grahpicsRectItems or entityTextItem(string) and
      * add it to the scene
      */
-    void initializeView(const WorldController& worldController) override;
+    void initializeView() override;
     void setBackground(int backgroundNumber) override;
     void zoomIn() override;
     void zoomOut() override;

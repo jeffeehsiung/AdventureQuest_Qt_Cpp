@@ -21,7 +21,7 @@ public:
      * based on which iteratively create grahpicsRectItems or entityTextItem(string) and
      * add it to the scene
      */
-    virtual void initializeView(const WorldController& worldController) = 0;
+    virtual void initializeView() = 0;
     virtual void setBackground(int backgroundNumber) = 0;
     virtual void zoomIn() = 0;
     virtual void zoomOut() = 0;

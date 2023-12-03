@@ -18,7 +18,7 @@ public:
     bool isDefeated() const;
     void setDefeated(bool defeated);
     std::string serialize() const;
-private:
+protected:
     std::unique_ptr<Enemy> enemy;
     float health;
 };
@@ -40,5 +40,6 @@ public:
 private:
     std::unique_ptr<PEnemy> penemy;
 };
+
 
 #endif // ENEMYMODEL_H

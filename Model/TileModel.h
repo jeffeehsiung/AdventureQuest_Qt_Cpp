@@ -14,7 +14,7 @@ public:
     
     // Functions to expose Tile functionality
     void setPosition(coordinate position) override;
-    void coordinate getPosition() const override;
+    coordinate getPosition() const override;
     float getValue() const;
     void setValue(float value);
     std::string serialize() const;

@@ -1,5 +1,4 @@
 #include "GameTextView.h"
-#include <QDebug>
 
 
 constexpr int MAX_VIEW_WIDTH = 30;
@@ -37,31 +36,40 @@ QString GameTextView::generateTextBackground() {
     return background;
 }
 
-void GameTextView::initializeView(const WorldController& worldController) {
+void GameTextView::initializeView() {
     clear();
     QString textBackground = generateTextBackground();
     this->setPlainText(textBackground);
+
+    // Get the singleton instance of WorldController
+    auto& worldController = WorldController::getInstance();
 
     // Extract entities from the WorldController
     const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getTiles();
     const std::vector<std::unique_ptr<TileModel>>& healthPacks = worldController.getHealthPacks();
     const std::vector<std::unique_ptr<EnemyModel>>& enemies = worldController.getEnemies();
+    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = worldController.getPEnemies();
     const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = worldController.getProtagonists();
 
     // Create text representations for entities and store them
     for (const auto& tile : tiles) {
-        auto tileTextItem = std::make_unique<TileTextItem>(*tile, false);
+        auto tileTextItem = std::make_unique<TileTextItem>(*tile);
         entityTextItems.push_back(std::move(tileTextItem));
     }
 
     for (const auto& healthPack : healthPacks) {
-        auto hpTextItem = std::make_unique<TileTextItem>(*healthPack, true);
+        auto hpTextItem = std::make_unique<TileTextItem>(*healthPack);
         entityTextItems.push_back(std::move(hpTextItem));
     }
 
     for (const auto& enemy : enemies) {
-        auto enemyTextItem = std::make_unique<EnemyTextItem>(*enemy, worldController.isPoisoned((enemy->getPosition()).xCoordinate,(enemy->getPosition()).yCoordinate));
+        auto enemyTextItem = std::make_unique<EnemyTextItem>(*enemy);
         entityTextItems.push_back(std::move(enemyTextItem));
+    }
+
+    for (const auto& penemy : penemies) {
+        auto penemyTextItem = std::make_unique<EnemyTextItem>(*penemy);
+        entityTextItems.push_back(std::move(penemyTextItem));
     }
 
     for (const auto& protagonist : protagonists) {

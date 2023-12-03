@@ -3,25 +3,30 @@ CONFIG += c++17
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 
-TARGET = demo1
+TARGET = game
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
+    Controller/GameController.cpp \
+    Controller/ViewController.cpp \
     Controller/WorldController.cpp \
     Model/EnemyModel.cpp \
     Model/ProtagonistModel.cpp \
+    Model/TileModel.cpp \
+    Model/struct.cpp \
     Model/world.cpp \
     View/EnemyGraphicsItem.cpp \
     View/Game2DView.cpp \
     View/GameTextView.cpp \
     View/ProtagonistGraphicsItem.cpp \
-        MainWindow.cpp \
-    View/TileGraphicsItem.cpp
+    View/TileGraphicsItem.cpp \
+    MainWindow.cpp \
 
 
 
 HEADERS  += MainWindow.h\
+    Controller/GameController.h \
     Controller/ViewController.h \
     Controller/WorldController.h \
     Model/EnemyModel.h \
@@ -31,13 +36,13 @@ HEADERS  += MainWindow.h\
     Model/structs.h \
     Model/world.h \
     Model/world_global.h \
-    View/EnemyGraphicsItem.h \
-    View/EntityGraphicsItem.h \
-    View/EntityTextItem.h \
     View/Game2DView.h \
     View/GameTextView.h \
     View/GameView.h \
+    View/EntityTextItem.h \
     View/ProtagonistGraphicsItem.h \
+    View/EnemyGraphicsItem.h \
+    View/EntityGraphicsItem.h \
     View/TileGraphicsItem.h
 
 FORMS    += mainwindow.ui

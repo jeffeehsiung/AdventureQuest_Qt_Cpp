@@ -173,7 +173,7 @@ void MainWindow::onStartButtonClicked()
     gameController->readGameDifficultyLevel(difficultyLevel);
 
     gameController->printAllGameInfo();
-    gameController->decideNextMove();
+//    gameController->decideNextMove();
     gameController->initializeWorld();
 }
 

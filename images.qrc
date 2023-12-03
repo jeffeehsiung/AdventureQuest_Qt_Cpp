@@ -358,9 +358,6 @@
         <file>images/protagonist_fighter/Dying/01.png</file>
         <file>images/protagonist_fighter/Hurt/01.png</file>
         <file>images/protagonist_fighter/Idle/01.png</file>
-        <file>images/protagonist_fighter/Jump.png</file>
-        <file>images/protagonist_fighter/Run.png</file>
-        <file>images/protagonist_fighter/Shield.png</file>
         <file>images/protagonist_fighter/Walking/01.png</file>
         <file>images/protagonist_heal/1.png</file>
         <file>images/protagonist_heal/10.png</file>
@@ -372,26 +369,6 @@
         <file>images/protagonist_heal/7.png</file>
         <file>images/protagonist_heal/8.png</file>
         <file>images/protagonist_heal/9.png</file>
-        <file>images/protagonist_samurai/Attack_1.png</file>
-        <file>images/protagonist_samurai/Attack_2.png</file>
-        <file>images/protagonist_samurai/Attack_3.png</file>
-        <file>images/protagonist_samurai/Dead.png</file>
-        <file>images/protagonist_samurai/Hurt.png</file>
-        <file>images/protagonist_samurai/Idle.png</file>
-        <file>images/protagonist_samurai/Jump.png</file>
-        <file>images/protagonist_samurai/Run.png</file>
-        <file>images/protagonist_samurai/Shield.png</file>
-        <file>images/protagonist_samurai/Walk.png</file>
-        <file>images/protagonist_shinobi/Attack_1.png</file>
-        <file>images/protagonist_shinobi/Attack_2.png</file>
-        <file>images/protagonist_shinobi/Attack_3.png</file>
-        <file>images/protagonist_shinobi/Dead.png</file>
-        <file>images/protagonist_shinobi/Hurt.png</file>
-        <file>images/protagonist_shinobi/Idle.png</file>
-        <file>images/protagonist_shinobi/Jump.png</file>
-        <file>images/protagonist_shinobi/Run.png</file>
-        <file>images/protagonist_shinobi/Shield.png</file>
-        <file>images/protagonist_shinobi/Walk.png</file>
         <file>images/world_images/maze1.png</file>
         <file>images/world_images/maze2.png</file>
         <file>images/world_images/maze3.png</file>
@@ -551,5 +528,28 @@
         <file>images/xenemy_wraith_attack/9.png</file>
         <file>images/tiles/Idle/00.png</file>
         <file>images/tiles/Moving/00.png</file>
+        <file>images/protagonist_fighter/Jump/Jump.png</file>
+        <file>images/protagonist_fighter/Run/Run.png</file>
+        <file>images/protagonist_fighter/Shield/Shield.png</file>
+        <file>images/protagonist_samurai/Attack/Attack_1.png</file>
+        <file>images/protagonist_samurai/Attack/Attack_2.png</file>
+        <file>images/protagonist_samurai/Attack/Attack_3.png</file>
+        <file>images/protagonist_samurai/Dying/Dead.png</file>
+        <file>images/protagonist_samurai/Hurt/Hurt.png</file>
+        <file>images/protagonist_samurai/Idle/Idle.png</file>
+        <file>images/protagonist_samurai/Jump/Jump.png</file>
+        <file>images/protagonist_samurai/Moving/Walk.png</file>
+        <file>images/protagonist_samurai/Run/Run.png</file>
+        <file>images/protagonist_samurai/Shield/Shield.png</file>
+        <file>images/protagonist_shinobi/Attack/Attack_1.png</file>
+        <file>images/protagonist_shinobi/Attack/Attack_2.png</file>
+        <file>images/protagonist_shinobi/Attack/Attack_3.png</file>
+        <file>images/protagonist_shinobi/Dying/Dead.png</file>
+        <file>images/protagonist_shinobi/Hurt/Hurt.png</file>
+        <file>images/protagonist_shinobi/Idle/Idle.png</file>
+        <file>images/protagonist_shinobi/Jump/Jump.png</file>
+        <file>images/protagonist_shinobi/Moving/Walk.png</file>
+        <file>images/protagonist_shinobi/Run/Run.png</file>
+        <file>images/protagonist_shinobi/Shield/Shield.png</file>
     </qresource>
 </RCC>
