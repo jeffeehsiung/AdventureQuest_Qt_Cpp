@@ -36,10 +36,14 @@ void ViewController::switchToTextView() {
     }
 }
 
+QWidget* ViewController::getCurrentView() const {
+    return currentView;
+}
+
 void ViewController::handleUpdateScene() {
-    if (currentView) {
-        currentView->updateView();
-    }
+//    if (currentView) {
+//        currentView->updateView();
+//    }
 }
 
 void ViewController::syncState() {

@@ -4,11 +4,15 @@
 
 GameController::GameController(QObject *parent)
     : QObject(parent){
-//    initializeWorld();
 }
 
 GameController::~GameController() {
     // Destructor for clean-up if necessary
+}
+
+void GameController::setInitialView() {
+    auto& viewController = ViewController::getInstance();
+    emit setInitialViewRequested(); // Emit the signal
 }
 
 void GameController::readGameStarted(bool isStarted) {
@@ -64,11 +68,12 @@ void GameController::initializeWorld() {
 
     auto& viewController = ViewController::getInstance();
     viewController.switchTo2DView(); // Optional: switch to initial view
+
+    setInitialView(); // Call this after the world is initialized
 }
 
 
 // Methods to switch between views
-
 void GameController::switchTo2DView() {
     auto& viewController = ViewController::getInstance();
     viewController.switchTo2DView();
@@ -78,3 +83,4 @@ void GameController::switchToTextView() {
     auto& viewController = ViewController::getInstance();
     viewController.switchToTextView();
 }
+

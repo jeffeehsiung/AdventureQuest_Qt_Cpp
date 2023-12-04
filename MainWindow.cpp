@@ -3,8 +3,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
     centralWidget(new QWidget(this)),
-    graphicsView(new QGraphicsView(this)),
-    textualView(new QGraphicsView(this)),
     startButton(new QPushButton("Start", this)),
     pauseButton(new QPushButton("Pause", this)),
     quitButton(new QPushButton("Quit", this)),
@@ -31,8 +29,9 @@ MainWindow::MainWindow(QWidget *parent)
     isGamePaused(false),
     gameController(new GameController(this))
 {
-    setupUI();
     setCentralWidget(centralWidget);
+    setupUI();
+
     pauseButton->setEnabled(false);
     pauseButton->setStyleSheet("background-color: grey;");
     autoPlayButton->setEnabled(false);
@@ -45,21 +44,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(autoPlayButton, &QPushButton::clicked, this, &MainWindow::onAutoPlayButtonClicked);
     connect(quitButton, &QPushButton::clicked, this, &MainWindow::onQuitButtonClicked);
     connect(viewTabs, &QTabWidget::currentChanged, this, &MainWindow::onViewTabChanged);
+    // In the constructor or initialization of MainWindow
+    connect(gameController, &GameController::setInitialViewRequested, this, &MainWindow::onSetInitialViewRequested);
+
 }
 
-//MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), isGamePaused(false) {
-//    centralWidget = new QWidget(this);
-//    setCentralWidget(centralWidget);
-
-//    gameController = new GameController(this);
-//    setupUI();
-
-//    connect(startButton, &QPushButton::clicked, this, &MainWindow::onStartButtonClicked);
-//    connect(pauseButton, &QPushButton::clicked, this, &MainWindow::onPauseButtonClicked);
-//    connect(autoPlayButton, &QPushButton::clicked, this, &MainWindow::onAutoPlayButtonClicked);
-//    connect(quitButton, &QPushButton::clicked, this, &MainWindow::onQuitButtonClicked);
-//    connect(viewTabs, &QTabWidget::currentChanged, this, &MainWindow::onViewTabChanged);
-//}
 
 MainWindow::~MainWindow() {
     delete gameController;
@@ -80,19 +69,8 @@ void MainWindow::setupUI()
     difficultyLevelComboBox->addItem("Medium");
     difficultyLevelComboBox->addItem("Hard");
 
-    // Set up the graphics view on the first tab
-    graphicsView->setStyleSheet("background-color: black;");
-    QGraphicsScene *graphicsScene = new QGraphicsScene(this);
-    graphicsView->setScene(graphicsScene);
     QVBoxLayout *graphicsLayout = new QVBoxLayout();
-    graphicsLayout->addWidget(graphicsView);
-
-    // Set up the textual view on the second tab
-    textualView->setStyleSheet("background-color: orange;");
-    QGraphicsScene *textualScene = new QGraphicsScene(this);
-    textualView->setScene(textualScene);
     QVBoxLayout *textualLayout = new QVBoxLayout();
-    textualLayout->addWidget(textualView);
 
     // Add a widget for game messages in the graphics tab
     graphicsMessageWidget->setReadOnly(true);
@@ -147,6 +125,7 @@ void MainWindow::setupUI()
 
     // Set the central widget layout
     centralWidget->setLayout(mainLayout);
+
 }
 
 void MainWindow::onStartButtonClicked()
@@ -261,5 +240,25 @@ void MainWindow::onViewTabChanged(int index)
         // switch to textual view
         gameController->switchToTextView();
     }
+}
+
+void MainWindow::displayView(QWidget* view) {
+    if (viewTabs->count() > 0) {
+        viewTabs->widget(0)->layout()->addWidget(view);
+    }
+}
+
+void MainWindow::onViewSwitched(QWidget* view) {
+    displayView(view);
+}
+
+void MainWindow::setupConnections() {
+    auto& viewController = ViewController::getInstance();
+    connect(&viewController, &ViewController::viewSwitched, this, &MainWindow::onViewSwitched);
+}
+
+void MainWindow::onSetInitialViewRequested() {
+    auto& viewController = ViewController::getInstance();
+    displayView(viewController.getCurrentView());
 }
 

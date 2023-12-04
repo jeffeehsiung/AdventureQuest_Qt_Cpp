@@ -5,7 +5,7 @@
 #include <memory>
 #include "View/Game2DView.h"
 #include "View/GameTextView.h"
-#include "Controller/WorldController.h"
+// #include "Controller/WorldController.h"
 
 class ViewController : public QObject {
     Q_OBJECT
@@ -19,13 +19,15 @@ public:
     ViewController(ViewController const&) = delete;
     void operator=(ViewController const&) = delete;
 
+    QWidget* getCurrentView() const; // Function to get the current view
+
 public slots:
     void switchTo2DView();
     void switchToTextView();
     void handleUpdateScene();
 
 signals:
-    void viewSwitched(GameView* currentView);
+    void viewSwitched(QWidget* currentView); // Modified signal
 
 private:
     ViewController(QObject *parent = nullptr);
@@ -36,7 +38,7 @@ private:
 
     std::unique_ptr<Game2DView> game2DView;
     std::unique_ptr<GameTextView> gameTextView;
-    GameView* currentView;
+    QWidget* currentView;
 
 };
 

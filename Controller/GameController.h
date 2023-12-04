@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QDebug>
+#include "Controller/ViewController.h"
 
 class GameController : public QObject {
     Q_OBJECT
@@ -11,6 +12,7 @@ class GameController : public QObject {
 public:
     explicit GameController(QObject *parent = nullptr);
     ~GameController();
+    void setInitialView();
 
     // Interface for MainWindow to notify about user actions
     void readGameStarted(bool isStarted);
@@ -21,10 +23,12 @@ public:
     void printAllGameInfo();
     void decideGameParameters();
     void initializeWorld();
-    
-    // Methods to switch views
+
     void switchTo2DView();
     void switchToTextView();
+
+signals:
+    void setInitialViewRequested();
 
 private:
     bool isGameStarted;
