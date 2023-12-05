@@ -45,8 +45,7 @@ Welcome to [Project Name]! 🌟
    git clone https://gitlab.kuleuven.be/groep-t/courses/apt/2324/team-a4-fa.git
 
 ## Acknowledgements
-[PNG Images](https://pngimg.com/images/heroes/mario)
+* **Craftpix.net** <br> [![Craftpix.Net](https://craftpix.net/wp-content/themes/craftpix/assets/images/logo-xmas.svg)](https://craftpix.net)
 
 ## UML
-### 2023.11.14
 <img src="UML_20231205.png" width="1000">
