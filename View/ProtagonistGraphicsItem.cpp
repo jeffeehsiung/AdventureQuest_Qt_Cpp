@@ -24,9 +24,13 @@ void ProtagonistGraphicsItem::loadFramesFromDirectory(const QString& dirPath, st
     for (const QString& fileName : fileNames) {
         QPixmap frame(dirPath + fileName);
         if (!frame.isNull()) {
+            qDebug() << "Original frame size:" << frame.size(); // Output the size of the original frame
             // Pre-scale the image here
             QPixmap scaledFrame = frame.scaled(EntityGraphicsItem::commonWidth, EntityGraphicsItem::commonHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            qDebug() << "Scaled frame size:" << scaledFrame.size();
             frames.push_back(scaledFrame);
+        } else {
+            qDebug() << "Failed to load frame:" << dirPath + fileName;
         }
     }
 }

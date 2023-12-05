@@ -17,6 +17,7 @@ SOURCES += main.cpp\
     Model/struct.cpp \
     Model/world.cpp \
     View/EnemyGraphicsItem.cpp \
+    View/EntityGraphicsItem.cpp \
     View/Game2DView.cpp \
     View/GameTextView.cpp \
     View/ProtagonistGraphicsItem.cpp \

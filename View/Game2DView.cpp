@@ -21,6 +21,19 @@ void Game2DView::initializeView() {
 
     setBackground(worldController.getDifficultyIdx());
 
+    qDebug() << "backgroundImage width: " << backgroundImage.width() << "backgroundImage heght" << backgroundImage.height() << "\n";
+    qDebug() << "worldController cols: " << worldController.getCols() << "worldController height" << worldController.getRows() << "\n";
+    qDebug() << "view width: " << this->width() << "view height" << this->height() << "\n";
+    qDebug() << "scene width: " << scene->width() << "scene height" << scene->height() << "\n";
+
+
+    // Calculate the size of each tile based on the scene size and the number of tiles
+    qreal tileWidth = scene->width() / worldController.getCols();
+    qreal tileHeight = scene->height() / worldController.getRows();
+    qDebug() << "tilewidth: " << tileWidth << " tileheight: " << tileHeight << "\n";
+
+    EntityGraphicsItem::setCommonDimensions(tileWidth, tileHeight);
+
     // Extract entities from the WorldController
     const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getTiles();
     const std::vector<std::unique_ptr<TileModel>>& healthPacks = worldController.getHealthPacks();
@@ -32,10 +45,10 @@ void Game2DView::initializeView() {
     QString tileBase = ":/images/tiles/Idle/";
     for (const auto& tile : tiles) {
         std::unique_ptr<EntityGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
-        tileGraphicsItem->setPos(tile->getPosition().xCoordinate, tile->getPosition().yCoordinate); // Set the graphic rect item position
+        // Center the background item in the scene
+//        tileGraphicsItem->setPos(tile->getPosition().xCoordinate, tile->getPosition().yCoordinate); // Set the graphic rect item position
         scene->addItem(tileGraphicsItem.get());
         entityGraphicsItems.push_back(std::move(tileGraphicsItem));
-        qDebug() << "Number of tiles in entityGraphicsItems:" << entityGraphicsItems.size();
 
     }
 
@@ -43,30 +56,27 @@ void Game2DView::initializeView() {
     QString healthpackBase = ":/images/healthpack/";
     for (const auto& healthPack : healthPacks) {
         std::unique_ptr<EntityGraphicsItem> healthPackGraphicsItem = std::make_unique<TileGraphicsItem>(*healthPack, healthpackBase);
-        healthPackGraphicsItem->setPos(healthPack->getPosition().xCoordinate, healthPack->getPosition().yCoordinate);
+//        healthPackGraphicsItem->setPos(healthPack->getPosition().xCoordinate, healthPack->getPosition().yCoordinate);
         scene->addItem(healthPackGraphicsItem.get());
         entityGraphicsItems.push_back(std::move(healthPackGraphicsItem));
-        qDebug() << "Number of hp in entityGraphicsItems:" << entityGraphicsItems.size();
     }
 
     /** baseFramesDir for enemy is constant */
     QString enemyBase = ":/images/enemy_golem/PNG Sequences/";
     for (const auto& enemy : enemies) {
         std::unique_ptr<EnemyGraphicsItem> enemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*enemy, enemyBase);
-        enemyGraphicsItem->setPos(enemy->getPosition().xCoordinate, enemy->getPosition().yCoordinate);
+//        enemyGraphicsItem->setPos(enemy->getPosition().xCoordinate, enemy->getPosition().yCoordinate);
         scene->addItem(enemyGraphicsItem.get());
         entityGraphicsItems.push_back(std::move(enemyGraphicsItem));
-        qDebug() << "Number of enemy in entityGraphicsItems:" << entityGraphicsItems.size();
     }
 
     /** baseFramesDir for penemy is constant */
     QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
     for (const auto& penemy : penemies) {
         std::unique_ptr<EnemyGraphicsItem> penemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*penemy, penemyBase);
-        penemyGraphicsItem->setPos(penemy->getPosition().xCoordinate, penemy->getPosition().yCoordinate);
+//        penemyGraphicsItem->setPos(penemy->getPosition().xCoordinate, penemy->getPosition().yCoordinate);
         scene->addItem(penemyGraphicsItem.get());
         entityGraphicsItems.push_back(std::move(penemyGraphicsItem));
-        qDebug() << "Number of penemy in entityGraphicsItems:" << entityGraphicsItems.size();
     }
 
     /** baseFramesDir for protagonist depends on numbers of protagonist*/
@@ -87,23 +97,21 @@ void Game2DView::initializeView() {
             protagonistBase = pro1Base;
         }
         std::unique_ptr<ProtagonistGraphicsItem> protagonistGraphicsItem = std::make_unique<ProtagonistGraphicsItem>(*protagonists[i], protagonistBase);
-        protagonistGraphicsItem->setPos(protagonists[i]->getPosition().xCoordinate, protagonists[i]->getPosition().yCoordinate);
+//        protagonistGraphicsItem->setPos(protagonists[i]->getPosition().xCoordinate, protagonists[i]->getPosition().yCoordinate);
         scene->addItem(protagonistGraphicsItem.get());
         entityGraphicsItems.push_back(std::move(protagonistGraphicsItem));
-        qDebug() << "Number of protagonist in entityGraphicsItems:" << entityGraphicsItems.size();
 
     }
 
-//    // After adding all items to the scene, adjust the view.
-//    fitInView(scene->itemsBoundingRect(), Qt::KeepAspectRatio);
-//    // Assuming 'scene' is a pointer to your QGraphicsScene object
-//    QRectF sceneRect = scene->sceneRect();
-//    qDebug() << "Scene Rect:" << sceneRect;
-//    checkItems(); // Call the function to output debug information
+    qDebug() << "Number of protagonist in entityGraphicsItems:" << entityGraphicsItems.size();
 
-    fitSceneToView();
-
+    // After adding all items to the scene
+    scene->setSceneRect(scene->itemsBoundingRect()); // Set the scene rect to contain all items
+    fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height() << "\n";
+    qDebug() << "items added view width: " << this->width() << "items added view height" << this->height() << "\n";
     update();
+
 }
 
 
@@ -113,16 +121,28 @@ void Game2DView::setBackground(int backgroundNumber) {
      * then the controller based on game state assign the correspodning number to Game2DView
      * game2DViewInstance->setBackground(2); // Switch to the second background
      * */
+
     switch(backgroundNumber) {
-    case 1: setBackgroundBrush(QBrush(defaultBackground)); break;
-    case 2: setBackgroundBrush(QBrush(easyBackground)); break;
-    case 3: setBackgroundBrush(QBrush(mediumBackground)); break;
-    case 4: setBackgroundBrush(QBrush(hardBackground)); break;
-    default: setBackgroundBrush(QBrush(defaultBackground));
+    case 1: /*setBackgroundBrush(QBrush(defaultBackground)); */backgroundImage.load(":/images/world_images/maze1.png"); break;
+    case 2: /*setBackgroundBrush(QBrush(easyBackground));*/ backgroundImage.load(":/images/world_images/maze1.png"); break;
+    case 3: /*setBackgroundBrush(QBrush(mediumBackground)); */backgroundImage.load(":/images/world_images/maze2.png");break;
+    case 4: /*setBackgroundBrush(QBrush(hardBackground)); */backgroundImage.load(":/images/world_images/worldmap4.png"); break;
+    default: /*setBackgroundBrush(QBrush(defaultBackground));*/
         break;
     }
+    // Add the background image as a pixmap item to the scene
+    QGraphicsPixmapItem* backgroundItem = new QGraphicsPixmapItem(backgroundImage);
+    backgroundItem->setZValue(-1); // Ensure it's drawn below all other items
+    scene->setSceneRect(0, 0, backgroundImage.width() * 20, backgroundImage.height() * 20);
+    // Center the background item in the scene
+    backgroundItem->setPos(10,10);
+    // Add the background item to the scene
+    scene->addItem(backgroundItem);
+    this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+
     currentBackgroundNumber = backgroundNumber;
-    update();  // Refresh the view
+    this->update();
+
 }
 
 void Game2DView::updateView() {
@@ -183,27 +203,27 @@ void Game2DView::checkItems() {
     }
 }
 
-void Game2DView::fitSceneToView() {
-        // Get the bounding rectangle of all items
-    QRectF itemsRect = scene->itemsBoundingRect();
+//void Game2DView::fitSceneToView() {
+//    // Get the bounding rectangle of all items
+//    QRectF itemsRect = scene->itemsBoundingRect();
 
-        // Calculate the desired scale factor based on the items' bounding rectangle
-    qreal scaleFactor = calculateScaleFactor(itemsRect);
+//    // Calculate the desired scale factor based on the items' bounding rectangle
+//    qreal scaleFactor = calculateScaleFactor(itemsRect);
 
-        // Set a minimum scale factor to prevent excessive zooming
-    qreal minScaleFactor = 0.5; // Example value, adjust as needed
-    scaleFactor = qMax(scaleFactor, minScaleFactor);
+//    // Set a minimum scale factor to prevent excessive zooming
+//    qreal minScaleFactor = 0.5; // Example value, adjust as needed
+//    scaleFactor = qMax(scaleFactor, minScaleFactor);
 
-        // Set the transformation for the view with the calculated scale factor
-    setTransform(QTransform::fromScale(scaleFactor, scaleFactor));
-    }
+//    // Set the transformation for the view with the calculated scale factor
+//    setTransform(QTransform::fromScale(scaleFactor, scaleFactor));
+//    }
 
-qreal Game2DView::calculateScaleFactor(const QRectF& itemsRect) {
-    QRectF viewRect = this->viewport()->rect(); // The viewport rectangle
-    qreal scaleX = viewRect.width() / itemsRect.width();
-    qreal scaleY = viewRect.height() / itemsRect.height();
-    return qMin(scaleX, scaleY); // Choose the smaller scale to fit the entire content
-}
+//qreal Game2DView::calculateScaleFactor(const QRectF& itemsRect) {
+//    QRectF viewRect = this->viewport()->rect(); // The viewport rectangle
+//    qreal scaleX = viewRect.width() / itemsRect.width();
+//    qreal scaleY = viewRect.height() / itemsRect.height();
+//    return qMin(scaleX, scaleY); // Choose the smaller scale to fit the entire content
+//}
 
 
 
