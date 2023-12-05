@@ -21,6 +21,7 @@ void TileGraphicsItem::loadFramesFromDirectory(const QString& dirPath, std::vect
     for (const QString& fileName : fileNames) {
         QPixmap frame(dirPath + fileName);
         if (!frame.isNull()) {
+            QPixmap scaledFrame = frame.scaled(EntityGraphicsItem::commonWidth, EntityGraphicsItem::commonHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             frames.push_back(frame);
         }
     }
