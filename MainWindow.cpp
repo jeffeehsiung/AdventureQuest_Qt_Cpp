@@ -261,17 +261,18 @@ void MainWindow::displayView(QWidget* view) {
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
+    setFocusPolicy(Qt::StrongFocus);
     switch (event->key()) {
-    case Qt::Key_Up:
+    case Qt::Key_W:
         gameController->onUpArrowPressed();
         break;
-    case Qt::Key_Down:
+    case Qt::Key_S:
         gameController->onDownArrowPressed();
         break;
-    case Qt::Key_Left:
+    case Qt::Key_A:
         gameController->onLeftArrowPressed();
         break;
-    case Qt::Key_Right:
+    case Qt::Key_D:
         gameController->onRightArrowPressed();
         break;
     default:

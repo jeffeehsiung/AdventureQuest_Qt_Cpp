@@ -1,6 +1,7 @@
 #include "Controller/ViewController.h"
 
 ViewController::ViewController(QObject *parent) : QObject(parent), currentView(nullptr) {
+    
 }
 
 ViewController::~ViewController() {
@@ -18,6 +19,9 @@ void ViewController::initializeViews() {
     // Optionally set the initial view
     currentView = game2DView.get();
     emit viewUpdated(currentView);
+
+    auto& worldController = WorldController::getInstance();
+    connect(&worldController, &WorldController::protagonistPositionChanged, this, &ViewController::updateProtagonistPosition);
 }
 
 void ViewController::switchTo2DView() {
@@ -46,6 +50,11 @@ void ViewController::handleUpdateScene() {
     }
     emit viewUpdated(currentView);
 }
+
+void ViewController::updateProtagonistPosition(int protagonistIndex, int newX, int newY) {
+    qDebug() << "testing..............................";
+}
+
 
 void ViewController::syncState() {
     // This method should transfer the state from one view to the other.

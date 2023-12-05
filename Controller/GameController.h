@@ -28,6 +28,11 @@ public:
     void switchTo2DView();
     void switchToTextView();
 
+    void onUpArrowPressed();
+    void onDownArrowPressed();
+    void onLeftArrowPressed();
+    void onRightArrowPressed();
+
 public slots:
     void onViewUpdated(QWidget* currentView);
     /**
@@ -35,10 +40,6 @@ public slots:
      * void onXXXX()
      *
      * */
-    void onUpArrowPressed();
-    void onDownArrowPressed();
-    void onLeftArrowPressed();
-    void onRightArrowPressed();
 
 signals:
     void viewUpdateRequested(QWidget* currentView);

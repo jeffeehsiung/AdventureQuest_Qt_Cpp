@@ -88,25 +88,33 @@ void GameController::onViewUpdated(QWidget* currentView) {
 }
 
 void GameController::onUpArrowPressed() {
+    auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
         qDebug() << "UP!" << "\n";
+        worldController.onUpArrowPressed();
     }
 }
 
 void GameController::onDownArrowPressed() {
+    auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
         qDebug() << "DOWN!" << "\n";
+        worldController.onDownArrowPressed();
     }
 }
 
 void GameController::onLeftArrowPressed() {
+    auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
         qDebug() << "LEFT!" << "\n";
+        worldController.onLeftArrowPressed();
     }
 }
 
 void GameController::onRightArrowPressed() {
+    auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
         qDebug() << "RIGHT!" << "\n";
+        worldController.onRightArrowPressed();
     }
 }

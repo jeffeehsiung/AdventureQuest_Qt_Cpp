@@ -91,6 +91,15 @@ class WorldController : public QObject
          * TODO: missing setter
          */
         const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
+
+        void onUpArrowPressed();
+        void onDownArrowPressed();
+        void onLeftArrowPressed();
+        void onRightArrowPressed();
+
+signals:
+        void protagonistPositionChanged(int protagonistIndex, int newX, int newY);
+
 private:
         WorldController();
         std::unique_ptr<World> world;
