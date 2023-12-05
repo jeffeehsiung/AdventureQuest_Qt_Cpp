@@ -49,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     /** MainWindow connections to GameController */
     connect(gameController, &GameController::viewUpdateRequested, this, &MainWindow::onViewUpdateRequested);
+    /**
+     * movement update -> you are the sender, so signal-->  emit xxxx()
+     * */
 }
 
 
@@ -252,13 +255,13 @@ void MainWindow::displayView(QWidget* view) {
     if (currentTab) {
         // Clear the current layout (optional, depends on your design)
         QLayout* layout = currentTab->layout();
-        if (layout) {
-            QLayoutItem* item;
-            while ((item = layout->takeAt(0)) != nullptr) {
-                delete item->widget(); // Delete the widget
-                delete item;           // Delete the layout item
-            }
-        }
+//        if (layout) {
+//            QLayoutItem* item;
+//            while ((item = layout->takeAt(0)) != nullptr) {
+//                delete item->widget(); // Delete the widget
+//                delete item;           // Delete the layout item
+//            }
+//        }
 
         // Add the new view to the layout
         layout->addWidget(view);
