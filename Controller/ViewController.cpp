@@ -52,7 +52,16 @@ void ViewController::handleUpdateScene() {
 }
 
 void ViewController::updateProtagonistPosition(int protagonistIndex, int newX, int newY) {
-    qDebug() << "testing..............................";
+    if (currentView == game2DView.get()) {
+        game2DView->updateView();
+    }
+    else if (currentView == gameTextView.get()) {
+        gameTextView->updateView();
+    }
+    else {
+        // Do nothing
+    }
+    emit viewUpdated(currentView);
 }
 
 

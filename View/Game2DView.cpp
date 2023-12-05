@@ -204,7 +204,3 @@ qreal Game2DView::calculateScaleFactor(const QRectF& itemsRect) {
     qreal scaleY = viewRect.height() / itemsRect.height();
     return qMin(scaleX, scaleY); // Choose the smaller scale to fit the entire content
 }
-
-
-
-
