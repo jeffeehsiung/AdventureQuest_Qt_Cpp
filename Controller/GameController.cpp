@@ -1,7 +1,11 @@
 #include "GameController.h"
 
 GameController::GameController(QObject *parent)
-    : QObject(parent){
+    : QObject(parent),
+    isGameStarted(false),
+    isGamePaused(false),
+    isGameAutoplayed(false)
+{
     /** set up connections: viewcontroller to gamecontroller */
     auto& viewController = ViewController::getInstance();
     connect(&viewController, &ViewController::viewUpdated, this, &GameController::onViewUpdated);
@@ -80,7 +84,37 @@ void GameController::switchToTextView() {
 }
 
 void GameController::onViewUpdated(QWidget* currentView) {
-    // notify mainwindow
     emit viewUpdateRequested(currentView);
 }
 
+void GameController::onUpArrowPressed() {
+    auto& worldController = WorldController::getInstance();
+    if (isGameStarted) {
+        qDebug() << "UP!" << "\n";
+        worldController.onUpArrowPressed();
+    }
+}
+
+void GameController::onDownArrowPressed() {
+    auto& worldController = WorldController::getInstance();
+    if (isGameStarted) {
+        qDebug() << "DOWN!" << "\n";
+        worldController.onDownArrowPressed();
+    }
+}
+
+void GameController::onLeftArrowPressed() {
+    auto& worldController = WorldController::getInstance();
+    if (isGameStarted) {
+        qDebug() << "LEFT!" << "\n";
+        worldController.onLeftArrowPressed();
+    }
+}
+
+void GameController::onRightArrowPressed() {
+    auto& worldController = WorldController::getInstance();
+    if (isGameStarted) {
+        qDebug() << "RIGHT!" << "\n";
+        worldController.onRightArrowPressed();
+    }
+}
