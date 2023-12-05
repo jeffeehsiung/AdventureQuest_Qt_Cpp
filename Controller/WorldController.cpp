@@ -5,22 +5,26 @@ WorldController::WorldController()
     : world(std::make_unique<World>()) {
     // Basic initializations, if any
 }
-void WorldController::createWorld(QString map, int nrOfEnemies, int gameDifficultyIdx, float pRatio) {
+void WorldController::createWorld(QString map, int gameNumberOfPlayers, int gameDifficultyIdx, float pRatio) {
 
     /**
      * given gameDifficultyIdx assign the number of healthpacks
     */
     int nrOfHealthpacks = 0;
+    int nrOfEnemies = 0;
     switch (gameDifficultyIdx)
     {
     case 1:
         nrOfHealthpacks = 5;
+        nrOfEnemies = 8;
         break;
     case 2:
         nrOfHealthpacks = 3;
+        nrOfEnemies = 15;
         break;
     case 3:
         nrOfHealthpacks = 1;
+        nrOfEnemies = 30;
         break;
     default:
         break;

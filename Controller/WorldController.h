@@ -26,7 +26,7 @@ class WorldController : public QObject
         WorldController(WorldController const&) = delete;
         void operator=(WorldController const&) = delete;
 
-        void createWorld(QString map, int nrOfEnemies, int gameDifficultyIdx, float pRatio);
+        void createWorld(QString map, int gameNumberOfPlayers, int gameDifficultyIdx, float pRatio);
 
         int getRows() const;
         int getCols() const;
