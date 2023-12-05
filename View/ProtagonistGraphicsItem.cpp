@@ -24,7 +24,10 @@ void ProtagonistGraphicsItem::loadFramesFromDirectory(const QString& dirPath, st
     for (const QString& fileName : fileNames) {
         QPixmap frame(dirPath + fileName);
         if (!frame.isNull()) {
-            frames.push_back(frame);
+            // Pre-scale the image here
+            QPixmap scaledFrame = frame.scaled(EntityGraphicsItem::commonWidth, EntityGraphicsItem::commonHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            frames.push_back(scaledFrame);
         }
     }
 }
+

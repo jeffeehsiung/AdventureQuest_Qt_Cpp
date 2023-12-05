@@ -38,8 +38,8 @@ QString GameTextView::generateTextBackground() {
 
 void GameTextView::initializeView() {
     clear();
-    QString textBackground = generateTextBackground();
-    this->setPlainText(textBackground);
+//    QString textBackground = generateTextBackground();
+//    this->setPlainText(textBackground);
 
     // Get the singleton instance of WorldController
     auto& worldController = WorldController::getInstance();

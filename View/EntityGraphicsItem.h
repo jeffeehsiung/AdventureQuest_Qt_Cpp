@@ -18,7 +18,8 @@
  *      which will populate the frame vectors (idleFrames, moveFrames, etc.) with their specific frames.
 **/
 
-class EntityGraphicsItem : public QGraphicsRectItem, public QObject {
+class EntityGraphicsItem : public QObject, public QGraphicsRectItem{
+    Q_OBJECT
 protected:
     const Entity& entity;   // Raw pointer to entity model (abstract)
     QPixmap image;          // Image representing the entity
@@ -45,6 +46,8 @@ public:
         connect(animationTimer, &QTimer::timeout, this, &EntityGraphicsItem::nextFrame);
         // Set a common size for all EntityGraphicsItems
         setRect(0, 0, commonWidth, commonHeight);
+        updatePosition();
+        startAnimation();
     }
 
     virtual ~EntityGraphicsItem() {
@@ -104,8 +107,9 @@ public:
         Q_UNUSED(option);
         Q_UNUSED(widget);
 
+        // Calculate the top-left position to center the image within the bounding rectangle
         int x = (commonWidth - image.width()) / 2;
-        int y = (commonWidth - image.height()) / 2;
+        int y = (commonHeight - image.height()) / 2;
 
         painter->drawPixmap(x, y, image);
     }

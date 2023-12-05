@@ -21,7 +21,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void displayView(QWidget* view);
-    void setupConnections();
 
 private:
     QWidget *centralWidget;
@@ -55,14 +54,16 @@ private:
 
     void setupUI();
 
+signals:
+
+
 private slots:
     void onStartButtonClicked();
     void onPauseButtonClicked();
     void onAutoPlayButtonClicked();
     void onQuitButtonClicked();
     void onViewTabChanged(int index);
-    void onViewSwitched(QWidget* view);
-    void onSetInitialViewRequested();
+    void onViewUpdateRequested(QWidget* view);
 };
 
 #endif // MAINWINDOW_H

@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QPixmap>
+#include <QDebug>
 #include "View/GameView.h"
 #include "View/EntityGraphicsItem.h"
 #include "View/TileGraphicsItem.h"
@@ -16,10 +17,10 @@ class Game2DView : public QGraphicsView, public GameView {
 public:
     explicit Game2DView(QWidget* parent = nullptr)
         : QGraphicsView(parent){
-        defaultBackground.load(":/images/world_images/worldmap4.png");
-        easyBackground.load(":/images/world_images/maze1.png");
-        mediumBackground.load(":/images/world_images/maze2.png");
-        hardBackground.load(":/images/world_images/maze3.png");
+        defaultBackground.load(":/images/world_images/worldmap.png");
+        easyBackground.load(":/images/world_images/worldmap.png");
+        mediumBackground.load(":/images/world_images/worldmap.png");
+        hardBackground.load(":/images/world_images/worldmap4.png");
 
         zoomLevel = 1.0;
         scene = new QGraphicsScene(this);
@@ -46,6 +47,8 @@ public:
     void zoomOut() override;
     void updateView() override;
 
+    void checkItems();
+
 signals:
     /**
      * @brief updateSceneSignal
@@ -66,8 +69,11 @@ private:
     int currentBackgroundNumber;
     qreal zoomLevel;
 
-    std::vector<std::unique_ptr<EntityGraphicsItem>> entityGraphicsItems;
+//    std::vector<std::unique_ptr<EntityGraphicsItem>> entityGraphicsItems;
+    std::vector<std::shared_ptr<EntityGraphicsItem>> entityGraphicsItems;
     void updateZoom();
+    void fitSceneToView();
+    qreal calculateScaleFactor(const QRectF& itemsRect);
 
 };
 

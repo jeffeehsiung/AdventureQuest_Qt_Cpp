@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QDebug>
+#include "Controller/WorldController.h"
 #include "Controller/ViewController.h"
 
 class GameController : public QObject {
@@ -12,7 +13,6 @@ class GameController : public QObject {
 public:
     explicit GameController(QObject *parent = nullptr);
     ~GameController();
-    void setInitialView();
 
     // Interface for MainWindow to notify about user actions
     void readGameStarted(bool isStarted);
@@ -22,13 +22,17 @@ public:
     void readGameDifficultyLevel(const QString &difficultyLevel);
     void printAllGameInfo();
     void decideGameParameters();
+
     void initializeWorld();
 
     void switchTo2DView();
     void switchToTextView();
 
+public slots:
+    void onViewUpdated(QWidget* currentView);
+
 signals:
-    void setInitialViewRequested();
+    void viewUpdateRequested(QWidget* currentView);
 
 private:
     bool isGameStarted;

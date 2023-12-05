@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     isGamePaused(false),
     gameController(new GameController(this))
 {
+
     setCentralWidget(centralWidget);
     setupUI();
 
@@ -39,14 +40,15 @@ MainWindow::MainWindow(QWidget *parent)
     quitButton->setEnabled(false);
     quitButton->setStyleSheet("background-color: grey;");
 
+    /** UI connections to MainWindow */
     connect(startButton, &QPushButton::clicked, this, &MainWindow::onStartButtonClicked);
     connect(pauseButton, &QPushButton::clicked, this, &MainWindow::onPauseButtonClicked);
     connect(autoPlayButton, &QPushButton::clicked, this, &MainWindow::onAutoPlayButtonClicked);
     connect(quitButton, &QPushButton::clicked, this, &MainWindow::onQuitButtonClicked);
     connect(viewTabs, &QTabWidget::currentChanged, this, &MainWindow::onViewTabChanged);
-    // In the constructor or initialization of MainWindow
-    connect(gameController, &GameController::setInitialViewRequested, this, &MainWindow::onSetInitialViewRequested);
 
+    /** MainWindow connections to GameController */
+    connect(gameController, &GameController::viewUpdateRequested, this, &MainWindow::onViewUpdateRequested);
 }
 
 
@@ -163,9 +165,6 @@ void MainWindow::onStartButtonClicked()
     gameController->readGameAutoplayed(false);
     gameController->readGameNumberOfPlayers(numberOfPlayers);
     gameController->readGameDifficultyLevel(difficultyLevel);
-
-    gameController->printAllGameInfo();
-//    gameController->decideNextMove();
     gameController->initializeWorld();
 }
 
@@ -234,31 +233,35 @@ void MainWindow::onQuitButtonClicked()
 void MainWindow::onViewTabChanged(int index)
 {
     if (index == 0) {
-        // switch to graphics view
         gameController->switchTo2DView();
     } else if (index == 1) {
-        // switch to textual view
         gameController->switchToTextView();
     }
 }
 
-void MainWindow::displayView(QWidget* view) {
-    if (viewTabs->count() > 0) {
-        viewTabs->widget(0)->layout()->addWidget(view);
-    }
-}
-
-void MainWindow::onViewSwitched(QWidget* view) {
+void MainWindow::onViewUpdateRequested(QWidget* view) {
     displayView(view);
 }
 
-void MainWindow::setupConnections() {
-    auto& viewController = ViewController::getInstance();
-    connect(&viewController, &ViewController::viewSwitched, this, &MainWindow::onViewSwitched);
-}
+void MainWindow::displayView(QWidget* view) {
+    if (!viewTabs || viewTabs->count() == 0) {
+        return; // No tabs available or viewTabs is not initialized
+    }
 
-void MainWindow::onSetInitialViewRequested() {
-    auto& viewController = ViewController::getInstance();
-    displayView(viewController.getCurrentView());
+    QWidget* currentTab = viewTabs->currentWidget();
+    if (currentTab) {
+        // Clear the current layout (optional, depends on your design)
+        QLayout* layout = currentTab->layout();
+        if (layout) {
+            QLayoutItem* item;
+            while ((item = layout->takeAt(0)) != nullptr) {
+                delete item->widget(); // Delete the widget
+                delete item;           // Delete the layout item
+            }
+        }
+
+        // Add the new view to the layout
+        layout->addWidget(view);
+    }
 }
 

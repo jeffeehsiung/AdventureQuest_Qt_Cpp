@@ -1,7 +1,6 @@
 #include "Controller/ViewController.h"
 
 ViewController::ViewController(QObject *parent) : QObject(parent), currentView(nullptr) {
-    initializeViews();
 }
 
 ViewController::~ViewController() {
@@ -14,17 +13,18 @@ void ViewController::initializeViews() {
 
     // Initialize the views
     game2DView->initializeView();
-    gameTextView->initializeView();
+//    gameTextView->initializeView();
 
     // Optionally set the initial view
     currentView = game2DView.get();
+    emit viewUpdated(currentView);
 }
 
 void ViewController::switchTo2DView() {
     if (currentView != game2DView.get()) {
         syncState(); // Sync state from the current view to the 2D view
         currentView = game2DView.get();
-        emit viewSwitched(currentView);
+        emit viewUpdated(currentView);
     }
 }
 
@@ -32,7 +32,7 @@ void ViewController::switchToTextView() {
     if (currentView != gameTextView.get()) {
         syncState(); // Sync state from the current view to the text view
         currentView = gameTextView.get();
-        emit viewSwitched(currentView);
+        emit viewUpdated(currentView);
     }
 }
 
@@ -41,9 +41,10 @@ QWidget* ViewController::getCurrentView() const {
 }
 
 void ViewController::handleUpdateScene() {
-//    if (currentView) {
-//        currentView->updateView();
-//    }
+    if (currentView) {
+        currentView->update();
+    }
+    emit viewUpdated(currentView);
 }
 
 void ViewController::syncState() {

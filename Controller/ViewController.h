@@ -18,6 +18,7 @@ public:
 
     ViewController(ViewController const&) = delete;
     void operator=(ViewController const&) = delete;
+    void initializeViews();
 
     QWidget* getCurrentView() const; // Function to get the current view
 
@@ -27,13 +28,12 @@ public slots:
     void handleUpdateScene();
 
 signals:
-    void viewSwitched(QWidget* currentView); // Modified signal
+    void viewUpdated(QWidget* currentView); // Modified signal
 
 private:
     ViewController(QObject *parent = nullptr);
     ~ViewController();
 
-    void initializeViews();
     void syncState();
 
     std::unique_ptr<Game2DView> game2DView;

@@ -1,18 +1,14 @@
 #include "GameController.h"
-#include "Controller/WorldController.h"
-#include "Controller/ViewController.h"
 
 GameController::GameController(QObject *parent)
     : QObject(parent){
+    /** set up connections: viewcontroller to gamecontroller */
+    auto& viewController = ViewController::getInstance();
+    connect(&viewController, &ViewController::viewUpdated, this, &GameController::onViewUpdated);
 }
 
 GameController::~GameController() {
     // Destructor for clean-up if necessary
-}
-
-void GameController::setInitialView() {
-    auto& viewController = ViewController::getInstance();
-    emit setInitialViewRequested(); // Emit the signal
 }
 
 void GameController::readGameStarted(bool isStarted) {
@@ -63,15 +59,14 @@ void GameController::decideGameParameters() {
 
 void GameController::initializeWorld() {
     decideGameParameters();
+
     auto& worldController = WorldController::getInstance();
     worldController.createWorld(gameMap, gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
 
     auto& viewController = ViewController::getInstance();
-    viewController.switchTo2DView(); // Optional: switch to initial view
+    viewController.initializeViews(); // Optional: switch to initial view
 
-    setInitialView(); // Call this after the world is initialized
 }
-
 
 // Methods to switch between views
 void GameController::switchTo2DView() {
@@ -82,5 +77,10 @@ void GameController::switchTo2DView() {
 void GameController::switchToTextView() {
     auto& viewController = ViewController::getInstance();
     viewController.switchToTextView();
+}
+
+void GameController::onViewUpdated(QWidget* currentView) {
+    // notify mainwindow
+    emit viewUpdateRequested(currentView);
 }
 
