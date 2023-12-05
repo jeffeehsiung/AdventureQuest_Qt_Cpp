@@ -42,7 +42,7 @@ void GameController::printAllGameInfo() {
 
 void GameController::decideGameParameters() {
     if (gameDifficultyLevel == "Easy") {
-        gameMap = ":/images/world_images/worldmap.png";
+        gameMap = ":/images/world_images/maze1.png";
         gameDifficultyIdx = 1;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.1 : 0.2;
     } else if (gameDifficultyLevel == "Medium") {
