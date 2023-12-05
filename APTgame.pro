@@ -15,7 +15,6 @@ SOURCES += main.cpp\
     Model/ProtagonistModel.cpp \
     Model/TileModel.cpp \
     Model/struct.cpp \
-    Model/world.cpp \
     View/EnemyGraphicsItem.cpp \
     View/Game2DView.cpp \
     View/GameTextView.cpp \
@@ -34,8 +33,6 @@ HEADERS  += MainWindow.h\
     Model/ProtagonistModel.h \
     Model/TileModel.h \
     Model/structs.h \
-    Model/world.h \
-    Model/world_global.h \
     View/Game2DView.h \
     View/GameTextView.h \
     View/GameView.h \
@@ -58,10 +55,13 @@ DISTFILES += \
     README.md \
     UML_v1.png \
     UML_v2.png \
-    library/libworld.so \
-    library/libworld.so.1 \
-    library/libworld.so.1.0 \
-    library/libworld.so.1.0.0
 
 SUBDIRS += \
     world.pro
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../worldlib/release/ -lworld
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../worldlib/debug/ -lworld
+else:unix: LIBS += -L$$PWD/../worldlib/ -lworld
+
+INCLUDEPATH += $$PWD/../worldlib
+DEPENDPATH += $$PWD/../worldlib
