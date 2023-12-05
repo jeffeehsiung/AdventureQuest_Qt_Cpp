@@ -1,6 +1,6 @@
 # Project Name 🚀
 
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
+[![License](https://img.shields.io/badge/License-Jeffee_RuiCong_William-blue.svg)](LICENSE.md)
 
 ## Table of Contents 📋
 - [Project Description](#project-description)
