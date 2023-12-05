@@ -29,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent)
     isGamePaused(false),
     gameController(new GameController(this))
 {
-
     setCentralWidget(centralWidget);
     setupUI();
 
@@ -49,9 +48,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     /** MainWindow connections to GameController */
     connect(gameController, &GameController::viewUpdateRequested, this, &MainWindow::onViewUpdateRequested);
-    /**
-     * movement update -> you are the sender, so signal-->  emit xxxx()
-     * */
 }
 
 
@@ -81,17 +77,22 @@ void MainWindow::setupUI()
     graphicsMessageWidget->setReadOnly(true);
     graphicsMessageWidget->setStyleSheet("background-color: white;");
     graphicsMessageWidget->setFixedHeight(100);
+
+    viewTabs->addTab(graphicsTab, "Graphics");
+
     graphicsLayout->addWidget(graphicsMessageWidget);
     graphicsTab->setLayout(graphicsLayout);
-    viewTabs->addTab(graphicsTab, "Graphics");
+
 
     // Add a widget for game messages in the textual tab
     textualMessageWidget->setReadOnly(true);
     textualMessageWidget->setStyleSheet("background-color: white;");
     textualMessageWidget->setFixedHeight(100);
+
+    viewTabs->addTab(textualTab, "Textual");
+
     textualLayout->addWidget(textualMessageWidget);
     textualTab->setLayout(textualLayout);
-    viewTabs->addTab(textualTab, "Textual");
 
     // Set up the controls
     startButton->setFixedSize(100, 30);
@@ -248,23 +249,32 @@ void MainWindow::onViewUpdateRequested(QWidget* view) {
 
 void MainWindow::displayView(QWidget* view) {
     if (!viewTabs || viewTabs->count() == 0) {
-        return; // No tabs available or viewTabs is not initialized
+        return;
     }
 
     QWidget* currentTab = viewTabs->currentWidget();
-    if (currentTab) {
-        // Clear the current layout (optional, depends on your design)
-        QLayout* layout = currentTab->layout();
-//        if (layout) {
-//            QLayoutItem* item;
-//            while ((item = layout->takeAt(0)) != nullptr) {
-//                delete item->widget(); // Delete the widget
-//                delete item;           // Delete the layout item
-//            }
-//        }
 
-        // Add the new view to the layout
+    if (currentTab) {
+        QLayout* layout = currentTab->layout();
         layout->addWidget(view);
     }
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+    switch (event->key()) {
+    case Qt::Key_Up:
+        gameController->onUpArrowPressed();
+        break;
+    case Qt::Key_Down:
+        gameController->onDownArrowPressed();
+        break;
+    case Qt::Key_Left:
+        gameController->onLeftArrowPressed();
+        break;
+    case Qt::Key_Right:
+        gameController->onRightArrowPressed();
+        break;
+    default:
+        QMainWindow::keyPressEvent(event);
+    }
+}

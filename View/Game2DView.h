@@ -4,6 +4,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QPixmap>
+#include <QtMath>
 #include <QDebug>
 #include "View/GameView.h"
 #include "View/EntityGraphicsItem.h"
