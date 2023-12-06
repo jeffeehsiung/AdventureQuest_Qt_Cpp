@@ -18,7 +18,7 @@ public:
     }
 
     void addEntity(const Entity& entity) override;
-    void animateEntityAction(const QString& action) override;
+    void animateEntityAction(int index, AnimationState newState) override;
     /**
      * @brief initializeView
      * @param worldController
@@ -45,9 +45,9 @@ signals:
     void updateSceneSignal() override;
 
 private:
-    QString generateTextBackground();
     void displayScene(const QString& sceneString);
     std::vector<std::unique_ptr<EntityTextItem>> entityTextItems;
+    QString backgroundString;
     QString sceneString;
 };
 

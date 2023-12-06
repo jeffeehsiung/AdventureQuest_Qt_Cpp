@@ -26,7 +26,7 @@ class WorldController : public QObject
         WorldController(WorldController const&) = delete;
         void operator=(WorldController const&) = delete;
 
-        void createWorld(QString map, int nrOfEnemies, int gameDifficultyIdx, float pRatio);
+        void createWorld(QString map, int gameNumberOfPlayers, int gameDifficultyIdx, float pRatio);
 
         int getRows() const;
         int getCols() const;
@@ -91,6 +91,15 @@ class WorldController : public QObject
          * TODO: missing setter
          */
         const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
+
+        void onUpArrowPressed();
+        void onDownArrowPressed();
+        void onLeftArrowPressed();
+        void onRightArrowPressed();
+
+signals:
+        void protagonistPositionChanged(int protagonistIndex);
+
 private:
         WorldController();
         std::unique_ptr<World> world;

@@ -1,6 +1,7 @@
 #include "Controller/ViewController.h"
 
 ViewController::ViewController(QObject *parent) : QObject(parent), currentView(nullptr) {
+    
 }
 
 ViewController::~ViewController() {
@@ -13,11 +14,15 @@ void ViewController::initializeViews() {
 
     // Initialize the views
     game2DView->initializeView();
-//    gameTextView->initializeView();
+    gameTextView->initializeView();
 
     // Optionally set the initial view
     currentView = game2DView.get();
     emit viewUpdated(currentView);
+
+    auto& worldController = WorldController::getInstance();
+    connect(&worldController, &WorldController::protagonistPositionChanged, this, &ViewController::updateProtagonistPosition);
+    connect(game2DView.get(), &Game2DView::updateSceneSignal, this, &ViewController::onUpdatedScene);
 }
 
 void ViewController::switchTo2DView() {
@@ -40,12 +45,27 @@ QWidget* ViewController::getCurrentView() const {
     return currentView;
 }
 
-void ViewController::handleUpdateScene() {
-    if (currentView) {
+void ViewController::onUpdatedScene() {
+    if (currentView){
         currentView->update();
     }
     emit viewUpdated(currentView);
 }
+
+void ViewController::updateProtagonistPosition(int protagonistIndex) {
+    if (currentView == game2DView.get()) {
+        AnimationState newState = MOVING;         //hardcoded. need to embed state of the entity in world and model
+        game2DView->animateEntityAction(protagonistIndex, newState);
+        game2DView->updateView();
+    }
+    else if (currentView == gameTextView.get()) {
+        gameTextView->updateView();
+    }
+    else {
+        // Do nothing
+    }
+}
+
 
 void ViewController::syncState() {
     // This method should transfer the state from one view to the other.
