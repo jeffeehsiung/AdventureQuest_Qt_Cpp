@@ -7,6 +7,11 @@ TileGraphicsItem::TileGraphicsItem(const TileModel& tileModel, const QString& ba
     : EntityGraphicsItem(tileModel, parent), baseFramesDir(baseFramesDir)  {
 }
 
+QRectF TileGraphicsItem::boundingRect() const {
+    return QRectF(0, 0, tileWidth, tileHeight);
+}
+
+
 void TileGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     // Call the base class paint method to draw the base image if needed.
     // If the tiles are meant to be transparent, showing only the shades of green, then the base image paint call can be omitted.

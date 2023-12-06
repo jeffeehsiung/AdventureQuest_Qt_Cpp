@@ -80,6 +80,8 @@ private:
     std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
     std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
 
+    void scaleEntitiesToFitView();
+
 };
 
 #endif // GAME2DVIEW_H

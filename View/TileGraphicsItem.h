@@ -12,7 +12,7 @@ public:
     TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent = nullptr);
 
     // Implement any Tile-specific functionality or behavior here, if needed
-    // Override the paint method
+    QRectF boundingRect() const override;
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 private:
     QString baseFramesDir;

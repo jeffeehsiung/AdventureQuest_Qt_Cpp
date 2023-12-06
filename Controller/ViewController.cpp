@@ -64,6 +64,7 @@ void ViewController::updateProtagonistPosition(int protagonistIndex) {
     else {
         // Do nothing
     }
+    emit viewUpdated(currentView);
 }
 
 
