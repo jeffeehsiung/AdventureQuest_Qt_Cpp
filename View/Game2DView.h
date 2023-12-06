@@ -19,10 +19,9 @@ class Game2DView : public QGraphicsView, public GameView {
 public:
     explicit Game2DView(QWidget* parent = nullptr)
         : QGraphicsView(parent){
-        defaultBackground.load(":/images/background/road.png");
-        easyBackground.load(":/images/background/road.png");
-        mediumBackground.load(":/images/background/residence.png");
-        hardBackground.load(":/images/background/houses.png");
+        easyBackground.load(":/images/world_images/worldmap.png");
+        mediumBackground.load(":/images/world_images/maze1.png");
+        hardBackground.load(":/images/world_images/maze2.png");
         zoomLevel = 1.0;
         scene = new QGraphicsScene(this);
         setScene(scene);
@@ -33,7 +32,8 @@ public:
     }
 
     void addEntity(const Entity& entity) override;
-    void animateEntityAction(const QString& entity) override;
+//    void animateEntityAction(const Entity& entity) override;
+    void animateEntityAction(int index, AnimationState newState) override;
     /**
      * @brief initializeView
      * @param worldController
@@ -63,7 +63,6 @@ signals:
 
 private:
     QGraphicsScene* scene;
-    QPixmap defaultBackground;
     QPixmap easyBackground;
     QPixmap mediumBackground;
     QPixmap hardBackground;
@@ -71,11 +70,15 @@ private:
     int currentBackgroundNumber;
     qreal zoomLevel;
 
+    qreal tileWidth;
+    qreal tileHeight;
+
     void updateZoom();
-//    void fitSceneToView();
-//    qreal calculateScaleFactor(const QRectF& itemsRect);
 
     std::vector<std::unique_ptr<EntityGraphicsItem>> entityGraphicsItems;
+    std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
+    std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
+    std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
 
 };
 

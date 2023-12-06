@@ -59,6 +59,7 @@ DISTFILES += \
     README.md \
     UML_v1.png \
     UML_v2.png \
+    images/protagonist_fighter/Moving/01.png \
     library/libworld.so \
     library/libworld.so.1 \
     library/libworld.so.1.0 \

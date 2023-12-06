@@ -358,7 +358,6 @@
         <file>images/protagonist_fighter/Dying/01.png</file>
         <file>images/protagonist_fighter/Hurt/01.png</file>
         <file>images/protagonist_fighter/Idle/01.png</file>
-        <file>images/protagonist_fighter/Walking/01.png</file>
         <file>images/protagonist_heal/1.png</file>
         <file>images/protagonist_heal/10.png</file>
         <file>images/protagonist_heal/2.png</file>
@@ -554,5 +553,6 @@
         <file>images/background/houses.png</file>
         <file>images/background/residence.png</file>
         <file>images/background/road.png</file>
+        <file>images/protagonist_fighter/Moving/01.png</file>
     </qresource>
 </RCC>

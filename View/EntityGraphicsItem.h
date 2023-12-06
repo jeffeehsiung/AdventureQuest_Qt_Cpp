@@ -25,7 +25,7 @@ protected:
     QPixmap image;          // Image representing the entity
 
     // Animation properties
-    enum AnimationState { IDLE, MOVING, ATTACK, HURT, DYING, HEAL };
+//    enum AnimationState { IDLE, MOVING, ATTACK, HURT, DYING, HEAL };
     AnimationState animationState;
     QTimer* animationTimer;
     std::vector<QPixmap> idleFrames;
@@ -52,7 +52,7 @@ public:
     void changeAnimationState(AnimationState newState);
 
     // Advances to the next frame in the current animation
-    void nextFrame();
+    virtual void nextFrame();
 
     const Entity& getEntity() const;
 

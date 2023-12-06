@@ -46,15 +46,15 @@ void GameController::printAllGameInfo() {
 
 void GameController::decideGameParameters() {
     if (gameDifficultyLevel == "Easy") {
-        gameMap = ":/images/world_images/maze1.png";
+        gameMap = ":/images/world_images/worldmap.png";
         gameDifficultyIdx = 1;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.1 : 0.2;
     } else if (gameDifficultyLevel == "Medium") {
-        gameMap = ":/images/world_images/maze2.png";
+        gameMap = ":/images/world_images/maze1.png";
         gameDifficultyIdx = 2;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.2 : 0.4;
     } else if (gameDifficultyLevel == "Hard") {
-        gameMap = ":/images/world_images/worldmap4.png";
+        gameMap = ":/images/world_images/maze2.png";
         gameDifficultyIdx = 3;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.3 : 0.6;
     }

@@ -56,7 +56,9 @@ const Entity& EntityGraphicsItem::getEntity() const {
 
 void EntityGraphicsItem::updatePosition() {
     coordinate pos = entity.getPosition();
-    setPos(pos.xCoordinate, pos.yCoordinate);
+//    qDebug() << "original position:" << pos.xCoordinate << "," << pos.yCoordinate;
+    this->setPos(pos.xCoordinate * commonWidth, pos.yCoordinate * commonHeight);
+//    qDebug() << "scaled position:" << this->pos();
 }
 
 QRectF EntityGraphicsItem::boundingRect() const {
@@ -67,9 +69,6 @@ void EntityGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem
     Q_UNUSED(option);
     Q_UNUSED(widget);
 
-//    qreal x = (commonWidth - image.width()) / 2;
-//    qreal y = (commonHeight - image.height()) / 2;
-//    painter->drawPixmap(x, y, image);
     painter->drawPixmap(0, 0, image);
 }
 
@@ -82,10 +81,10 @@ void EntityGraphicsItem::startAnimation() {
 void EntityGraphicsItem::handleAnimationEnd() {
     switch (animationState) {
     case IDLE:
-    case MOVING:
     case HEAL:
         currentFrameIndex = 0;
         break;
+    case MOVING:
     case ATTACK:
     case HURT:
     case DYING:

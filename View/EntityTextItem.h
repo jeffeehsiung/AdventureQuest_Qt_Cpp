@@ -53,6 +53,27 @@ public:
 
 #endif // TILETEXTITEM_H
 
+// TileTextItem.h
+#ifndef HEALTHPACKTEXTITEM_H
+#define HEALTHPACKTEXTITEM_H
+
+#include "EntityTextItem.h"
+#include "Model/TileModel.h" // Include your TileModel class definition
+
+class HPTextItem : public EntityTextItem {
+public:
+    HPTextItem(const TileModel& hp) : EntityTextItem(hp) {
+        // Set a text representation specific to tiles
+        textRepresentation = "H";
+    }
+
+    QString getTextRepresentation() const {
+        return textRepresentation;
+    }
+};
+
+#endif // HEALTHPACKTEXTITEM_H
+
 // EnemyTextItem.h
 #ifndef ENEMYTEXTITEM_H
 #define ENEMYTEXTITEM_H

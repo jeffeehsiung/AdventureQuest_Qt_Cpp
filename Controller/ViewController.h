@@ -22,11 +22,12 @@ public:
 
     QWidget* getCurrentView() const; // Function to get the current view
 
-public slots:
     void switchTo2DView();
     void switchToTextView();
-    void handleUpdateScene();
-    void updateProtagonistPosition(int protagonistIndex, int newX, int newY);
+
+public slots:
+    void onUpdatedScene();
+    void updateProtagonistPosition(int protagonistIndex);
 
 signals:
     void viewUpdated(QWidget* currentView); // Modified signal

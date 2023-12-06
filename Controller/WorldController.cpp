@@ -275,25 +275,25 @@ void WorldController::removeHealthpack(coordinate coord)
 void WorldController::onUpArrowPressed() {
     // Move the protagonist up
     protagonists[0]->move(0, -1); // Assuming the first protagonist in the vector
-    emit protagonistPositionChanged(0, protagonists[0]->getPosition().xCoordinate, protagonists[0]->getPosition().yCoordinate);
+    emit protagonistPositionChanged(0);
 }
 
 void WorldController::onDownArrowPressed() {
     // Move the protagonist down
     protagonists[0]->move(0, 1);
-    emit protagonistPositionChanged(0, protagonists[0]->getPosition().xCoordinate, protagonists[0]->getPosition().yCoordinate);
+    emit protagonistPositionChanged(0);
 }
 
 void WorldController::onLeftArrowPressed() {
     // Move the protagonist left
     protagonists[0]->move(-1, 0);
-    emit protagonistPositionChanged(0, protagonists[0]->getPosition().xCoordinate, protagonists[0]->getPosition().yCoordinate);
+    emit protagonistPositionChanged(0);
 }
 
 void WorldController::onRightArrowPressed() {
     // Move the protagonist right
     protagonists[0]->move(1, 0);
-    emit protagonistPositionChanged(0, protagonists[0]->getPosition().xCoordinate, protagonists[0]->getPosition().yCoordinate);
+    emit protagonistPositionChanged(0);
 }
 
 /**

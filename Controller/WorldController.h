@@ -98,7 +98,7 @@ class WorldController : public QObject
         void onRightArrowPressed();
 
 signals:
-        void protagonistPositionChanged(int protagonistIndex, int newX, int newY);
+        void protagonistPositionChanged(int protagonistIndex);
 
 private:
         WorldController();
