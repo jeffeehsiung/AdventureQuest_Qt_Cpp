@@ -272,6 +272,21 @@ void WorldController::removeHealthpack(coordinate coord)
     }
 }
 
+template <class T>
+coordinate WorldController::findNearestHealthPack(){
+    coordinate position = protagonists[0]->getPosition();
+    int distance = 1000; //std::numeric_limits<int>::infinity();
+    for ( auto &healthPack : healthPacks )
+        {
+            if ( healthPack->getPosition() == coord )
+            {
+                return true;
+            }
+        }
+    return false;
+    return returnTile;
+}
+
 void WorldController::onUpArrowPressed() {
     // Move the protagonist up
     protagonists[0]->move(0, -1); // Assuming the first protagonist in the vector

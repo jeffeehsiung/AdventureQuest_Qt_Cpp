@@ -7,7 +7,7 @@
 #include "Model/ProtagonistModel.h"
 #include "Model/EnemyModel.h"
 #include "Model/TileModel.h"
-
+#include "pathfinder.h"
 
 #include <iostream>
 #include <QObject>
@@ -91,6 +91,7 @@ class WorldController : public QObject
          * TODO: missing setter
          */
         const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
+        coordinate findNearestHealthPack(coordinate);
 
         void onUpArrowPressed();
         void onDownArrowPressed();
@@ -106,7 +107,7 @@ private:
         int rows;
         int cols;
         int difficultyIdx;
-        coordinate exit = coordinate(1,1);
+        coordinate exit = coordinate(10,10);
         coordinate start = coordinate(0,0);
         std::vector<std::unique_ptr<TileModel>> tiles;
         std::vector<std::unique_ptr<TileModel>> healthPacks;
@@ -115,6 +116,7 @@ private:
         std::vector<std::unique_ptr<PEnemyModel>> penemies;
 //        std::vector<std::unique_ptr<XEnemyModel>> xenemies;
         std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
+        
 
 };
 
