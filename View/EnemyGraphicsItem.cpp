@@ -5,7 +5,7 @@
 
 
 EnemyGraphicsItem::EnemyGraphicsItem(const EnemyModel& enemyModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
-    : EntityGraphicsItem(enemyModel, parent), baseFramesDir(baseFramesDir) {
+    : EntityGraphicsItem(enemyModel, parent), baseFramesDir(baseFramesDir){
     loadAnimationFrames();
 }
 
@@ -28,6 +28,8 @@ void EnemyGraphicsItem::loadFramesFromDirectory(const QString& dirPath, std::vec
             // Pre-scale the image here
             QPixmap scaledFrame = frame.scaled(EntityGraphicsItem::commonWidth, EntityGraphicsItem::commonHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
             frames.push_back(scaledFrame);
+        } else {
+            qDebug() << "Failed to load frame:" << dirPath + fileName;
         }
     }
 }

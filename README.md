@@ -1,6 +1,6 @@
 # Project Name 🚀
 
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
+[![License](https://img.shields.io/badge/License-Jeffee_Ruicong_William-blue.svg)](LICENSE.md)
 
 ## Table of Contents 📋
 - [Project Description](#project-description)
@@ -45,8 +45,7 @@ Welcome to [Project Name]! 🌟
    git clone https://gitlab.kuleuven.be/groep-t/courses/apt/2324/team-a4-fa.git
 
 ## Acknowledgements
-[PNG Images](https://pngimg.com/images/heroes/mario)
+* **Craftpix.net** <br> [![Craftpix.Net](https://craftpix.net/wp-content/themes/craftpix/assets/images/logo-xmas.svg)](https://craftpix.net)
 
 ## UML
-### 2023.11.14
-<img src="UML_v1.png" width="1000">
+<img src="UML_20231205.png" width="1000">

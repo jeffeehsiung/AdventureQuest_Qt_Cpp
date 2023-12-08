@@ -5,22 +5,26 @@ WorldController::WorldController()
     : world(std::make_unique<World>()) {
     // Basic initializations, if any
 }
-void WorldController::createWorld(QString map, int nrOfEnemies, int gameDifficultyIdx, float pRatio) {
+void WorldController::createWorld(QString map, int gameNumberOfPlayers, int gameDifficultyIdx, float pRatio) {
 
     /**
      * given gameDifficultyIdx assign the number of healthpacks
     */
     int nrOfHealthpacks = 0;
+    int nrOfEnemies = 0;
     switch (gameDifficultyIdx)
     {
     case 1:
         nrOfHealthpacks = 5;
+        nrOfEnemies = 8;
         break;
     case 2:
         nrOfHealthpacks = 3;
+        nrOfEnemies = 15;
         break;
     case 3:
         nrOfHealthpacks = 1;
+        nrOfEnemies = 30;
         break;
     default:
         break;
@@ -266,6 +270,30 @@ void WorldController::removeHealthpack(coordinate coord)
             }), healthPacks.end());
         }
     }
+}
+
+void WorldController::onUpArrowPressed() {
+    // Move the protagonist up
+    protagonists[0]->move(0, -1); // Assuming the first protagonist in the vector
+    emit protagonistPositionChanged(0);
+}
+
+void WorldController::onDownArrowPressed() {
+    // Move the protagonist down
+    protagonists[0]->move(0, 1);
+    emit protagonistPositionChanged(0);
+}
+
+void WorldController::onLeftArrowPressed() {
+    // Move the protagonist left
+    protagonists[0]->move(-1, 0);
+    emit protagonistPositionChanged(0);
+}
+
+void WorldController::onRightArrowPressed() {
+    // Move the protagonist right
+    protagonists[0]->move(1, 0);
+    emit protagonistPositionChanged(0);
 }
 
 /**

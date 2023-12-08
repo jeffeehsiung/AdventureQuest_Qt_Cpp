@@ -10,6 +10,7 @@
 #include <QTextEdit>
 #include <QComboBox>
 #include <QTabWidget>
+#include <QKeyEvent>
 #include "Controller/GameController.h"
 
 
@@ -54,8 +55,10 @@ private:
 
     void setupUI();
 
-signals:
+protected:
+    void keyPressEvent(QKeyEvent *event) override;
 
+//signals:
 
 private slots:
     void onStartButtonClicked();

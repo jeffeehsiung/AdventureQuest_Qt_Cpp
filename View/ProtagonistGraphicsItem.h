@@ -7,7 +7,8 @@
 
 class ProtagonistGraphicsItem : public EntityGraphicsItem {
 public:
-    ProtagonistGraphicsItem(ProtagonistModel& protagonistModel, const QString& baseFramesDir, QGraphicsRectItem* parent = nullptr);
+    ProtagonistGraphicsItem(const ProtagonistModel& protagonistModel, const QString& baseFramesDir, QGraphicsRectItem* parent = nullptr);
+    void nextFrame() override;
 
 private:
     QString baseFramesDir;
