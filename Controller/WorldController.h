@@ -91,7 +91,6 @@ class WorldController : public QObject
          * TODO: missing setter
          */
         const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
-        coordinate findNearestHealthPack(coordinate);
 
         void onUpArrowPressed();
         void onDownArrowPressed();
