@@ -25,6 +25,10 @@ public:
     void switchTo2DView();
     void switchToTextView();
 
+//    void zoomIn2DView(int delta);
+//    void zoomOut2DView(int delta);
+
+
 public slots:
     void onUpdatedScene();
     void updateProtagonistPosition(int protagonistIndex);

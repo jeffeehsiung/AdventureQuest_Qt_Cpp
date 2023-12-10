@@ -214,12 +214,6 @@
         <file>images/fixed_attack_direction/images/ht.png</file>
         <file>images/fixed_attack_direction/images/uh.png</file>
         <file>images/fixed_attack_direction/images/vjuh.json</file>
-        <file>images/healthpack/1.png</file>
-        <file>images/healthpack/2.png</file>
-        <file>images/healthpack/3.png</file>
-        <file>images/healthpack/4.png</file>
-        <file>images/healthpack/5.png</file>
-        <file>images/healthpack/6.png</file>
         <file>images/penemy_wraith/PNG Sequences/Attacking/00.png</file>
         <file>images/penemy_wraith/PNG Sequences/Attacking/01.png</file>
         <file>images/penemy_wraith/PNG Sequences/Attacking/02.png</file>
@@ -554,5 +548,11 @@
         <file>images/background/residence.png</file>
         <file>images/background/road.png</file>
         <file>images/protagonist_fighter/Moving/01.png</file>
+        <file>images/healthpack/Idle/1.png</file>
+        <file>images/healthpack/Idle/2.png</file>
+        <file>images/healthpack/Idle/3.png</file>
+        <file>images/healthpack/Idle/4.png</file>
+        <file>images/healthpack/Idle/5.png</file>
+        <file>images/healthpack/Idle/6.png</file>
     </qresource>
 </RCC>

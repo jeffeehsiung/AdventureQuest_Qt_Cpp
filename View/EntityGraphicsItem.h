@@ -42,6 +42,8 @@ protected:
     static qreal tileWidth;
     static qreal tileHeight;
 
+
+
 public:
 
     // Static method to set common dimensions
@@ -56,7 +58,7 @@ public:
     void changeAnimationState(AnimationState newState);
 
     // Advances to the next frame in the current animation
-    virtual void nextFrame();
+    void nextFrame();
 
     const Entity& getEntity() const;
 
