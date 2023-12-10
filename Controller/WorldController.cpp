@@ -279,7 +279,7 @@ void WorldController::onUpArrowPressed() {
     int newX = currentPosition.xCoordinate;
     int newY = currentPosition.yCoordinate - 1;
     // Clamp the new position to ensure it's within the world boundaries
-    if ((newX <= (cols -1)) && (newY <= (rows -1))){
+    if ((newX <= (cols -1)) && (newY <= (rows -1)) && (newY >= 0) ){
         // Move the protagonist up
         protagonists[0]->move(0, -1);
         if (isEnemy(protagonists[0]->getPosition())) {
@@ -296,7 +296,7 @@ void WorldController::onDownArrowPressed() {
     int newX = currentPosition.xCoordinate;
     int newY = currentPosition.yCoordinate + 1;
     // Clamp the new position to ensure it's within the world boundaries
-    if ((newX <= (cols -1)) && (newY <= (rows -1))){
+    if ((newX <= (cols -1)) && (newY <= (rows -1)) && (newY >= 0)){
         // Move the protagonist down
         protagonists[0]->move(0, 1); // Assuming the first protagonist in the vector
         if (isEnemy(protagonists[0]->getPosition())) {
@@ -313,7 +313,7 @@ void WorldController::onLeftArrowPressed() {
     int newX = currentPosition.xCoordinate - 1;
     int newY = currentPosition.yCoordinate;
     // Clamp the new position to ensure it's within the world boundaries
-    if ((newX <= (cols -1)) && (newY <= (rows -1))){
+    if ((newX >= 0) && (newX <= (cols -1)) && (newY <= (rows -1))){
         // Move the protagonist left
         protagonists[0]->move(-1, 0); // Assuming the first protagonist in the vector
         if (isEnemy(protagonists[0]->getPosition())) {
@@ -330,7 +330,7 @@ void WorldController::onRightArrowPressed() {
     int newX = currentPosition.xCoordinate + 1;
     int newY = currentPosition.yCoordinate;
     // Clamp the new position to ensure it's within the world boundaries
-    if ((newX <= (cols -1)) && (newY <= (rows -1))){
+    if ((newX >= 0) && (newX <= (cols -1)) && (newY <= (rows -1))){
         // Move the protagonist right
         protagonists[0]->move(1, 0); // Assuming the first protagonist in the vector
         if (isEnemy(protagonists[0]->getPosition())) {

@@ -176,7 +176,8 @@ void Game2DView::zoomIn(int delta) {
 }
 
 void Game2DView::zoomOut(int delta) {
-    qreal minZoomLevel = initZoomLevel * 0.1;
+    qreal scale = 0.001;
+    qreal minZoomLevel = (initZoomLevel * scale);
     qreal targetZoomLevel = zoomLevel - delta * zoomSpeed;
     if (targetZoomLevel < minZoomLevel) {  // If the target zoom level is less than the min, clamp it
         targetZoomLevel = minZoomLevel;
@@ -195,7 +196,7 @@ void Game2DView::zoomOut(int delta) {
 }
 
 void Game2DView::wheelEvent(QWheelEvent* event) {
-    int delta = event->angleDelta().y() / 6 ;
+    int delta = event->angleDelta().y() / 12 ;
     if (delta > 0) {
         zoomIn(std::abs(delta));  // Zoom in when the wheel is scrolled up
     }else{
