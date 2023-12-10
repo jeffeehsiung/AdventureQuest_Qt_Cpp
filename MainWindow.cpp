@@ -245,7 +245,6 @@ void MainWindow::onQuitButtonClicked()
 
     gameController->setGameOver();
     startButton->setText("Exit");
-    QMessageBox::information(this, "Game Over", "YOU LOSE.");
 }
 
 void MainWindow::onViewTabChanged(int index)

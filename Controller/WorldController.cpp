@@ -285,6 +285,9 @@ void WorldController::onUpArrowPressed() {
         if (isEnemy(protagonists[0]->getPosition())) {
             onEncounterEnemy();
         }
+        if (isHealthPack(protagonists[0]->getPosition())) {
+            onEncounterHealthPack();
+        }
         emit protagonistPositionChanged(0);
     }
 }
@@ -301,6 +304,9 @@ void WorldController::onDownArrowPressed() {
         protagonists[0]->move(0, 1); // Assuming the first protagonist in the vector
         if (isEnemy(protagonists[0]->getPosition())) {
             onEncounterEnemy();
+        }
+        if (isHealthPack(protagonists[0]->getPosition())) {
+            onEncounterHealthPack();
         }
         emit protagonistPositionChanged(0);
     }
@@ -319,6 +325,9 @@ void WorldController::onLeftArrowPressed() {
         if (isEnemy(protagonists[0]->getPosition())) {
             onEncounterEnemy();
         }
+        if (isHealthPack(protagonists[0]->getPosition())) {
+            onEncounterHealthPack();
+        }
         emit protagonistPositionChanged(0);
     }
 }
@@ -336,6 +345,9 @@ void WorldController::onRightArrowPressed() {
         if (isEnemy(protagonists[0]->getPosition())) {
             onEncounterEnemy();
         }
+        if (isHealthPack(protagonists[0]->getPosition())) {
+            onEncounterHealthPack();
+        }
         emit protagonistPositionChanged(0);
     }
 }
@@ -348,6 +360,17 @@ void WorldController::onEncounterEnemy() {
     else {
         protagonists[0]->setHealth(0);
         qDebug() << "You died!" << "\n";
+    }
+    qDebug() << "Health: " << protagonists[0]->getHealth() << "\n";
+}
+
+void WorldController::onEncounterHealthPack() {
+    qDebug() << "Encountered a health pack!" << "\n";
+    if (protagonists[0]->getHealth() < 5) {
+        protagonists[0]->setHealth(protagonists[0]->getHealth() + 1);
+    }
+    else {
+        qDebug() << "Health is full!" << "\n";
     }
     qDebug() << "Health: " << protagonists[0]->getHealth() << "\n";
 }

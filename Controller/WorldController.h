@@ -99,6 +99,7 @@ class WorldController : public QObject
         void onRightArrowPressed();
 
         void onEncounterEnemy();
+        void onEncounterHealthPack();
 
 signals:
         void protagonistPositionChanged(int protagonistIndex);
