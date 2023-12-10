@@ -75,6 +75,8 @@ class WorldController : public QObject
         void deleteEnemy(coordinate);
         void deletePsnTile(coordinate);
 
+        void playerReachedExit();
+
         /**
          * healthpack functions
          */

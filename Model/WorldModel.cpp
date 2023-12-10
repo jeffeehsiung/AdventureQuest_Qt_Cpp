@@ -1,7 +1,7 @@
 #include "WorldModel.h"
 
 // Constructor definition
-WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float pRatio) : world(std::make_unique<World>()){
+WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float pRatio, bool firstWorld) : world(std::make_unique<World>()){
     // Additional initialization code if needed
     world -> createWorld(map, nrOfEnemies, nrOfHealthpacks, pRatio);
     rows = world->getRows();
@@ -11,6 +11,8 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
      * create tilemodels, enemymodels, penemymodels, xenemymodels, and protagonistmodels based on created world
      * */
     for (auto &tile : world->getTiles()) {
+        std::unique_ptr<coordinate> pos = std::make_unique<coordinate>(tile->getXPos(), tile->getYPos());
+        nodes.push_back(node(tile->getValue(), *pos));
         std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(std::move(tile));
         tiles.push_back(std::move(tileModel));
     }
@@ -29,9 +31,10 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
         }
     }
 
-
-    std::unique_ptr<ProtagonistModel> protagonist = std::make_unique<ProtagonistModel>(world->getProtagonist());
-    protagonists.push_back(std::move(protagonist));
+    if(firstWorld){
+        std::unique_ptr<ProtagonistModel> protagonist = std::make_unique<ProtagonistModel>(world->getProtagonist());
+        protagonists.push_back(std::move(protagonist));
+    }
 }
 
 /**
@@ -232,4 +235,12 @@ coordinate WorldModel::getExit()
     return exit;
 }
 
+void WorldModel::addProtagonist(std::vector<std::unique_ptr<ProtagonistModel>> incoming){
+    protagonists.reserve(protagonists.size() + incoming.size());
+    std::move(incoming.begin(), incoming.end(), std::back_inserter(protagonists));
+}
+
+std::vector<std::unique_ptr<ProtagonistModel>> WorldModel::removeProtagonists(){
+    return std::move(protagonists);
+}
 

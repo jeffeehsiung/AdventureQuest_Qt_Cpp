@@ -10,12 +10,12 @@
 
 class WorldModel{
 public:
-    WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float pRatio);
+    WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float pRatio, bool firstWorld);
     int getRows() const;
     int getCols() const;
 
-    void addProtagonist(ProtagonistModel&);
-    void removeProtagonist(ProtagonistModel&);
+    void addProtagonist(std::vector<std::unique_ptr<ProtagonistModel>>);
+    std::vector<std::unique_ptr<ProtagonistModel>> removeProtagonists();
 
     /**
          * get single entity functions
@@ -66,9 +66,11 @@ public:
     /**
          * start and exit position functions
          */
+
     coordinate getStart();
     coordinate getExit();
     std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
+    std::vector<node> nodes;
 
 
 private:

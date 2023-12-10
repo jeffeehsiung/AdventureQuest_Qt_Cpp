@@ -29,47 +29,9 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
         break;
     }
     difficultyIdx = gameDifficultyIdx;
-    currentWorld = std::make_shared<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio);
-    worlds.push_back(currentWorld);
-
-//    /**
-//     * createworld
-//     * */
-//    world -> createWorld(map, nrOfEnemies, nrOfHealthpacks, pRatio);
-//    rows = world->getRows();
-//    cols = world->getCols();
-
-//    /**
-//     * create tilemodels, enemymodels, penemymodels, xenemymodels, and protagonistmodels based on created world
-//     * */
-//    for (auto &tile : world->getTiles()) {
-//        std::unique_ptr<coordinate> pos = std::make_unique<coordinate>(tile->getXPos(), tile->getYPos());
-//        nodes.push_back(node(tile->getValue(), *pos));
-//        //qDebug() << "coordinate: " << pos->getXPos() << "\n";
-//        std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(std::move(tile));
-//        tiles.push_back(std::move(tileModel));
-//    }
-
-
-//    for ( auto &healthPack : world->getHealthPacks() ){
-//        std::unique_ptr<TileModel> healthPackModel = std::make_unique<TileModel>(std::move(healthPack));
-//        healthPacks.push_back(std::move(healthPackModel));
-//    }
-
-//    for (auto &enemy : world->getEnemies()) {
-//        if (auto pEnemyRaw = dynamic_cast<PEnemy*>(enemy.get())) {
-//            penemies.push_back(std::make_unique<PEnemyModel>(std::unique_ptr<PEnemy>(pEnemyRaw)));
-//            enemy.release(); // Important to prevent double free
-//        } else {
-//            enemies.push_back(std::make_unique<EnemyModel>(std::move(enemy)));
-//        }
-//    }
-
-//    /**
-//     * first and invidivual protagonist player
-//     */
-//    std::unique_ptr<ProtagonistModel> protagonist = std::make_unique<ProtagonistModel>(world->getProtagonist());
-//    protagonists.push_back(std::move(protagonist));
+    worlds.push_back(std::make_shared<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
+    worlds.push_back(std::make_shared<WorldModel>(":/images/world_images/maze1.png", nrOfEnemies + 3, nrOfHealthpacks, pRatio, false));
+    currentWorld = worlds[0];
 }
 
 /**
@@ -110,7 +72,7 @@ const std::vector<std::unique_ptr<PEnemyModel> > &WorldController::getPEnemies()
 }
 
 // const std::vector<std::unique_ptr<XEnemyModel> > &WorldController::getXEnemies() const
-// {
+// {3
 //     return xenemies;
 // }
 
@@ -189,26 +151,39 @@ void WorldController::onUpArrowPressed() {
     // Move the protagonist up
     currentWorld->protagonists[0]->move(0, -1); // Assuming the first protagonist in the vector
     emit protagonistPositionChanged(0);
+    playerReachedExit();
 }
 
 void WorldController::onDownArrowPressed() {
     // Move the protagonist down
     currentWorld->protagonists[0]->move(0, 1);
     emit protagonistPositionChanged(0);
+    playerReachedExit();
 }
 
 void WorldController::onLeftArrowPressed() {
     // Move the protagonist left
     currentWorld->protagonists[0]->move(-1, 0);
     emit protagonistPositionChanged(0);
+    playerReachedExit();
 }
 
 void WorldController::onRightArrowPressed() {
     // Move the protagonist right
     currentWorld->protagonists[0]->move(1, 0);
     emit protagonistPositionChanged(0);
+    playerReachedExit();
 }
 
+void WorldController::playerReachedExit(){
+    if(currentWorld->protagonists[0]->getPosition() == currentWorld->getExit()){
+        currentWorld->protagonists[0]->setPosition(worlds[1]->getStart());
+        worlds[1]->addProtagonist(worlds[0]->removeProtagonists());
+        currentWorld = worlds[1];
+        emit protagonistPositionChanged(0);
+        qDebug() << "LevelSwitched!" << "\n";
+    }
+}
 /**
  * start and exit position functions
  */
@@ -228,9 +203,9 @@ coordinate WorldController::getExit()
 //    Comparator<node> comparator = [](const node& a, const node& b) {
 //        return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
 //    };
-//    qDebug() << "start Pos: " << start.getXPos() << " "<< start.getYPos();
-//    qDebug() << "exit Pos: " << exit.getXPos() << " "<< exit.getYPos();
-//    PathFinder<node,coordinate> pathFinder(nodes, &start, &exit, comparator, this->getRows(), 1);
+//    qDebug() << "start Pos: " << currentWorld->getStart().getXPos() << " "<< currentWorld->getStart().getYPos();
+//    qDebug() << "exit Pos: " << currentWorld->getExit().getXPos() << " "<< currentWorld->getExit().getYPos();
+//    PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getStart(), currentWorld->getExit(), comparator, this->getRows(), 1);
 
 //    std::vector<int> result = pathFinder.A_star();
 //    qDebug() << "Path to destination:";
