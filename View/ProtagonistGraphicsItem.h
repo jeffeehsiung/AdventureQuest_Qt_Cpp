@@ -4,6 +4,7 @@
 #include "EntityGraphicsItem.h"
 #include "Model/ProtagonistModel.h"
 #include <QString>
+#include <QDebug>
 
 class ProtagonistGraphicsItem : public EntityGraphicsItem {
 public:

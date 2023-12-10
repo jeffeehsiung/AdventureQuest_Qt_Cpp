@@ -6,15 +6,15 @@ MainWindow::MainWindow(QWidget *parent)
     startButton(new QPushButton("Start", this)),
     pauseButton(new QPushButton("Pause", this)),
     quitButton(new QPushButton("Quit", this)),
-    energySlider(new QSlider(Qt::Horizontal, this)),
-    healthSlider(new QSlider(Qt::Horizontal, this)),
+    // energySlider(new QSlider(Qt::Horizontal, this)),
+    // healthSlider(new QSlider(Qt::Horizontal, this)),
     animationDelaySlider(new QSlider(Qt::Horizontal, this)),
-    heightFactorSlider(new QSlider(Qt::Horizontal, this)),
+    // heightFactorSlider(new QSlider(Qt::Horizontal, this)),
     heuristicWeightFactorSlider(new QSlider(Qt::Horizontal, this)),
-    energyLabel(new QLabel("Energy", this)),
-    healthLabel(new QLabel("Health", this)),
+    // energyLabel(new QLabel("Energy", this)),
+    // healthLabel(new QLabel("Health", this)),
     animationDelayLabel(new QLabel("Animation delay", this)),
-    heightFactorLabel(new QLabel("Height factor", this)),
+    // heightFactorLabel(new QLabel("Height factor", this)),
     heuristicWeightFactorLabel(new QLabel("Heuristic weight factor", this)),
     viewTabs(new QTabWidget(this)),
     graphicsTab(new QWidget(this)),
@@ -115,14 +115,14 @@ void MainWindow::setupUI()
     controlLayout->addWidget(playerNumberComboBox);
     controlLayout->addWidget(difficultyLevelLabel);
     controlLayout->addWidget(difficultyLevelComboBox);
-    controlLayout->addWidget(energyLabel);
-    controlLayout->addWidget(energySlider);
-    controlLayout->addWidget(healthLabel);
-    controlLayout->addWidget(healthSlider);
+    // controlLayout->addWidget(energyLabel);
+    // controlLayout->addWidget(energySlider);
+    // controlLayout->addWidget(healthLabel);
+    // controlLayout->addWidget(healthSlider);
     controlLayout->addWidget(animationDelayLabel);
     controlLayout->addWidget(animationDelaySlider);
-    controlLayout->addWidget(heightFactorLabel);
-    controlLayout->addWidget(heightFactorSlider);
+    // controlLayout->addWidget(heightFactorLabel);
+    // controlLayout->addWidget(heightFactorSlider);
     controlLayout->addWidget(heuristicWeightFactorLabel);
     controlLayout->addWidget(heuristicWeightFactorSlider);
 

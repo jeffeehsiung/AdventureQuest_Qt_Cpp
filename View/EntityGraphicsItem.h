@@ -5,6 +5,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QTimer>
+#include <QDebug>
 #include "Model/Entity.h"
 #include <vector>
 
