@@ -1,7 +1,7 @@
 #ifndef WORLDCONTROLLER_H
 #define WORLDCONTROLLER_H
 
-#include "Model/world.h"
+#include "world.h"
 #include "Model/structs.h"
 #include "Model/Entity.h"
 #include "Model/ProtagonistModel.h"
@@ -12,6 +12,7 @@
 #include <iostream>
 #include <QObject>
 #include <QMainWindow>
+#include <QDebug>
 
 class WorldController : public QObject
 {
@@ -96,6 +97,7 @@ class WorldController : public QObject
         void onDownArrowPressed();
         void onLeftArrowPressed();
         void onRightArrowPressed();
+        void autoplay();
 
 signals:
         void protagonistPositionChanged(int protagonistIndex);
@@ -106,16 +108,16 @@ private:
         int rows;
         int cols;
         int difficultyIdx;
-        coordinate exit = coordinate(10,10);
+        coordinate exit = coordinate(2,2);
         coordinate start = coordinate(0,0);
         std::vector<std::unique_ptr<TileModel>> tiles;
+        std::vector<node> nodes;
         std::vector<std::unique_ptr<TileModel>> healthPacks;
         std::vector<std::unique_ptr<TileModel>> walkedOnTiles;
         std::vector<std::unique_ptr<EnemyModel>> enemies;
         std::vector<std::unique_ptr<PEnemyModel>> penemies;
 //        std::vector<std::unique_ptr<XEnemyModel>> xenemies;
         std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
-        
 
 };
 

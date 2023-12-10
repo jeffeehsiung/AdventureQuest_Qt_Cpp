@@ -42,9 +42,13 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
      * create tilemodels, enemymodels, penemymodels, xenemymodels, and protagonistmodels based on created world
      * */
     for (auto &tile : world->getTiles()) {
+        std::unique_ptr<coordinate> pos = std::make_unique<coordinate>(tile->getXPos(), tile->getYPos());
+        nodes.push_back(node(tile->getValue(), *pos));
+        //qDebug() << "coordinate: " << pos->getXPos() << "\n";
         std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(std::move(tile));
         tiles.push_back(std::move(tileModel));
     }
+
 
     for ( auto &healthPack : world->getHealthPacks() ){
         std::unique_ptr<TileModel> healthPackModel = std::make_unique<TileModel>(std::move(healthPack));
@@ -319,6 +323,21 @@ coordinate WorldController::getExit()
 const std::vector<std::unique_ptr<TileModel> > &WorldController::getWalkedOnTiles() const
 {
     return walkedOnTiles;
+}
+
+void WorldController::autoplay(){
+    Comparator<node> comparator = [](const node& a, const node& b) {
+        return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
+    };
+    qDebug() << "start Pos: " << start.getXPos() << " "<< start.getYPos();
+    qDebug() << "exit Pos: " << exit.getXPos() << " "<< exit.getYPos();
+    PathFinder<node,coordinate> pathFinder(nodes, &start, &exit, comparator, this->getRows(), 1);
+
+    std::vector<int> result = pathFinder.A_star();
+    qDebug() << "Path to destination:";
+    for (int move : result) {
+        qDebug() << move;
+    }
 }
 
 
