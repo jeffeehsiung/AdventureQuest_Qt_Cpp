@@ -123,7 +123,7 @@ void MainWindow::setupUI()
 
     for (int i = 0; i < maxHealth; ++i) {
         QLabel* healthLabel = new QLabel(this);
-        QPixmap heartPixmap(":/images/healthpack/2.png");
+        QPixmap heartPixmap(":/images/healthpack/Idle/2.png");
         healthLabel->setPixmap(heartPixmap.scaled(heartSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
         healthLabels.append(healthLabel);
         controlLayout->addWidget(healthLabel);

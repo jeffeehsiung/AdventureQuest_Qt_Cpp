@@ -282,9 +282,9 @@ void WorldController::onUpArrowPressed() {
     if ((newX <= (cols -1)) && (newY <= (rows -1))){
         // Move the protagonist up
         protagonists[0]->move(0, -1);
-    if (isEnemy(protagonists[0]->getPosition())) {
-        onEncounterEnemy();
-    }
+        if (isEnemy(protagonists[0]->getPosition())) {
+            onEncounterEnemy();
+        }
         emit protagonistPositionChanged(0);
     }
 }
@@ -299,9 +299,9 @@ void WorldController::onDownArrowPressed() {
     if ((newX <= (cols -1)) && (newY <= (rows -1))){
         // Move the protagonist down
         protagonists[0]->move(0, 1); // Assuming the first protagonist in the vector
-    if (isEnemy(protagonists[0]->getPosition())) {
-        onEncounterEnemy();
-    }
+        if (isEnemy(protagonists[0]->getPosition())) {
+            onEncounterEnemy();
+        }
         emit protagonistPositionChanged(0);
     }
 }
@@ -316,9 +316,9 @@ void WorldController::onLeftArrowPressed() {
     if ((newX <= (cols -1)) && (newY <= (rows -1))){
         // Move the protagonist left
         protagonists[0]->move(-1, 0); // Assuming the first protagonist in the vector
-    if (isEnemy(protagonists[0]->getPosition())) {
-        onEncounterEnemy();
-    }
+        if (isEnemy(protagonists[0]->getPosition())) {
+            onEncounterEnemy();
+        }
         emit protagonistPositionChanged(0);
     }
 }
@@ -333,9 +333,9 @@ void WorldController::onRightArrowPressed() {
     if ((newX <= (cols -1)) && (newY <= (rows -1))){
         // Move the protagonist right
         protagonists[0]->move(1, 0); // Assuming the first protagonist in the vector
-    if (isEnemy(protagonists[0]->getPosition())) {
-        onEncounterEnemy();
-    }
+        if (isEnemy(protagonists[0]->getPosition())) {
+            onEncounterEnemy();
+        }
         emit protagonistPositionChanged(0);
     }
 }
