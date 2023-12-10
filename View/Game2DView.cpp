@@ -161,6 +161,8 @@ void Game2DView::zoomIn(int delta) {
     qreal targetZoomLevel = zoomLevel + delta * zoomSpeed;
     if (targetZoomLevel > maxZoomLevel) {  // If the target zoom level is greater than the max, clamp it
         targetZoomLevel = maxZoomLevel;
+        qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
+        this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     }
 
     if (zoomLevel < targetZoomLevel) {  // Only zoom in if not already at the max zoom level
@@ -181,6 +183,8 @@ void Game2DView::zoomOut(int delta) {
     qreal targetZoomLevel = zoomLevel - delta * zoomSpeed;
     if (targetZoomLevel < minZoomLevel) {  // If the target zoom level is less than the min, clamp it
         targetZoomLevel = minZoomLevel;
+        qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
+        this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     }
 
     if (zoomLevel > targetZoomLevel) {  // Only zoom out if not already at the min zoom level
