@@ -279,3 +279,4 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         QMainWindow::keyPressEvent(event);
     }
 }
+

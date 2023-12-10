@@ -73,7 +73,3 @@ void ViewController::syncState() {
     // Depending on how your state is represented, this could be a direct data copy,
     // or more complex logic to ensure both views are equivalent in terms of game state.
 }
-
-
-
-// Additional methods implementation...

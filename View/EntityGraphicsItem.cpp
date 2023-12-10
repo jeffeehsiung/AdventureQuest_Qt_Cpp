@@ -6,6 +6,7 @@ qreal EntityGraphicsItem::commonHeight = 0;
 qreal EntityGraphicsItem::tileWidth = 0;
 qreal EntityGraphicsItem::tileHeight = 0;
 
+
 EntityGraphicsItem::EntityGraphicsItem(const Entity& entity, QGraphicsRectItem* parent)
     : QGraphicsRectItem(0, 0, tileWidth, tileHeight, parent),
     entity(entity),

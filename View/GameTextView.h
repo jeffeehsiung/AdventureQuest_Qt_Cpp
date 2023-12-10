@@ -29,8 +29,8 @@ public:
      */
     void initializeView() override;
     void setBackground(int backgroundNumber) override;
-    void zoomIn() override;
-    void zoomOut() override;
+    void zoomIn(int delta) override;
+    void zoomOut(int delta) override;
     void updateView() override;
 
 signals:

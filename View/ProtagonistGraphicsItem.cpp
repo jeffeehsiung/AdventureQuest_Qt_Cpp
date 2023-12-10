@@ -8,29 +8,6 @@ ProtagonistGraphicsItem::ProtagonistGraphicsItem(const ProtagonistModel& protago
     loadAnimationFrames();
 }
 
-void ProtagonistGraphicsItem::nextFrame() {
-    std::vector<QPixmap>* currentFrames = nullptr;
-    switch (animationState) {
-    case IDLE: currentFrames = &idleFrames; break;
-    case MOVING: currentFrames = &moveFrames; break;
-    case ATTACK: currentFrames = &attackFrames; break;
-    case HURT: currentFrames = &hurtFrames; break;
-    case DYING: currentFrames = &dyingFrames; break;
-    case HEAL: currentFrames = &healFrames; break;
-    }
-
-    if (!currentFrames || currentFrames->empty()) return;
-
-    // Check if we reached the end of the animation
-    if (currentFrameIndex >= currentFrames->size()) {
-        handleAnimationEnd();
-        return;
-    }
-    image = (*currentFrames)[currentFrameIndex++];
-    update();
-}
-
-
 void ProtagonistGraphicsItem::loadAnimationFrames() {
     // Load the frames for each animation state
     loadFramesFromDirectory(baseFramesDir + "Idle/", idleFrames);
