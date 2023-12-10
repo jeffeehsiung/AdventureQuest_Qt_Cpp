@@ -2,6 +2,8 @@
 #define TILEGRAPHICSITEM_H
 
 #include <QGraphicsRectItem>
+#include <QDebug>
+#include <QDir>
 #include "EntityGraphicsItem.h"
 #include "Model/TileModel.h"
 
