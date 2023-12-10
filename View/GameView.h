@@ -23,8 +23,8 @@ public:
      */
     virtual void initializeView() = 0;
     virtual void setBackground(int backgroundNumber) = 0;
-    virtual void zoomIn() = 0;
-    virtual void zoomOut() = 0;
+    virtual void zoomIn(int delta) = 0;
+    virtual void zoomOut(int delta) = 0;
     virtual void updateView() = 0;
 signals:
     /**

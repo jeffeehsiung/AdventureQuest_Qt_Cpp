@@ -35,11 +35,6 @@ public:
 
 public slots:
     void onViewUpdated(QWidget* currentView);
-    /**
-     * from mainwindow sigals -> you are the slots
-     * void onXXXX()
-     *
-     * */
 
 signals:
     void viewUpdateRequested(QWidget* currentView);

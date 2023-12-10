@@ -87,6 +87,16 @@ void GameController::onViewUpdated(QWidget* currentView) {
     emit viewUpdateRequested(currentView);
 }
 
+//void GameController::onWheelScrolled(int delta) {
+//    auto& viewController = ViewController::getInstance();
+//    qDebug() << "delta: " << delta;
+//    if (delta > 0) {
+//        viewController.zoomIn2DView(delta);
+//    } else {
+//        viewController.zoomOut2DView(delta);
+//    }
+//}
+
 void GameController::onUpArrowPressed() {
     auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
@@ -118,3 +128,4 @@ void GameController::onRightArrowPressed() {
         worldController.onRightArrowPressed();
     }
 }
+

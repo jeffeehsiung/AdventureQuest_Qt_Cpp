@@ -175,11 +175,11 @@ void GameTextView::displayScene(const QString& sceneString) {
 }
 
 
-void GameTextView::zoomIn() {
+void GameTextView::zoomIn(int delta) {
     // No zooming functionality in the text view
 }
 
-void GameTextView::zoomOut() {
+void GameTextView::zoomOut(int delta) {
     // No zooming functionality in the text view
 }
 

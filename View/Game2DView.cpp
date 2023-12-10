@@ -137,7 +137,6 @@ void Game2DView::setBackground(int backgroundNumber) {
     // Add the background image as a pixmap item to the scene
     QGraphicsPixmapItem* backgroundItem = new QGraphicsPixmapItem(backgroundImage);
     backgroundItem->setZValue(-1); // Ensure it's drawn below all other items
-//    backgroundItem->setPos(10,10);
     scene->addItem(backgroundItem);
 
     // Set the scene's rectangle to the size of the resized background image
@@ -157,34 +156,52 @@ void Game2DView::updateView() {
     this->update();
 }
 
-void Game2DView::updateZoom() {
-    qreal scaleFactor = qPow(2.0, zoomLevel);
-
-    // Set the zoom level for the view
-    setTransform(QTransform::fromScale(scaleFactor, scaleFactor));
-    updateView();
-}
-
-void Game2DView::zoomIn() {
-    zoomLevel += 0.1; // Increase the zoom level
-
-    // Limit the zoom level if needed
-    if (zoomLevel > 2.0) {
-        zoomLevel = 2.0;
+void Game2DView::zoomIn(int delta) {
+    qreal maxZoomLevel = initZoomLevel * 2;
+    qreal targetZoomLevel = zoomLevel + delta * zoomSpeed;
+    if (targetZoomLevel > maxZoomLevel) {  // If the target zoom level is greater than the max, clamp it
+        targetZoomLevel = maxZoomLevel;
     }
 
-    updateZoom();
+    if (zoomLevel < targetZoomLevel) {  // Only zoom in if not already at the max zoom level
+        qreal factor = qPow(2.0, targetZoomLevel);
+        setTransform(QTransform::fromScale(factor, factor));
+        if (!protagonistGraphicsItems.empty()) {
+            centerOn(protagonistGraphicsItems.front().get());
+        }
+        zoomLevel = targetZoomLevel; // Update the current zoom level
+    }
+    this->update();
+    qDebug() << "zoom level: " << zoomLevel;
 }
 
-void Game2DView::zoomOut() {
-    zoomLevel -= 0.1; // Decrease the zoom level
-
-    // Limit the zoom level if needed
-    if (zoomLevel < 0.5) {
-        zoomLevel = 0.5;
+void Game2DView::zoomOut(int delta) {
+    qreal minZoomLevel = initZoomLevel * 0.1;
+    qreal targetZoomLevel = zoomLevel - delta * zoomSpeed;
+    if (targetZoomLevel < minZoomLevel) {  // If the target zoom level is less than the min, clamp it
+        targetZoomLevel = minZoomLevel;
     }
 
-    updateZoom();
+    if (zoomLevel > targetZoomLevel) {  // Only zoom out if not already at the min zoom level
+        qreal factor = qPow(2.0, targetZoomLevel);
+        setTransform(QTransform::fromScale(factor, factor));
+        if (!protagonistGraphicsItems.empty()) {
+            centerOn(protagonistGraphicsItems.front().get());
+        }
+        zoomLevel = targetZoomLevel; // Update the current zoom level
+    }
+    this->update();
+    qDebug() << "zoom level: " << zoomLevel;
+}
+
+void Game2DView::wheelEvent(QWheelEvent* event) {
+    int delta = event->angleDelta().y() / 6 ;
+    if (delta > 0) {
+        zoomIn(std::abs(delta));  // Zoom in when the wheel is scrolled up
+    }else{
+        zoomOut(std::abs(delta)); // Zoom out when the wheel is scrolled down
+    }
+    qDebug() << "delta : " << delta;
 }
 
 // This function should be called after setting the background and calculating tileWidth and tileHeight.
@@ -193,7 +210,7 @@ void Game2DView::scaleEntitiesToFitView() {
     qreal sceneHeight = scene->height();
     qreal someFactor;
     switch(currentBackgroundNumber){
-    case 1: someFactor = 30; break;
+    case 1: someFactor = 20; break;
     case 2: someFactor = 20; break;
     case 3: someFactor = 20; break;
     default: someFactor = 30; break;
@@ -212,8 +229,6 @@ void Game2DView::scaleEntitiesToFitView() {
     EntityGraphicsItem::setCommonDimensions(tileWidth * scaleFactor, tileHeight * scaleFactor);
     EntityGraphicsItem::setTileDimensions(tileWidth, tileHeight);
 }
-
-
 
 
 

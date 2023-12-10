@@ -16,6 +16,8 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 private:
     QString baseFramesDir;
+    void loadAnimationFrames();
+    void loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames);
 };
 
 #endif // TILEGRAPHICSITEM_H
