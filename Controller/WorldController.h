@@ -2,15 +2,17 @@
 #define WORLDCONTROLLER_H
 
 #include "world.h"
+#include "world.h"
 #include "Model/structs.h"
 #include "Model/ProtagonistModel.h"
 #include "Model/EnemyModel.h"
 #include "Model/TileModel.h"
-
+#include "pathfinder.h"
 
 #include <iostream>
 #include <QObject>
 #include <QMainWindow>
+#include <QDebug>
 
 class WorldController : public QObject
 {
@@ -25,7 +27,7 @@ class WorldController : public QObject
         WorldController(WorldController const&) = delete;
         void operator=(WorldController const&) = delete;
 
-        void createWorld(QString map, int nrOfEnemies, int gameDifficultyIdx, float pRatio);
+        void createWorld(QString map, int gameNumberOfPlayers, int gameDifficultyIdx, float pRatio);
 
         int getRows() const;
         int getCols() const;
@@ -85,15 +87,31 @@ class WorldController : public QObject
         coordinate getStart();
         coordinate getExit();
 
+        /**
+         * Path: walked path getter and setter
+         * TODO: missing setter
+         */
+        const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
+
+        void onUpArrowPressed();
+        void onDownArrowPressed();
+        void onLeftArrowPressed();
+        void onRightArrowPressed();
+        void autoplay();
+
+signals:
+        void protagonistPositionChanged(int protagonistIndex);
+
 private:
         WorldController();
         std::unique_ptr<World> world;
         int rows;
         int cols;
         int difficultyIdx;
-        coordinate exit = coordinate(1,1);
+        coordinate exit = coordinate(2,2);
         coordinate start = coordinate(0,0);
         std::vector<std::unique_ptr<TileModel>> tiles;
+        std::vector<node> nodes;
         std::vector<std::unique_ptr<TileModel>> healthPacks;
         std::vector<std::unique_ptr<EnemyModel>> enemies;
         std::vector<std::unique_ptr<PEnemyModel>> penemies;

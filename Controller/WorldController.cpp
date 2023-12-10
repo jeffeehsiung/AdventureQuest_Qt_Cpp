@@ -5,22 +5,26 @@ WorldController::WorldController()
     : world(std::make_unique<World>()) {
     // Basic initializations, if any
 }
-void WorldController::createWorld(QString map, int nrOfEnemies, int gameDifficultyIdx, float pRatio) {
+void WorldController::createWorld(QString map, int gameNumberOfPlayers, int gameDifficultyIdx, float pRatio) {
 
     /**
      * given gameDifficultyIdx assign the number of healthpacks
     */
     int nrOfHealthpacks = 0;
+    int nrOfEnemies = 0;
     switch (gameDifficultyIdx)
     {
     case 1:
         nrOfHealthpacks = 5;
+        nrOfEnemies = 8;
         break;
     case 2:
         nrOfHealthpacks = 3;
+        nrOfEnemies = 15;
         break;
     case 3:
         nrOfHealthpacks = 1;
+        nrOfEnemies = 30;
         break;
     default:
         break;
@@ -38,9 +42,13 @@ void WorldController::createWorld(QString map, int nrOfEnemies, int gameDifficul
      * create tilemodels, enemymodels, penemymodels, xenemymodels, and protagonistmodels based on created world
      * */
     for (auto &tile : world->getTiles()) {
+        std::unique_ptr<coordinate> pos = std::make_unique<coordinate>(tile->getXPos(), tile->getYPos());
+        nodes.push_back(node(tile->getValue(), *pos));
+        //qDebug() << "coordinate: " << pos->getXPos() << "\n";
         std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(std::move(tile));
         tiles.push_back(std::move(tileModel));
     }
+
 
     for ( auto &healthPack : world->getHealthPacks() ){
         std::unique_ptr<TileModel> healthPackModel = std::make_unique<TileModel>(std::move(healthPack));
@@ -268,6 +276,31 @@ void WorldController::removeHealthpack(coordinate coord)
     }
 }
 
+
+void WorldController::onUpArrowPressed() {
+    // Move the protagonist up
+    protagonists[0]->move(0, -1); // Assuming the first protagonist in the vector
+    emit protagonistPositionChanged(0);
+}
+
+void WorldController::onDownArrowPressed() {
+    // Move the protagonist down
+    protagonists[0]->move(0, 1);
+    emit protagonistPositionChanged(0);
+}
+
+void WorldController::onLeftArrowPressed() {
+    // Move the protagonist left
+    protagonists[0]->move(-1, 0);
+    emit protagonistPositionChanged(0);
+}
+
+void WorldController::onRightArrowPressed() {
+    // Move the protagonist right
+    protagonists[0]->move(1, 0);
+    emit protagonistPositionChanged(0);
+}
+
 /**
  * start and exit position functions
  */
@@ -290,6 +323,21 @@ coordinate WorldController::getExit()
 const std::vector<std::unique_ptr<TileModel> > &WorldController::getWalkedOnTiles() const
 {
     return walkedOnTiles;
+}
+
+void WorldController::autoplay(){
+    Comparator<node> comparator = [](const node& a, const node& b) {
+        return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
+    };
+    qDebug() << "start Pos: " << start.getXPos() << " "<< start.getYPos();
+    qDebug() << "exit Pos: " << exit.getXPos() << " "<< exit.getYPos();
+    PathFinder<node,coordinate> pathFinder(nodes, &start, &exit, comparator, this->getRows(), 1);
+
+    std::vector<int> result = pathFinder.A_star();
+    qDebug() << "Path to destination:";
+    for (int move : result) {
+        qDebug() << move;
+    }
 }
 
 

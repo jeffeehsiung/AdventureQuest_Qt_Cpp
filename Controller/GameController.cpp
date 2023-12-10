@@ -1,7 +1,11 @@
 #include "GameController.h"
 
 GameController::GameController(QObject *parent)
-    : QObject(parent){
+    : QObject(parent),
+    isGameStarted(false),
+    isGamePaused(false),
+    isGameAutoplayed(false)
+{
     /** set up connections: viewcontroller to gamecontroller */
     auto& viewController = ViewController::getInstance();
     connect(&viewController, &ViewController::viewUpdated, this, &GameController::onViewUpdated);
@@ -44,17 +48,16 @@ void GameController::decideGameParameters() {
     if (gameDifficultyLevel == "Easy") {
         gameMap = ":/images/world_images/worldmap.png";
         gameDifficultyIdx = 1;
-        gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 1.0 : 2.0;
+        gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.1 : 0.2;
     } else if (gameDifficultyLevel == "Medium") {
-        gameMap = ":/images/world_images/worldmap.png";
+        gameMap = ":/images/world_images/maze1.png";
         gameDifficultyIdx = 2;
-        gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 2.0 : 4.0;
+        gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.2 : 0.4;
     } else if (gameDifficultyLevel == "Hard") {
-        gameMap = ":/images/world_images/worldmap4.png";
+        gameMap = ":/images/world_images/maze2.png";
         gameDifficultyIdx = 3;
-        gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 3.0 : 6.0;
+        gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.3 : 0.6;
     }
-
 }
 
 void GameController::initializeWorld() {
@@ -65,6 +68,10 @@ void GameController::initializeWorld() {
 
     auto& viewController = ViewController::getInstance();
     viewController.initializeViews(); // Optional: switch to initial view
+
+    if (isGameStarted) {
+        worldController.autoplay();
+    }
 
 }
 
@@ -80,7 +87,37 @@ void GameController::switchToTextView() {
 }
 
 void GameController::onViewUpdated(QWidget* currentView) {
-    // notify mainwindow
     emit viewUpdateRequested(currentView);
 }
 
+void GameController::onUpArrowPressed() {
+    auto& worldController = WorldController::getInstance();
+    if (isGameStarted) {
+        qDebug() << "UP!" << "\n";
+        worldController.onUpArrowPressed();
+    }
+}
+
+void GameController::onDownArrowPressed() {
+    auto& worldController = WorldController::getInstance();
+    if (isGameStarted) {
+        qDebug() << "DOWN!" << "\n";
+        worldController.onDownArrowPressed();
+    }
+}
+
+void GameController::onLeftArrowPressed() {
+    auto& worldController = WorldController::getInstance();
+    if (isGameStarted) {
+        qDebug() << "LEFT!" << "\n";
+        worldController.onLeftArrowPressed();
+    }
+}
+
+void GameController::onRightArrowPressed() {
+    auto& worldController = WorldController::getInstance();
+    if (isGameStarted) {
+        qDebug() << "RIGHT!" << "\n";
+        worldController.onRightArrowPressed();
+    }
+}

@@ -1,5 +1,5 @@
 QT       += core gui
-CONFIG += c++17
+CONFIG += c++20
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 
@@ -17,6 +17,7 @@ SOURCES += main.cpp\
     Model/WorldModel.cpp \
     Model/struct.cpp \
     View/EnemyGraphicsItem.cpp \
+    View/EntityGraphicsItem.cpp \
     View/Game2DView.cpp \
     View/GameTextView.cpp \
     View/ProtagonistGraphicsItem.cpp \
@@ -42,7 +43,8 @@ HEADERS  += MainWindow.h\
     View/ProtagonistGraphicsItem.h \
     View/EnemyGraphicsItem.h \
     View/EntityGraphicsItem.h \
-    View/TileGraphicsItem.h
+    View/TileGraphicsItem.h \
+    pathfinder.h
 
 FORMS    += mainwindow.ui
 
@@ -60,6 +62,13 @@ DISTFILES += \
 
 SUBDIRS += \
     world.pro
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../worldlib/release/ -lworld
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../worldlib/debug/ -lworld
+else:unix: LIBS += -L$$PWD/../worldlib/ -lworld
+
+INCLUDEPATH += $$PWD/../worldlib
+DEPENDPATH += $$PWD/../worldlib
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../worldlib/release/ -lworld
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../worldlib/debug/ -lworld
