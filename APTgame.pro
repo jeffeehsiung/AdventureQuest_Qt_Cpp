@@ -14,6 +14,7 @@ SOURCES += main.cpp\
     Model/EnemyModel.cpp \
     Model/ProtagonistModel.cpp \
     Model/TileModel.cpp \
+    Model/WorldModel.cpp \
     Model/struct.cpp \
     View/EnemyGraphicsItem.cpp \
     View/Game2DView.cpp \
@@ -33,6 +34,7 @@ HEADERS  += MainWindow.h\
     Model/ProtagonistModel.h \
     Model/TileModel.h \
     Model/structs.h \
+    Model/WorldModel.h \
     View/Game2DView.h \
     View/GameTextView.h \
     View/GameView.h \

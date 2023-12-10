@@ -1,9 +1,8 @@
 #ifndef WORLDCONTROLLER_H
 #define WORLDCONTROLLER_H
 
-#include "Model/world.h"
+#include "world.h"
 #include "Model/structs.h"
-#include "Model/Entity.h"
 #include "Model/ProtagonistModel.h"
 #include "Model/EnemyModel.h"
 #include "Model/TileModel.h"
@@ -86,11 +85,6 @@ class WorldController : public QObject
         coordinate getStart();
         coordinate getExit();
 
-        /**
-         * Path: walked path getter and setter
-         * TODO: missing setter
-         */
-        const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
 private:
         WorldController();
         std::unique_ptr<World> world;
@@ -101,7 +95,6 @@ private:
         coordinate start = coordinate(0,0);
         std::vector<std::unique_ptr<TileModel>> tiles;
         std::vector<std::unique_ptr<TileModel>> healthPacks;
-        std::vector<std::unique_ptr<TileModel>> walkedOnTiles;
         std::vector<std::unique_ptr<EnemyModel>> enemies;
         std::vector<std::unique_ptr<PEnemyModel>> penemies;
 //        std::vector<std::unique_ptr<XEnemyModel>> xenemies;
