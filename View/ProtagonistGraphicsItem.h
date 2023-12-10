@@ -15,7 +15,6 @@ private:
     QString baseFramesDir;
     void loadAnimationFrames();
     void loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames);
-
 };
 
 #endif // PROTAGONISTGRAPHICSITEM_H

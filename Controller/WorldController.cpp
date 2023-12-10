@@ -274,26 +274,44 @@ void WorldController::removeHealthpack(coordinate coord)
 
 void WorldController::onUpArrowPressed() {
     // Move the protagonist up
-    protagonists[0]->move(0, -1); // Assuming the first protagonist in the vector
+    protagonists[0]->move(0, -1);
+    if (isEnemy(protagonists[0]->getPosition())) {
+        onEncounterEnemy();
+    }
     emit protagonistPositionChanged(0);
 }
 
 void WorldController::onDownArrowPressed() {
     // Move the protagonist down
     protagonists[0]->move(0, 1);
+    if (isEnemy(protagonists[0]->getPosition())) {
+        onEncounterEnemy();
+    }
     emit protagonistPositionChanged(0);
 }
 
 void WorldController::onLeftArrowPressed() {
     // Move the protagonist left
     protagonists[0]->move(-1, 0);
+    if (isEnemy(protagonists[0]->getPosition())) {
+        onEncounterEnemy();
+    }
     emit protagonistPositionChanged(0);
 }
 
 void WorldController::onRightArrowPressed() {
     // Move the protagonist right
     protagonists[0]->move(1, 0);
+    if (isEnemy(protagonists[0]->getPosition())) {
+        onEncounterEnemy();
+    }
     emit protagonistPositionChanged(0);
+}
+
+void WorldController::onEncounterEnemy() {
+    qDebug() << "Encountered an enemy!" << "\n";
+    protagonists[0]->setHealth(protagonists[0]->getHealth() - 1);
+    qDebug() << "Health: " << protagonists[0]->getHealth() << "\n";
 }
 
 /**

@@ -39,7 +39,7 @@ void ProtagonistModel::move(int deltaX, int deltaY) {
     protagonist->setYPos(protagonist->getYPos() + deltaY);
 }
 
-float ProtagonistModel::getHealth() const {
+int ProtagonistModel::getHealth() const {
     // Return the current health of the protagonist.
     return protagonist->getHealth();
 }
@@ -49,7 +49,7 @@ void ProtagonistModel::setHealth(float health) {
     protagonist->setHealth(health);
 }
 
-float ProtagonistModel::getEnergy() const {
+int ProtagonistModel::getEnergy() const {
     // Return the current energy of the protagonist.
     return protagonist->getEnergy();
 }

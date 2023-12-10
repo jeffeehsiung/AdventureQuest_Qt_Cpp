@@ -60,7 +60,3 @@ void ProtagonistGraphicsItem::loadFramesFromDirectory(const QString& dirPath, st
         }
     }
 }
-
-
-
-

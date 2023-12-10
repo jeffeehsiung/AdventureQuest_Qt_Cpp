@@ -66,6 +66,9 @@ void GameController::initializeWorld() {
 
     auto& worldController = WorldController::getInstance();
     worldController.createWorld(gameMap, gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
+    worldController.getProtagonists()[0]->setHealth(5);
+    gameHealth1 = worldController.getProtagonists()[0]->getHealth();
+    gameEnergy1 = worldController.getProtagonists()[0]->getEnergy();
 
     auto& viewController = ViewController::getInstance();
     viewController.initializeViews(); // Optional: switch to initial view
@@ -92,6 +95,7 @@ void GameController::onUpArrowPressed() {
     if (isGameStarted) {
         qDebug() << "UP!" << "\n";
         worldController.onUpArrowPressed();
+        gameHealth1 = worldController.getProtagonists()[0]->getHealth();
     }
 }
 
@@ -100,6 +104,7 @@ void GameController::onDownArrowPressed() {
     if (isGameStarted) {
         qDebug() << "DOWN!" << "\n";
         worldController.onDownArrowPressed();
+        gameHealth1 = worldController.getProtagonists()[0]->getHealth();
     }
 }
 
@@ -108,6 +113,7 @@ void GameController::onLeftArrowPressed() {
     if (isGameStarted) {
         qDebug() << "LEFT!" << "\n";
         worldController.onLeftArrowPressed();
+        gameHealth1 = worldController.getProtagonists()[0]->getHealth();
     }
 }
 
@@ -116,5 +122,14 @@ void GameController::onRightArrowPressed() {
     if (isGameStarted) {
         qDebug() << "RIGHT!" << "\n";
         worldController.onRightArrowPressed();
+        gameHealth1 = worldController.getProtagonists()[0]->getHealth();
     }
+}
+
+int GameController::getHealth1() {
+    return gameHealth1;
+}
+
+int GameController::getEnergy1() {
+    return gameEnergy1;
 }

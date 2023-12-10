@@ -9,6 +9,8 @@ class ProtagonistModel : public Entity {
 
 private:
     std::unique_ptr<Protagonist> protagonist;
+    int health;
+    int energy;
 
 public:
     explicit ProtagonistModel(std::unique_ptr<Protagonist> protagonist); // Constructor declaration
@@ -20,9 +22,9 @@ public:
     void move(int deltaX, int deltaY) override;
 
     // Additional functionalities specific to ProtagonistModel
-    float getHealth() const;
+    int getHealth() const;
     void setHealth(float health);
-    float getEnergy() const;
+    int getEnergy() const;
     void setEnergy(float energy);
     std::string serialize() const;
 };

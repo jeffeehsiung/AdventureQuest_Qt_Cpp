@@ -6,15 +6,9 @@ MainWindow::MainWindow(QWidget *parent)
     startButton(new QPushButton("Start", this)),
     pauseButton(new QPushButton("Pause", this)),
     quitButton(new QPushButton("Quit", this)),
-    // energySlider(new QSlider(Qt::Horizontal, this)),
-    // healthSlider(new QSlider(Qt::Horizontal, this)),
     animationDelaySlider(new QSlider(Qt::Horizontal, this)),
-    // heightFactorSlider(new QSlider(Qt::Horizontal, this)),
     heuristicWeightFactorSlider(new QSlider(Qt::Horizontal, this)),
-    // energyLabel(new QLabel("Energy", this)),
-    // healthLabel(new QLabel("Health", this)),
     animationDelayLabel(new QLabel("Animation delay", this)),
-    // heightFactorLabel(new QLabel("Height factor", this)),
     heuristicWeightFactorLabel(new QLabel("Heuristic weight factor", this)),
     viewTabs(new QTabWidget(this)),
     graphicsTab(new QWidget(this)),
@@ -110,28 +104,44 @@ void MainWindow::setupUI()
     controlLayout->addWidget(pauseButton);
     controlLayout->addWidget(autoPlayButton);
     controlLayout->addWidget(quitButton);
-    controlLayout->addStretch(1); // Push the remaining elements to the right
+    
     controlLayout->addWidget(playerNumberLabel);
     controlLayout->addWidget(playerNumberComboBox);
     controlLayout->addWidget(difficultyLevelLabel);
     controlLayout->addWidget(difficultyLevelComboBox);
-    // controlLayout->addWidget(energyLabel);
-    // controlLayout->addWidget(energySlider);
-    // controlLayout->addWidget(healthLabel);
-    // controlLayout->addWidget(healthSlider);
     controlLayout->addWidget(animationDelayLabel);
     controlLayout->addWidget(animationDelaySlider);
-    // controlLayout->addWidget(heightFactorLabel);
-    // controlLayout->addWidget(heightFactorSlider);
     controlLayout->addWidget(heuristicWeightFactorLabel);
     controlLayout->addWidget(heuristicWeightFactorSlider);
+
+    controlLayout->addStretch(1); // Push the remaining elements to the right
+
+    const int maxHealth = 5;
+    const int maxEnergy = 50;
+    const QSize heartSize(30, 30);
+    const QSize energySize(5, 5);
+
+    for (int i = 0; i < maxHealth; ++i) {
+        QLabel* healthLabel = new QLabel(this);
+        QPixmap heartPixmap(":/images/healthpack/2.png");
+        healthLabel->setPixmap(heartPixmap.scaled(heartSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        healthLabels.append(healthLabel);
+        controlLayout->addWidget(healthLabel);
+    }
+
+    for (int i = 0; i < maxEnergy; ++i) {
+        QLabel* energyLabel = new QLabel(this);
+        QPixmap starPixmap(":/images/tiles/Idle/00.png");
+        energyLabel->setPixmap(starPixmap.scaled(energySize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        energyLabels.append(energyLabel);
+        controlLayout->addWidget(energyLabel);
+    }
 
     // Add control layout to the main layout
     mainLayout->addLayout(controlLayout);
 
     // Set the central widget layout
     centralWidget->setLayout(mainLayout);
-
 }
 
 void MainWindow::onStartButtonClicked()
@@ -265,17 +275,36 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
     case Qt::Key_W:
         gameController->onUpArrowPressed();
+        updateHealthDisplay();
         break;
     case Qt::Key_S:
         gameController->onDownArrowPressed();
+        updateHealthDisplay();
         break;
     case Qt::Key_A:
         gameController->onLeftArrowPressed();
+        updateHealthDisplay();
         break;
     case Qt::Key_D:
         gameController->onRightArrowPressed();
+        updateHealthDisplay();
         break;
     default:
         QMainWindow::keyPressEvent(event);
     }
+}
+
+void MainWindow::updateHealthDisplay() {
+    int currentHealth = gameController->getHealth1();
+    for (int i = 0; i < healthLabels.size(); ++i) {
+        if (i < currentHealth) {
+            healthLabels[i]->setVisible(true);
+        } else {
+            healthLabels[i]->setVisible(false);
+        }
+    }
+}
+
+void MainWindow::updateEnergyDisplay() {
+
 }

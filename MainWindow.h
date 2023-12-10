@@ -22,21 +22,19 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void displayView(QWidget* view);
+    void updateHealthDisplay();
+    void updateEnergyDisplay();
 
 private:
     QWidget *centralWidget;
     QPushButton *startButton;
     QPushButton *pauseButton;
     QPushButton *quitButton;
-    // QSlider *energySlider;
-    // QSlider *healthSlider;
+    QVector<QLabel*> healthLabels;
+    QVector<QLabel*> energyLabels;
     QSlider *animationDelaySlider;
-    // QSlider *heightFactorSlider;
     QSlider *heuristicWeightFactorSlider;
-    // QLabel *energyLabel;
-    // QLabel *healthLabel;
     QLabel *animationDelayLabel;
-    // QLabel *heightFactorLabel;
     QLabel *heuristicWeightFactorLabel;
     QTabWidget *viewTabs;
     QWidget *graphicsTab;

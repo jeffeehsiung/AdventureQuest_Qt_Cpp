@@ -12,6 +12,7 @@
 #include <iostream>
 #include <QObject>
 #include <QMainWindow>
+#include <QDebug>
 
 class WorldController : public QObject
 {
@@ -96,6 +97,8 @@ class WorldController : public QObject
         void onDownArrowPressed();
         void onLeftArrowPressed();
         void onRightArrowPressed();
+
+        void onEncounterEnemy();
 
 signals:
         void protagonistPositionChanged(int protagonistIndex);
