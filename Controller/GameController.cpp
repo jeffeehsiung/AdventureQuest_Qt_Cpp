@@ -133,3 +133,16 @@ int GameController::getHealth1() {
 int GameController::getEnergy1() {
     return gameEnergy1;
 }
+
+bool GameController::isGameOver() {
+    if (!isGameStarted) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+void GameController::setGameOver() {
+    isGameStarted = false;
+}

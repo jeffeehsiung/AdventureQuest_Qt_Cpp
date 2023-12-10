@@ -310,7 +310,13 @@ void WorldController::onRightArrowPressed() {
 
 void WorldController::onEncounterEnemy() {
     qDebug() << "Encountered an enemy!" << "\n";
-    protagonists[0]->setHealth(protagonists[0]->getHealth() - 1);
+    if (protagonists[0]->getHealth() > 0) {
+        protagonists[0]->setHealth(protagonists[0]->getHealth() - 1);
+    }
+    else {
+        protagonists[0]->setHealth(0);
+        qDebug() << "You died!" << "\n";
+    }
     qDebug() << "Health: " << protagonists[0]->getHealth() << "\n";
 }
 

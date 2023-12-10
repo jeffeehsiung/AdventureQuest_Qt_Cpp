@@ -242,6 +242,10 @@ void MainWindow::onQuitButtonClicked()
     gameController->readGameDifficultyLevel("Not Selected");
 
     gameController->printAllGameInfo();
+
+    gameController->setGameOver();
+    startButton->setText("Exit");
+    QMessageBox::information(this, "Game Over", "YOU LOSE.");
 }
 
 void MainWindow::onViewTabChanged(int index)
@@ -271,31 +275,37 @@ void MainWindow::displayView(QWidget* view) {
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-    setFocusPolicy(Qt::StrongFocus);
-    switch (event->key()) {
-    case Qt::Key_W:
-        gameController->onUpArrowPressed();
-        updateHealthDisplay();
-        break;
-    case Qt::Key_S:
-        gameController->onDownArrowPressed();
-        updateHealthDisplay();
-        break;
-    case Qt::Key_A:
-        gameController->onLeftArrowPressed();
-        updateHealthDisplay();
-        break;
-    case Qt::Key_D:
-        gameController->onRightArrowPressed();
-        updateHealthDisplay();
-        break;
-    default:
-        QMainWindow::keyPressEvent(event);
+    if (!gameController->isGameOver()) {
+        setFocusPolicy(Qt::StrongFocus);
+        switch (event->key()) {
+        case Qt::Key_W:
+            gameController->onUpArrowPressed();
+            updateHealthDisplay();
+            break;
+        case Qt::Key_S:
+            gameController->onDownArrowPressed();
+            updateHealthDisplay();
+            break;
+        case Qt::Key_A:
+            gameController->onLeftArrowPressed();
+            updateHealthDisplay();
+            break;
+        case Qt::Key_D:
+            gameController->onRightArrowPressed();
+            updateHealthDisplay();
+            break;
+        default:
+            QMainWindow::keyPressEvent(event);
+        }
     }
 }
 
 void MainWindow::updateHealthDisplay() {
     int currentHealth = gameController->getHealth1();
+    if (currentHealth == 0) {
+        gameController->setGameOver();
+        QMessageBox::information(this, "Game Over", "DIE! YOU'VE GOT NOTHING! YOU LOSE!");
+    }
     for (int i = 0; i < healthLabels.size(); ++i) {
         if (i < currentHealth) {
             healthLabels[i]->setVisible(true);

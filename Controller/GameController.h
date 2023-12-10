@@ -36,6 +36,9 @@ public:
     int getHealth1();
     int getEnergy1();
 
+    bool isGameOver();
+    void setGameOver();
+
 public slots:
     void onViewUpdated(QWidget* currentView);
     /**

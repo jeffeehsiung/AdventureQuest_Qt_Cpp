@@ -11,6 +11,7 @@
 #include <QComboBox>
 #include <QTabWidget>
 #include <QKeyEvent>
+#include <QMessageBox>
 #include "Controller/GameController.h"
 
 
