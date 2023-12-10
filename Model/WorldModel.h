@@ -68,6 +68,7 @@ public:
          */
     coordinate getStart();
     coordinate getExit();
+    std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
 
 
 private:
@@ -83,7 +84,7 @@ private:
     std::vector<std::unique_ptr<EnemyModel>> enemies;
     std::vector<std::unique_ptr<PEnemyModel>> penemies;
     //std::vector<std::unique_ptr<XEnemyModel>> xenemies;
-    std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
+
 };
 
 #endif // WORLDMODEL_H
