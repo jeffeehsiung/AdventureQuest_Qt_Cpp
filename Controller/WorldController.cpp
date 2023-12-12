@@ -30,7 +30,7 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
     }
     difficultyIdx = gameDifficultyIdx;
     worlds.push_back(std::make_shared<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
-    worlds.push_back(std::make_shared<WorldModel>(":/images/world_images/maze1.png", nrOfEnemies + 3, nrOfHealthpacks, pRatio, false));
+    worlds.push_back(std::make_shared<WorldModel>(map, nrOfEnemies + 3, nrOfHealthpacks, pRatio, false));
     currentWorld = worlds[0];
 }
 
@@ -225,6 +225,7 @@ void WorldController::onRightArrowPressed() {
         }
         emit protagonistPositionChanged(0);
     }
+    playerReachedExit();
 }
 
 void WorldController::onEncounterEnemy() {
@@ -255,6 +256,7 @@ void WorldController::playerReachedExit(){
         currentWorld->protagonists[0]->setPosition(worlds[1]->getStart());
         worlds[1]->addProtagonist(worlds[0]->removeProtagonists());
         currentWorld = worlds[1];
+        emit updateLevel();
         emit protagonistPositionChanged(0);
         qDebug() << "LevelSwitched!" << "\n";
     }
@@ -270,24 +272,33 @@ coordinate WorldController::getStart()
 
 coordinate WorldController::getExit()
 {
-    return currentWorld->getExit();
+    return currentWorld->getStart();
+}
+
+std::vector<std::shared_ptr<WorldModel>> WorldController::getWorlds(){
+    return worlds;
+}
+
+std::shared_ptr<WorldModel> WorldController::getCurrentWorld(){
+    return currentWorld;
 }
 
 
-//void WorldController::autoplay(){
+
+// void WorldController::autoplay(){
 //    Comparator<node> comparator = [](const node& a, const node& b) {
-//        return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
+//         return (a.f) < (b.f);  // Assuming you want the node with the lowest 'f' value on top
 //    };
 //    qDebug() << "start Pos: " << currentWorld->getStart().getXPos() << " "<< currentWorld->getStart().getYPos();
 //    qDebug() << "exit Pos: " << currentWorld->getExit().getXPos() << " "<< currentWorld->getExit().getYPos();
-//    PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getStart(), currentWorld->getExit(), comparator, this->getRows(), 1);
+//    PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getStartValue(), currentWorld->getExitValue(), comparator, this->getRows(), 0);
 
 //    std::vector<int> result = pathFinder.A_star();
 //    qDebug() << "Path to destination:";
 //    for (int move : result) {
 //        qDebug() << move;
 //    }
-//}
+// }
 
 
 

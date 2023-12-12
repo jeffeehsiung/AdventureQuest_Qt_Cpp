@@ -30,10 +30,12 @@ void Game2DView::animateEntityAction(int index, AnimationState newState) {
 }
 
 void Game2DView::initializeView() {
-    if (!scene) {
-        scene = new QGraphicsScene(this);
-        setScene(scene);
-    }
+//    if (!scene) {
+//        scene = new QGraphicsScene(this);
+//        setScene(scene);
+//        qDebug()<< "help";
+//    }
+    //setScene(scenes[0]);
 
     // Get the singleton instance of WorldController
     auto& worldController = WorldController::getInstance();
@@ -43,76 +45,76 @@ void Game2DView::initializeView() {
     qDebug() << "backgroundImage width: " << backgroundImage.width() << "backgroundImage heght" << backgroundImage.height();
     qDebug() << "worldController cols: " << worldController.getCols() << "worldController height" << worldController.getRows();
     qDebug() << "view width: " << this->width() << "view height" << this->height();
-    qDebug() << "scene width: " << scene->width() << "scene height" << scene->height();
+    qDebug() << "scene width: " << scenes[0]->width() << "scene height" << scenes[0]->height();
 
     qDebug() << "tilewidth: " << tileWidth << " tileheight: " << tileHeight;
 
     scaleEntitiesToFitView();
+    //for(int i = 0; i < 2; i++){
+        // Extract entities from the WorldController
+        const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getCurrentWorld()->getTiles();
+        const std::vector<std::unique_ptr<TileModel>>& healthPacks = worldController.getCurrentWorld()->getHealthPacks();
+        const std::vector<std::unique_ptr<EnemyModel>>& enemies = worldController.getCurrentWorld()->getEnemies();
+        const std::vector<std::unique_ptr<PEnemyModel>>& penemies = worldController.getCurrentWorld()->getPEnemies();
+        const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = worldController.getProtagonists();
 
-    // Extract entities from the WorldController
-    const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getTiles();
-    const std::vector<std::unique_ptr<TileModel>>& healthPacks = worldController.getHealthPacks();
-    const std::vector<std::unique_ptr<EnemyModel>>& enemies = worldController.getEnemies();
-    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = worldController.getPEnemies();
-    const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = worldController.getProtagonists();
-
-    /** baseFramesDir for tile is constant */
-    QString tileBase = ":/images/tiles/";
-    for (const auto& tile : tiles) {
-        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
-        scene->addItem(tileGraphicsItem.get());
-        tileGraphicsItems.push_back(std::move(tileGraphicsItem));
-    }
-
-    /** baseFramesDir for healthpack is constant */
-    QString healthpackBase = ":/images/healthpack/";
-    for (const auto& healthPack : healthPacks) {
-        std::unique_ptr<TileGraphicsItem> healthPackGraphicsItem = std::make_unique<TileGraphicsItem>(*healthPack, healthpackBase);
-        scene->addItem(healthPackGraphicsItem.get());
-        tileGraphicsItems.push_back(std::move(healthPackGraphicsItem));
-    }
-
-    /** baseFramesDir for enemy is constant */
-    QString enemyBase = ":/images/enemy_golem/PNG Sequences/";
-    for (const auto& enemy : enemies) {
-        std::unique_ptr<EnemyGraphicsItem> enemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*enemy, enemyBase);
-        scene->addItem(enemyGraphicsItem.get());
-        enemyGraphicsItems.push_back(std::move(enemyGraphicsItem));
-    }
-
-    /** baseFramesDir for penemy is constant */
-    QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
-    for (const auto& penemy : penemies) {
-        std::unique_ptr<EnemyGraphicsItem> penemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*penemy, penemyBase);
-        scene->addItem(penemyGraphicsItem.get());
-        enemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
-    }
-
-    /** baseFramesDir for protagonist depends on numbers of protagonist*/
-    QString pro1Base = ":/images/protagonist_fighter/";
-    QString pro2Base = ":/images/protagonist_samurai/";
-    QString pro3Base = ":/images/protagonist_shinobi/";
-    for (size_t i = 0; i < protagonists.size(); ++i) {
-        QString protagonistBase; // Variable to hold the base frame directory
-        if (i == 0) {
-            protagonistBase = pro1Base;
-        } else if (i == 1) {
-            protagonistBase = pro1Base;
-        } else if (i == 2){
-            protagonistBase = pro2Base;
-        } else if (i == 3){
-            protagonistBase = pro3Base;
-        } else {
-            protagonistBase = pro1Base;
+        /** baseFramesDir for tile is constant */
+        QString tileBase = ":/images/tiles/";
+        for (const auto& tile : tiles) {
+            std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
+            scenes[0]->addItem(tileGraphicsItem.get());
+            tileGraphicsItems.push_back(std::move(tileGraphicsItem));
         }
-        std::unique_ptr<ProtagonistGraphicsItem> protagonistGraphicsItem = std::make_unique<ProtagonistGraphicsItem>(*protagonists[i], protagonistBase);
-        scene->addItem(protagonistGraphicsItem.get());
-        protagonistGraphicsItems.push_back(std::move(protagonistGraphicsItem));
 
-    }
+        /** baseFramesDir for healthpack is constant */
+        QString healthpackBase = ":/images/healthpack/";
+        for (const auto& healthPack : healthPacks) {
+            std::unique_ptr<TileGraphicsItem> healthPackGraphicsItem = std::make_unique<TileGraphicsItem>(*healthPack, healthpackBase);
+            scenes[0]->addItem(healthPackGraphicsItem.get());
+            tileGraphicsItems.push_back(std::move(healthPackGraphicsItem));
+        }
 
-    this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-    qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
+        /** baseFramesDir for enemy is constant */
+        QString enemyBase = ":/images/enemy_golem/PNG Sequences/";
+        for (const auto& enemy : enemies) {
+            std::unique_ptr<EnemyGraphicsItem> enemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*enemy, enemyBase);
+            scenes[0]->addItem(enemyGraphicsItem.get());
+            enemyGraphicsItems.push_back(std::move(enemyGraphicsItem));
+        }
+
+        /** baseFramesDir for penemy is constant */
+        QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
+        for (const auto& penemy : penemies) {
+            std::unique_ptr<EnemyGraphicsItem> penemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*penemy, penemyBase);
+            scenes[0]->addItem(penemyGraphicsItem.get());
+            enemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
+        }
+
+        /** baseFramesDir for protagonist depends on numbers of protagonist*/
+        QString pro1Base = ":/images/protagonist_fighter/";
+        QString pro2Base = ":/images/protagonist_samurai/";
+        QString pro3Base = ":/images/protagonist_shinobi/";
+        for (size_t i = 0; i < protagonists.size(); ++i) {
+            QString protagonistBase; // Variable to hold the base frame directory
+            if (i == 0) {
+                protagonistBase = pro1Base;
+            } else if (i == 1) {
+                protagonistBase = pro1Base;
+            } else if (i == 2){
+                protagonistBase = pro2Base;
+            } else if (i == 3){
+                protagonistBase = pro3Base;
+            } else {
+                protagonistBase = pro1Base;
+            }
+            std::unique_ptr<ProtagonistGraphicsItem> protagonistGraphicsItem = std::make_unique<ProtagonistGraphicsItem>(*protagonists[i], protagonistBase);
+            scenes[0]->addItem(protagonistGraphicsItem.get());
+            protagonistGraphicsItems.push_back(std::move(protagonistGraphicsItem));
+
+        }
+    //}
+    this->fitInView(scenes[0]->sceneRect(), Qt::KeepAspectRatio);
+    qDebug() << "items added scene width: " << scenes[0]->width() << "items added scene height" << scenes[0]->height();
     qDebug() << "items added view width: " << this->width() << "items added view height" << this->height();
     this->update();
 
@@ -151,6 +153,16 @@ void Game2DView::updateView() {
     for(const auto& protagonistGraphicsItem : protagonistGraphicsItems) {
         if (protagonistGraphicsItem) {
             protagonistGraphicsItem->updatePosition();
+        }
+    }
+    this->update();
+}
+
+void Game2DView::levelChange() {
+    auto& worldController = WorldController::getInstance();
+    for(int i = 0; i < static_cast<int>(worldController.getWorlds().size()) ; i ++){
+        if(worldController.getWorlds()[i] == worldController.getCurrentWorld()){
+            setScene(scenes[i]);
         }
     }
     this->update();

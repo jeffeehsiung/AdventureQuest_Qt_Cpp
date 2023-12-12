@@ -26,8 +26,10 @@ public:
         zoomSpeed = 0.001; // Example value, adjust based on testing
         zoomLevel = 1.0;
         initZoomLevel = 1.0;
+        scenes.push_back(new QGraphicsScene(this));
+        scenes.push_back(new QGraphicsScene(this));
         scene = new QGraphicsScene(this);
-        setScene(scene);
+        setScene(scenes[0]);
     }
 
     virtual ~Game2DView(){
@@ -49,6 +51,7 @@ public:
     void zoomIn(int delta) override;
     void zoomOut(int delta) override;
     void updateView() override;
+    void levelChange();
 
     void checkItems();
 
@@ -68,6 +71,7 @@ protected:
 
 private:
     QGraphicsScene* scene;
+    std::vector<QGraphicsScene*> scenes;
     QPixmap easyBackground;
     QPixmap mediumBackground;
     QPixmap hardBackground;

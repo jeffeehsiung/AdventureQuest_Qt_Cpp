@@ -88,11 +88,8 @@ class WorldController : public QObject
         coordinate getStart();
         coordinate getExit();
 
-        /**
-         * Path: walked path getter and setter
-         * TODO: missing setter
-         */
-        const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
+        std::vector<std::shared_ptr<WorldModel>> getWorlds();
+        std::shared_ptr<WorldModel> getCurrentWorld();
 
         void onUpArrowPressed();
         void onDownArrowPressed();
@@ -105,6 +102,7 @@ class WorldController : public QObject
 
 signals:
         void protagonistPositionChanged(int protagonistIndex);
+        void updateLevel();
 
 private:
         WorldController();

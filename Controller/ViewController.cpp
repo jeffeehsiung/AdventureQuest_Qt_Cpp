@@ -22,6 +22,7 @@ void ViewController::initializeViews() {
 
     auto& worldController = WorldController::getInstance();
     connect(&worldController, &WorldController::protagonistPositionChanged, this, &ViewController::updateProtagonistPosition);
+    connect(&worldController, &WorldController::updateLevel, this, &ViewController::updateLevel);
     connect(game2DView.get(), &Game2DView::updateSceneSignal, this, &ViewController::onUpdatedScene);
 }
 
@@ -64,6 +65,11 @@ void ViewController::updateProtagonistPosition(int protagonistIndex) {
     else {
         // Do nothing
     }
+    emit viewUpdated(currentView);
+}
+
+void ViewController::updateLevel() {
+    game2DView->levelChange();
     emit viewUpdated(currentView);
 }
 

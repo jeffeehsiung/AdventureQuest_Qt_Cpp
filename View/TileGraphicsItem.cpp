@@ -41,9 +41,9 @@ void TileGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* 
     const TileModel* tileModel = dynamic_cast<const TileModel*>(&getEntity());
     if (tileModel) {
 
-        if(!image.isNull()){
-            painter->drawPixmap(0, 0, image);
-        }
+//        if(!image.isNull()){
+//            painter->drawPixmap(0, 0, image);
+//        }
 
         int value = tileModel->getValue();
 

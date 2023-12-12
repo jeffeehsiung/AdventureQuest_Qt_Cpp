@@ -69,6 +69,8 @@ public:
 
     coordinate getStart();
     coordinate getExit();
+    coordinate* getStartValue();
+    coordinate* getExitValue();
     std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
     std::vector<node> nodes;
 
@@ -79,7 +81,7 @@ private:
     int rows;
     int cols;
     int difficultyIdx;
-    coordinate exit = coordinate(1,1);
+    coordinate exit = coordinate(2,2);
     coordinate start = coordinate(0,0);
     std::vector<std::unique_ptr<TileModel>> tiles;
     std::vector<std::unique_ptr<TileModel>> healthPacks;

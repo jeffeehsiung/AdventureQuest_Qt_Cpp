@@ -235,6 +235,16 @@ coordinate WorldModel::getExit()
     return exit;
 }
 
+coordinate* WorldModel::getStartValue()
+{
+    return &start;
+}
+
+coordinate* WorldModel::getExitValue()
+{
+    return &exit;
+}
+
 void WorldModel::addProtagonist(std::vector<std::unique_ptr<ProtagonistModel>> incoming){
     protagonists.reserve(protagonists.size() + incoming.size());
     std::move(incoming.begin(), incoming.end(), std::back_inserter(protagonists));
