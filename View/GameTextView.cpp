@@ -29,7 +29,7 @@ void GameTextView::addEntity(const Entity& entity) {
 
 
 
-void GameTextView::animateEntityAction(int index, AnimationState newState){}
+void GameTextView::animateEntityAction(int index, state newState){}
 
 
 //void GameTextView::initializeView() {

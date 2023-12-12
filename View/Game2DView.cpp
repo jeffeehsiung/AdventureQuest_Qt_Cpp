@@ -12,8 +12,8 @@ void Game2DView::addEntity(const Entity& entity) {
         enemyGraphicsItems.push_back(std::move(enemyGraphicsItem));
     } else if (const auto* penemyModel = dynamic_cast<const PEnemyModel*>(&entity)) {
         QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
-        auto enemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*penemyModel, penemyBase);
-        enemyGraphicsItems.push_back(std::move(enemyGraphicsItem));
+        auto penemyGraphicsItem = std::make_unique<PEnemyGraphicsItem>(*penemyModel, penemyBase);
+        penemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
     }else if (const auto* protagonistModel = dynamic_cast<const ProtagonistModel*>(&entity)) {
         QString protagonistBase = ":/images/protagonist_samurai/";
         auto protagonistGraphicsItem = std::make_unique<ProtagonistGraphicsItem>(*protagonistModel, protagonistBase);
@@ -24,7 +24,7 @@ void Game2DView::addEntity(const Entity& entity) {
     }
 }
 
-void Game2DView::animateEntityAction(int index, AnimationState newState) {
+void Game2DView::animateEntityAction(int index, state newState) {
     // Implementation for graphical animation of an entity action
     protagonistGraphicsItems[index]->changeAnimationState(newState);
 }
@@ -83,9 +83,9 @@ void Game2DView::initializeView() {
     /** baseFramesDir for penemy is constant */
     QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
     for (const auto& penemy : penemies) {
-        std::unique_ptr<EnemyGraphicsItem> penemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*penemy, penemyBase);
+        std::unique_ptr<PEnemyGraphicsItem> penemyGraphicsItem = std::make_unique<PEnemyGraphicsItem>(*penemy, penemyBase);
         scene->addItem(penemyGraphicsItem.get());
-        enemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
+        penemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
     }
 
     /** baseFramesDir for protagonist depends on numbers of protagonist*/

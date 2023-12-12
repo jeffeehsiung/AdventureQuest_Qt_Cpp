@@ -10,7 +10,8 @@ public:
     /** TileModel is a model wrapper for Tile and HealthPack
      *  to be used in TileGraphicsItem
     **/
-    TileModel(std::unique_ptr<Tile> tile) : tile(std::move(tile)) {}
+    TileModel(std::unique_ptr<Tile> tile) : tile(std::move(tile)) {
+    }
     
     // Functions to expose Tile functionality
     void setPosition(coordinate position) override;

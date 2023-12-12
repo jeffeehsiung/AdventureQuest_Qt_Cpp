@@ -18,27 +18,34 @@ public:
     bool isDefeated() const;
     void setDefeated(bool defeated);
     std::string serialize() const;
+
 protected:
     std::unique_ptr<Enemy> enemy;
     float health;
 };
 
-class PEnemyModel : public EnemyModel {
+class PEnemyModel : public Entity {
 public:
     explicit PEnemyModel(std::unique_ptr<PEnemy> penemy);
 
     // Override Enemy's functions if necessary and add PEnemy specific functions
     void attack() override;
     void takeDamage(float damage) override;
+    coordinate getPosition() const override;
+    void setPosition(coordinate position) override;
+    void move(int deltaX, int deltaY) override;
 
     // PEnemy specific functions
-    bool poison();
+    bool isDefeated() const;
+    void setDefeated(bool defeated);
+    bool releasePoison();
     float getPoisonLevel() const;
     void setPoisonLevel(float poisonLevel);
     std::string serialize() const;
 
 private:
     std::unique_ptr<PEnemy> penemy;
+    float health;
 };
 
 

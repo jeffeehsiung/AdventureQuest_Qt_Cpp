@@ -9,8 +9,6 @@ class ProtagonistModel : public Entity {
 
 private:
     std::unique_ptr<Protagonist> protagonist;
-    int health;
-    int energy;
 
 public:
     explicit ProtagonistModel(std::unique_ptr<Protagonist> protagonist); // Constructor declaration

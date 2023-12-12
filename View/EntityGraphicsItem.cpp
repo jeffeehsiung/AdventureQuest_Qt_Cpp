@@ -10,7 +10,7 @@ qreal EntityGraphicsItem::tileHeight = 0;
 EntityGraphicsItem::EntityGraphicsItem(const Entity& entity, QGraphicsRectItem* parent)
     : QGraphicsRectItem(0, 0, tileWidth, tileHeight, parent),
     entity(entity),
-    animationState(IDLE),
+//    status(IDLE),
     currentFrameIndex(0) {
     animationTimer = new QTimer(this);
     connect(animationTimer, &QTimer::timeout, this, &EntityGraphicsItem::nextFrame);
@@ -22,17 +22,20 @@ EntityGraphicsItem::~EntityGraphicsItem() {
     delete animationTimer;
 }
 
-void EntityGraphicsItem::changeAnimationState(AnimationState newState) {
-    if (animationState != newState) {
-        animationState = newState;
-        currentFrameIndex = 0;
-        startAnimation();
-    }
+void EntityGraphicsItem::changeAnimationState(state newState) {
+//    if (status != newState) {
+//        status = newState;
+//        currentFrameIndex = 0;
+//        startAnimation();
+//    }
+    currentFrameIndex = 0;
+    startAnimation();
 }
 
 void EntityGraphicsItem::nextFrame() {
+    const state entityState = entity.getState();
     std::vector<QPixmap>* currentFrames = nullptr;
-    switch (animationState) {
+    switch (entityState) {
     case IDLE: currentFrames = &idleFrames; break;
     case MOVING: currentFrames = &moveFrames; break;
     case ATTACK: currentFrames = &attackFrames; break;
@@ -88,7 +91,8 @@ void EntityGraphicsItem::startAnimation() {
 }
 
 void EntityGraphicsItem::handleAnimationEnd() {
-    switch (animationState) {
+//    switch (status)
+    switch (entity.getState()) {
     case IDLE:
     case HEAL:
         currentFrameIndex = 0;
@@ -98,7 +102,7 @@ void EntityGraphicsItem::handleAnimationEnd() {
     case HURT:
     case DYING:
         animationTimer->stop();
-        animationState = IDLE;
+//        status = IDLE;
         break;
     }
 }

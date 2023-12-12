@@ -3,13 +3,17 @@
 /** Enemy Class */
 EnemyModel::EnemyModel(std::unique_ptr<Enemy> enemy) : enemy(std::move(enemy)), health(100.0f) {
     // Assuming each enemy starts with a health of 100.0f
+//    status = IDLE;
 }
 
 void EnemyModel::attack() {
-    // Enemy's attack implementation
+    status = ATTACK;
+    float level = 1.0f;
+    takeDamage(level);
 }
 
 void EnemyModel::takeDamage(float damage) {
+    status = HURT;
     // Reduce health by the damage amount
     health -= damage;
 
@@ -31,6 +35,7 @@ void EnemyModel::setPosition(coordinate position) {
 }
 
 void EnemyModel::move(int deltaX, int deltaY) {
+    status = MOVING;
     enemy->setXPos(enemy->getXPos() + deltaX);
     enemy->setYPos(enemy->getYPos() + deltaY);
 }
@@ -41,28 +46,67 @@ bool EnemyModel::isDefeated() const {
 }
 
 void EnemyModel::setDefeated(bool defeated) {
-    enemy->setDefeated(defeated);
+    status = DYING;
+    enemy->setDefeated(defeated); // will emit dead() in world.
 }
 
 std::string EnemyModel::serialize() const {
     return enemy->serialize();
 }
 
+
 /** PEnemy Class */
 
 PEnemyModel::PEnemyModel(std::unique_ptr<PEnemy> penemy)
-    : EnemyModel(std::move(penemy)), penemy(dynamic_cast<PEnemy*>(enemy.get())) {}
+    :penemy(std::move(penemy)) {
+}
 
 void PEnemyModel::attack() {
-    // Implementation of how a poisoned enemy attacks
+    qDebug() << "penemy attacking";
+    status = ATTACK;
+    float level = 1.0f;
+    takeDamage(level);
 }
 
 void PEnemyModel::takeDamage(float damage) {
-    // penemy->reduceHealth(damage); // Assuming PEnemy class has reduceHealth method
     // Consider poison effects if relevant
+    status = HURT;
+    // Reduce health by the damage amount
+    health -= damage;
+    // release poison
+    bool isAlive = releasePoison();
+    if (isAlive == false){
+        setDefeated(true);
+    }
 }
 
-bool PEnemyModel::poison() {
+coordinate PEnemyModel::getPosition() const {
+    return {penemy->getXPos(), penemy->getYPos()};
+}
+
+void PEnemyModel::setPosition(coordinate position) {
+    penemy->setXPos(position.xCoordinate);
+    penemy->setYPos(position.yCoordinate);
+}
+
+void PEnemyModel::move(int deltaX, int deltaY) {
+    status = MOVING;
+    penemy->setXPos(penemy->getXPos() + deltaX);
+    penemy->setYPos(penemy->getYPos() + deltaY);
+}
+
+// Enemy specific functions
+bool PEnemyModel::isDefeated() const {
+    return penemy->getDefeated();
+}
+
+void PEnemyModel::setDefeated(bool defeated) {
+    status = DYING;
+    penemy->setDefeated(defeated); // will emit dead() in world.
+}
+
+bool PEnemyModel::releasePoison() {
+    // return boolean: true -> not dead yet, false-> dead.
     return penemy->poison();
 }
 

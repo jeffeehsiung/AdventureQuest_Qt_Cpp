@@ -100,6 +100,7 @@ class WorldController : public QObject
 
         void onEncounterEnemy();
         void onEncounterHealthPack();
+        void onEncounterPEnemy();
 
 signals:
         void protagonistPositionChanged(int protagonistIndex);
@@ -119,6 +120,13 @@ private:
         std::vector<std::unique_ptr<PEnemyModel>> penemies;
 //        std::vector<std::unique_ptr<XEnemyModel>> xenemies;
         std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
+
+        // current (p)enemy, protagonist, hp
+        ProtagonistModel* currentProtagonist;
+        EnemyModel* currentEnemy;
+        PEnemyModel* currentPEnemy;
+//        XEnemyModel* currentXEnemy;
+        TileModel* currentHealthpack;
 
 };
 

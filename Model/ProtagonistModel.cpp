@@ -1,14 +1,20 @@
 #include "ProtagonistModel.h"
 
 ProtagonistModel::ProtagonistModel(std::unique_ptr<Protagonist> protagonist)
-    : protagonist(std::move(protagonist)) {}
+    : protagonist(std::move(protagonist)) {
+}
 
 void ProtagonistModel::attack() {
-    // Protagonist's attack implementation
+    status = ATTACK;
+//    float level = 1.0f;
+//    takeDamage(level);
 }
 
 void ProtagonistModel::takeDamage(float damage) {
     if (protagonist) {
+
+        status = HURT;
+
         // Get current health
         float currentHealth = protagonist->getHealth();
 
@@ -35,6 +41,7 @@ void ProtagonistModel::setPosition(coordinate position) {
 }
 
 void ProtagonistModel::move(int deltaX, int deltaY) {
+    status = MOVING;
     protagonist->setXPos(protagonist->getXPos() + deltaX);
     protagonist->setYPos(protagonist->getYPos() + deltaY);
 }
@@ -46,7 +53,11 @@ int ProtagonistModel::getHealth() const {
 
 void ProtagonistModel::setHealth(float health) {
     // Set the health of the protagonist.
+    if(health == 0.0f){
+        status = DYING;
+    }
     protagonist->setHealth(health);
+    qDebug() << "You died!" << "\n";
 }
 
 int ProtagonistModel::getEnergy() const {
@@ -60,7 +71,7 @@ void ProtagonistModel::setEnergy(float energy) {
 }
 
 std::string ProtagonistModel::serialize() const {
-    // Serialize the current state of the protagonist.
+    // Serialize the current status of the protagonist.
     return protagonist->serialize();
 }
 

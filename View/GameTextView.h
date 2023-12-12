@@ -18,7 +18,7 @@ public:
     }
 
     void addEntity(const Entity& entity) override;
-    void animateEntityAction(int index, AnimationState newState) override;
+    void animateEntityAction(int index, state newState) override;
     /**
      * @brief initializeView
      * @param worldController

@@ -25,9 +25,7 @@ protected:
     const Entity& entity;   // Raw pointer to entity model (abstract)
     QPixmap image;          // Image representing the entity
 
-    // Animation properties
-//    enum AnimationState { IDLE, MOVING, ATTACK, HURT, DYING, HEAL };
-    AnimationState animationState;
+//    state status;
     QTimer* animationTimer;
     std::vector<QPixmap> idleFrames;
     std::vector<QPixmap> moveFrames;
@@ -55,7 +53,8 @@ public:
     virtual ~EntityGraphicsItem();
 
     // Changes the current animation state and restarts the animation
-    void changeAnimationState(AnimationState newState);
+//    void changeAnimationState(AnimationState newState);
+    void changeAnimationState(state newState);
 
     // Advances to the next frame in the current animation
     void nextFrame();
