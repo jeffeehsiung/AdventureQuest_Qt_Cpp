@@ -285,8 +285,11 @@ void WorldController::onUpArrowPressed() {
         if (isEnemy(protagonists[0]->getPosition())) {
             onEncounterEnemy();
         }
-        if (isHealthPack(protagonists[0]->getPosition())) {
+        else if (isHealthPack(protagonists[0]->getPosition())) {
             onEncounterHealthPack();
+        }
+        else if (isPEnemy(protagonists[0]->getPosition())){
+            onEncounterPEnemy();
         }
         emit protagonistPositionChanged(0);
     }
@@ -371,6 +374,19 @@ void WorldController::onEncounterHealthPack() {
     }
     else {
         qDebug() << "Health is full!" << "\n";
+    }
+    qDebug() << "Health: " << protagonists[0]->getHealth() << "\n";
+}
+
+void WorldController::onEncounterPEnemy() {
+    qDebug() << "Encountered an enemy!" << "\n";
+    if (protagonists[0]->getHealth() > 0) {
+        protagonists[0]->setHealth(protagonists[0]->getHealth() - 1);
+        protagonists[0]->attack();
+    }
+    else {
+        protagonists[0]->setHealth(0);
+        qDebug() << "You died!" << "\n";
     }
     qDebug() << "Health: " << protagonists[0]->getHealth() << "\n";
 }
