@@ -149,18 +149,18 @@ void WorldController::deletePsnTile(coordinate coord)
 
 void WorldController::onUpArrowPressed() {
     // Get the current position of the protagonist
-    coordinate currentPosition = protagonists[0]->getPosition();
+    coordinate currentPosition = currentWorld->protagonists[0]->getPosition();
     // Calculate the new position
     int newX = currentPosition.xCoordinate;
     int newY = currentPosition.yCoordinate - 1;
     // Clamp the new position to ensure it's within the world boundaries
-    if ((newX <= (cols -1)) && (newY <= (rows -1)) && (newY >= 0) ){
+    if ((newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1)) && (newY >= 0) ){
         // Move the protagonist up
-        protagonists[0]->move(0, -1);
-        if (isEnemy(protagonists[0]->getPosition())) {
+        currentWorld->protagonists[0]->move(0, -1);
+        if (isEnemy(currentWorld->protagonists[0]->getPosition())) {
             onEncounterEnemy();
         }
-        if (isHealthPack(protagonists[0]->getPosition())) {
+        if (isHealthPack(currentWorld->protagonists[0]->getPosition())) {
             onEncounterHealthPack();
         }
         emit protagonistPositionChanged(0);
@@ -169,18 +169,18 @@ void WorldController::onUpArrowPressed() {
 
 void WorldController::onDownArrowPressed() {
     // Get the current position of the protagonist
-    coordinate currentPosition = protagonists[0]->getPosition();
+    coordinate currentPosition = currentWorld->protagonists[0]->getPosition();
     // Calculate the new position
     int newX = currentPosition.xCoordinate;
     int newY = currentPosition.yCoordinate + 1;
     // Clamp the new position to ensure it's within the world boundaries
-    if ((newX <= (cols -1)) && (newY <= (rows -1)) && (newY >= 0)){
+    if ((newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1)) && (newY >= 0)){
         // Move the protagonist down
-        protagonists[0]->move(0, 1); // Assuming the first protagonist in the vector
-        if (isEnemy(protagonists[0]->getPosition())) {
+        currentWorld->protagonists[0]->move(0, 1); // Assuming the first protagonist in the vector
+        if (isEnemy(currentWorld->protagonists[0]->getPosition())) {
             onEncounterEnemy();
         }
-        if (isHealthPack(protagonists[0]->getPosition())) {
+        if (isHealthPack(currentWorld->protagonists[0]->getPosition())) {
             onEncounterHealthPack();
         }
         emit protagonistPositionChanged(0);
@@ -189,18 +189,18 @@ void WorldController::onDownArrowPressed() {
 
 void WorldController::onLeftArrowPressed() {
     // Get the current position of the protagonist
-    coordinate currentPosition = protagonists[0]->getPosition();
+    coordinate currentPosition = currentWorld->protagonists[0]->getPosition();
     // Calculate the new position
     int newX = currentPosition.xCoordinate - 1;
     int newY = currentPosition.yCoordinate;
     // Clamp the new position to ensure it's within the world boundaries
-    if ((newX >= 0) && (newX <= (cols -1)) && (newY <= (rows -1))){
+    if ((newX >= 0) && (newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1))){
         // Move the protagonist left
-        protagonists[0]->move(-1, 0); // Assuming the first protagonist in the vector
-        if (isEnemy(protagonists[0]->getPosition())) {
+        currentWorld->protagonists[0]->move(-1, 0); // Assuming the first protagonist in the vector
+        if (isEnemy(currentWorld->protagonists[0]->getPosition())) {
             onEncounterEnemy();
         }
-        if (isHealthPack(protagonists[0]->getPosition())) {
+        if (isHealthPack(currentWorld->protagonists[0]->getPosition())) {
             onEncounterHealthPack();
         }
         emit protagonistPositionChanged(0);
@@ -209,18 +209,18 @@ void WorldController::onLeftArrowPressed() {
 
 void WorldController::onRightArrowPressed() {
     // Get the current position of the protagonist
-    coordinate currentPosition = protagonists[0]->getPosition();
+    coordinate currentPosition = currentWorld->protagonists[0]->getPosition();
     // Calculate the new position
     int newX = currentPosition.xCoordinate + 1;
     int newY = currentPosition.yCoordinate;
     // Clamp the new position to ensure it's within the world boundaries
-    if ((newX >= 0) && (newX <= (cols -1)) && (newY <= (rows -1))){
+    if ((newX >= 0) && (newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1))){
         // Move the protagonist right
-        protagonists[0]->move(1, 0); // Assuming the first protagonist in the vector
-        if (isEnemy(protagonists[0]->getPosition())) {
+        currentWorld->protagonists[0]->move(1, 0); // Assuming the first protagonist in the vector
+        if (isEnemy(currentWorld->protagonists[0]->getPosition())) {
             onEncounterEnemy();
         }
-        if (isHealthPack(protagonists[0]->getPosition())) {
+        if (isHealthPack(currentWorld->protagonists[0]->getPosition())) {
             onEncounterHealthPack();
         }
         emit protagonistPositionChanged(0);
@@ -229,25 +229,25 @@ void WorldController::onRightArrowPressed() {
 
 void WorldController::onEncounterEnemy() {
     qDebug() << "Encountered an enemy!" << "\n";
-    if (protagonists[0]->getHealth() > 0) {
-        protagonists[0]->setHealth(protagonists[0]->getHealth() - 1);
+    if (currentWorld->protagonists[0]->getHealth() > 0) {
+        currentWorld->protagonists[0]->setHealth(currentWorld->protagonists[0]->getHealth() - 1);
     }
     else {
-        protagonists[0]->setHealth(0);
+        currentWorld->protagonists[0]->setHealth(0);
         qDebug() << "You died!" << "\n";
     }
-    qDebug() << "Health: " << protagonists[0]->getHealth() << "\n";
+    qDebug() << "Health: " << currentWorld->protagonists[0]->getHealth() << "\n";
 }
 
 void WorldController::onEncounterHealthPack() {
     qDebug() << "Encountered a health pack!" << "\n";
-    if (protagonists[0]->getHealth() < 5) {
-        protagonists[0]->setHealth(protagonists[0]->getHealth() + 1);
+    if (currentWorld->protagonists[0]->getHealth() < 5) {
+        currentWorld->protagonists[0]->setHealth(currentWorld->protagonists[0]->getHealth() + 1);
     }
     else {
         qDebug() << "Health is full!" << "\n";
     }
-    qDebug() << "Health: " << protagonists[0]->getHealth() << "\n";
+    qDebug() << "Health: " << currentWorld->protagonists[0]->getHealth() << "\n";
 }
 
 void WorldController::playerReachedExit(){
