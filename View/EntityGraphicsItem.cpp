@@ -3,9 +3,12 @@
 // Initialize static members
 qreal EntityGraphicsItem::commonWidth = 0;
 qreal EntityGraphicsItem::commonHeight = 0;
+qreal EntityGraphicsItem::tileWidth = 0;
+qreal EntityGraphicsItem::tileHeight = 0;
+
 
 EntityGraphicsItem::EntityGraphicsItem(const Entity& entity, QGraphicsRectItem* parent)
-    : QGraphicsRectItem(0, 0, commonWidth, commonHeight, parent),
+    : QGraphicsRectItem(0, 0, tileWidth, tileHeight, parent),
     entity(entity),
     animationState(IDLE),
     currentFrameIndex(0) {
@@ -56,21 +59,27 @@ const Entity& EntityGraphicsItem::getEntity() const {
 
 void EntityGraphicsItem::updatePosition() {
     coordinate pos = entity.getPosition();
-//    qDebug() << "original position:" << pos.xCoordinate << "," << pos.yCoordinate;
-    this->setPos(pos.xCoordinate * commonWidth, pos.yCoordinate * commonHeight);
-//    qDebug() << "scaled position:" << this->pos();
+    this->setPos(pos.xCoordinate * tileWidth, pos.yCoordinate * tileHeight);
 }
 
 QRectF EntityGraphicsItem::boundingRect() const {
-    return QRectF(0, 0, commonWidth, commonHeight);
+    // Use the larger of the actual tile size or the minimum visual size for the bounding rectangle
+    qreal width = qMax(tileWidth, commonWidth);
+    qreal height = qMax(tileHeight, commonHeight);
+    return QRectF(0, 0, width, height);
 }
 
 void EntityGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
     Q_UNUSED(option);
     Q_UNUSED(widget);
+    // Calculate the offset to ensure the image is centered on the tile
+    qreal xOffset = (tileWidth - commonWidth) / 2;
+    qreal yOffset = (tileHeight - commonHeight) / 2;
 
-    painter->drawPixmap(0, 0, image);
+    // Draw the pixmap centered within the tile
+    painter->drawPixmap(xOffset, yOffset, image);
 }
+
 
 void EntityGraphicsItem::startAnimation() {
     if (!animationTimer->isActive()) {
@@ -98,4 +107,9 @@ void EntityGraphicsItem::handleAnimationEnd() {
 void EntityGraphicsItem::setCommonDimensions(qreal width, qreal height) {
     commonWidth = width;
     commonHeight = height;
+}
+
+void EntityGraphicsItem::setTileDimensions(qreal width, qreal height){
+    tileWidth = width;
+    tileHeight = height;
 }

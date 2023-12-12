@@ -5,6 +5,7 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QTimer>
+#include <QDebug>
 #include "Model/Entity.h"
 #include <vector>
 
@@ -38,11 +39,16 @@ protected:
 
     static qreal commonWidth;
     static qreal commonHeight;
+    static qreal tileWidth;
+    static qreal tileHeight;
+
+
 
 public:
 
     // Static method to set common dimensions
     static void setCommonDimensions(qreal width, qreal height);
+    static void setTileDimensions(qreal width, qreal height);
 
     explicit EntityGraphicsItem(const Entity& entity, QGraphicsRectItem* parent = nullptr);
 
@@ -52,16 +58,16 @@ public:
     void changeAnimationState(AnimationState newState);
 
     // Advances to the next frame in the current animation
-    virtual void nextFrame();
+    void nextFrame();
 
     const Entity& getEntity() const;
 
     void updatePosition();
 
     // Graphics item methods
-    QRectF boundingRect() const override;
+    virtual QRectF boundingRect() const override;
 
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
+    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 
 protected:
     // Starts or continues the animation timer

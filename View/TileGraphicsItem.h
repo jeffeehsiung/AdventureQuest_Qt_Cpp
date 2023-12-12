@@ -2,6 +2,8 @@
 #define TILEGRAPHICSITEM_H
 
 #include <QGraphicsRectItem>
+#include <QDebug>
+#include <QDir>
 #include "EntityGraphicsItem.h"
 #include "Model/TileModel.h"
 
@@ -12,10 +14,12 @@ public:
     TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent = nullptr);
 
     // Implement any Tile-specific functionality or behavior here, if needed
-    // Override the paint method
+    QRectF boundingRect() const override;
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
 private:
     QString baseFramesDir;
+    void loadAnimationFrames();
+    void loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames);
 };
 
 #endif // TILEGRAPHICSITEM_H

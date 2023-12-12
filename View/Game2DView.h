@@ -7,6 +7,7 @@
 #include <QtMath>
 #include <QGraphicsPixmapItem>
 #include <QDebug>
+#include <QWheelEvent>
 #include "View/GameView.h"
 #include "View/EntityGraphicsItem.h"
 #include "View/TileGraphicsItem.h"
@@ -22,7 +23,9 @@ public:
         easyBackground.load(":/images/world_images/worldmap.png");
         mediumBackground.load(":/images/world_images/maze1.png");
         hardBackground.load(":/images/world_images/maze2.png");
+        zoomSpeed = 0.001; // Example value, adjust based on testing
         zoomLevel = 1.0;
+        initZoomLevel = 1.0;
         scene = new QGraphicsScene(this);
         setScene(scene);
     }
@@ -32,7 +35,6 @@ public:
     }
 
     void addEntity(const Entity& entity) override;
-//    void animateEntityAction(const Entity& entity) override;
     void animateEntityAction(int index, AnimationState newState) override;
     /**
      * @brief initializeView
@@ -44,8 +46,8 @@ public:
      */
     void initializeView() override;
     void setBackground(int backgroundNumber) override;
-    void zoomIn() override;
-    void zoomOut() override;
+    void zoomIn(int delta) override;
+    void zoomOut(int delta) override;
     void updateView() override;
 
     void checkItems();
@@ -61,6 +63,9 @@ signals:
      */
     void updateSceneSignal() override;
 
+protected:
+    void wheelEvent(QWheelEvent *event) override;
+
 private:
     QGraphicsScene* scene;
     QPixmap easyBackground;
@@ -68,17 +73,19 @@ private:
     QPixmap hardBackground;
     QPixmap backgroundImage;
     int currentBackgroundNumber;
+    qreal zoomSpeed; // Zoom sensitivity factor
     qreal zoomLevel;
+    qreal initZoomLevel;
 
     qreal tileWidth;
     qreal tileHeight;
-
-    void updateZoom();
 
     std::vector<std::unique_ptr<EntityGraphicsItem>> entityGraphicsItems;
     std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
     std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
     std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
+
+    void scaleEntitiesToFitView();
 
 };
 

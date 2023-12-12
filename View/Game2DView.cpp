@@ -45,10 +45,9 @@ void Game2DView::initializeView() {
     qDebug() << "view width: " << this->width() << "view height" << this->height();
     qDebug() << "scene width: " << scene->width() << "scene height" << scene->height();
 
-    // Calculate the size of each tile based on the scene size and the number of tiles
     qDebug() << "tilewidth: " << tileWidth << " tileheight: " << tileHeight;
 
-    EntityGraphicsItem::setCommonDimensions(tileWidth, tileHeight);
+    scaleEntitiesToFitView();
 
     // Extract entities from the WorldController
     const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getTiles();
@@ -112,10 +111,6 @@ void Game2DView::initializeView() {
 
     }
 
-    qDebug() << "Number of protagonist in entityGraphicsItems:" << entityGraphicsItems.size();
-
-    // After adding all items to the scene
-    scene->setSceneRect(scene->itemsBoundingRect()); // Set the scene rect to contain all items
     this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
     qDebug() << "items added view width: " << this->width() << "items added view height" << this->height();
@@ -127,12 +122,12 @@ void Game2DView::setBackground(int backgroundNumber) {
     // Load the background image based on the difficulty level
     switch(backgroundNumber) {
     case 1: backgroundImage = easyBackground; tileWidth = 30; tileHeight = 30; break;
-    case 2: backgroundImage = mediumBackground; tileWidth = 25; tileHeight = 25; break;
+    case 2: backgroundImage = mediumBackground; tileWidth = 30; tileHeight = 30; break;
     case 3: backgroundImage = hardBackground; tileWidth = 20; tileHeight = 20; break;
     default: backgroundImage= easyBackground; tileWidth = 30; tileHeight = 30; break;
     }
 
-    qDebug() << "computing view width: " << this->width() << "computing view height" << this->height();
+
     // Resize the background image based on the number of tiles and their size
     auto& worldController = WorldController::getInstance();
     backgroundImage = backgroundImage.scaled(tileWidth * worldController.getCols(),
@@ -153,72 +148,147 @@ void Game2DView::setBackground(int backgroundNumber) {
 
 
 void Game2DView::updateView() {
-//    for (const auto& tileGraphicsItem : tileGraphicsItems) {
-//        if (tileGraphicsItem) {
-//            tileGraphicsItem->updatePosition();
-//        }
-//    }
-    for (const auto& enemyGraphicsItem : enemyGraphicsItems) {
-        if (enemyGraphicsItem) {
-            enemyGraphicsItem->updatePosition();
-        }
-    }
     for(const auto& protagonistGraphicsItem : protagonistGraphicsItems) {
         if (protagonistGraphicsItem) {
             protagonistGraphicsItem->updatePosition();
         }
     }
     this->update();
-    emit updateSceneSignal();
 }
 
-void Game2DView::updateZoom() {
-    qreal scaleFactor = qPow(2.0, zoomLevel);
+void Game2DView::zoomIn(int delta) {
+    qreal maxZoomLevel = initZoomLevel * 2;
+    qreal targetZoomLevel = zoomLevel + delta * zoomSpeed;
+    if (targetZoomLevel > maxZoomLevel) {  // If the target zoom level is greater than the max, clamp it
+        targetZoomLevel = maxZoomLevel;
+        qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
+        this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    }
 
-    // Set the zoom level for the view
-    setTransform(QTransform::fromScale(scaleFactor, scaleFactor));
-
-    // Update the position of the graphics items to keep them in the center of the view
-    for (const auto& entityGraphicsItem : entityGraphicsItems) {
-        if (entityGraphicsItem) {
-            entityGraphicsItem->updatePosition();
+    if (zoomLevel < targetZoomLevel) {  // Only zoom in if not already at the max zoom level
+        qreal factor = qPow(2.0, targetZoomLevel);
+        setTransform(QTransform::fromScale(factor, factor));
+        if (!protagonistGraphicsItems.empty()) {
+            centerOn(protagonistGraphicsItems.front().get());
         }
+        zoomLevel = targetZoomLevel; // Update the current zoom level
     }
     this->update();
+    qDebug() << "zoom level: " << zoomLevel;
 }
 
-void Game2DView::zoomIn() {
-    zoomLevel += 0.1; // Increase the zoom level
-
-    // Limit the zoom level if needed
-    if (zoomLevel > 2.0) {
-        zoomLevel = 2.0;
+void Game2DView::zoomOut(int delta) {
+    qreal scale = 0.001;
+    qreal minZoomLevel = (initZoomLevel * scale);
+    qreal targetZoomLevel = zoomLevel - delta * zoomSpeed;
+    if (targetZoomLevel < minZoomLevel) {  // If the target zoom level is less than the min, clamp it
+        targetZoomLevel = minZoomLevel;
+        qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
+        this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     }
 
-    updateZoom();
-}
-
-void Game2DView::zoomOut() {
-    zoomLevel -= 0.1; // Decrease the zoom level
-
-    // Limit the zoom level if needed
-    if (zoomLevel < 0.5) {
-        zoomLevel = 0.5;
+    if (zoomLevel > targetZoomLevel) {  // Only zoom out if not already at the min zoom level
+        qreal factor = qPow(2.0, targetZoomLevel);
+        setTransform(QTransform::fromScale(factor, factor));
+        if (!protagonistGraphicsItems.empty()) {
+            centerOn(protagonistGraphicsItems.front().get());
+        }
+        zoomLevel = targetZoomLevel; // Update the current zoom level
     }
-
-    updateZoom();
+    this->update();
+    qDebug() << "zoom level: " << zoomLevel;
 }
+
+void Game2DView::wheelEvent(QWheelEvent* event) {
+    int delta = event->angleDelta().y() / 12 ;
+    if (delta > 0) {
+        zoomIn(std::abs(delta));  // Zoom in when the wheel is scrolled up
+    }else{
+        zoomOut(std::abs(delta)); // Zoom out when the wheel is scrolled down
+    }
+    qDebug() << "delta : " << delta;
+}
+
+// This function should be called after setting the background and calculating tileWidth and tileHeight.
+void Game2DView::scaleEntitiesToFitView() {
+    qreal sceneWidth = scene->width();
+    qreal sceneHeight = scene->height();
+    qreal someFactor;
+    switch(currentBackgroundNumber){
+    case 1: someFactor = 20; break;
+    case 2: someFactor = 20; break;
+    case 3: someFactor = 20; break;
+    default: someFactor = 30; break;
+    }
+    qreal desiredItemWidth = sceneWidth / someFactor; // 'someFactor' is a value you choose based on how many items you want to fit across the width of the view.
+    qreal desiredItemHeight = sceneHeight / someFactor; // Similarly for height.
+
+    // Calculate scale factors
+    qreal scaleFactorWidth = desiredItemWidth / tileWidth;
+    qreal scaleFactorHeight = desiredItemHeight / tileHeight;
+
+    // Use the smallest scaleFactor to ensure that the aspect ratio is maintained
+    qreal scaleFactor = qMin(scaleFactorWidth, scaleFactorHeight);
+
+    // Now set the common dimensions with the scale factor applied
+    EntityGraphicsItem::setCommonDimensions(tileWidth * scaleFactor, tileHeight * scaleFactor);
+    EntityGraphicsItem::setTileDimensions(tileWidth, tileHeight);
+}
+
 
 
 // Example function to check each item's position and bounding rectangle
 void Game2DView::checkItems() {
-    for (const auto& entityGraphicsItem : entityGraphicsItems) {
-        if (entityGraphicsItem) {
-            QPointF pos = entityGraphicsItem->pos();
-            QRectF rect = entityGraphicsItem->boundingRect();
-            qDebug() << "Entity position: " << pos << ", Bounding rectangle: " << rect;
+    QRectF sceneBounds = scene->sceneRect();
+    for (const auto& protagonistGraphicsItem : protagonistGraphicsItems) {
+        if (protagonistGraphicsItem) {
+            QRectF itemBounds = protagonistGraphicsItem->boundingRect();
+            QRectF itemSceneBounds = protagonistGraphicsItem->mapToScene(itemBounds).boundingRect();
+            // Check if the item's bounding rectangle in scene coordinates is within the scene's bounds
+            if (sceneBounds.contains(itemSceneBounds)) {
+            } else {
+                qDebug() << "Entity is NOT within scene bounds.";
+            }
+
+            // Log the details for debugging
+            qDebug() << "Entity position: " << protagonistGraphicsItem->pos();
+            qDebug() << "Bounding rectangle (local): " << itemBounds;
         }
     }
+    for (const auto& enemyGraphicsItem : enemyGraphicsItems) {
+        if (enemyGraphicsItem) {
+            QRectF itemBounds = enemyGraphicsItem->boundingRect();
+            QRectF itemSceneBounds = enemyGraphicsItem->mapToScene(itemBounds).boundingRect();
+
+            // Check if the item's bounding rectangle in scene coordinates is within the scene's bounds
+            if (sceneBounds.contains(itemSceneBounds)) {
+            } else {
+                qDebug() << "Entity is NOT within scene bounds.";
+            }
+
+            // Log the details for debugging
+            qDebug() << "Entity position: " << enemyGraphicsItem->pos();
+            qDebug() << "Bounding rectangle (local): " << itemBounds;
+        }
+    }
+    for (const auto& tileGraphicsItem : tileGraphicsItems) {
+        if (tileGraphicsItem) {
+            QRectF itemBounds = tileGraphicsItem->boundingRect();
+            QRectF itemSceneBounds = tileGraphicsItem->mapToScene(itemBounds).boundingRect();
+
+            // Check if the item's bounding rectangle in scene coordinates is within the scene's bounds
+            if (sceneBounds.contains(itemSceneBounds)) {
+            } else {
+                qDebug() << "Entity is NOT within scene bounds.";
+            }
+
+            // Log the details for debugging
+            qDebug() << "Entity position: " << tileGraphicsItem->pos();
+            qDebug() << "Bounding rectangle (local): " << itemBounds;
+        }
+    }
+    qDebug() << "Scene rectangle: " << sceneBounds;
+
 }
 
 
