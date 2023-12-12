@@ -16,6 +16,7 @@ SOURCES += main.cpp\
     Model/TileModel.cpp \
     Model/WorldModel.cpp \
     Model/struct.cpp \
+    Model/world.cpp \
     View/EnemyGraphicsItem.cpp \
     View/EntityGraphicsItem.cpp \
     View/Game2DView.cpp \
@@ -36,6 +37,8 @@ HEADERS  += MainWindow.h\
     Model/TileModel.h \
     Model/structs.h \
     Model/WorldModel.h \
+    Model/world.h \
+    Model/world_global.h \
     View/Game2DView.h \
     View/GameTextView.h \
     View/GameView.h \
@@ -62,17 +65,3 @@ DISTFILES += \
 
 SUBDIRS += \
     world.pro
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../worldlib/release/ -lworld
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../worldlib/debug/ -lworld
-else:unix: LIBS += -L$$PWD/../worldlib/ -lworld
-
-INCLUDEPATH += $$PWD/../worldlib
-DEPENDPATH += $$PWD/../worldlib
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../worldlib/release/ -lworld
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../worldlib/debug/ -lworld
-else:unix: LIBS += -L$$PWD/../worldlib/ -lworld
-
-INCLUDEPATH += $$PWD/../worldlib
-DEPENDPATH += $$PWD/../worldlib
