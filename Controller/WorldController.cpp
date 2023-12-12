@@ -1,8 +1,7 @@
 #include "Controller/WorldController.h"
 #include <QKeyEvent>
 
-WorldController::WorldController()
-    : world(std::make_unique<World>()) {
+WorldController::WorldController(){
     // Basic initializations, if any
 }
 void WorldController::createWorld(QString map, int gameNumberOfPlayers, int gameDifficultyIdx, float pRatio) {
@@ -30,41 +29,9 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
         break;
     }
     difficultyIdx = gameDifficultyIdx;
-
-    /**
-     * createworld
-     * */
-    world -> createWorld(map, nrOfEnemies, nrOfHealthpacks, pRatio);
-    rows = world->getRows();
-    cols = world->getCols();
-
-    /**
-     * create tilemodels, enemymodels, penemymodels, xenemymodels, and protagonistmodels based on created world
-     * */
-    for (auto &tile : world->getTiles()) {
-        std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(std::move(tile));
-        tiles.push_back(std::move(tileModel));
-    }
-
-    for ( auto &healthPack : world->getHealthPacks() ){
-        std::unique_ptr<TileModel> healthPackModel = std::make_unique<TileModel>(std::move(healthPack));
-        healthPacks.push_back(std::move(healthPackModel));
-    }
-
-    for (auto &enemy : world->getEnemies()) {
-        if (auto pEnemyRaw = dynamic_cast<PEnemy*>(enemy.get())) {
-            penemies.push_back(std::make_unique<PEnemyModel>(std::unique_ptr<PEnemy>(pEnemyRaw)));
-            enemy.release(); // Important to prevent double free
-        } else {
-            enemies.push_back(std::make_unique<EnemyModel>(std::move(enemy)));
-        }
-    }
-
-    /**
-     * first and invidivual protagonist player
-     */
-    std::unique_ptr<ProtagonistModel> protagonist = std::make_unique<ProtagonistModel>(world->getProtagonist());
-    protagonists.push_back(std::move(protagonist));
+    worlds.push_back(std::make_shared<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
+    worlds.push_back(std::make_shared<WorldModel>(":/images/world_images/maze1.png", nrOfEnemies + 3, nrOfHealthpacks, pRatio, false));
+    currentWorld = worlds[0];
 }
 
 /**
@@ -72,12 +39,12 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
  */
 int WorldController::getRows() const
 {
-    return rows;
+    return currentWorld->getRows();
 }
 
 int WorldController::getCols() const
 {
-    return cols;
+    return currentWorld->getCols();
 }
 
 /**
@@ -86,32 +53,32 @@ int WorldController::getCols() const
 
 const std::vector<std::unique_ptr<TileModel> > &WorldController::getTiles() const
 {
-    return tiles;
+    return currentWorld->getTiles();
 }
 
 const std::vector<std::unique_ptr<TileModel> > &WorldController::getHealthPacks() const
 {
-    return healthPacks;
+    return currentWorld->getHealthPacks();
 }
 
 const std::vector<std::unique_ptr<EnemyModel> > &WorldController::getEnemies() const
 {
-    return enemies;
+    return currentWorld->getEnemies();
 }
 
 const std::vector<std::unique_ptr<PEnemyModel> > &WorldController::getPEnemies() const
 {
-    return penemies;
+    return currentWorld->getPEnemies();
 }
 
 // const std::vector<std::unique_ptr<XEnemyModel> > &WorldController::getXEnemies() const
-// {
+// {3
 //     return xenemies;
 // }
 
 const std::vector<std::unique_ptr<ProtagonistModel> > &WorldController::getProtagonists() const
 {
-    return protagonists;
+    return currentWorld->getProtagonists();
 }
 
 /**
@@ -120,26 +87,12 @@ const std::vector<std::unique_ptr<ProtagonistModel> > &WorldController::getProta
 
 bool WorldController::isHealthPack(coordinate coord)
 {
-    for ( auto &healthPack : healthPacks )
-    {
-        if ( healthPack->getPosition() == coord )
-        {
-            return true;
-        }
-    }
-    return false;
+    return currentWorld->isHealthPack(coord);
 }
 
 bool WorldController::isPoisonedTiles(coordinate coord)
 {
-    for ( auto &tile : tiles )
-    {
-        if ( tile->getPosition() == coord )
-        {
-            return true;
-        }
-    }
-    return false;
+    return currentWorld->isPoisonedTiles(coord);
 }
 
 /**
@@ -148,26 +101,12 @@ bool WorldController::isPoisonedTiles(coordinate coord)
 
 bool WorldController::isEnemy(coordinate coord)
 {
-    for ( auto &enemy : enemies )
-    {
-        if ( enemy->getPosition() == coord )
-        {
-            return true;
-        }
-    }
-    return false;
+    return currentWorld->isEnemy(coord);
 }
 
 bool WorldController::isPEnemy(coordinate coord)
 {
-    for ( auto &penemy : penemies )
-    {
-        if ( penemy->getPosition() == coord )
-        {
-            return true;
-        }
-    }
-    return false;
+    return currentWorld->isPEnemy(coord);
 }
 
 // bool WorldController::isXEnemy(coordinate coord)
@@ -185,7 +124,7 @@ bool WorldController::isPEnemy(coordinate coord)
 int WorldController::getNumOfProtagonists() const
 {
     /** return the size of protagonist vector */
-    return protagonists.size();
+    return currentWorld->protagonists.size();
 }
 
 int WorldController::getDifficultyIdx() const
@@ -194,83 +133,19 @@ int WorldController::getDifficultyIdx() const
 }
 
 /**
- * PEnemy poisened tiles
- */
-
-void WorldController::setAffectedTiles(coordinate coord, int spread, std::unique_ptr<PEnemyModel> pEnemy)
-{
-    /**
-     * set the affected tiles of the penemy
-     * */
-    for ( auto &tile : tiles )
-    {
-        if ( tile->getPosition() == coord )
-        {
-            // tile->setPoisoned(true); /** TODO: implement */
-            tile->setValue(pEnemy->getPoisonLevel());
-            // tile->setPoisonSpread(spread); /** TODO: implement */
-        }
-    }
-}
-
-/**
  * defeated functions
  */
 
 void WorldController::deleteEnemy(coordinate coord)
 {
-    /**
-     * delete enemy from vector
-     * */
-    for ( auto &enemy : enemies )
-    {
-        if ( enemy->getPosition() == coord )
-        {
-            enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [&](std::unique_ptr<EnemyModel> &enemy)
-            {
-                return enemy->getPosition() == coord;
-            }), enemies.end());
-        }
-    }
+    currentWorld->deleteEnemy(coord);
 }
 
 void WorldController::deletePsnTile(coordinate coord)
 {
-    /**
-     * delete poisoned tile from vector
-     * */
-    for ( auto &tile : tiles )
-    {
-        if ( tile->getPosition() == coord )
-        {
-            tiles.erase(std::remove_if(tiles.begin(), tiles.end(), [&](std::unique_ptr<TileModel> &tile)
-            {
-                return tile->getPosition() == coord;
-            }), tiles.end());
-        }
-    }
+    currentWorld->deletePsnTile(coord);
 }
 
-/**
- * healthpack functions
- */
-
-void WorldController::removeHealthpack(coordinate coord)
-{
-    /**
-     * remove healthpack from vector
-     * */
-    for ( auto &healthPack : healthPacks )
-    {
-        if ( healthPack->getPosition() == coord )
-        {
-            healthPacks.erase(std::remove_if(healthPacks.begin(), healthPacks.end(), [&](std::unique_ptr<TileModel> &healthPack)
-            {
-                return healthPack->getPosition() == coord;
-            }), healthPacks.end());
-        }
-    }
-}
 
 void WorldController::onUpArrowPressed() {
     // Get the current position of the protagonist
@@ -375,29 +250,44 @@ void WorldController::onEncounterHealthPack() {
     qDebug() << "Health: " << protagonists[0]->getHealth() << "\n";
 }
 
+void WorldController::playerReachedExit(){
+    if(currentWorld->protagonists[0]->getPosition() == currentWorld->getExit()){
+        currentWorld->protagonists[0]->setPosition(worlds[1]->getStart());
+        worlds[1]->addProtagonist(worlds[0]->removeProtagonists());
+        currentWorld = worlds[1];
+        emit protagonistPositionChanged(0);
+        qDebug() << "LevelSwitched!" << "\n";
+    }
+}
 /**
  * start and exit position functions
  */
 
 coordinate WorldController::getStart()
 {
-    return start;
+    return currentWorld->getStart();
 }
 
 coordinate WorldController::getExit()
 {
-    return exit;
+    return currentWorld->getExit();
 }
 
-/**
- * Path: walked path getter and setter
- * TODO: missing setter
- */
 
-const std::vector<std::unique_ptr<TileModel> > &WorldController::getWalkedOnTiles() const
-{
-    return walkedOnTiles;
-}
+//void WorldController::autoplay(){
+//    Comparator<node> comparator = [](const node& a, const node& b) {
+//        return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
+//    };
+//    qDebug() << "start Pos: " << currentWorld->getStart().getXPos() << " "<< currentWorld->getStart().getYPos();
+//    qDebug() << "exit Pos: " << currentWorld->getExit().getXPos() << " "<< currentWorld->getExit().getYPos();
+//    PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getStart(), currentWorld->getExit(), comparator, this->getRows(), 1);
+
+//    std::vector<int> result = pathFinder.A_star();
+//    qDebug() << "Path to destination:";
+//    for (int move : result) {
+//        qDebug() << move;
+//    }
+//}
 
 
 

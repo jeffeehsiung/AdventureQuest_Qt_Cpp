@@ -1,13 +1,12 @@
 #ifndef WORLDCONTROLLER_H
 #define WORLDCONTROLLER_H
 
-#include "Model/world.h"
 #include "Model/structs.h"
-#include "Model/Entity.h"
 #include "Model/ProtagonistModel.h"
 #include "Model/EnemyModel.h"
 #include "Model/TileModel.h"
-
+#include "Model/WorldModel.h"
+#include "pathfinder.h"
 
 #include <iostream>
 #include <QObject>
@@ -76,6 +75,8 @@ class WorldController : public QObject
         void deleteEnemy(coordinate);
         void deletePsnTile(coordinate);
 
+        void playerReachedExit();
+
         /**
          * healthpack functions
          */
@@ -97,6 +98,7 @@ class WorldController : public QObject
         void onDownArrowPressed();
         void onLeftArrowPressed();
         void onRightArrowPressed();
+        void autoplay();
 
         void onEncounterEnemy();
         void onEncounterHealthPack();
@@ -106,19 +108,9 @@ signals:
 
 private:
         WorldController();
-        std::unique_ptr<World> world;
-        int rows;
-        int cols;
+        std::vector<std::shared_ptr<WorldModel>> worlds;
+        std::shared_ptr<WorldModel> currentWorld;
         int difficultyIdx;
-        coordinate exit = coordinate(1,1);
-        coordinate start = coordinate(0,0);
-        std::vector<std::unique_ptr<TileModel>> tiles;
-        std::vector<std::unique_ptr<TileModel>> healthPacks;
-        std::vector<std::unique_ptr<TileModel>> walkedOnTiles;
-        std::vector<std::unique_ptr<EnemyModel>> enemies;
-        std::vector<std::unique_ptr<PEnemyModel>> penemies;
-//        std::vector<std::unique_ptr<XEnemyModel>> xenemies;
-        std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
 
 };
 

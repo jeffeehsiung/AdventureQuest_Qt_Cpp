@@ -58,7 +58,6 @@ void GameController::decideGameParameters() {
         gameDifficultyIdx = 3;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.3 : 0.6;
     }
-
 }
 
 void GameController::initializeWorld() {
@@ -72,6 +71,10 @@ void GameController::initializeWorld() {
 
     auto& viewController = ViewController::getInstance();
     viewController.initializeViews(); // Optional: switch to initial view
+
+//    if (isGameStarted) {
+//        worldController.autoplay();
+//    }
 
 }
 

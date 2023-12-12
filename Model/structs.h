@@ -9,7 +9,25 @@ struct coordinate {
     int yCoordinate;
 
     coordinate(int x, int y) : xCoordinate(x), yCoordinate(y) {}
+public:
+    int getXPos() const{return xCoordinate;}
+    int getYPos() const{return yCoordinate;}
 };
+
+struct node {
+public:
+    float f, g, h;
+    bool visited;
+    float value;
+    coordinate position;
+    node* prev;
+    float getValue() const {return value;}
+    int getXPos() const{return position.getXPos();}
+    int getYPos() const{return position.getYPos();}
+    node(float node_value, coordinate& pos)
+        : value(node_value), position(pos) {}
+};
+
 
 enum AnimationState { IDLE, MOVING, ATTACK, HURT, DYING, HEAL };
 
