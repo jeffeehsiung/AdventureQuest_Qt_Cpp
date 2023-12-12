@@ -153,6 +153,11 @@ void Game2DView::updateView() {
             protagonistGraphicsItem->updatePosition();
         }
     }
+    for (const auto& tileGraphicsItem : tileGraphicsItems) {
+        if (tileGraphicsItem) {
+            tileGraphicsItem->updatePosition();
+        }
+    }
     this->update();
 }
 

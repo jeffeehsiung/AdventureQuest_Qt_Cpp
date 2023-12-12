@@ -255,22 +255,21 @@ void WorldController::deletePsnTile(coordinate coord)
  * healthpack functions
  */
 
-void WorldController::removeHealthpack(coordinate coord)
-{
-    /**
-     * remove healthpack from vector
-     * */
-    for ( auto &healthPack : healthPacks )
-    {
-        if ( healthPack->getPosition() == coord )
-        {
-            healthPacks.erase(std::remove_if(healthPacks.begin(), healthPacks.end(), [&](std::unique_ptr<TileModel> &healthPack)
-            {
-                return healthPack->getPosition() == coord;
-            }), healthPacks.end());
+void WorldController::removeHealthpack(coordinate coord) {
+    std::random_device rd;  // Obtain a random number from hardware
+    std::mt19937 eng(rd()); // Seed the generator
+    std::uniform_int_distribution<> distr(0, 20); // Define the range for coordinates
+
+    for (auto& healthPack : healthPacks) {
+        if (healthPack && healthPack->getPosition() == coord) {
+            // Set a new random position for the healthPack
+            coordinate newCoord = {distr(eng), distr(eng)};
+            healthPack->setPosition(newCoord);
+            break;
         }
     }
 }
+
 
 void WorldController::onUpArrowPressed() {
     // Get the current position of the protagonist
@@ -368,6 +367,7 @@ void WorldController::onEncounterHealthPack() {
     qDebug() << "Encountered a health pack!" << "\n";
     if (protagonists[0]->getHealth() < 5) {
         protagonists[0]->setHealth(protagonists[0]->getHealth() + 1);
+        removeHealthpack(protagonists[0]->getPosition());
     }
     else {
         qDebug() << "Health is full!" << "\n";
