@@ -21,8 +21,7 @@ void ViewController::initializeViews() {
     emit viewUpdated(currentView);
 
     auto& worldController = WorldController::getInstance();
-    connect(&worldController, &WorldController::protagonistPositionChanged, this, &ViewController::updateProtagonistPosition);
-    connect(game2DView.get(), &Game2DView::updateSceneSignal, this, &ViewController::onUpdatedScene);
+    connect(&worldController, &WorldController::updateprotagonistPosition, this, &ViewController::onUpdateProtagonistPosition);
 }
 
 void ViewController::switchTo2DView() {
@@ -52,10 +51,9 @@ void ViewController::onUpdatedScene() {
     emit viewUpdated(currentView);
 }
 
-void ViewController::updateProtagonistPosition(int protagonistIndex) {
+void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
     if (currentView == game2DView.get()) {
-        state newState = MOVING;         //hardcoded. need to embed state of the entity in world and model
-        game2DView->animateEntityAction(protagonistIndex, newState);
+        game2DView->animateEntityAction(protagonistIndex);
         game2DView->updateView();
     }
     else if (currentView == gameTextView.get()) {

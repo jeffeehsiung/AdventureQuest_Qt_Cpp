@@ -60,6 +60,8 @@ DISTFILES += \
     UML_v1.png \
     UML_v2.png \
     images/protagonist_fighter/Moving/01.png \
+    images/tiles/Attack/00.png \
+    images/tiles/Moving/00.png \
     library/libworld.so \
     library/libworld.so.1 \
     library/libworld.so.1.0 \

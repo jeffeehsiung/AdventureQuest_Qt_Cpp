@@ -24,9 +24,9 @@ void Game2DView::addEntity(const Entity& entity) {
     }
 }
 
-void Game2DView::animateEntityAction(int index, state newState) {
+void Game2DView::animateEntityAction(int index) {
     // Implementation for graphical animation of an entity action
-    protagonistGraphicsItems[index]->changeAnimationState(newState);
+    protagonistGraphicsItems[index]->changeAnimationState();
 }
 
 void Game2DView::initializeView() {
@@ -42,27 +42,35 @@ void Game2DView::initializeView() {
 
     qDebug() << "backgroundImage width: " << backgroundImage.width() << "backgroundImage heght" << backgroundImage.height();
     qDebug() << "worldController cols: " << worldController.getCols() << "worldController height" << worldController.getRows();
-    qDebug() << "view width: " << this->width() << "view height" << this->height();
-    qDebug() << "scene width: " << scene->width() << "scene height" << scene->height();
-
     qDebug() << "tilewidth: " << tileWidth << " tileheight: " << tileHeight;
 
     scaleEntitiesToFitView();
 
     // Extract entities from the WorldController
-    const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getTiles();
+//    const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getTiles();
+    const auto& tileMap = worldController.getTileMap();
     const std::vector<std::unique_ptr<TileModel>>& healthPacks = worldController.getHealthPacks();
     const std::vector<std::unique_ptr<EnemyModel>>& enemies = worldController.getEnemies();
     const std::vector<std::unique_ptr<PEnemyModel>>& penemies = worldController.getPEnemies();
     const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = worldController.getProtagonists();
 
     /** baseFramesDir for tile is constant */
+//    QString tileBase = ":/images/tiles/";
+//    for (const auto& tile : tiles) {
+//        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
+//        scene->addItem(tileGraphicsItem.get());
+//        tileGraphicsItems.push_back(std::move(tileGraphicsItem));
+//    }
+
     QString tileBase = ":/images/tiles/";
-    for (const auto& tile : tiles) {
-        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
+    // Get a reference to the tileMap to avoid copying
+//    auto tileMap = worldController.getTileMap(); // This function needs to be implemented in WorldController
+    for (const auto& [coord, tileModel] : tileMap) {
+        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tileModel, tileBase);
         scene->addItem(tileGraphicsItem.get());
         tileGraphicsItems.push_back(std::move(tileGraphicsItem));
     }
+
 
     /** baseFramesDir for healthpack is constant */
     QString healthpackBase = ":/images/healthpack/";
@@ -110,10 +118,11 @@ void Game2DView::initializeView() {
         protagonistGraphicsItems.push_back(std::move(protagonistGraphicsItem));
 
     }
-
+    scene->setSceneRect(0, 0, backgroundImage.width() + tileWidth, backgroundImage.height() + tileHeight);
     this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
     qDebug() << "items added view width: " << this->width() << "items added view height" << this->height();
+
     this->update();
 
 }
@@ -161,7 +170,6 @@ void Game2DView::zoomIn(int delta) {
     qreal targetZoomLevel = zoomLevel + delta * zoomSpeed;
     if (targetZoomLevel > maxZoomLevel) {  // If the target zoom level is greater than the max, clamp it
         targetZoomLevel = maxZoomLevel;
-        qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
         this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     }
 
@@ -174,7 +182,6 @@ void Game2DView::zoomIn(int delta) {
         zoomLevel = targetZoomLevel; // Update the current zoom level
     }
     this->update();
-    qDebug() << "zoom level: " << zoomLevel;
 }
 
 void Game2DView::zoomOut(int delta) {
@@ -183,7 +190,6 @@ void Game2DView::zoomOut(int delta) {
     qreal targetZoomLevel = zoomLevel - delta * zoomSpeed;
     if (targetZoomLevel < minZoomLevel) {  // If the target zoom level is less than the min, clamp it
         targetZoomLevel = minZoomLevel;
-        qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
         this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     }
 
@@ -196,7 +202,6 @@ void Game2DView::zoomOut(int delta) {
         zoomLevel = targetZoomLevel; // Update the current zoom level
     }
     this->update();
-    qDebug() << "zoom level: " << zoomLevel;
 }
 
 void Game2DView::wheelEvent(QWheelEvent* event) {
@@ -206,7 +211,6 @@ void Game2DView::wheelEvent(QWheelEvent* event) {
     }else{
         zoomOut(std::abs(delta)); // Zoom out when the wheel is scrolled down
     }
-    qDebug() << "delta : " << delta;
 }
 
 // This function should be called after setting the background and calculating tileWidth and tileHeight.

@@ -1,30 +1,34 @@
 #ifndef PROTAGONISTMODEL_H
 #define PROTAGONISTMODEL_H
 
-#include "Entity.h"
-#include "world.h"
 #include <memory>
+#include "Entity.h"
 
 class ProtagonistModel : public Entity {
+    Q_OBJECT
+    public:
+        explicit ProtagonistModel(std::unique_ptr<Protagonist> protagonist); // Constructor declaration
 
-private:
-    std::unique_ptr<Protagonist> protagonist;
+        void attack() override;
+        void takeDamage(float damage) override;
+        coordinate getPosition() const override;
+        void setPosition(coordinate position) override;
+        void move(int deltaX, int deltaY) override;
 
-public:
-    explicit ProtagonistModel(std::unique_ptr<Protagonist> protagonist); // Constructor declaration
+        // Additional functionalities specific to ProtagonistModel
+        int getHealth() const;
+        void setHealth(float health);
+        int getEnergy() const;
+        void setEnergy(float energy);
+        std::string serialize() const;
 
-    void attack() override;
-    void takeDamage(float damage) override;
-    coordinate getPosition() const override;
-    void setPosition(coordinate position) override;
-    void move(int deltaX, int deltaY) override;
+    public slots:
+        void onPosChanged(int x, int y);
+        void onHealthChanged(int h);
+        void oneEnergyChanged(int e);
 
-    // Additional functionalities specific to ProtagonistModel
-    int getHealth() const;
-    void setHealth(float health);
-    int getEnergy() const;
-    void setEnergy(float energy);
-    std::string serialize() const;
+    private:
+        std::unique_ptr<Protagonist> protagonist;
 };
 
 #endif // PROTAGONISTMODEL_H

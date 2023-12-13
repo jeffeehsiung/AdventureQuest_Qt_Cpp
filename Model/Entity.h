@@ -1,11 +1,13 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <QObject>
+#include <QTimer>
 #include <QDebug>
 #include "Model/structs.h"
 #include "world.h"
 
-class Entity{
+class Entity: public QObject{
 public:
     Entity() : status(IDLE) {}
     virtual ~Entity() {}

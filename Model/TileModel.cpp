@@ -25,3 +25,14 @@ void TileModel::setValue(float value) {
 std::string TileModel::serialize() const {
     return tile->serialize();
 }
+
+void TileModel::attack() {
+    // tile is affected by penemy hence is poisoned
+    status = ATTACK;
+}
+void TileModel::takeDamage(float strength) {
+    poisoned = true;
+    // set the poison strength
+    poisonStrength = strength;
+    attack();
+}

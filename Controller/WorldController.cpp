@@ -1,5 +1,4 @@
 #include "Controller/WorldController.h"
-#include <QKeyEvent>
 
 WorldController::WorldController()
     : world(std::make_unique<World>()) {
@@ -47,7 +46,10 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
      * */
     for (auto &tile : world->getTiles()) {
         std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(std::move(tile));
-        tiles.push_back(std::move(tileModel));
+        // After creating TileModel objects, add them to the map for direct access
+        coordinate pos = tileModel->getPosition();
+        tileMap[pos] = std::move(tileModel);
+//        tiles.push_back(std::move(tileModel));
     }
 
     for ( auto &healthPack : world->getHealthPacks() ){
@@ -92,10 +94,24 @@ int WorldController::getCols() const
  * getter and setters
  * */
 
-const std::vector<std::unique_ptr<TileModel> > &WorldController::getTiles() const
-{
-    return tiles;
+std::unique_ptr<TileModel>& WorldController::getTileModelAt(int x, int y) {
+    coordinate coord{x, y};
+    if (tileMap.find(coord) != tileMap.end()) {
+        return tileMap[coord];
+    } else {
+        throw std::out_of_range("TileModel at the specified coordinates does not exist.");
+    }
 }
+
+// New method to access the map of tiles
+const std::map<coordinate, std::unique_ptr<TileModel>>& WorldController::getTileMap() const {
+    return tileMap;
+}
+
+//const std::vector<std::unique_ptr<TileModel> > &WorldController::getTiles() const
+//{
+//    return tiles;
+//}
 
 const std::vector<std::unique_ptr<TileModel> > &WorldController::getHealthPacks() const
 {
@@ -138,17 +154,28 @@ bool WorldController::isHealthPack(coordinate coord)
     return false;
 }
 
+//bool WorldController::isPoisonedTiles(coordinate coord)
+//{
+//    for ( auto &tile : tiles )
+//    {
+//        if ( tile->getPosition() == coord && tile->getState() == HURT)
+//        {
+//            // let's say HURT means tile is poisoned
+//            return true;
+//        }
+//    }
+//}
+
 bool WorldController::isPoisonedTiles(coordinate coord)
 {
-    for ( auto &tile : tiles )
-    {
-        if ( tile->getPosition() == coord )
-        {
-            return true;
-        }
+    // Check if the coordinate exists in the map
+    if (tileMap.find(coord) != tileMap.end()) {
+        // Directly access the tile and check if it's poisoned
+        return tileMap[coord]->isPoisoned();
     }
     return false;
 }
+
 
 /**
  * type of enemy check
@@ -174,7 +201,6 @@ bool WorldController::isPEnemy(coordinate coord)
         if ( penemy->getPosition() == coord )
         {
             currentPEnemy = penemy.get();
-            qDebug() << "currentPEnemy: " << currentPEnemy;
             return true;
         }
     }
@@ -208,19 +234,24 @@ int WorldController::getDifficultyIdx() const
 /**
  * PEnemy poisened tiles
  */
+void WorldController::setAffectedTiles(coordinate coord, float poisonLevel) {
+    // Determine the range of the poison effect based on the poison level
+    int range = static_cast<int>(poisonLevel) / 15; // or any other formula you see fit
 
-void WorldController::setAffectedTiles(coordinate coord, int spread, std::unique_ptr<PEnemyModel> pEnemy)
-{
-    /**
-     * set the affected tiles of the penemy
-     * */
-    for ( auto &tile : tiles )
-    {
-        if ( tile->getPosition() == coord )
-        {
-            // tile->setPoisoned(true); /** TODO: implement */
-            tile->setValue(pEnemy->getPoisonLevel());
-            // tile->setPoisonSpread(spread); /** TODO: implement */
+    // Apply poison to tiles within the range
+    for (int dx = -range; dx <= range; ++dx) {
+        for (int dy = -range; dy <= range; ++dy) {
+            int affectedX = coord.xCoordinate + dx;
+            int affectedY = coord.yCoordinate + dy;
+
+            // Check if the tile is within the world boundaries
+            if (affectedX >= 0 && affectedX < cols && affectedY >= 0 && affectedY < rows) {
+                // Here you need to get the actual TileModel and update its poisoned state
+                auto& tileModel = getTileModelAt(affectedX, affectedY);
+                if (tileModel) {
+                    tileModel->takeDamage(poisonLevel - (std::abs(dx) + std::abs(dy))); // Decrease strength with distance
+                }
+            }
         }
     }
 }
@@ -246,22 +277,31 @@ void WorldController::deleteEnemy(coordinate coord)
     }
 }
 
-void WorldController::deletePsnTile(coordinate coord)
-{
-    /**
-     * delete poisoned tile from vector
-     * */
-    for ( auto &tile : tiles )
-    {
-        if ( tile->getPosition() == coord )
-        {
-            tiles.erase(std::remove_if(tiles.begin(), tiles.end(), [&](std::unique_ptr<TileModel> &tile)
-            {
-                return tile->getPosition() == coord;
-            }), tiles.end());
-        }
+//void WorldController::deletePsnTile(coordinate coord)
+//{
+//    /**
+//     * delete poisoned tile from vector
+//     * */
+//    for ( auto &tile : tiles )
+//    {
+//        if ( tile->getPosition() == coord )
+//        {
+//            tiles.erase(std::remove_if(tiles.begin(), tiles.end(), [&](std::unique_ptr<TileModel> &tile)
+//            {
+//                return tile->getPosition() == coord;
+//            }), tiles.end());
+//        }
+//    }
+//}
+
+void WorldController::deletePsnTile(coordinate coord) {
+    // Assuming tileMap is a std::map<coordinate, std::unique_ptr<TileModel>>
+    auto it = tileMap.find(coord);
+    if (it != tileMap.end()) {
+        tileMap.erase(it);
     }
 }
+
 
 /**
  * healthpack functions
@@ -304,7 +344,7 @@ void WorldController::onUpArrowPressed() {
         else if (isPEnemy(currentProtagonist->getPosition())){
             onEncounterPEnemy();
         }
-        emit protagonistPositionChanged(0);
+        emit updateprotagonistPosition(0);
     }
 }
 
@@ -328,7 +368,7 @@ void WorldController::onDownArrowPressed() {
         else if (isPEnemy(currentProtagonist->getPosition())){
             onEncounterPEnemy();
         }
-        emit protagonistPositionChanged(0);
+        emit updateprotagonistPosition(0);
     }
 }
 
@@ -352,7 +392,7 @@ void WorldController::onLeftArrowPressed() {
         else if (isPEnemy(currentProtagonist->getPosition())){
             onEncounterPEnemy();
         }
-        emit protagonistPositionChanged(0);
+        emit updateprotagonistPosition(0);
     }
 }
 
@@ -376,20 +416,18 @@ void WorldController::onRightArrowPressed() {
         else if (isPEnemy(currentProtagonist->getPosition())){
             onEncounterPEnemy();
         }
-        emit protagonistPositionChanged(0);
+        emit updateprotagonistPosition(0);
     }
 }
 
 void WorldController::onEncounterEnemy() {
     qDebug() << "Encountered an enemy!" << "\n";
     if (currentProtagonist->getHealth() > 0) {
-//        currentProtagonist->setHealth(currentProtagonist->getHealth() - 1);
         currentProtagonist->attack();
         currentEnemy->attack();
     }
     else {
         currentProtagonist->setHealth(0);
-        qDebug() << "You died!" << "\n";
     }
     qDebug() << "Health: " << currentProtagonist->getHealth() << "\n";
 }
@@ -408,13 +446,12 @@ void WorldController::onEncounterHealthPack() {
 void WorldController::onEncounterPEnemy() {
     qDebug() << "Encountered an penemy!" << "\n";
     if (currentProtagonist->getHealth() > 0) {
-//        currentProtagonist->setHealth(protagonist.getHealth() - 1);
         currentProtagonist->attack();
         currentPEnemy->attack();
+        setAffectedTiles(currentPEnemy->getPosition(), currentPEnemy->getPoisonLevel());
     }
     else {
         currentProtagonist->setHealth(0);
-//        qDebug() << "You died!" << "\n";
     }
     qDebug() << "Health: " << currentProtagonist->getHealth() << "\n";
 }

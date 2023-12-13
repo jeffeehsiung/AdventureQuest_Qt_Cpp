@@ -519,7 +519,6 @@
         <file>images/xenemy_wraith_attack/7.png</file>
         <file>images/xenemy_wraith_attack/8.png</file>
         <file>images/xenemy_wraith_attack/9.png</file>
-        <file>images/tiles/Idle/00.png</file>
         <file>images/tiles/Moving/00.png</file>
         <file>images/protagonist_fighter/Jump/Jump.png</file>
         <file>images/protagonist_fighter/Run/Run.png</file>
@@ -554,5 +553,6 @@
         <file>images/healthpack/Idle/4.png</file>
         <file>images/healthpack/Idle/5.png</file>
         <file>images/healthpack/Idle/6.png</file>
+        <file>images/tiles/Attack/00.png</file>
     </qresource>
 </RCC>

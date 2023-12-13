@@ -9,10 +9,6 @@
 #include "Model/EnemyModel.h"
 
 class EntityTextItem {
-protected:
-    const Entity& entity; // Presuming Entity has position and other relevant attributes
-    QString textRepresentation;
-
 public:
     EntityTextItem(const Entity& entity) : entity(entity) {
         // Default representation for a generic entity
@@ -28,6 +24,11 @@ public:
     coordinate getPosition() const {
         return entity.getPosition();
     }
+
+protected:
+    const Entity& entity; // Presuming Entity has position and other relevant attributes
+    QString textRepresentation;
+
 };
 
 #endif // ENTITYTEXTITEM_H

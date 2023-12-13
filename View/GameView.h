@@ -11,7 +11,7 @@ class GameView {
 public:
     virtual ~GameView(){}
 
-    virtual void animateEntityAction(int index, state newState) = 0;
+    virtual void animateEntityAction(int index) = 0;
     virtual void addEntity(const Entity& entity) = 0;
     /**
      * @brief initializeView

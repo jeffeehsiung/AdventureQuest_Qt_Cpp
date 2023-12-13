@@ -1,52 +1,83 @@
 #ifndef ENEMYMODEL_H
 #define ENEMYMODEL_H
 
-#include "Entity.h"
-#include "world.h"  // Assuming Enemy.h is the header where Enemy is defined
 #include <memory>
+#include "Entity.h"
 
 class EnemyModel : public Entity {
-public:
-    EnemyModel(std::unique_ptr<Enemy> enemy); // Constructor declaration
-    void attack() override;
-    void takeDamage(float damage) override;
-    coordinate getPosition() const override;
-    void setPosition(coordinate position) override;
-    void move(int deltaX, int deltaY) override;
+    Q_OBJECT
+    public:
+        EnemyModel(std::unique_ptr<Enemy> enemy); // Constructor declaration
+        void attack() override;
+        void takeDamage(float damage) override;
+        coordinate getPosition() const override;
+        void setPosition(coordinate position) override;
+        void move(int deltaX, int deltaY) override;
 
-    // Enemy specific functions
-    bool isDefeated() const;
-    void setDefeated(bool defeated);
-    std::string serialize() const;
+        // Enemy specific functions
+        bool isDefeated() const;
+        void setDefeated(bool defeated);
+        std::string serialize() const;
 
-protected:
-    std::unique_ptr<Enemy> enemy;
-    float health;
+    public slots:
+        void onDead();
+
+    protected:
+        std::unique_ptr<Enemy> enemy;
+        float strength;
 };
 
 class PEnemyModel : public Entity {
-public:
-    explicit PEnemyModel(std::unique_ptr<PEnemy> penemy);
+    Q_OBJECT
+    public:
+        explicit PEnemyModel(std::unique_ptr<PEnemy> penemy);
 
-    // Override Enemy's functions if necessary and add PEnemy specific functions
-    void attack() override;
-    void takeDamage(float damage) override;
-    coordinate getPosition() const override;
-    void setPosition(coordinate position) override;
-    void move(int deltaX, int deltaY) override;
+        // Override Enemy's functions if necessary and add PEnemy specific functions
+        void attack() override;
+        void takeDamage(float newPoisonLevel) override;
+        coordinate getPosition() const override;
+        void setPosition(coordinate position) override;
+        void move(int deltaX, int deltaY) override;
 
-    // PEnemy specific functions
-    bool isDefeated() const;
-    void setDefeated(bool defeated);
-    bool releasePoison();
-    float getPoisonLevel() const;
-    void setPoisonLevel(float poisonLevel);
-    std::string serialize() const;
+        // PEnemy specific functions
+        bool isDefeated() const;
+        void setDefeated(bool defeated);
+        bool releasePoison();
+        float getPoisonLevel() const;
+        void setPoisonLevel(float poisonLevel);
+        std::string serialize() const;
 
-private:
-    std::unique_ptr<PEnemy> penemy;
-    float health;
+    public slots:
+        void onDead();
+        void onPoisonLevelUpdated(float poisonLevel);
+
+    private:
+        std::unique_ptr<PEnemy> penemy;
+        float poisonLevel;
+        bool isAlive;
 };
 
+//class XEnemyModel : public Entity {
+    //public:
+    //    explicit XEnemyModel(std::unique_ptr<XPEnemy> xenemy);
+
+    //    void attack() override;
+    //    void takeDamage(float damage) override;
+    //    coordinate getPosition() const override;
+    //    void setPosition(coordinate position) override;
+    //    void move(int deltaX, int deltaY) override;
+
+    //    // PEnemy specific functions
+    //    bool isDefeated() const;
+    //    void setDefeated(bool defeated);
+    //    bool releasePoison();
+    //    float getPoisonLevel() const;
+    //    void setPoisonLevel(float poisonLevel);
+    //    std::string serialize() const;
+
+    //private:
+    //    std::unique_ptr<XEnemy> xenemy;
+    //    float health;
+//};
 
 #endif // ENEMYMODEL_H

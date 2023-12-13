@@ -10,8 +10,10 @@
 
 
 #include <iostream>
+#include <map>
 #include <QObject>
 #include <QMainWindow>
+#include <QKeyEvent>
 #include <QDebug>
 
 class WorldController : public QObject
@@ -38,10 +40,11 @@ class WorldController : public QObject
         /**
          * get single entity functions
         */
-
+        std::unique_ptr<TileModel>& getTileModelAt(int x, int y);
         /**
          * get vector of entities functions
          */
+        const std::map<coordinate, std::unique_ptr<TileModel>>& getTileMap() const;
         const std::vector<std::unique_ptr<TileModel>>& getTiles() const;
         const std::vector<std::unique_ptr<TileModel>>& getHealthPacks() const;
         const std::vector<std::unique_ptr<EnemyModel>>& getEnemies() const;
@@ -67,7 +70,7 @@ class WorldController : public QObject
         /**
          * PEnemy poisened tiles
          */
-        void setAffectedTiles(coordinate, int spread, std::unique_ptr<PEnemyModel> pEnemy);
+        void setAffectedTiles(coordinate coord, float poisonLevel);
 
         /**
          * defeated functions
@@ -102,10 +105,10 @@ class WorldController : public QObject
         void onEncounterHealthPack();
         void onEncounterPEnemy();
 
-signals:
-        void protagonistPositionChanged(int protagonistIndex);
+    signals:
+        void updateprotagonistPosition(int protagonistIndex);
 
-private:
+    private:
         WorldController();
         std::unique_ptr<World> world;
         int rows;
@@ -113,7 +116,8 @@ private:
         int difficultyIdx;
         coordinate exit = coordinate(1,1);
         coordinate start = coordinate(0,0);
-        std::vector<std::unique_ptr<TileModel>> tiles;
+        std::map<coordinate, std::unique_ptr<TileModel>> tileMap;
+//        std::vector<std::unique_ptr<TileModel>> tiles;
         std::vector<std::unique_ptr<TileModel>> healthPacks;
         std::vector<std::unique_ptr<TileModel>> walkedOnTiles;
         std::vector<std::unique_ptr<EnemyModel>> enemies;

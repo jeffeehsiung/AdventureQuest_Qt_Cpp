@@ -6,11 +6,15 @@ qreal EntityGraphicsItem::commonHeight = 0;
 qreal EntityGraphicsItem::tileWidth = 0;
 qreal EntityGraphicsItem::tileHeight = 0;
 
+const int MOVE_DURATION = 100;
+const int ATTACK_DURATION = 100; // milliseconds
+const int HURT_DURATION = 100;
+const int HEAL_DURATION = 100;
+
 
 EntityGraphicsItem::EntityGraphicsItem(const Entity& entity, QGraphicsRectItem* parent)
     : QGraphicsRectItem(0, 0, tileWidth, tileHeight, parent),
     entity(entity),
-//    status(IDLE),
     currentFrameIndex(0) {
     animationTimer = new QTimer(this);
     connect(animationTimer, &QTimer::timeout, this, &EntityGraphicsItem::nextFrame);
@@ -22,12 +26,7 @@ EntityGraphicsItem::~EntityGraphicsItem() {
     delete animationTimer;
 }
 
-void EntityGraphicsItem::changeAnimationState(state newState) {
-//    if (status != newState) {
-//        status = newState;
-//        currentFrameIndex = 0;
-//        startAnimation();
-//    }
+void EntityGraphicsItem::changeAnimationState() {
     currentFrameIndex = 0;
     startAnimation();
 }
@@ -35,13 +34,31 @@ void EntityGraphicsItem::changeAnimationState(state newState) {
 void EntityGraphicsItem::nextFrame() {
     const state entityState = entity.getState();
     std::vector<QPixmap>* currentFrames = nullptr;
+    int animationDuration = 100; // default duration
     switch (entityState) {
     case IDLE: currentFrames = &idleFrames; break;
-    case MOVING: currentFrames = &moveFrames; break;
-    case ATTACK: currentFrames = &attackFrames; break;
-    case HURT: currentFrames = &hurtFrames; break;
+    case MOVING:
+        currentFrames = &moveFrames;
+        animationDuration = MOVE_DURATION;
+        break;
+    case ATTACK:
+        currentFrames = &attackFrames;
+        animationDuration = ATTACK_DURATION;
+        break;
+    case HURT:
+        currentFrames = &hurtFrames;
+        animationDuration = HURT_DURATION;
+        break;
     case DYING: currentFrames = &dyingFrames; break;
-    case HEAL: currentFrames = &healFrames; break;
+    case HEAL:
+        currentFrames = &healFrames;
+        animationDuration = HEAL_DURATION;
+        break;
+    }
+
+    // Update timer interval for the current state
+    if (animationTimer->interval() != animationDuration) {
+        animationTimer->setInterval(animationDuration);
     }
 
     if (!currentFrames || currentFrames->empty()) return;
@@ -91,7 +108,6 @@ void EntityGraphicsItem::startAnimation() {
 }
 
 void EntityGraphicsItem::handleAnimationEnd() {
-//    switch (status)
     switch (entity.getState()) {
     case IDLE:
     case HEAL:
@@ -102,7 +118,6 @@ void EntityGraphicsItem::handleAnimationEnd() {
     case HURT:
     case DYING:
         animationTimer->stop();
-//        status = IDLE;
         break;
     }
 }

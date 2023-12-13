@@ -1,28 +1,30 @@
 #include "EnemyModel.h"
 
 /** Enemy Class */
-EnemyModel::EnemyModel(std::unique_ptr<Enemy> enemy) : enemy(std::move(enemy)), health(100.0f) {
-    // Assuming each enemy starts with a health of 100.0f
-//    status = IDLE;
+EnemyModel::EnemyModel(std::unique_ptr<Enemy> enemy) : enemy(std::move(enemy)){
+    strength = this->enemy->getValue();
+    connect(this->enemy.get(), &Enemy::dead, this, &EnemyModel::onDead);
 }
 
 void EnemyModel::attack() {
     status = ATTACK;
-    float level = 1.0f;
-    takeDamage(level);
+    float damage = 50.0f;
+    takeDamage(damage);
+    QTimer::singleShot(200, this, [this]() {
+        status = IDLE;
+    });
 }
 
 void EnemyModel::takeDamage(float damage) {
-    status = HURT;
-    // Reduce health by the damage amount
-    health -= damage;
+    strength -= damage;
 
-    // Check if health falls below 0
-    if (health <= 0.0f) {
-        // If health is depleted, consider the enemy as defeated
+    if (strength <= 0.0f) {
         enemy->setDefeated(true);
-        health = 0.0f; // Ensure health does not go below 0
+        strength = 0.0f; // Ensure health does not go below 0
     }
+    QTimer::singleShot(500, this, [this]() {
+        status = HURT;
+    });
 }
 
 coordinate EnemyModel::getPosition() const {
@@ -38,6 +40,9 @@ void EnemyModel::move(int deltaX, int deltaY) {
     status = MOVING;
     enemy->setXPos(enemy->getXPos() + deltaX);
     enemy->setYPos(enemy->getYPos() + deltaY);
+    QTimer::singleShot(500, this, [this]() {
+        status = IDLE;
+    });
 }
 
 // Enemy specific functions
@@ -46,7 +51,6 @@ bool EnemyModel::isDefeated() const {
 }
 
 void EnemyModel::setDefeated(bool defeated) {
-    status = DYING;
     enemy->setDefeated(defeated); // will emit dead() in world.
 }
 
@@ -54,27 +58,28 @@ std::string EnemyModel::serialize() const {
     return enemy->serialize();
 }
 
+void EnemyModel::onDead(){
+    status = DYING;
+}
+
 
 /** PEnemy Class */
 
 PEnemyModel::PEnemyModel(std::unique_ptr<PEnemy> penemy)
     :penemy(std::move(penemy)) {
+    poisonLevel = this->penemy->getPoisonLevel();
+    isAlive = this->penemy->getDefeated();
+    connect(this->penemy.get(), &Enemy::dead, this, &PEnemyModel::onDead);
 }
 
 void PEnemyModel::attack() {
-    qDebug() << "penemy attacking";
     status = ATTACK;
-    float level = 1.0f;
-    takeDamage(level);
+    isAlive = releasePoison();
 }
 
-void PEnemyModel::takeDamage(float damage) {
-    // Consider poison effects if relevant
+void PEnemyModel::takeDamage(float newPoisonLevel) {
+    poisonLevel = newPoisonLevel;
     status = HURT;
-    // Reduce health by the damage amount
-    health -= damage;
-    // release poison
-    bool isAlive = releasePoison();
     if (isAlive == false){
         setDefeated(true);
     }
@@ -93,15 +98,17 @@ void PEnemyModel::move(int deltaX, int deltaY) {
     status = MOVING;
     penemy->setXPos(penemy->getXPos() + deltaX);
     penemy->setYPos(penemy->getYPos() + deltaY);
+    QTimer::singleShot(500, this, [this]() {
+        status = IDLE;
+    });
 }
 
-// Enemy specific functions
+// PEnemy specific functions
 bool PEnemyModel::isDefeated() const {
     return penemy->getDefeated();
 }
 
 void PEnemyModel::setDefeated(bool defeated) {
-    status = DYING;
     penemy->setDefeated(defeated); // will emit dead() in world.
 }
 
@@ -120,6 +127,18 @@ void PEnemyModel::setPoisonLevel(float poisonLevel) {
 
 std::string PEnemyModel::serialize() const {
     return penemy->serialize();
+}
+
+void PEnemyModel::onDead(){
+    status = DYING;
+}
+
+void PEnemyModel::onPoisonLevelUpdated(float poisonLevel){
+    status = ATTACK;
+    takeDamage(poisonLevel);
+    QTimer::singleShot(500, this, [this]() {
+        status = IDLE;
+    });
 }
 
 
