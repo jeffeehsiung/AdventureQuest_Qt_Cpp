@@ -57,7 +57,7 @@ private:
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 
-    //signals:
+//signals:
 
 private slots:
     void onStartButtonClicked();

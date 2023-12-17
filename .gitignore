@@ -67,7 +67,7 @@ CMakeLists.txt.user*
 # Python byte code
 *.pyc
 
-# Binaries
+# Binariesgi
 # --------
 *.dll
 *.exe
@@ -76,3 +76,4 @@ CMakeLists.txt.user*
 build
 ```
 *.pro
+APTgame.pro
