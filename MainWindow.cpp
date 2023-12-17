@@ -1,71 +1,319 @@
-﻿#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+﻿#include "MainWindow.h"
 
-#include <QMainWindow>
-#include <QPushButton>
-#include <QSlider>
-#include <QLabel>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QTextEdit>
-#include <QComboBox>
-#include <QTabWidget>
-#include <QKeyEvent>
-#include <QMessageBox>
-#include "Controller/GameController.h"
-
-
-class MainWindow : public QMainWindow
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent),
+    centralWidget(new QWidget(this)),
+    startButton(new QPushButton("Start", this)),
+    pauseButton(new QPushButton("Pause", this)),
+    quitButton(new QPushButton("Quit", this)),
+    animationDelaySlider(new QSlider(Qt::Horizontal, this)),
+    heuristicWeightFactorSlider(new QSlider(Qt::Horizontal, this)),
+    animationDelayLabel(new QLabel("Animation delay", this)),
+    heuristicWeightFactorLabel(new QLabel("Heuristic weight factor", this)),
+    viewTabs(new QTabWidget(this)),
+    graphicsTab(new QWidget(this)),
+    textualTab(new QWidget(this)),
+    autoPlayButton(new QPushButton("Auto Play", this)),
+    playerNumberComboBox(new QComboBox(this)),
+    difficultyLevelComboBox(new QComboBox(this)),
+    playerNumberLabel(new QLabel("Number of Players", this)),
+    difficultyLevelLabel(new QLabel("Difficulty Level", this)),
+    graphicsMessageWidget(new QTextEdit(this)),
+    textualMessageWidget(new QTextEdit(this)),
+    isGamePaused(false),
+    gameController(new GameController(this))
 {
-    Q_OBJECT
+    setCentralWidget(centralWidget);
+    setupUI();
 
-public:
-    explicit MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
-    void displayView(QWidget* view);
-    void updateHealthDisplay();
-    void updateEnergyDisplay();
+    pauseButton->setEnabled(false);
+    pauseButton->setStyleSheet("background-color: grey;");
+    autoPlayButton->setEnabled(false);
+    autoPlayButton->setStyleSheet("background-color: grey;");
+    quitButton->setEnabled(false);
+    quitButton->setStyleSheet("background-color: grey;");
 
-private:
-    QWidget *centralWidget;
-    QPushButton *startButton;
-    QPushButton *pauseButton;
-    QPushButton *quitButton;
-    QVector<QLabel*> healthLabels;
-    QVector<QLabel*> energyLabels;
-    QSlider *animationDelaySlider;
-    QSlider *heuristicWeightFactorSlider;
-    QLabel *animationDelayLabel;
-    QLabel *heuristicWeightFactorLabel;
-    QTabWidget *viewTabs;
-    QWidget *graphicsTab;
-    QWidget *textualTab;
-    QPushButton *autoPlayButton;
-    QComboBox *playerNumberComboBox;
-    QComboBox *difficultyLevelComboBox;
-    QLabel *playerNumberLabel;
-    QLabel *difficultyLevelLabel;
-    QTextEdit *graphicsMessageWidget;
-    QTextEdit *textualMessageWidget;
+    /** UI connections to MainWindow */
+    connect(startButton, &QPushButton::clicked, this, &MainWindow::onStartButtonClicked);
+    connect(pauseButton, &QPushButton::clicked, this, &MainWindow::onPauseButtonClicked);
+    connect(autoPlayButton, &QPushButton::clicked, this, &MainWindow::onAutoPlayButtonClicked);
+    connect(quitButton, &QPushButton::clicked, this, &MainWindow::onQuitButtonClicked);
+    connect(viewTabs, &QTabWidget::currentChanged, this, &MainWindow::onViewTabChanged);
 
-    bool isGamePaused;
+    /** MainWindow connections to GameController */
+    connect(gameController, &GameController::viewUpdateRequested, this, &MainWindow::onViewUpdateRequested);
+}
 
-    GameController* gameController;
 
-    void setupUI();
+MainWindow::~MainWindow() {
+    delete gameController;
+}
 
-protected:
-    void keyPressEvent(QKeyEvent *event) override;
 
-    //signals:
+void MainWindow::setupUI()
+{
+    // Set the window title
+    setWindowTitle("MainWindow");
 
-private slots:
-    void onStartButtonClicked();
-    void onPauseButtonClicked();
-    void onAutoPlayButtonClicked();
-    void onQuitButtonClicked();
-    void onViewTabChanged(int index);
-    void onViewUpdateRequested(QWidget* view);
-};
+    // Initialize the player number combo box
+    playerNumberComboBox->addItem("1");
+    playerNumberComboBox->addItem("2");
 
-#endif // MAINWINDOW_H
+    // Initialize the difficulty level combo box
+    difficultyLevelComboBox->addItem("Easy");
+    difficultyLevelComboBox->addItem("Medium");
+    difficultyLevelComboBox->addItem("Hard");
+
+    QVBoxLayout *graphicsLayout = new QVBoxLayout();
+    QVBoxLayout *textualLayout = new QVBoxLayout();
+
+    // Add a widget for game messages in the graphics tab
+    graphicsMessageWidget->setReadOnly(true);
+    graphicsMessageWidget->setStyleSheet("background-color: white;");
+    graphicsMessageWidget->setFixedHeight(100);
+
+    viewTabs->addTab(graphicsTab, "Graphics");
+
+    graphicsLayout->addWidget(graphicsMessageWidget);
+    graphicsTab->setLayout(graphicsLayout);
+
+
+    // Add a widget for game messages in the textual tab
+    textualMessageWidget->setReadOnly(true);
+    textualMessageWidget->setStyleSheet("background-color: white;");
+    textualMessageWidget->setFixedHeight(100);
+
+    viewTabs->addTab(textualTab, "Textual");
+
+    textualLayout->addWidget(textualMessageWidget);
+    textualTab->setLayout(textualLayout);
+
+    // Set up the controls
+    startButton->setFixedSize(100, 30);
+    quitButton->setFixedSize(100, 30);
+    pauseButton->setFixedSize(100, 30);
+    autoPlayButton->setFixedSize(100, 30);
+
+    // Main layout
+    QVBoxLayout *mainLayout = new QVBoxLayout(centralWidget);
+    mainLayout->addWidget(viewTabs);
+
+    // Control layout
+    QHBoxLayout *controlLayout = new QHBoxLayout();
+    controlLayout->addWidget(startButton);
+    controlLayout->addWidget(pauseButton);
+    controlLayout->addWidget(autoPlayButton);
+    controlLayout->addWidget(quitButton);
+    
+    controlLayout->addWidget(playerNumberLabel);
+    controlLayout->addWidget(playerNumberComboBox);
+    controlLayout->addWidget(difficultyLevelLabel);
+    controlLayout->addWidget(difficultyLevelComboBox);
+    controlLayout->addWidget(animationDelayLabel);
+    controlLayout->addWidget(animationDelaySlider);
+    controlLayout->addWidget(heuristicWeightFactorLabel);
+    controlLayout->addWidget(heuristicWeightFactorSlider);
+
+    controlLayout->addStretch(1); // Push the remaining elements to the right
+
+    const int maxHealth = 5;
+    const int maxEnergy = 50;
+    const QSize heartSize(30, 30);
+    const QSize energySize(5, 5);
+
+    for (int i = 0; i < maxHealth; ++i) {
+        QLabel* healthLabel = new QLabel(this);
+        QPixmap heartPixmap(":/images/healthpack/Idle/2.png");
+        healthLabel->setPixmap(heartPixmap.scaled(heartSize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        healthLabels.append(healthLabel);
+        controlLayout->addWidget(healthLabel);
+    }
+
+    for (int i = 0; i < maxEnergy; ++i) {
+        QLabel* energyLabel = new QLabel(this);
+        QPixmap starPixmap(":/images/tiles/Idle/00.png");
+        energyLabel->setPixmap(starPixmap.scaled(energySize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        energyLabels.append(energyLabel);
+        controlLayout->addWidget(energyLabel);
+    }
+
+    // Add control layout to the main layout
+    mainLayout->addLayout(controlLayout);
+
+    // Set the central widget layout
+    centralWidget->setLayout(mainLayout);
+}
+
+void MainWindow::onStartButtonClicked()
+{
+    QString numberOfPlayers = playerNumberComboBox->currentText();
+    QString difficultyLevel = difficultyLevelComboBox->currentText();
+
+    QString message = QString("Game started with %1 players and level of difficulty: %2")
+                          .arg(numberOfPlayers, difficultyLevel);
+
+    graphicsMessageWidget->append(message);
+    textualMessageWidget->append(message);
+
+    startButton->setEnabled(false);
+    startButton->setStyleSheet("background-color: grey;");
+
+    pauseButton->setEnabled(true);
+    pauseButton->setStyleSheet("");
+
+    autoPlayButton->setEnabled(true);
+    autoPlayButton->setStyleSheet("");
+
+    quitButton->setEnabled(true);
+    quitButton->setStyleSheet("");
+
+    playerNumberComboBox->setEnabled(false);
+    playerNumberComboBox->setStyleSheet("background-color: grey;");
+
+    difficultyLevelComboBox->setEnabled(false);
+    difficultyLevelComboBox->setStyleSheet("background-color: grey;");
+
+    // Interact with game controller
+    gameController->readGameStarted(true);
+    gameController->readGamePaused(false);
+    gameController->readGameAutoplayed(false);
+    gameController->readGameNumberOfPlayers(numberOfPlayers);
+    gameController->readGameDifficultyLevel(difficultyLevel);
+    gameController->initializeWorld();
+}
+
+void MainWindow::onPauseButtonClicked()
+{
+    if (isGamePaused) {
+        graphicsMessageWidget->append("Game unpaused!");
+        textualMessageWidget->append("Game unpaused!");
+        pauseButton->setText("Pause");
+        autoPlayButton->setEnabled(true);
+        autoPlayButton->setStyleSheet("");
+        isGamePaused = false;
+    } else {
+        graphicsMessageWidget->append("Game paused!");
+        textualMessageWidget->append("Game paused!");
+        pauseButton->setText("Unpause");
+        autoPlayButton->setEnabled(false);
+        autoPlayButton->setStyleSheet("background-color: grey;");
+        isGamePaused = true;
+    }
+    gameController->readGamePaused(isGamePaused);
+    gameController->printAllGameInfo();
+}
+
+void MainWindow::onAutoPlayButtonClicked()
+{
+    graphicsMessageWidget->append("Auto playing...");
+    textualMessageWidget->append("Auto playing...");
+    gameController->readGameAutoplayed(true);
+    gameController->printAllGameInfo();
+}
+
+void MainWindow::onQuitButtonClicked()
+{
+    graphicsMessageWidget->append("Game exited!");
+    textualMessageWidget->append("Game exited!");
+
+    startButton->setEnabled(true);
+    startButton->setStyleSheet("");
+
+    pauseButton->setText("Pause");
+    pauseButton->setEnabled(false);
+    pauseButton->setStyleSheet("background-color: grey;");
+    isGamePaused = false;
+    gameController->readGamePaused(isGamePaused);
+
+    autoPlayButton->setEnabled(false);
+    autoPlayButton->setStyleSheet("background-color: grey;");
+    gameController->readGameAutoplayed(false);
+
+    quitButton->setEnabled(false);
+    quitButton->setStyleSheet("background-color: grey;");
+    gameController->readGameStarted(false);
+
+    playerNumberComboBox->setEnabled(true);
+    playerNumberComboBox->setStyleSheet("");
+    gameController->readGameNumberOfPlayers("0");
+
+    difficultyLevelComboBox->setEnabled(true);
+    difficultyLevelComboBox->setStyleSheet("");
+    gameController->readGameDifficultyLevel("Not Selected");
+
+    gameController->printAllGameInfo();
+
+    gameController->setGameOver();
+    startButton->setText("Exit");
+}
+
+void MainWindow::onViewTabChanged(int index)
+{
+    if (index == 0) {
+        gameController->switchTo2DView();
+    } else if (index == 1) {
+        gameController->switchToTextView();
+    }
+}
+
+void MainWindow::onViewUpdateRequested(QWidget* view) {
+    displayView(view);
+}
+
+void MainWindow::displayView(QWidget* view) {
+    if (!viewTabs || viewTabs->count() == 0) {
+        return;
+    }
+
+    QWidget* currentTab = viewTabs->currentWidget();
+
+    if (currentTab) {
+        QLayout* layout = currentTab->layout();
+        layout->addWidget(view);
+    }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+    if (!gameController->isGameOver()) {
+        setFocusPolicy(Qt::StrongFocus);
+        switch (event->key()) {
+        case Qt::Key_W:
+            gameController->onUpArrowPressed();
+            updateHealthDisplay();
+            break;
+        case Qt::Key_S:
+            gameController->onDownArrowPressed();
+            updateHealthDisplay();
+            break;
+        case Qt::Key_A:
+            gameController->onLeftArrowPressed();
+            updateHealthDisplay();
+            break;
+        case Qt::Key_D:
+            gameController->onRightArrowPressed();
+            updateHealthDisplay();
+            break;
+        default:
+            QMainWindow::keyPressEvent(event);
+        }
+    }
+}
+
+void MainWindow::updateHealthDisplay() {
+    int currentHealth = gameController->getHealth1();
+    if (currentHealth == 0) {
+        gameController->setGameOver();
+        QMessageBox::information(this, "Game Over", "DIE! YOU'VE GOT NOTHING! YOU LOSE!");
+    }
+    for (int i = 0; i < healthLabels.size(); ++i) {
+        if (i < currentHealth) {
+            healthLabels[i]->setVisible(true);
+        } else {
+            healthLabels[i]->setVisible(false);
+        }
+    }
+}
+
+void MainWindow::updateEnergyDisplay() {
+
+}
