@@ -16,11 +16,11 @@ void EnemyModel::attack() {
 
 void EnemyModel::takeDamage(float damage) {
     strength -= damage;
-    status = HURT;
-    qDebug() << "enemy take damage strength: " << strength;
     if (strength <= 0.0f) {
         QTimer::singleShot(200, this, [this]() {strength = 0.0f; setDefeated(true);});
     }
+    status = HURT;
+    qDebug() << "enemy take damage strength: " << strength;
 }
 
 coordinate EnemyModel::getPosition() const {
@@ -53,7 +53,6 @@ std::string EnemyModel::serialize() const {
 
 void EnemyModel::onDead(){
     status = DYING;
-    QTimer::singleShot(200, this, [this]() {qDebug() << "enemy dead strength: " << strength;});
 }
 
 

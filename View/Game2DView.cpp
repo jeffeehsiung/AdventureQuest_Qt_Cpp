@@ -24,11 +24,6 @@ void Game2DView::addEntity(const Entity& entity) {
     }
 }
 
-void Game2DView::animateEntityAction(int index) {
-    // Implementation for graphical animation of an entity action
-    protagonistGraphicsItems[index]->changeAnimationState();
-}
-
 void Game2DView::initializeView() {
     if (!scene) {
         scene = new QGraphicsScene(this);
@@ -47,7 +42,6 @@ void Game2DView::initializeView() {
     scaleEntitiesToFitView();
 
     // Extract entities from the WorldController
-//    const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getTiles();
     const auto& tileMap = worldController.getTileMap();
     const std::vector<std::unique_ptr<TileModel>>& healthPacks = worldController.getHealthPacks();
     const std::vector<std::unique_ptr<EnemyModel>>& enemies = worldController.getEnemies();

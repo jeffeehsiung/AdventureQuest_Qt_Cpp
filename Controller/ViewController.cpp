@@ -53,7 +53,6 @@ void ViewController::onUpdatedScene() {
 
 void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
     if (currentView == game2DView.get()) {
-        game2DView->animateEntityAction(protagonistIndex);
         game2DView->updateView();
     }
     else if (currentView == gameTextView.get()) {

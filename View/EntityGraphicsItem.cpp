@@ -27,6 +27,7 @@ EntityGraphicsItem::~EntityGraphicsItem() {
 }
 
 void EntityGraphicsItem::changeAnimationState() {
+    qDebug() << "change animation state";
     currentFrameIndex = 0;
     startAnimation();
 }
@@ -111,11 +112,11 @@ void EntityGraphicsItem::handleAnimationEnd() {
     switch (entity.getState()) {
     case IDLE:
     case HEAL:
-        currentFrameIndex = 0;
-        break;
     case MOVING:
     case ATTACK:
     case HURT:
+        currentFrameIndex = 0;
+        break;
     case DYING:
         animationTimer->stop();
         break;

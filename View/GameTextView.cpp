@@ -27,11 +27,6 @@ void GameTextView::addEntity(const Entity& entity) {
     }
 }
 
-
-
-void GameTextView::animateEntityAction(int index){}
-
-
 //void GameTextView::initializeView() {
 //    clear();
 

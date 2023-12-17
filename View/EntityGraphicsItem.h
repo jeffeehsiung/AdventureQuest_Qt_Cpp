@@ -46,7 +46,6 @@ public:
 
     virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
 
-
 protected:
 
     const Entity& entity;   // Raw pointer to entity model (abstract)
