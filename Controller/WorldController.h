@@ -118,7 +118,6 @@ class WorldController : public QObject
         coordinate exit = coordinate(1,1);
         coordinate start = coordinate(0,0);
         std::map<coordinate, std::unique_ptr<TileModel>> tileMap;
-//        std::vector<std::unique_ptr<TileModel>> tiles;
         std::vector<std::unique_ptr<TileModel>> healthPacks;
         std::vector<std::unique_ptr<TileModel>> walkedOnTiles;
         std::vector<std::unique_ptr<EnemyModel>> enemies;

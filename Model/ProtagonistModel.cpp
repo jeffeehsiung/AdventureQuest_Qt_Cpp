@@ -9,21 +9,28 @@ ProtagonistModel::ProtagonistModel(std::unique_ptr<Protagonist> protagonist)
 
 void ProtagonistModel::attack() {
     status = ATTACK;
-    qDebug() << "your status: " << status;
+    qDebug() << "your start attack timer status: " << status;
     float damage = 1.0f;
-    takeDamage(damage);
+    // Using a lambda function as the slot
+    QTimer::singleShot(300, this, [this, damage]() {
+        this->takeDamage(damage);
+    });
 }
 
 void ProtagonistModel::takeDamage(float damage) {
     if (protagonist) {
-        float currentHealth = protagonist->getHealth();
-        float newHealth = currentHealth - damage;
         status = HURT;
-        qDebug() << "your status: " << status;
-        newHealth = std::max(0.0f, newHealth);
-        protagonist->setHealth(newHealth);
+        qDebug() << "your take damage status: " << status;
+        // Schedule the following block to be executed after 300 ms
+        QTimer::singleShot(100, this, [this, damage]() {
+            float currentHealth = protagonist->getHealth();
+            float newHealth = currentHealth - damage;
+            newHealth = std::max(0.0f, newHealth);
+            protagonist->setHealth(newHealth);
+        });
     }
 }
+
 
 coordinate ProtagonistModel::getPosition() const {
     return {protagonist->getXPos(), protagonist->getYPos()};
@@ -38,9 +45,6 @@ void ProtagonistModel::move(int deltaX, int deltaY) {
     status = MOVING;
     protagonist->setXPos(protagonist->getXPos() + deltaX);
     protagonist->setYPos(protagonist->getYPos() + deltaY);
-    QTimer::singleShot(500, this, [this]() {
-        status = IDLE;
-    });
 }
 
 int ProtagonistModel::getHealth() const {
@@ -65,31 +69,21 @@ std::string ProtagonistModel::serialize() const {
 }
 
 void ProtagonistModel::onPosChanged(int x, int y){
-    QTimer::singleShot(500, this, [this]() {
-        status = IDLE;
-    });
-    qDebug() << "your status: " << status;
+//    QTimer::singleShot(100, this, [this]() {qDebug() << "your position changed status: " << status;});
 }
 
 void ProtagonistModel::onHealthChanged(int h){
-    if(h == 0){
+    if(h <= 0){
         status = DYING;
-        qDebug() << "You died!";
+        QTimer::singleShot(100, this, [this]() {qDebug() << "You died!";});
     }
-    QTimer::singleShot(500, this, [this]() {
-        status = IDLE;
-    });
     qDebug() << "your status: " << status;
 }
 void ProtagonistModel::oneEnergyChanged(int e){
-    if(e == 0){
-        status = DYING;
-        qDebug() << "You died!";
+    if(e <= 0){
+        qDebug() << "your status after energy changed: " << status;
     }
-    QTimer::singleShot(500, this, [this]() {
-        status = IDLE;
-    });
-    qDebug() << "your status: " << status;
+
 }
 
 

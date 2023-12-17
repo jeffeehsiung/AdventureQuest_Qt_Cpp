@@ -3,28 +3,24 @@
 /** Enemy Class */
 EnemyModel::EnemyModel(std::unique_ptr<Enemy> enemy) : enemy(std::move(enemy)){
     strength = this->enemy->getValue();
+    qDebug() << "enemy strength: " << strength;
     connect(this->enemy.get(), &Enemy::dead, this, &EnemyModel::onDead);
 }
 
 void EnemyModel::attack() {
     status = ATTACK;
+    qDebug() << "enemy attack: start timer";
     float damage = 50.0f;
-    takeDamage(damage);
-    QTimer::singleShot(200, this, [this]() {
-        status = IDLE;
-    });
+    QTimer::singleShot(200, this, [this, damage]() {takeDamage(damage);});
 }
 
 void EnemyModel::takeDamage(float damage) {
     strength -= damage;
-
+    status = HURT;
+    qDebug() << "enemy take damage strength: " << strength;
     if (strength <= 0.0f) {
-        enemy->setDefeated(true);
-        strength = 0.0f; // Ensure health does not go below 0
+        QTimer::singleShot(200, this, [this]() {strength = 0.0f; setDefeated(true);});
     }
-    QTimer::singleShot(500, this, [this]() {
-        status = HURT;
-    });
 }
 
 coordinate EnemyModel::getPosition() const {
@@ -40,9 +36,6 @@ void EnemyModel::move(int deltaX, int deltaY) {
     status = MOVING;
     enemy->setXPos(enemy->getXPos() + deltaX);
     enemy->setYPos(enemy->getYPos() + deltaY);
-    QTimer::singleShot(500, this, [this]() {
-        status = IDLE;
-    });
 }
 
 // Enemy specific functions
@@ -60,6 +53,7 @@ std::string EnemyModel::serialize() const {
 
 void EnemyModel::onDead(){
     status = DYING;
+    QTimer::singleShot(200, this, [this]() {qDebug() << "enemy dead strength: " << strength;});
 }
 
 
@@ -98,7 +92,7 @@ void PEnemyModel::move(int deltaX, int deltaY) {
     status = MOVING;
     penemy->setXPos(penemy->getXPos() + deltaX);
     penemy->setYPos(penemy->getYPos() + deltaY);
-    QTimer::singleShot(500, this, [this]() {
+    QTimer::singleShot(100, this, [this]() {
         status = IDLE;
     });
 }

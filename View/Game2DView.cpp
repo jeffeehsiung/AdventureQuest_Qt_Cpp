@@ -55,16 +55,7 @@ void Game2DView::initializeView() {
     const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = worldController.getProtagonists();
 
     /** baseFramesDir for tile is constant */
-//    QString tileBase = ":/images/tiles/";
-//    for (const auto& tile : tiles) {
-//        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
-//        scene->addItem(tileGraphicsItem.get());
-//        tileGraphicsItems.push_back(std::move(tileGraphicsItem));
-//    }
-
     QString tileBase = ":/images/tiles/";
-    // Get a reference to the tileMap to avoid copying
-//    auto tileMap = worldController.getTileMap(); // This function needs to be implemented in WorldController
     for (const auto& [coord, tileModel] : tileMap) {
         std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tileModel, tileBase);
         scene->addItem(tileGraphicsItem.get());
@@ -165,6 +156,16 @@ void Game2DView::updateView() {
     for (const auto& tileGraphicsItem : tileGraphicsItems) {
         if (tileGraphicsItem) {
             tileGraphicsItem->updatePosition();
+        }
+    }
+    for (const auto& enemyGraphicsItem : enemyGraphicsItems) {
+        if (enemyGraphicsItem) {
+            enemyGraphicsItem->updatePosition();
+        }
+    }
+    for (const auto& penemyGraphicsItem : penemyGraphicsItems) {
+        if (penemyGraphicsItem) {
+            penemyGraphicsItem->updatePosition();
         }
     }
     this->update();

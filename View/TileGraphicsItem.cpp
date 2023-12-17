@@ -47,20 +47,20 @@ void TileGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* 
             painter->drawPixmap(0, 0, image);
         }
 
-        int value = tileModel->getValue();
+//        int value = tileModel->getValue();
 
-        // Assuming value is between 0 and some maximum value, map it to an alpha value between 0 and 255.
-        // The maximum value here should be the maximum possible value of your tiles.
-        const int maxValue = 255 * 0.5; // Replace with your maximum tile value if different
-        int alpha = static_cast<int>((static_cast<double>(value) / maxValue) * 255);
+//        // Assuming value is between 0 and some maximum value, map it to an alpha value between 0 and 255.
+//        // The maximum value here should be the maximum possible value of your tiles.
+//        const int maxValue = 255 * 0.5; // Replace with your maximum tile value if different
+//        int alpha = static_cast<int>((static_cast<double>(value) / maxValue) * 255);
 
-        // Create a green color with the calculated alpha for transparency
-        QColor overlayColor(0, 255, 0, alpha); // Semi-transparent green based on 'value'
+//        // Create a green color with the calculated alpha for transparency
+//        QColor overlayColor(0, 255, 0, alpha); // Semi-transparent green based on 'value'
 
-        // Set the brush to the determined color with transparency and draw the overlay
-        painter->setBrush(overlayColor);
-        painter->setPen(Qt::NoPen); // No border for the overlay
-        painter->drawRect(boundingRect());
+//        // Set the brush to the determined color with transparency and draw the overlay
+//        painter->setBrush(overlayColor);
+//        painter->setPen(Qt::NoPen); // No border for the overlay
+//        painter->drawRect(boundingRect());
     }else{
         qDebug() << "TileGraphicsItem::paint() - tileModel is null";
     }
