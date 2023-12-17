@@ -10,8 +10,10 @@
 
 
 #include <iostream>
+#include <map>
 #include <QObject>
 #include <QMainWindow>
+#include <QKeyEvent>
 #include <QDebug>
 #include <random>
 
@@ -39,10 +41,11 @@ class WorldController : public QObject
         /**
          * get single entity functions
         */
-
+        std::unique_ptr<TileModel>& getTileModelAt(int x, int y);
         /**
          * get vector of entities functions
          */
+        const std::map<coordinate, std::unique_ptr<TileModel>>& getTileMap() const;
         const std::vector<std::unique_ptr<TileModel>>& getTiles() const;
         const std::vector<std::unique_ptr<TileModel>>& getHealthPacks() const;
         const std::vector<std::unique_ptr<EnemyModel>>& getEnemies() const;
@@ -68,7 +71,7 @@ class WorldController : public QObject
         /**
          * PEnemy poisened tiles
          */
-        void setAffectedTiles(coordinate, int spread, std::unique_ptr<PEnemyModel> pEnemy);
+        void setAffectedTiles(coordinate coord, float poisonLevel);
 
         /**
          * defeated functions
@@ -101,11 +104,12 @@ class WorldController : public QObject
 
         void onEncounterEnemy();
         void onEncounterHealthPack();
+        void onEncounterPEnemy();
 
-signals:
-        void protagonistPositionChanged(int protagonistIndex);
+    signals:
+        void updateprotagonistPosition(int protagonistIndex);
 
-private:
+    private:
         WorldController();
         std::unique_ptr<World> world;
         int rows;
@@ -113,13 +117,21 @@ private:
         int difficultyIdx;
         coordinate exit = coordinate(1,1);
         coordinate start = coordinate(0,0);
-        std::vector<std::unique_ptr<TileModel>> tiles;
+        std::map<coordinate, std::unique_ptr<TileModel>> tileMap;
+//        std::vector<std::unique_ptr<TileModel>> tiles;
         std::vector<std::unique_ptr<TileModel>> healthPacks;
         std::vector<std::unique_ptr<TileModel>> walkedOnTiles;
         std::vector<std::unique_ptr<EnemyModel>> enemies;
         std::vector<std::unique_ptr<PEnemyModel>> penemies;
 //        std::vector<std::unique_ptr<XEnemyModel>> xenemies;
         std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
+
+        // current (p)enemy, protagonist, hp
+        ProtagonistModel* currentProtagonist;
+        EnemyModel* currentEnemy;
+        PEnemyModel* currentPEnemy;
+//        XEnemyModel* currentXEnemy;
+        TileModel* currentHealthpack;
 
 };
 

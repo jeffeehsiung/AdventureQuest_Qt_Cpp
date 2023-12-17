@@ -10,6 +10,8 @@ TileGraphicsItem::TileGraphicsItem(const TileModel& tileModel, const QString& ba
 void TileGraphicsItem::loadAnimationFrames() {
     // Load the frames for each animation state
     loadFramesFromDirectory(baseFramesDir + "Idle/", idleFrames);
+    loadFramesFromDirectory(baseFramesDir + "Moving/", moveFrames);
+    loadFramesFromDirectory(baseFramesDir + "Attack/", attackFrames);
 }
 
 void TileGraphicsItem::loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames) {

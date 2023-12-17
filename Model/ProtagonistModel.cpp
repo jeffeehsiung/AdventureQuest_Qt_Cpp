@@ -1,27 +1,27 @@
 #include "ProtagonistModel.h"
 
 ProtagonistModel::ProtagonistModel(std::unique_ptr<Protagonist> protagonist)
-    : protagonist(std::move(protagonist)) {}
+    : protagonist(std::move(protagonist)) {
+    connect(this->protagonist.get(), &Protagonist::posChanged, this, &ProtagonistModel::onPosChanged);
+    connect(this->protagonist.get(), &Protagonist::healthChanged, this, &ProtagonistModel::onHealthChanged);
+    connect(this->protagonist.get(), &Protagonist::energyChanged, this, &ProtagonistModel::oneEnergyChanged);
+}
 
 void ProtagonistModel::attack() {
-    // Protagonist's attack implementation
+    status = ATTACK;
+    qDebug() << "your status: " << status;
+    float damage = 1.0f;
+    takeDamage(damage);
 }
 
 void ProtagonistModel::takeDamage(float damage) {
     if (protagonist) {
-        // Get current health
         float currentHealth = protagonist->getHealth();
-
-        // Calculate new health after taking damage
         float newHealth = currentHealth - damage;
-
-        // Ensure new health is not less than zero
+        status = HURT;
+        qDebug() << "your status: " << status;
         newHealth = std::max(0.0f, newHealth);
-
-        // Update Protagonist's health
         protagonist->setHealth(newHealth);
-
-        // Additional logic can be added here as needed
     }
 }
 
@@ -35,33 +35,61 @@ void ProtagonistModel::setPosition(coordinate position) {
 }
 
 void ProtagonistModel::move(int deltaX, int deltaY) {
+    status = MOVING;
     protagonist->setXPos(protagonist->getXPos() + deltaX);
     protagonist->setYPos(protagonist->getYPos() + deltaY);
+    QTimer::singleShot(500, this, [this]() {
+        status = IDLE;
+    });
 }
 
 int ProtagonistModel::getHealth() const {
-    // Return the current health of the protagonist.
     return protagonist->getHealth();
 }
 
 void ProtagonistModel::setHealth(float health) {
-    // Set the health of the protagonist.
     protagonist->setHealth(health);
 }
 
 int ProtagonistModel::getEnergy() const {
-    // Return the current energy of the protagonist.
     return protagonist->getEnergy();
 }
 
 void ProtagonistModel::setEnergy(float energy) {
-    // Set the energy level of the protagonist.
     protagonist->setEnergy(energy);
 }
 
 std::string ProtagonistModel::serialize() const {
-    // Serialize the current state of the protagonist.
+    // Serialize the current status of the protagonist.
     return protagonist->serialize();
+}
+
+void ProtagonistModel::onPosChanged(int x, int y){
+    QTimer::singleShot(500, this, [this]() {
+        status = IDLE;
+    });
+    qDebug() << "your status: " << status;
+}
+
+void ProtagonistModel::onHealthChanged(int h){
+    if(h == 0){
+        status = DYING;
+        qDebug() << "You died!";
+    }
+    QTimer::singleShot(500, this, [this]() {
+        status = IDLE;
+    });
+    qDebug() << "your status: " << status;
+}
+void ProtagonistModel::oneEnergyChanged(int e){
+    if(e == 0){
+        status = DYING;
+        qDebug() << "You died!";
+    }
+    QTimer::singleShot(500, this, [this]() {
+        status = IDLE;
+    });
+    qDebug() << "your status: " << status;
 }
 
 
