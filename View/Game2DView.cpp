@@ -50,7 +50,7 @@ void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
     scaleEntitiesToFitView();
 
     // Extract entities from the WorldController
-    const std::vector<std::unique_ptr<TileModel>>& tiles = world->getTiles();
+    const auto& tileMap = world->getTileMap();
     const std::vector<std::unique_ptr<TileModel>>& healthPacks = world->getHealthPacks();
     const std::vector<std::unique_ptr<EnemyModel>>& enemies = world->getEnemies();
     const std::vector<std::unique_ptr<PEnemyModel>>& penemies = world->getPEnemies();

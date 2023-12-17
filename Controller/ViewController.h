@@ -26,7 +26,7 @@ public:
 
 public slots:
     void onUpdatedScene();
-    void updateProtagonistPosition(int protagonistIndex);
+    void onUpdateProtagonistPosition(int protagonistIndex);
     void updateLevel();
 
 signals:

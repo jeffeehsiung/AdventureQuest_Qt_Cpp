@@ -50,14 +50,9 @@ int WorldController::getCols() const
  * getter and setters
  * */
 
-const std::vector<std::unique_ptr<TileModel> > &WorldController::getTiles() const
-{
-    return currentWorld->getTiles();
-}
-
 // New method to access the map of tiles
 const std::map<coordinate, std::unique_ptr<TileModel>>& WorldController::getTileMap() const {
-    return tileMap;
+    return currentWorld->getTileMap();
 }
 
 //const std::vector<std::unique_ptr<TileModel> > &WorldController::getTiles() const
@@ -172,7 +167,7 @@ void WorldController::deletePsnTile(coordinate coord)
 
 
 void WorldController::onUpArrowPressed() {
-    currentProtagonist = protagonists[0].get();
+
     // Get the current position of the protagonist
     coordinate currentPosition = currentWorld->protagonists[0]->getPosition();
     // Calculate the new position
@@ -188,7 +183,7 @@ void WorldController::onUpArrowPressed() {
         if (isHealthPack(currentWorld->protagonists[0]->getPosition())) {
             onEncounterHealthPack();
         }
-        else if (isPEnemy(currentProtagonist->getPosition())){
+        else if (isPEnemy(currentWorld->protagonists[0]->getPosition())){
             onEncounterPEnemy();
         }
         emit updateprotagonistPosition(0);
@@ -197,7 +192,7 @@ void WorldController::onUpArrowPressed() {
 }
 
 void WorldController::onDownArrowPressed() {
-    currentProtagonist = protagonists[0].get();
+
     // Get the current position of the protagonist
     coordinate currentPosition = currentWorld->protagonists[0]->getPosition();
     // Calculate the new position
@@ -213,7 +208,7 @@ void WorldController::onDownArrowPressed() {
         if (isHealthPack(currentWorld->protagonists[0]->getPosition())) {
             onEncounterHealthPack();
         }
-        else if (isPEnemy(currentProtagonist->getPosition())){
+        else if (isPEnemy(currentWorld->protagonists[0]->getPosition())){
             onEncounterPEnemy();
         }
         emit updateprotagonistPosition(0);
@@ -222,7 +217,6 @@ void WorldController::onDownArrowPressed() {
 }
 
 void WorldController::onLeftArrowPressed() {
-    currentProtagonist = protagonists[0].get();
     // Get the current position of the protagonist
     coordinate currentPosition = currentWorld->protagonists[0]->getPosition();
     // Calculate the new position
@@ -238,7 +232,7 @@ void WorldController::onLeftArrowPressed() {
         if (isHealthPack(currentWorld->protagonists[0]->getPosition())) {
             onEncounterHealthPack();
         }
-        else if (isPEnemy(currentProtagonist->getPosition())){
+        else if (isPEnemy(currentWorld->protagonists[0]->getPosition())){
             onEncounterPEnemy();
         }
         emit updateprotagonistPosition(0);
@@ -247,7 +241,6 @@ void WorldController::onLeftArrowPressed() {
 }
 
 void WorldController::onRightArrowPressed() {
-    currentProtagonist = protagonists[0].get();
     // Get the current position of the protagonist
     coordinate currentPosition = currentWorld->protagonists[0]->getPosition();
     // Calculate the new position
@@ -263,7 +256,7 @@ void WorldController::onRightArrowPressed() {
         if (isHealthPack(currentWorld->protagonists[0]->getPosition())) {
             onEncounterHealthPack();
         }
-        else if (isPEnemy(currentProtagonist->getPosition())){
+        else if (isPEnemy(currentWorld->protagonists[0]->getPosition())){
             onEncounterPEnemy();
         }
         emit updateprotagonistPosition(0);
@@ -294,6 +287,20 @@ void WorldController::onEncounterHealthPack() {
     qDebug() << "Health: " << currentWorld->protagonists[0]->getHealth() << "\n";
 }
 
+void WorldController::onEncounterPEnemy() {
+    qDebug() << "Encountered an penemy!" << "\n";
+    if (currentWorld->protagonists[0]->getHealth() > 0) {
+        currentWorld->protagonists[0]->attack();
+        currentWorld->currentPEnemy->attack();
+        currentWorld->setAffectedTiles(currentWorld->currentPEnemy->getPosition(), currentWorld->currentPEnemy->getPoisonLevel());
+    }
+    else {
+        currentWorld->protagonists[0]->setHealth(0);
+    }
+    qDebug() << "Health: " << currentWorld->protagonists[0]->getHealth() << "\n";
+}
+
+
 void WorldController::playerReachedExit(){
     qDebug() << "Current Pos x: " << currentWorld->protagonists[0]->getPosition().getXPos() << " y: " << currentWorld->protagonists[0]->getPosition().getYPos();
     qDebug() << "Exit: " << currentWorld->getExit().getXPos() << " y: " << currentWorld->getExit().getYPos();
@@ -302,7 +309,7 @@ void WorldController::playerReachedExit(){
         worlds[1]->addProtagonist(worlds[0]->removeProtagonists());
         currentWorld = worlds[1];
         emit updateLevel();
-        emit protagonistPositionChanged(0);
+        emit updateprotagonistPosition(0);
         qDebug() << "LevelSwitched!" << "\n";
     }
 }

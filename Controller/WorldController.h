@@ -45,7 +45,6 @@ class WorldController : public QObject
          * get vector of entities functions
          */
         const std::map<coordinate, std::unique_ptr<TileModel>>& getTileMap() const;
-        const std::vector<std::unique_ptr<TileModel>>& getTiles() const;
         const std::vector<std::unique_ptr<TileModel>>& getHealthPacks() const;
         const std::vector<std::unique_ptr<EnemyModel>>& getEnemies() const;
         const std::vector<std::unique_ptr<PEnemyModel>>& getPEnemies() const;
@@ -106,7 +105,7 @@ class WorldController : public QObject
         void onEncounterPEnemy();
 
 signals:
-        void protagonistPositionChanged(int protagonistIndex);
+        void updateprotagonistPosition(int protagonistIndex);
         void updateLevel();
 
     private:
@@ -116,20 +115,13 @@ signals:
         int difficultyIdx;
         coordinate exit = coordinate(1,1);
         coordinate start = coordinate(0,0);
-        std::map<coordinate, std::unique_ptr<TileModel>> tileMap;
         std::vector<std::unique_ptr<TileModel>> healthPacks;
-        std::vector<std::unique_ptr<TileModel>> walkedOnTiles;
         std::vector<std::unique_ptr<EnemyModel>> enemies;
         std::vector<std::unique_ptr<PEnemyModel>> penemies;
 //        std::vector<std::unique_ptr<XEnemyModel>> xenemies;
         std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
 
         // current (p)enemy, protagonist, hp
-        ProtagonistModel* currentProtagonist;
-        EnemyModel* currentEnemy;
-        PEnemyModel* currentPEnemy;
-//        XEnemyModel* currentXEnemy;
-        TileModel* currentHealthpack;
 
 };
 
