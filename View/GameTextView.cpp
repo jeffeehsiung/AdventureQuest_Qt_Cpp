@@ -102,11 +102,11 @@ void GameTextView::addEntity(const Entity& entity) {
 
 //    updateView();
 //}
-void GameTextView::initializeView() {
+void GameTextView::initializeView(std::shared_ptr<WorldModel> world) {
     clear();
 
     auto& worldController = WorldController::getInstance();
-    setBackground(worldController.getDifficultyIdx(), 1);
+    setBackground(worldController.getDifficultyIdx(), world);
     this->setPlainText(backgroundString);
 
     // Extract entities from the WorldController and add them if within bounds
@@ -142,7 +142,7 @@ void GameTextView::initializeView() {
 }
 
 
-void GameTextView::setBackground(int /*backgroundNumber*/, int levels) {
+void GameTextView::setBackground(int backgroundNumber, std::shared_ptr<WorldModel> world) {
     // Clear any existing content
     backgroundString.clear();
     // Generate a QString representing the text-based background
