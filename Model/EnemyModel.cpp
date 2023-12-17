@@ -63,6 +63,7 @@ PEnemyModel::PEnemyModel(std::unique_ptr<PEnemy> penemy)
     poisonLevel = this->penemy->getPoisonLevel();
     isAlive = this->penemy->getDefeated();
     connect(this->penemy.get(), &Enemy::dead, this, &PEnemyModel::onDead);
+//    connect(this->penemy.get(), &PEnemy::poisonLevelUpdated, this, &PEnemyModel::onPoisonLevelUpdated);
 }
 
 void PEnemyModel::attack() {
