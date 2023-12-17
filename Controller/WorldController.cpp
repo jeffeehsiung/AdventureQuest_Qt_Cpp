@@ -165,6 +165,7 @@ void WorldController::onUpArrowPressed() {
         }
         emit protagonistPositionChanged(0);
     }
+    playerReachedExit();
 }
 
 void WorldController::onDownArrowPressed() {
@@ -185,6 +186,7 @@ void WorldController::onDownArrowPressed() {
         }
         emit protagonistPositionChanged(0);
     }
+    playerReachedExit();
 }
 
 void WorldController::onLeftArrowPressed() {
@@ -205,6 +207,7 @@ void WorldController::onLeftArrowPressed() {
         }
         emit protagonistPositionChanged(0);
     }
+    playerReachedExit();
 }
 
 void WorldController::onRightArrowPressed() {
@@ -252,6 +255,8 @@ void WorldController::onEncounterHealthPack() {
 }
 
 void WorldController::playerReachedExit(){
+    qDebug() << "Current Pos x: " << currentWorld->protagonists[0]->getPosition().getXPos() << " y: " << currentWorld->protagonists[0]->getPosition().getYPos();
+    qDebug() << "Exit: " << currentWorld->getExit().getXPos() << " y: " << currentWorld->getExit().getYPos();
     if(currentWorld->protagonists[0]->getPosition() == currentWorld->getExit()){
         currentWorld->protagonists[0]->setPosition(worlds[1]->getStart());
         worlds[1]->addProtagonist(worlds[0]->removeProtagonists());

@@ -19,7 +19,7 @@ SOURCES += main.cpp\
     View/EnemyGraphicsItem.cpp \
     View/EntityGraphicsItem.cpp \
     View/Game2DView.cpp \
-    View/GameTextView.cpp \
+#    View/GameTextView.cpp \
     View/ProtagonistGraphicsItem.cpp \
     View/TileGraphicsItem.cpp \
     MainWindow.cpp \
@@ -37,7 +37,7 @@ HEADERS  += MainWindow.h\
     Model/structs.h \
     Model/WorldModel.h \
     View/Game2DView.h \
-    View/GameTextView.h \
+#    View/GameTextView.h \
     View/GameView.h \
     View/EntityTextItem.h \
     View/ProtagonistGraphicsItem.h \

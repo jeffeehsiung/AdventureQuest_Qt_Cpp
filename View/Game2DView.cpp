@@ -3,7 +3,7 @@
 void Game2DView::addEntity(const Entity& entity) {
     // Attempt to cast to each specific type and add to the vector if within bounds
     if (const auto* tileModel = dynamic_cast<const TileModel*>(&entity)) {
-    QString tileBase = ":/images/tiles/";
+        QString tileBase = ":/images/tiles/";
         auto tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tileModel, tileBase);
         tileGraphicsItems.push_back(std::move(tileGraphicsItem));
     } else if (const auto* enemyModel = dynamic_cast<const EnemyModel*>(&entity)) {
@@ -29,98 +29,96 @@ void Game2DView::animateEntityAction(int index, AnimationState newState) {
     protagonistGraphicsItems[index]->changeAnimationState(newState);
 }
 
-void Game2DView::initializeView() {
-//    if (!scene) {
-//        scene = new QGraphicsScene(this);
-//        setScene(scene);
-//        qDebug()<< "help";
-//    }
-    //setScene(scenes[0]);
+void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
+    if (!scene) {
+        scene = new QGraphicsScene(this);
+        setScene(scene);
+    }
 
     // Get the singleton instance of WorldController
     auto& worldController = WorldController::getInstance();
 
-    setBackground(worldController.getDifficultyIdx());
+    setBackground(worldController.getDifficultyIdx(), world);
 
     qDebug() << "backgroundImage width: " << backgroundImage.width() << "backgroundImage heght" << backgroundImage.height();
-    qDebug() << "worldController cols: " << worldController.getCols() << "worldController height" << worldController.getRows();
+    qDebug() << "worldController cols: " << world->getCols() << "worldController height" << world->getRows();
     qDebug() << "view width: " << this->width() << "view height" << this->height();
-    qDebug() << "scene width: " << scenes[0]->width() << "scene height" << scenes[0]->height();
+    qDebug() << "scene width: " << scene->width() << "scene height" << scene->height();
 
     qDebug() << "tilewidth: " << tileWidth << " tileheight: " << tileHeight;
 
     scaleEntitiesToFitView();
-    //for(int i = 0; i < 2; i++){
-        // Extract entities from the WorldController
-        const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getCurrentWorld()->getTiles();
-        const std::vector<std::unique_ptr<TileModel>>& healthPacks = worldController.getCurrentWorld()->getHealthPacks();
-        const std::vector<std::unique_ptr<EnemyModel>>& enemies = worldController.getCurrentWorld()->getEnemies();
-        const std::vector<std::unique_ptr<PEnemyModel>>& penemies = worldController.getCurrentWorld()->getPEnemies();
-        const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = worldController.getProtagonists();
 
-        /** baseFramesDir for tile is constant */
-        QString tileBase = ":/images/tiles/";
-        for (const auto& tile : tiles) {
-            std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
-            scenes[0]->addItem(tileGraphicsItem.get());
-            tileGraphicsItems.push_back(std::move(tileGraphicsItem));
+    // Extract entities from the WorldController
+    const std::vector<std::unique_ptr<TileModel>>& tiles = world->getTiles();
+    const std::vector<std::unique_ptr<TileModel>>& healthPacks = world->getHealthPacks();
+    const std::vector<std::unique_ptr<EnemyModel>>& enemies = world->getEnemies();
+    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = world->getPEnemies();
+    const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = world->getProtagonists();
+
+    /** baseFramesDir for tile is constant */
+    QString tileBase = ":/images/tiles/";
+    for (const auto& tile : tiles) {
+        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
+        scene->addItem(tileGraphicsItem.get());
+        tileGraphicsItems.push_back(std::move(tileGraphicsItem));
+    }
+
+    /** baseFramesDir for healthpack is constant */
+    QString healthpackBase = ":/images/healthpack/";
+    for (const auto& healthPack : healthPacks) {
+        std::unique_ptr<TileGraphicsItem> healthPackGraphicsItem = std::make_unique<TileGraphicsItem>(*healthPack, healthpackBase);
+        scene->addItem(healthPackGraphicsItem.get());
+        tileGraphicsItems.push_back(std::move(healthPackGraphicsItem));
+    }
+
+    /** baseFramesDir for enemy is constant */
+    QString enemyBase = ":/images/enemy_golem/PNG Sequences/";
+    for (const auto& enemy : enemies) {
+        std::unique_ptr<EnemyGraphicsItem> enemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*enemy, enemyBase);
+        scene->addItem(enemyGraphicsItem.get());
+        enemyGraphicsItems.push_back(std::move(enemyGraphicsItem));
+    }
+
+    /** baseFramesDir for penemy is constant */
+    QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
+    for (const auto& penemy : penemies) {
+        std::unique_ptr<EnemyGraphicsItem> penemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*penemy, penemyBase);
+        scene->addItem(penemyGraphicsItem.get());
+        enemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
+    }
+
+    /** baseFramesDir for protagonist depends on numbers of protagonist*/
+    QString pro1Base = ":/images/protagonist_fighter/";
+    QString pro2Base = ":/images/protagonist_samurai/";
+    QString pro3Base = ":/images/protagonist_shinobi/";
+    for (size_t i = 0; i < protagonists.size(); ++i) {
+        QString protagonistBase; // Variable to hold the base frame directory
+        if (i == 0) {
+            protagonistBase = pro1Base;
+        } else if (i == 1) {
+            protagonistBase = pro1Base;
+        } else if (i == 2){
+            protagonistBase = pro2Base;
+        } else if (i == 3){
+            protagonistBase = pro3Base;
+        } else {
+            protagonistBase = pro1Base;
         }
+        std::unique_ptr<ProtagonistGraphicsItem> protagonistGraphicsItem = std::make_unique<ProtagonistGraphicsItem>(*protagonists[i], protagonistBase);
+        scene->addItem(protagonistGraphicsItem.get());
+        protagonistGraphicsItems.push_back(std::move(protagonistGraphicsItem));
 
-        /** baseFramesDir for healthpack is constant */
-        QString healthpackBase = ":/images/healthpack/";
-        for (const auto& healthPack : healthPacks) {
-            std::unique_ptr<TileGraphicsItem> healthPackGraphicsItem = std::make_unique<TileGraphicsItem>(*healthPack, healthpackBase);
-            scenes[0]->addItem(healthPackGraphicsItem.get());
-            tileGraphicsItems.push_back(std::move(healthPackGraphicsItem));
-        }
+    }
 
-        /** baseFramesDir for enemy is constant */
-        QString enemyBase = ":/images/enemy_golem/PNG Sequences/";
-        for (const auto& enemy : enemies) {
-            std::unique_ptr<EnemyGraphicsItem> enemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*enemy, enemyBase);
-            scenes[0]->addItem(enemyGraphicsItem.get());
-            enemyGraphicsItems.push_back(std::move(enemyGraphicsItem));
-        }
-
-        /** baseFramesDir for penemy is constant */
-        QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
-        for (const auto& penemy : penemies) {
-            std::unique_ptr<EnemyGraphicsItem> penemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*penemy, penemyBase);
-            scenes[0]->addItem(penemyGraphicsItem.get());
-            enemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
-        }
-
-        /** baseFramesDir for protagonist depends on numbers of protagonist*/
-        QString pro1Base = ":/images/protagonist_fighter/";
-        QString pro2Base = ":/images/protagonist_samurai/";
-        QString pro3Base = ":/images/protagonist_shinobi/";
-        for (size_t i = 0; i < protagonists.size(); ++i) {
-            QString protagonistBase; // Variable to hold the base frame directory
-            if (i == 0) {
-                protagonistBase = pro1Base;
-            } else if (i == 1) {
-                protagonistBase = pro1Base;
-            } else if (i == 2){
-                protagonistBase = pro2Base;
-            } else if (i == 3){
-                protagonistBase = pro3Base;
-            } else {
-                protagonistBase = pro1Base;
-            }
-            std::unique_ptr<ProtagonistGraphicsItem> protagonistGraphicsItem = std::make_unique<ProtagonistGraphicsItem>(*protagonists[i], protagonistBase);
-            scenes[0]->addItem(protagonistGraphicsItem.get());
-            protagonistGraphicsItems.push_back(std::move(protagonistGraphicsItem));
-
-        }
-    //}
-    this->fitInView(scenes[0]->sceneRect(), Qt::KeepAspectRatio);
-    qDebug() << "items added scene width: " << scenes[0]->width() << "items added scene height" << scenes[0]->height();
+    this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
     qDebug() << "items added view width: " << this->width() << "items added view height" << this->height();
     this->update();
 
 }
 
-void Game2DView::setBackground(int backgroundNumber) {
+void Game2DView::setBackground(int backgroundNumber, std::shared_ptr<WorldModel> world) {
     // Load the background image based on the difficulty level
     switch(backgroundNumber) {
     case 1: backgroundImage = easyBackground; tileWidth = 30; tileHeight = 30; break;
@@ -132,17 +130,17 @@ void Game2DView::setBackground(int backgroundNumber) {
 
     // Resize the background image based on the number of tiles and their size
     auto& worldController = WorldController::getInstance();
-    backgroundImage = backgroundImage.scaled(tileWidth * worldController.getCols(),
-                                             tileHeight * worldController.getRows(),
+    backgroundImage = backgroundImage.scaled(tileWidth * world->getCols(),
+                                             tileHeight * world->getRows(),
                                              Qt::KeepAspectRatioByExpanding);
 
     // Add the background image as a pixmap item to the scene
     QGraphicsPixmapItem* backgroundItem = new QGraphicsPixmapItem(backgroundImage);
     backgroundItem->setZValue(-1); // Ensure it's drawn below all other items
-    scenes[0]->addItem(backgroundItem);
+    scene->addItem(backgroundItem);
 
     // Set the scene's rectangle to the size of the resized background image
-    scenes[0]->setSceneRect(0, 0, backgroundImage.width(), backgroundImage.height());
+    scene->setSceneRect(0, 0, backgroundImage.width(), backgroundImage.height());
 
     currentBackgroundNumber = backgroundNumber;
     this->update();
@@ -158,23 +156,13 @@ void Game2DView::updateView() {
     this->update();
 }
 
-void Game2DView::levelChange() {
-    auto& worldController = WorldController::getInstance();
-    for(int i = 0; i < static_cast<int>(worldController.getWorlds().size()) ; i ++){
-        if(worldController.getWorlds()[i] == worldController.getCurrentWorld()){
-            setScene(scenes[i]);
-        }
-    }
-    this->update();
-}
-
 void Game2DView::zoomIn(int delta) {
     qreal maxZoomLevel = initZoomLevel * 2;
     qreal targetZoomLevel = zoomLevel + delta * zoomSpeed;
     if (targetZoomLevel > maxZoomLevel) {  // If the target zoom level is greater than the max, clamp it
         targetZoomLevel = maxZoomLevel;
-        qDebug() << "items added scene width: " << scenes[0]->width() << "items added scene height" << scene->height();
-        this->fitInView(scenes[0]->sceneRect(), Qt::KeepAspectRatio);
+        qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
+        this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     }
 
     if (zoomLevel < targetZoomLevel) {  // Only zoom in if not already at the max zoom level
@@ -195,8 +183,8 @@ void Game2DView::zoomOut(int delta) {
     qreal targetZoomLevel = zoomLevel - delta * zoomSpeed;
     if (targetZoomLevel < minZoomLevel) {  // If the target zoom level is less than the min, clamp it
         targetZoomLevel = minZoomLevel;
-        qDebug() << "items added scene width: " << scenes[0]->width() << "items added scene height" << scene->height();
-        this->fitInView(scenes[0]->sceneRect(), Qt::KeepAspectRatio);
+        qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
+        this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     }
 
     if (zoomLevel > targetZoomLevel) {  // Only zoom out if not already at the min zoom level
@@ -223,8 +211,8 @@ void Game2DView::wheelEvent(QWheelEvent* event) {
 
 // This function should be called after setting the background and calculating tileWidth and tileHeight.
 void Game2DView::scaleEntitiesToFitView() {
-    qreal sceneWidth = scenes[0]->width();
-    qreal sceneHeight = scenes[0]->height();
+    qreal sceneWidth = scene->width();
+    qreal sceneHeight = scene->height();
     qreal someFactor;
     switch(currentBackgroundNumber){
     case 1: someFactor = 20; break;
@@ -251,7 +239,7 @@ void Game2DView::scaleEntitiesToFitView() {
 
 // Example function to check each item's position and bounding rectangle
 void Game2DView::checkItems() {
-    QRectF sceneBounds = scenes[0]->sceneRect();
+    QRectF sceneBounds = scene->sceneRect();
     for (const auto& protagonistGraphicsItem : protagonistGraphicsItems) {
         if (protagonistGraphicsItem) {
             QRectF itemBounds = protagonistGraphicsItem->boundingRect();
@@ -302,6 +290,4 @@ void Game2DView::checkItems() {
     qDebug() << "Scene rectangle: " << sceneBounds;
 
 }
-
-
 

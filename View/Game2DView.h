@@ -13,7 +13,7 @@
 #include "View/TileGraphicsItem.h"
 #include "View/ProtagonistGraphicsItem.h"
 #include "View/EnemyGraphicsItem.h"
-#include "Controller/WorldController.h"  // Include WorldController
+
 
 class Game2DView : public QGraphicsView, public GameView {
     Q_OBJECT
@@ -26,10 +26,8 @@ public:
         zoomSpeed = 0.001; // Example value, adjust based on testing
         zoomLevel = 1.0;
         initZoomLevel = 1.0;
-        scenes.push_back(new QGraphicsScene(this));
-        scenes.push_back(new QGraphicsScene(this));
         scene = new QGraphicsScene(this);
-        setScene(scenes[0]);
+        setScene(scene);
     }
 
     virtual ~Game2DView(){
@@ -46,12 +44,11 @@ public:
      * based on which iteratively create grahpicsRectItems or entityTextItem(string) and
      * add it to the scene
      */
-    void initializeView() override;
-    void setBackground(int backgroundNumber) override;
+    void initializeView(std::shared_ptr<WorldModel> world) override;
+    void setBackground(int backgroundNumber, std::shared_ptr<WorldModel> world) override;
     void zoomIn(int delta) override;
     void zoomOut(int delta) override;
     void updateView() override;
-    void levelChange();
 
     void checkItems();
 
@@ -71,7 +68,6 @@ protected:
 
 private:
     QGraphicsScene* scene;
-    std::vector<QGraphicsScene*> scenes;
     QPixmap easyBackground;
     QPixmap mediumBackground;
     QPixmap hardBackground;
@@ -90,6 +86,7 @@ private:
     std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
 
     void scaleEntitiesToFitView();
+
 
 };
 
