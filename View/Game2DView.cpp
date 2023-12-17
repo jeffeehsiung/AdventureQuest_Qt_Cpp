@@ -24,11 +24,6 @@ void Game2DView::addEntity(const Entity& entity) {
     }
 }
 
-void Game2DView::animateEntityAction(int index) {
-    // Implementation for graphical animation of an entity action
-    protagonistGraphicsItems[index]->changeAnimationState();
-}
-
 void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
     if (!scene) {
         scene = new QGraphicsScene(this);

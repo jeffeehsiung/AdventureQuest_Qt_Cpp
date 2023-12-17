@@ -153,53 +153,8 @@ int WorldController::getDifficultyIdx() const
 /**
  * PEnemy poisened tiles
  */
-//void WorldController::setAffectedTiles(coordinate coord, float poisonLevel) {
-//    // Determine the range of the poison effect based on the poison level
-//    int range = static_cast<int>(poisonLevel) / 15; // or any other formula you see fit
-
-//    // Apply poison to tiles within the range
-//    for (int dx = -range; dx <= range; ++dx) {
-//        for (int dy = -range; dy <= range; ++dy) {
-//            int affectedX = coord.xCoordinate + dx;
-//            int affectedY = coord.yCoordinate + dy;
-
-//            // Check if the tile is within the world boundaries
-//            if (affectedX >= 0 && affectedX < cols && affectedY >= 0 && affectedY < rows) {
-//                // Here you need to get the actual TileModel and update its poisoned state
-//                auto& tileModel = getTileModelAt(affectedX, affectedY);
-//                if (tileModel) {
-//                    tileModel->takeDamage(poisonLevel - (std::abs(dx) + std::abs(dy))); // Decrease strength with distance
-//                }
-//            }
-//        }
-//    }
-//}
 void WorldController::setAffectedTiles(coordinate coord, float poisonLevel) {
-    // Determine the radius of the affected area based on the poison level
-    int radius = static_cast<int>(poisonLevel) / 15; // Adjust this formula as needed
-
-    // Apply poison to tiles within the circular radius
-    for (int dx = -radius; dx <= radius; ++dx) {
-        for (int dy = -radius; dy <= radius; ++dy) {
-            // Calculate the distance from the center
-            float distance = std::sqrt(dx * dx + dy * dy);
-
-            // Check if the distance is within the radius
-            if (distance <= radius) {
-                int affectedX = coord.xCoordinate + dx;
-                int affectedY = coord.yCoordinate + dy;
-
-                // Check if the tile is within the world boundaries
-                if (affectedX >= 0 && affectedX < cols && affectedY >= 0 && affectedY < rows) {
-                    // Here you need to get the actual TileModel and update its poisoned state
-                    auto& tileModel = getTileModelAt(affectedX, affectedY);
-                    if (tileModel) {
-                        tileModel->takeDamage(poisonLevel - distance); // Decrease strength with distance
-                    }
-                }
-            }
-        }
-    }
+    currentWorld->setAffectedTiles(coord, poisonLevel);
 }
 
 
