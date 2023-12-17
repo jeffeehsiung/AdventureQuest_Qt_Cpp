@@ -9,6 +9,14 @@ struct coordinate {
     int yCoordinate;
 
     coordinate(int x, int y) : xCoordinate(x), yCoordinate(y) {}
+
+    bool operator<(const coordinate& other) const {
+        if (xCoordinate == other.xCoordinate) {
+            return yCoordinate < other.yCoordinate;
+        }
+        return xCoordinate < other.xCoordinate;
+    }
+
 public:
     int getXPos() const{return xCoordinate;}
     int getYPos() const{return yCoordinate;}
@@ -29,7 +37,7 @@ public:
 };
 
 
-enum AnimationState { IDLE, MOVING, ATTACK, HURT, DYING, HEAL };
+enum state { IDLE, MOVING, ATTACK, HURT, DYING, HEAL };
 
 // Declare the operator== for coordinate
 bool operator==(const coordinate& lhs, const coordinate& rhs);

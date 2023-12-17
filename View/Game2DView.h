@@ -13,7 +13,7 @@
 #include "View/TileGraphicsItem.h"
 #include "View/ProtagonistGraphicsItem.h"
 #include "View/EnemyGraphicsItem.h"
-#include "Controller/WorldController.h"  // Include WorldController
+
 
 class Game2DView : public QGraphicsView, public GameView {
     Q_OBJECT
@@ -35,7 +35,7 @@ public:
     }
 
     void addEntity(const Entity& entity) override;
-    void animateEntityAction(int index, AnimationState newState) override;
+    void animateEntityAction(int index) override;
     /**
      * @brief initializeView
      * @param worldController
@@ -44,8 +44,8 @@ public:
      * based on which iteratively create grahpicsRectItems or entityTextItem(string) and
      * add it to the scene
      */
-    void initializeView() override;
-    void setBackground(int backgroundNumber) override;
+    void initializeView(std::shared_ptr<WorldModel> world) override;
+    void setBackground(int backgroundNumber, std::shared_ptr<WorldModel> world) override;
     void zoomIn(int delta) override;
     void zoomOut(int delta) override;
     void updateView() override;
@@ -83,9 +83,11 @@ private:
     std::vector<std::unique_ptr<EntityGraphicsItem>> entityGraphicsItems;
     std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
     std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
+    std::vector<std::unique_ptr<PEnemyGraphicsItem>> penemyGraphicsItems;
     std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
 
     void scaleEntitiesToFitView();
+
 
 };
 

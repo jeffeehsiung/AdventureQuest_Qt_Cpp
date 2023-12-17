@@ -11,10 +11,10 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
      * create tilemodels, enemymodels, penemymodels, xenemymodels, and protagonistmodels based on created world
      * */
     for (auto &tile : world->getTiles()) {
-        std::unique_ptr<coordinate> pos = std::make_unique<coordinate>(tile->getXPos(), tile->getYPos());
-        nodes.push_back(node(tile->getValue(), *pos));
         std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(std::move(tile));
-        tiles.push_back(std::move(tileModel));
+        // After creating TileModel objects, add them to the map for direct access
+        coordinate pos = tileModel->getPosition();
+        tileMap[pos] = std::move(tileModel);
     }
 
     for ( auto &healthPack : world->getHealthPacks() ){
@@ -35,6 +35,12 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
         std::unique_ptr<ProtagonistModel> protagonist = std::make_unique<ProtagonistModel>(world->getProtagonist());
         protagonists.push_back(std::move(protagonist));
     }
+
+    currentProtagonist = nullptr;
+    currentEnemy = nullptr;
+    currentPEnemy = nullptr;
+    //currentXEnemy = nullptr;
+    currentHealthpack = nullptr;
 }
 
 /**
@@ -54,9 +60,8 @@ int WorldModel::getCols() const
  * getter and setters
  * */
 
-const std::vector<std::unique_ptr<TileModel> > &WorldModel::getTiles() const
-{
-    return tiles;
+const std::map<coordinate, std::unique_ptr<TileModel>>& WorldModel::getTileMap() const {
+    return tileMap;
 }
 
 const std::vector<std::unique_ptr<TileModel> > &WorldModel::getHealthPacks() const
@@ -88,6 +93,15 @@ const std::vector<std::unique_ptr<ProtagonistModel> > &WorldModel::getProtagonis
  * type of tiles check
  */
 
+std::unique_ptr<TileModel>& WorldModel::getTileModelAt(int x, int y) {
+    coordinate coord{x, y};
+    if (tileMap.find(coord) != tileMap.end()) {
+        return tileMap[coord];
+    } else {
+        throw std::out_of_range("TileModel at the specified coordinates does not exist.");
+    }
+}
+
 bool WorldModel::isHealthPack(coordinate coord)
 {
     for ( auto &healthPack : healthPacks )
@@ -102,12 +116,9 @@ bool WorldModel::isHealthPack(coordinate coord)
 
 bool WorldModel::isPoisonedTiles(coordinate coord)
 {
-    for ( auto &tile : tiles )
-    {
-        if ( tile->getPosition() == coord )
-        {
-            return true;
-        }
+    if (tileMap.find(coord) != tileMap.end()) {
+        // Directly access the tile and check if it's poisoned
+        return tileMap[coord]->isPoisoned();
     }
     return false;
 }
@@ -122,6 +133,7 @@ bool WorldModel::isEnemy(coordinate coord)
     {
         if ( enemy->getPosition() == coord )
         {
+            currentEnemy = enemy.get();
             return true;
         }
     }
@@ -134,6 +146,7 @@ bool WorldModel::isPEnemy(coordinate coord)
     {
         if ( penemy->getPosition() == coord )
         {
+            currentPEnemy = penemy.get();
             return true;
         }
     }
@@ -150,21 +163,28 @@ int WorldModel::getNumOfProtagonists() const
  * PEnemy poisened tiles
  */
 
-void WorldModel::setAffectedTiles(coordinate coord, int spread, std::unique_ptr<PEnemyModel> pEnemy)
-{
-    /**
-     * set the affected tiles of the penemy
-     * */
-    for ( auto &tile : tiles )
-    {
-        if ( tile->getPosition() == coord )
-        {
-            // tile->setPoisoned(true); /** TODO: implement */
-            tile->setValue(pEnemy->getPoisonLevel());
-            // tile->setPoisonSpread(spread); /** TODO: implement */
+void WorldModel::setAffectedTiles(coordinate coord, float poisonLevel) {
+    // Determine the range of the poison effect based on the poison level
+    int range = static_cast<int>(poisonLevel) / 15; // or any other formula you see fit
+
+    // Apply poison to tiles within the range
+    for (int dx = -range; dx <= range; ++dx) {
+        for (int dy = -range; dy <= range; ++dy) {
+            int affectedX = coord.xCoordinate + dx;
+            int affectedY = coord.yCoordinate + dy;
+
+            // Check if the tile is within the world boundaries
+            if (affectedX >= 0 && affectedX < cols && affectedY >= 0 && affectedY < rows) {
+                // Here you need to get the actual TileModel and update its poisoned state
+                auto& tileModel = getTileModelAt(affectedX, affectedY);
+                if (tileModel) {
+                    tileModel->takeDamage(poisonLevel - (std::abs(dx) + std::abs(dy))); // Decrease strength with distance
+                }
+            }
         }
     }
 }
+
 
 /**
  * defeated functions
@@ -187,22 +207,14 @@ void WorldModel::deleteEnemy(coordinate coord)
     }
 }
 
-void WorldModel::deletePsnTile(coordinate coord)
-{
-    /**
-     * delete poisoned tile from vector
-     * */
-    for ( auto &tile : tiles )
-    {
-        if ( tile->getPosition() == coord )
-        {
-            tiles.erase(std::remove_if(tiles.begin(), tiles.end(), [&](std::unique_ptr<TileModel> &tile)
-            {
-                return tile->getPosition() == coord;
-            }), tiles.end());
-        }
+void WorldModel::deletePsnTile(coordinate coord) {
+    // Assuming tileMap is a std::map<coordinate, std::unique_ptr<TileModel>>
+    auto it = tileMap.find(coord);
+    if (it != tileMap.end()) {
+        tileMap.erase(it);
     }
 }
+
 
 /**
  * healthpack functions
@@ -233,6 +245,16 @@ coordinate WorldModel::getStart()
 coordinate WorldModel::getExit()
 {
     return exit;
+}
+
+coordinate* WorldModel::getStartValue()
+{
+    return &start;
+}
+
+coordinate* WorldModel::getExitValue()
+{
+    return &exit;
 }
 
 void WorldModel::addProtagonist(std::vector<std::unique_ptr<ProtagonistModel>> incoming){

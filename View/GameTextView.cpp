@@ -29,7 +29,7 @@ void GameTextView::addEntity(const Entity& entity) {
 
 
 
-void GameTextView::animateEntityAction(int index, AnimationState newState){}
+void GameTextView::animateEntityAction(int index){}
 
 
 //void GameTextView::initializeView() {
@@ -43,6 +43,7 @@ void GameTextView::animateEntityAction(int index, AnimationState newState){}
 
 //    // Extract entities from the WorldController
 //    const std::vector<std::unique_ptr<TileModel>>& tiles = worldController.getTiles();
+//    const auto& tileMap = worldController.getTileMap();
 //    const std::vector<std::unique_ptr<TileModel>>& healthPacks = worldController.getHealthPacks();
 //    const std::vector<std::unique_ptr<EnemyModel>>& enemies = worldController.getEnemies();
 //    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = worldController.getPEnemies();
@@ -110,19 +111,25 @@ void GameTextView::initializeView() {
     clear();
 
     auto& worldController = WorldController::getInstance();
-    setBackground(worldController.getDifficultyIdx());
+    setBackground(worldController.getDifficultyIdx(), 1);
     this->setPlainText(backgroundString);
 
     // Extract entities from the WorldController and add them if within bounds
-    const auto& tiles = worldController.getTiles();
+//    const auto& tiles = worldController.getTiles();
+    const auto& tileMap = worldController.getTileMap();
     const auto& healthPacks = worldController.getHealthPacks();
     const auto& enemies = worldController.getEnemies();
     const auto& penemies = worldController.getPEnemies();
     const auto& protagonists = worldController.getProtagonists();
 
-    for (const auto& tile : tiles) {
-        addEntity(*tile);
+//    for (const auto& tile : tiles) {
+//        addEntity(*tile);
+//    }
+
+    for (const auto& [coord, tileModel] : tileMap) {
+        addEntity(*tileModel);
     }
+
     for (const auto& healthPack : healthPacks) {
         addEntity(*healthPack);
     }
@@ -140,7 +147,7 @@ void GameTextView::initializeView() {
 }
 
 
-void GameTextView::setBackground(int /*backgroundNumber*/) {
+void GameTextView::setBackground(int /*backgroundNumber*/, int levels) {
     // Clear any existing content
     backgroundString.clear();
     // Generate a QString representing the text-based background

@@ -33,3 +33,34 @@ void EnemyGraphicsItem::loadFramesFromDirectory(const QString& dirPath, std::vec
         }
     }
 }
+
+
+PEnemyGraphicsItem::PEnemyGraphicsItem(const PEnemyModel& penemyModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
+    : EntityGraphicsItem(penemyModel, parent), baseFramesDir(baseFramesDir){
+    loadAnimationFrames();
+}
+
+void PEnemyGraphicsItem::loadAnimationFrames() {
+    // Load the frames for each animation state
+    loadFramesFromDirectory(baseFramesDir + "Idle/", idleFrames);
+    loadFramesFromDirectory(baseFramesDir + "Moving/", moveFrames);
+    loadFramesFromDirectory(baseFramesDir + "Hurt/", hurtFrames);
+    loadFramesFromDirectory(baseFramesDir + "Dying/", dyingFrames);
+    loadFramesFromDirectory(baseFramesDir + "Attack/", attackFrames);
+    loadFramesFromDirectory(baseFramesDir + "Heal/", healFrames);
+}
+
+void PEnemyGraphicsItem::loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames) {
+    QDir dir(dirPath);
+    QStringList fileNames = dir.entryList(QStringList() << "*.png", QDir::Files, QDir::Name);
+    for (const QString& fileName : fileNames) {
+        QPixmap frame(dirPath + fileName);
+        if (!frame.isNull()) {
+            // Pre-scale the image here
+            QPixmap scaledFrame = frame.scaled(EntityGraphicsItem::commonWidth, EntityGraphicsItem::commonHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            frames.push_back(scaledFrame);
+        } else {
+            qDebug() << "Failed to load frame:" << dirPath + fileName;
+        }
+    }
+}

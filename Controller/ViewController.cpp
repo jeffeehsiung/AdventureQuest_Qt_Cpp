@@ -9,19 +9,22 @@ ViewController::~ViewController() {
 }
 
 void ViewController::initializeViews() {
-    game2DView = std::make_unique<Game2DView>();
-    gameTextView = std::make_unique<GameTextView>();
+    auto& worldController = WorldController::getInstance();
+
+    game2DView = std::make_unique<Game2DView>(nullptr);
+    //gameTextView = std::make_unique<GameTextView>();
 
     // Initialize the views
-    game2DView->initializeView();
-    gameTextView->initializeView();
+    game2DView->initializeView(worldController.getCurrentWorld());
+    //gameTextView->initializeView();
 
     // Optionally set the initial view
     currentView = game2DView.get();
     emit viewUpdated(currentView);
 
-    auto& worldController = WorldController::getInstance();
-    connect(&worldController, &WorldController::protagonistPositionChanged, this, &ViewController::updateProtagonistPosition);
+
+    connect(&worldController, &WorldController::updateprotagonistPosition, this, &ViewController::onUpdateProtagonistPosition);
+    connect(&worldController, &WorldController::updateLevel, this, &ViewController::updateLevel);
     connect(game2DView.get(), &Game2DView::updateSceneSignal, this, &ViewController::onUpdatedScene);
 }
 
@@ -52,10 +55,9 @@ void ViewController::onUpdatedScene() {
     emit viewUpdated(currentView);
 }
 
-void ViewController::updateProtagonistPosition(int protagonistIndex) {
+void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
     if (currentView == game2DView.get()) {
-        AnimationState newState = MOVING;         //hardcoded. need to embed state of the entity in world and model
-        game2DView->animateEntityAction(protagonistIndex, newState);
+        game2DView->animateEntityAction(protagonistIndex);
         game2DView->updateView();
     }
     else if (currentView == gameTextView.get()) {
@@ -64,6 +66,13 @@ void ViewController::updateProtagonistPosition(int protagonistIndex) {
     else {
         // Do nothing
     }
+    emit viewUpdated(currentView);
+}
+
+void ViewController::updateLevel() {
+    auto& worldController = WorldController::getInstance();
+    game2DView->initializeView(worldController.getCurrentWorld());
+    currentView = game2DView.get();
     emit viewUpdated(currentView);
 }
 

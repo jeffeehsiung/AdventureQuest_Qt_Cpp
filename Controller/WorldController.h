@@ -9,9 +9,12 @@
 #include "pathfinder.h"
 
 #include <iostream>
+#include <map>
 #include <QObject>
 #include <QMainWindow>
+#include <QKeyEvent>
 #include <QDebug>
+#include <random>
 
 class WorldController : public QObject
 {
@@ -37,11 +40,11 @@ class WorldController : public QObject
         /**
          * get single entity functions
         */
-
+        std::unique_ptr<TileModel>& getTileModelAt(int x, int y);
         /**
          * get vector of entities functions
          */
-        const std::vector<std::unique_ptr<TileModel>>& getTiles() const;
+        const std::map<coordinate, std::unique_ptr<TileModel>>& getTileMap() const;
         const std::vector<std::unique_ptr<TileModel>>& getHealthPacks() const;
         const std::vector<std::unique_ptr<EnemyModel>>& getEnemies() const;
         const std::vector<std::unique_ptr<PEnemyModel>>& getPEnemies() const;
@@ -66,7 +69,7 @@ class WorldController : public QObject
         /**
          * PEnemy poisened tiles
          */
-        void setAffectedTiles(coordinate, int spread, std::unique_ptr<PEnemyModel> pEnemy);
+        void setAffectedTiles(coordinate coord, float poisonLevel);
 
         /**
          * defeated functions
@@ -88,11 +91,8 @@ class WorldController : public QObject
         coordinate getStart();
         coordinate getExit();
 
-        /**
-         * Path: walked path getter and setter
-         * TODO: missing setter
-         */
-        const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
+        std::vector<std::shared_ptr<WorldModel>> getWorlds();
+        std::shared_ptr<WorldModel> getCurrentWorld();
 
         void onUpArrowPressed();
         void onDownArrowPressed();
@@ -102,15 +102,26 @@ class WorldController : public QObject
 
         void onEncounterEnemy();
         void onEncounterHealthPack();
+        void onEncounterPEnemy();
 
 signals:
-        void protagonistPositionChanged(int protagonistIndex);
+        void updateprotagonistPosition(int protagonistIndex);
+        void updateLevel();
 
-private:
+    private:
         WorldController();
         std::vector<std::shared_ptr<WorldModel>> worlds;
         std::shared_ptr<WorldModel> currentWorld;
         int difficultyIdx;
+        coordinate exit = coordinate(1,1);
+        coordinate start = coordinate(0,0);
+        std::vector<std::unique_ptr<TileModel>> healthPacks;
+        std::vector<std::unique_ptr<EnemyModel>> enemies;
+        std::vector<std::unique_ptr<PEnemyModel>> penemies;
+//        std::vector<std::unique_ptr<XEnemyModel>> xenemies;
+        std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
+
+        // current (p)enemy, protagonist, hp
 
 };
 
