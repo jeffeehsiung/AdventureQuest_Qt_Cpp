@@ -139,10 +139,10 @@ void Game2DView::setBackground(int backgroundNumber) {
     // Add the background image as a pixmap item to the scene
     QGraphicsPixmapItem* backgroundItem = new QGraphicsPixmapItem(backgroundImage);
     backgroundItem->setZValue(-1); // Ensure it's drawn below all other items
-    scene->addItem(backgroundItem);
+    scenes[0]->addItem(backgroundItem);
 
     // Set the scene's rectangle to the size of the resized background image
-    scene->setSceneRect(0, 0, backgroundImage.width(), backgroundImage.height());
+    scenes[0]->setSceneRect(0, 0, backgroundImage.width(), backgroundImage.height());
 
     currentBackgroundNumber = backgroundNumber;
     this->update();
@@ -173,8 +173,8 @@ void Game2DView::zoomIn(int delta) {
     qreal targetZoomLevel = zoomLevel + delta * zoomSpeed;
     if (targetZoomLevel > maxZoomLevel) {  // If the target zoom level is greater than the max, clamp it
         targetZoomLevel = maxZoomLevel;
-        qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
-        this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+        qDebug() << "items added scene width: " << scenes[0]->width() << "items added scene height" << scene->height();
+        this->fitInView(scenes[0]->sceneRect(), Qt::KeepAspectRatio);
     }
 
     if (zoomLevel < targetZoomLevel) {  // Only zoom in if not already at the max zoom level
@@ -195,8 +195,8 @@ void Game2DView::zoomOut(int delta) {
     qreal targetZoomLevel = zoomLevel - delta * zoomSpeed;
     if (targetZoomLevel < minZoomLevel) {  // If the target zoom level is less than the min, clamp it
         targetZoomLevel = minZoomLevel;
-        qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
-        this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+        qDebug() << "items added scene width: " << scenes[0]->width() << "items added scene height" << scene->height();
+        this->fitInView(scenes[0]->sceneRect(), Qt::KeepAspectRatio);
     }
 
     if (zoomLevel > targetZoomLevel) {  // Only zoom out if not already at the min zoom level
@@ -223,8 +223,8 @@ void Game2DView::wheelEvent(QWheelEvent* event) {
 
 // This function should be called after setting the background and calculating tileWidth and tileHeight.
 void Game2DView::scaleEntitiesToFitView() {
-    qreal sceneWidth = scene->width();
-    qreal sceneHeight = scene->height();
+    qreal sceneWidth = scenes[0]->width();
+    qreal sceneHeight = scenes[0]->height();
     qreal someFactor;
     switch(currentBackgroundNumber){
     case 1: someFactor = 20; break;
@@ -251,7 +251,7 @@ void Game2DView::scaleEntitiesToFitView() {
 
 // Example function to check each item's position and bounding rectangle
 void Game2DView::checkItems() {
-    QRectF sceneBounds = scene->sceneRect();
+    QRectF sceneBounds = scenes[0]->sceneRect();
     for (const auto& protagonistGraphicsItem : protagonistGraphicsItems) {
         if (protagonistGraphicsItem) {
             QRectF itemBounds = protagonistGraphicsItem->boundingRect();
