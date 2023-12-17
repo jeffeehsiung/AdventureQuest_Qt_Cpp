@@ -55,10 +55,9 @@ void ViewController::onUpdatedScene() {
     emit viewUpdated(currentView);
 }
 
-void ViewController::updateProtagonistPosition(int protagonistIndex) {
+void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
     if (currentView == game2DView.get()) {
-        AnimationState newState = MOVING;         //hardcoded. need to embed state of the entity in world and model
-        game2DView->animateEntityAction(protagonistIndex, newState);
+        game2DView->animateEntityAction(protagonistIndex);
         game2DView->updateView();
     }
     else if (currentView == gameTextView.get()) {

@@ -12,8 +12,8 @@ void Game2DView::addEntity(const Entity& entity) {
         enemyGraphicsItems.push_back(std::move(enemyGraphicsItem));
     } else if (const auto* penemyModel = dynamic_cast<const PEnemyModel*>(&entity)) {
         QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
-        auto enemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*penemyModel, penemyBase);
-        enemyGraphicsItems.push_back(std::move(enemyGraphicsItem));
+        auto penemyGraphicsItem = std::make_unique<PEnemyGraphicsItem>(*penemyModel, penemyBase);
+        penemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
     }else if (const auto* protagonistModel = dynamic_cast<const ProtagonistModel*>(&entity)) {
         QString protagonistBase = ":/images/protagonist_samurai/";
         auto protagonistGraphicsItem = std::make_unique<ProtagonistGraphicsItem>(*protagonistModel, protagonistBase);
@@ -24,9 +24,9 @@ void Game2DView::addEntity(const Entity& entity) {
     }
 }
 
-void Game2DView::animateEntityAction(int index, AnimationState newState) {
+void Game2DView::animateEntityAction(int index) {
     // Implementation for graphical animation of an entity action
-    protagonistGraphicsItems[index]->changeAnimationState(newState);
+    protagonistGraphicsItems[index]->changeAnimationState();
 }
 
 void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
@@ -58,11 +58,12 @@ void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
 
     /** baseFramesDir for tile is constant */
     QString tileBase = ":/images/tiles/";
-    for (const auto& tile : tiles) {
-        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
+    for (const auto& [coord, tileModel] : tileMap) {
+        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tileModel, tileBase);
         scene->addItem(tileGraphicsItem.get());
         tileGraphicsItems.push_back(std::move(tileGraphicsItem));
     }
+
 
     /** baseFramesDir for healthpack is constant */
     QString healthpackBase = ":/images/healthpack/";
@@ -83,9 +84,9 @@ void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
     /** baseFramesDir for penemy is constant */
     QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
     for (const auto& penemy : penemies) {
-        std::unique_ptr<EnemyGraphicsItem> penemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*penemy, penemyBase);
+        std::unique_ptr<PEnemyGraphicsItem> penemyGraphicsItem = std::make_unique<PEnemyGraphicsItem>(*penemy, penemyBase);
         scene->addItem(penemyGraphicsItem.get());
-        enemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
+        penemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
     }
 
     /** baseFramesDir for protagonist depends on numbers of protagonist*/
@@ -110,10 +111,11 @@ void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
         protagonistGraphicsItems.push_back(std::move(protagonistGraphicsItem));
 
     }
-
+    scene->setSceneRect(0, 0, backgroundImage.width() + tileWidth, backgroundImage.height() + tileHeight);
     this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
     qDebug() << "items added view width: " << this->width() << "items added view height" << this->height();
+
     this->update();
 
 }
@@ -153,6 +155,21 @@ void Game2DView::updateView() {
             protagonistGraphicsItem->updatePosition();
         }
     }
+    for (const auto& tileGraphicsItem : tileGraphicsItems) {
+        if (tileGraphicsItem) {
+            tileGraphicsItem->updatePosition();
+        }
+    }
+    for (const auto& enemyGraphicsItem : enemyGraphicsItems) {
+        if (enemyGraphicsItem) {
+            enemyGraphicsItem->updatePosition();
+        }
+    }
+    for (const auto& penemyGraphicsItem : penemyGraphicsItems) {
+        if (penemyGraphicsItem) {
+            penemyGraphicsItem->updatePosition();
+        }
+    }
     this->update();
 }
 
@@ -161,7 +178,6 @@ void Game2DView::zoomIn(int delta) {
     qreal targetZoomLevel = zoomLevel + delta * zoomSpeed;
     if (targetZoomLevel > maxZoomLevel) {  // If the target zoom level is greater than the max, clamp it
         targetZoomLevel = maxZoomLevel;
-        qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
         this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     }
 
@@ -174,7 +190,6 @@ void Game2DView::zoomIn(int delta) {
         zoomLevel = targetZoomLevel; // Update the current zoom level
     }
     this->update();
-    qDebug() << "zoom level: " << zoomLevel;
 }
 
 void Game2DView::zoomOut(int delta) {
@@ -183,7 +198,6 @@ void Game2DView::zoomOut(int delta) {
     qreal targetZoomLevel = zoomLevel - delta * zoomSpeed;
     if (targetZoomLevel < minZoomLevel) {  // If the target zoom level is less than the min, clamp it
         targetZoomLevel = minZoomLevel;
-        qDebug() << "items added scene width: " << scene->width() << "items added scene height" << scene->height();
         this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
     }
 
@@ -196,7 +210,6 @@ void Game2DView::zoomOut(int delta) {
         zoomLevel = targetZoomLevel; // Update the current zoom level
     }
     this->update();
-    qDebug() << "zoom level: " << zoomLevel;
 }
 
 void Game2DView::wheelEvent(QWheelEvent* event) {
@@ -206,7 +219,6 @@ void Game2DView::wheelEvent(QWheelEvent* event) {
     }else{
         zoomOut(std::abs(delta)); // Zoom out when the wheel is scrolled down
     }
-    qDebug() << "delta : " << delta;
 }
 
 // This function should be called after setting the background and calculating tileWidth and tileHeight.

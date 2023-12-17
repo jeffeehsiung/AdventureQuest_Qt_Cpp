@@ -35,7 +35,7 @@ public:
     }
 
     void addEntity(const Entity& entity) override;
-    void animateEntityAction(int index, AnimationState newState) override;
+    void animateEntityAction(int index) override;
     /**
      * @brief initializeView
      * @param worldController
@@ -83,6 +83,7 @@ private:
     std::vector<std::unique_ptr<EntityGraphicsItem>> entityGraphicsItems;
     std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
     std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
+    std::vector<std::unique_ptr<PEnemyGraphicsItem>> penemyGraphicsItems;
     std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
 
     void scaleEntitiesToFitView();

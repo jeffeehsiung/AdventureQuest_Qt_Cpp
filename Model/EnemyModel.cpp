@@ -1,23 +1,25 @@
 #include "EnemyModel.h"
 
 /** Enemy Class */
-EnemyModel::EnemyModel(std::unique_ptr<Enemy> enemy) : enemy(std::move(enemy)), health(100.0f) {
-    // Assuming each enemy starts with a health of 100.0f
+EnemyModel::EnemyModel(std::unique_ptr<Enemy> enemy) : enemy(std::move(enemy)){
+    strength = this->enemy->getValue();
+    qDebug() << "enemy strength: " << strength;
+    connect(this->enemy.get(), &Enemy::dead, this, &EnemyModel::onDead);
 }
 
 void EnemyModel::attack() {
-    // Enemy's attack implementation
+    status = ATTACK;
+    qDebug() << "enemy attack: start timer";
+    float damage = 50.0f;
+    QTimer::singleShot(200, this, [this, damage]() {takeDamage(damage);});
 }
 
 void EnemyModel::takeDamage(float damage) {
-    // Reduce health by the damage amount
-    health -= damage;
-
-    // Check if health falls below 0
-    if (health <= 0.0f) {
-        // If health is depleted, consider the enemy as defeated
-        enemy->setDefeated(true);
-        health = 0.0f; // Ensure health does not go below 0
+    strength -= damage;
+    status = HURT;
+    qDebug() << "enemy take damage strength: " << strength;
+    if (strength <= 0.0f) {
+        QTimer::singleShot(200, this, [this]() {strength = 0.0f; setDefeated(true);});
     }
 }
 
@@ -31,6 +33,7 @@ void EnemyModel::setPosition(coordinate position) {
 }
 
 void EnemyModel::move(int deltaX, int deltaY) {
+    status = MOVING;
     enemy->setXPos(enemy->getXPos() + deltaX);
     enemy->setYPos(enemy->getYPos() + deltaY);
 }
@@ -41,28 +44,70 @@ bool EnemyModel::isDefeated() const {
 }
 
 void EnemyModel::setDefeated(bool defeated) {
-    enemy->setDefeated(defeated);
+    enemy->setDefeated(defeated); // will emit dead() in world.
 }
 
 std::string EnemyModel::serialize() const {
     return enemy->serialize();
 }
 
+void EnemyModel::onDead(){
+    status = DYING;
+    QTimer::singleShot(200, this, [this]() {qDebug() << "enemy dead strength: " << strength;});
+}
+
+
 /** PEnemy Class */
 
 PEnemyModel::PEnemyModel(std::unique_ptr<PEnemy> penemy)
-    : EnemyModel(std::move(penemy)), penemy(dynamic_cast<PEnemy*>(enemy.get())) {}
+    :penemy(std::move(penemy)) {
+    poisonLevel = this->penemy->getPoisonLevel();
+    isAlive = this->penemy->getDefeated();
+    connect(this->penemy.get(), &Enemy::dead, this, &PEnemyModel::onDead);
+}
 
 void PEnemyModel::attack() {
-    // Implementation of how a poisoned enemy attacks
+    status = ATTACK;
+    isAlive = releasePoison();
 }
 
-void PEnemyModel::takeDamage(float damage) {
-    // penemy->reduceHealth(damage); // Assuming PEnemy class has reduceHealth method
-    // Consider poison effects if relevant
+void PEnemyModel::takeDamage(float newPoisonLevel) {
+    poisonLevel = newPoisonLevel;
+    status = HURT;
+    if (isAlive == false){
+        setDefeated(true);
+    }
 }
 
-bool PEnemyModel::poison() {
+coordinate PEnemyModel::getPosition() const {
+    return {penemy->getXPos(), penemy->getYPos()};
+}
+
+void PEnemyModel::setPosition(coordinate position) {
+    penemy->setXPos(position.xCoordinate);
+    penemy->setYPos(position.yCoordinate);
+}
+
+void PEnemyModel::move(int deltaX, int deltaY) {
+    status = MOVING;
+    penemy->setXPos(penemy->getXPos() + deltaX);
+    penemy->setYPos(penemy->getYPos() + deltaY);
+    QTimer::singleShot(100, this, [this]() {
+        status = IDLE;
+    });
+}
+
+// PEnemy specific functions
+bool PEnemyModel::isDefeated() const {
+    return penemy->getDefeated();
+}
+
+void PEnemyModel::setDefeated(bool defeated) {
+    penemy->setDefeated(defeated); // will emit dead() in world.
+}
+
+bool PEnemyModel::releasePoison() {
+    // return boolean: true -> not dead yet, false-> dead.
     return penemy->poison();
 }
 
@@ -76,6 +121,18 @@ void PEnemyModel::setPoisonLevel(float poisonLevel) {
 
 std::string PEnemyModel::serialize() const {
     return penemy->serialize();
+}
+
+void PEnemyModel::onDead(){
+    status = DYING;
+}
+
+void PEnemyModel::onPoisonLevelUpdated(float poisonLevel){
+    status = ATTACK;
+    takeDamage(poisonLevel);
+    QTimer::singleShot(500, this, [this]() {
+        status = IDLE;
+    });
 }
 
 

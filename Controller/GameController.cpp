@@ -96,20 +96,9 @@ void GameController::onViewUpdated(QWidget* currentView) {
     emit viewUpdateRequested(currentView);
 }
 
-//void GameController::onWheelScrolled(int delta) {
-//    auto& viewController = ViewController::getInstance();
-//    qDebug() << "delta: " << delta;
-//    if (delta > 0) {
-//        viewController.zoomIn2DView(delta);
-//    } else {
-//        viewController.zoomOut2DView(delta);
-//    }
-//}
-
 void GameController::onUpArrowPressed() {
     auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
-        qDebug() << "UP!" << "\n";
         worldController.onUpArrowPressed();
         gameHealth1 = worldController.getProtagonists()[0]->getHealth();
     }
@@ -118,7 +107,6 @@ void GameController::onUpArrowPressed() {
 void GameController::onDownArrowPressed() {
     auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
-        qDebug() << "DOWN!" << "\n";
         worldController.onDownArrowPressed();
         gameHealth1 = worldController.getProtagonists()[0]->getHealth();
     }
@@ -127,7 +115,6 @@ void GameController::onDownArrowPressed() {
 void GameController::onLeftArrowPressed() {
     auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
-        qDebug() << "LEFT!" << "\n";
         worldController.onLeftArrowPressed();
         gameHealth1 = worldController.getProtagonists()[0]->getHealth();
     }
@@ -136,7 +123,6 @@ void GameController::onLeftArrowPressed() {
 void GameController::onRightArrowPressed() {
     auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
-        qDebug() << "RIGHT!" << "\n";
         worldController.onRightArrowPressed();
         gameHealth1 = worldController.getProtagonists()[0]->getHealth();
     }

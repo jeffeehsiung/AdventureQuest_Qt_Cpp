@@ -5,7 +5,6 @@
 #include <memory>
 #include "View/Game2DView.h"
 #include "View/GameTextView.h"
-// #include "Controller/WorldController.h"
 
 class ViewController : public QObject {
     Q_OBJECT
@@ -24,10 +23,6 @@ public:
 
     void switchTo2DView();
     void switchToTextView();
-
-//    void zoomIn2DView(int delta);
-//    void zoomOut2DView(int delta);
-
 
 public slots:
     void onUpdatedScene();

@@ -1,5 +1,4 @@
 #include "Controller/WorldController.h"
-#include <QKeyEvent>
 
 WorldController::WorldController(){
     // Basic initializations, if any
@@ -56,6 +55,16 @@ const std::vector<std::unique_ptr<TileModel> > &WorldController::getTiles() cons
     return currentWorld->getTiles();
 }
 
+// New method to access the map of tiles
+const std::map<coordinate, std::unique_ptr<TileModel>>& WorldController::getTileMap() const {
+    return tileMap;
+}
+
+//const std::vector<std::unique_ptr<TileModel> > &WorldController::getTiles() const
+//{
+//    return tiles;
+//}
+
 const std::vector<std::unique_ptr<TileModel> > &WorldController::getHealthPacks() const
 {
     return currentWorld->getHealthPacks();
@@ -90,10 +99,23 @@ bool WorldController::isHealthPack(coordinate coord)
     return currentWorld->isHealthPack(coord);
 }
 
+//bool WorldController::isPoisonedTiles(coordinate coord)
+//{
+//    for ( auto &tile : tiles )
+//    {
+//        if ( tile->getPosition() == coord && tile->getState() == HURT)
+//        {
+//            // let's say HURT means tile is poisoned
+//            return true;
+//        }
+//    }
+//}
+
 bool WorldController::isPoisonedTiles(coordinate coord)
 {
     return currentWorld->isPoisonedTiles(coord);
 }
+
 
 /**
  * type of enemy check
@@ -115,6 +137,7 @@ bool WorldController::isPEnemy(coordinate coord)
 //     {
 //         if ( xenemy->getPosition() == coord )
 //         {
+//             currentXEnemy = xenemy;
 //             return true;
 //         }
 //     }
@@ -147,7 +170,9 @@ void WorldController::deletePsnTile(coordinate coord)
 }
 
 
+
 void WorldController::onUpArrowPressed() {
+    currentProtagonist = protagonists[0].get();
     // Get the current position of the protagonist
     coordinate currentPosition = currentWorld->protagonists[0]->getPosition();
     // Calculate the new position
@@ -163,12 +188,16 @@ void WorldController::onUpArrowPressed() {
         if (isHealthPack(currentWorld->protagonists[0]->getPosition())) {
             onEncounterHealthPack();
         }
-        emit protagonistPositionChanged(0);
+        else if (isPEnemy(currentProtagonist->getPosition())){
+            onEncounterPEnemy();
+        }
+        emit updateprotagonistPosition(0);
     }
     playerReachedExit();
 }
 
 void WorldController::onDownArrowPressed() {
+    currentProtagonist = protagonists[0].get();
     // Get the current position of the protagonist
     coordinate currentPosition = currentWorld->protagonists[0]->getPosition();
     // Calculate the new position
@@ -184,12 +213,16 @@ void WorldController::onDownArrowPressed() {
         if (isHealthPack(currentWorld->protagonists[0]->getPosition())) {
             onEncounterHealthPack();
         }
-        emit protagonistPositionChanged(0);
+        else if (isPEnemy(currentProtagonist->getPosition())){
+            onEncounterPEnemy();
+        }
+        emit updateprotagonistPosition(0);
     }
     playerReachedExit();
 }
 
 void WorldController::onLeftArrowPressed() {
+    currentProtagonist = protagonists[0].get();
     // Get the current position of the protagonist
     coordinate currentPosition = currentWorld->protagonists[0]->getPosition();
     // Calculate the new position
@@ -205,12 +238,16 @@ void WorldController::onLeftArrowPressed() {
         if (isHealthPack(currentWorld->protagonists[0]->getPosition())) {
             onEncounterHealthPack();
         }
-        emit protagonistPositionChanged(0);
+        else if (isPEnemy(currentProtagonist->getPosition())){
+            onEncounterPEnemy();
+        }
+        emit updateprotagonistPosition(0);
     }
     playerReachedExit();
 }
 
 void WorldController::onRightArrowPressed() {
+    currentProtagonist = protagonists[0].get();
     // Get the current position of the protagonist
     coordinate currentPosition = currentWorld->protagonists[0]->getPosition();
     // Calculate the new position
@@ -226,7 +263,10 @@ void WorldController::onRightArrowPressed() {
         if (isHealthPack(currentWorld->protagonists[0]->getPosition())) {
             onEncounterHealthPack();
         }
-        emit protagonistPositionChanged(0);
+        else if (isPEnemy(currentProtagonist->getPosition())){
+            onEncounterPEnemy();
+        }
+        emit updateprotagonistPosition(0);
     }
     playerReachedExit();
 }
