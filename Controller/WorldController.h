@@ -1,13 +1,12 @@
 #ifndef WORLDCONTROLLER_H
 #define WORLDCONTROLLER_H
 
-#include "Model/world.h"
 #include "Model/structs.h"
-#include "Model/Entity.h"
 #include "Model/ProtagonistModel.h"
 #include "Model/EnemyModel.h"
 #include "Model/TileModel.h"
-
+#include "Model/WorldModel.h"
+#include "pathfinder.h"
 
 #include <iostream>
 #include <map>
@@ -80,6 +79,8 @@ class WorldController : public QObject
         void deleteEnemy(coordinate);
         void deletePsnTile(coordinate);
 
+        void playerReachedExit();
+
         /**
          * healthpack functions
          */
@@ -91,29 +92,27 @@ class WorldController : public QObject
         coordinate getStart();
         coordinate getExit();
 
-        /**
-         * Path: walked path getter and setter
-         * TODO: missing setter
-         */
-        const std::vector<std::unique_ptr<TileModel> > &getWalkedOnTiles() const;
+        std::vector<std::shared_ptr<WorldModel>> getWorlds();
+        std::shared_ptr<WorldModel> getCurrentWorld();
 
         void onUpArrowPressed();
         void onDownArrowPressed();
         void onLeftArrowPressed();
         void onRightArrowPressed();
+        void autoplay();
 
         void onEncounterEnemy();
         void onEncounterHealthPack();
         void onEncounterPEnemy();
 
-    signals:
-        void updateprotagonistPosition(int protagonistIndex);
+signals:
+        void protagonistPositionChanged(int protagonistIndex);
+        void updateLevel();
 
     private:
         WorldController();
-        std::unique_ptr<World> world;
-        int rows;
-        int cols;
+        std::vector<std::shared_ptr<WorldModel>> worlds;
+        std::shared_ptr<WorldModel> currentWorld;
         int difficultyIdx;
         coordinate exit = coordinate(1,1);
         coordinate start = coordinate(0,0);

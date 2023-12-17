@@ -9,19 +9,23 @@ ViewController::~ViewController() {
 }
 
 void ViewController::initializeViews() {
-    game2DView = std::make_unique<Game2DView>();
-    gameTextView = std::make_unique<GameTextView>();
+    auto& worldController = WorldController::getInstance();
+
+    game2DView = std::make_unique<Game2DView>(nullptr);
+    //gameTextView = std::make_unique<GameTextView>();
 
     // Initialize the views
-    game2DView->initializeView();
-    gameTextView->initializeView();
+    game2DView->initializeView(worldController.getCurrentWorld());
+    //gameTextView->initializeView();
 
     // Optionally set the initial view
     currentView = game2DView.get();
     emit viewUpdated(currentView);
 
-    auto& worldController = WorldController::getInstance();
-    connect(&worldController, &WorldController::updateprotagonistPosition, this, &ViewController::onUpdateProtagonistPosition);
+
+    connect(&worldController, &WorldController::protagonistPositionChanged, this, &ViewController::updateProtagonistPosition);
+    connect(&worldController, &WorldController::updateLevel, this, &ViewController::updateLevel);
+    connect(game2DView.get(), &Game2DView::updateSceneSignal, this, &ViewController::onUpdatedScene);
 }
 
 void ViewController::switchTo2DView() {
@@ -62,6 +66,13 @@ void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
     else {
         // Do nothing
     }
+    emit viewUpdated(currentView);
+}
+
+void ViewController::updateLevel() {
+    auto& worldController = WorldController::getInstance();
+    game2DView->initializeView(worldController.getCurrentWorld());
+    currentView = game2DView.get();
     emit viewUpdated(currentView);
 }
 

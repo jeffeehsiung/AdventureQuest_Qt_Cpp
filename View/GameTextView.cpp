@@ -111,7 +111,7 @@ void GameTextView::initializeView() {
     clear();
 
     auto& worldController = WorldController::getInstance();
-    setBackground(worldController.getDifficultyIdx());
+    setBackground(worldController.getDifficultyIdx(), 1);
     this->setPlainText(backgroundString);
 
     // Extract entities from the WorldController and add them if within bounds
@@ -147,7 +147,7 @@ void GameTextView::initializeView() {
 }
 
 
-void GameTextView::setBackground(int /*backgroundNumber*/) {
+void GameTextView::setBackground(int /*backgroundNumber*/, int levels) {
     // Clear any existing content
     backgroundString.clear();
     // Generate a QString representing the text-based background
