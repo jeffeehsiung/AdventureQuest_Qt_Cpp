@@ -27,6 +27,7 @@ public:
 public slots:
     void onUpdatedScene();
     void onUpdateProtagonistPosition(int protagonistIndex);
+    void updateLevel();
 
 signals:
     void viewUpdated(QWidget* currentView); // Modified signal

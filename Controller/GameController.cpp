@@ -58,20 +58,26 @@ void GameController::decideGameParameters() {
         gameDifficultyIdx = 3;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.3 : 0.6;
     }
-
 }
 
 void GameController::initializeWorld() {
     decideGameParameters();
+    qDebug()<< "help Game Controller";
 
     auto& worldController = WorldController::getInstance();
     worldController.createWorld(gameMap, gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
     worldController.getProtagonists()[0]->setHealth(5);
     gameHealth1 = worldController.getProtagonists()[0]->getHealth();
     gameEnergy1 = worldController.getProtagonists()[0]->getEnergy();
+    qDebug()<< "world Controller";
 
     auto& viewController = ViewController::getInstance();
     viewController.initializeViews(); // Optional: switch to initial view
+
+
+//    if (isGameStarted) {
+//        worldController.autoplay();
+//    }
 
 }
 

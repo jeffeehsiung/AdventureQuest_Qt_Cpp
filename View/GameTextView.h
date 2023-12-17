@@ -7,7 +7,6 @@
 #include <memory>
 #include "View/GameView.h"
 #include "View/EntityTextItem.h"
-#include "Controller/WorldController.h"  // Include WorldController
 
 class GameTextView : public QTextEdit, public GameView {
     Q_OBJECT
@@ -27,8 +26,8 @@ public:
      * based on which iteratively create grahpicsRectItems or entityTextItem(string) and
      * add it to the scene
      */
-    void initializeView() override;
-    void setBackground(int backgroundNumber) override;
+    void initializeView(std::shared_ptr<WorldModel> world) override;
+    void setBackground(int backgroundNumber, std::shared_ptr<WorldModel> world) override;
     void zoomIn(int delta) override;
     void zoomOut(int delta) override;
     void updateView() override;

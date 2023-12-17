@@ -3,7 +3,7 @@
 void Game2DView::addEntity(const Entity& entity) {
     // Attempt to cast to each specific type and add to the vector if within bounds
     if (const auto* tileModel = dynamic_cast<const TileModel*>(&entity)) {
-    QString tileBase = ":/images/tiles/";
+        QString tileBase = ":/images/tiles/";
         auto tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tileModel, tileBase);
         tileGraphicsItems.push_back(std::move(tileGraphicsItem));
     } else if (const auto* enemyModel = dynamic_cast<const EnemyModel*>(&entity)) {
@@ -24,7 +24,12 @@ void Game2DView::addEntity(const Entity& entity) {
     }
 }
 
-void Game2DView::initializeView() {
+void Game2DView::animateEntityAction(int index) {
+    // Implementation for graphical animation of an entity action
+    protagonistGraphicsItems[index]->changeAnimationState();
+}
+
+void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
     if (!scene) {
         scene = new QGraphicsScene(this);
         setScene(scene);
@@ -33,20 +38,23 @@ void Game2DView::initializeView() {
     // Get the singleton instance of WorldController
     auto& worldController = WorldController::getInstance();
 
-    setBackground(worldController.getDifficultyIdx());
+    setBackground(worldController.getDifficultyIdx(), world);
 
     qDebug() << "backgroundImage width: " << backgroundImage.width() << "backgroundImage heght" << backgroundImage.height();
-    qDebug() << "worldController cols: " << worldController.getCols() << "worldController height" << worldController.getRows();
+    qDebug() << "worldController cols: " << world->getCols() << "worldController height" << world->getRows();
+    qDebug() << "view width: " << this->width() << "view height" << this->height();
+    qDebug() << "scene width: " << scene->width() << "scene height" << scene->height();
+
     qDebug() << "tilewidth: " << tileWidth << " tileheight: " << tileHeight;
 
     scaleEntitiesToFitView();
 
     // Extract entities from the WorldController
-    const auto& tileMap = worldController.getTileMap();
-    const std::vector<std::unique_ptr<TileModel>>& healthPacks = worldController.getHealthPacks();
-    const std::vector<std::unique_ptr<EnemyModel>>& enemies = worldController.getEnemies();
-    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = worldController.getPEnemies();
-    const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = worldController.getProtagonists();
+    const auto& tileMap = world->getTileMap();
+    const std::vector<std::unique_ptr<TileModel>>& healthPacks = world->getHealthPacks();
+    const std::vector<std::unique_ptr<EnemyModel>>& enemies = world->getEnemies();
+    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = world->getPEnemies();
+    const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = world->getProtagonists();
 
     /** baseFramesDir for tile is constant */
     QString tileBase = ":/images/tiles/";
@@ -112,7 +120,7 @@ void Game2DView::initializeView() {
 
 }
 
-void Game2DView::setBackground(int backgroundNumber) {
+void Game2DView::setBackground(int backgroundNumber, std::shared_ptr<WorldModel> world) {
     // Load the background image based on the difficulty level
     switch(backgroundNumber) {
     case 1: backgroundImage = easyBackground; tileWidth = 30; tileHeight = 30; break;
@@ -124,8 +132,8 @@ void Game2DView::setBackground(int backgroundNumber) {
 
     // Resize the background image based on the number of tiles and their size
     auto& worldController = WorldController::getInstance();
-    backgroundImage = backgroundImage.scaled(tileWidth * worldController.getCols(),
-                                             tileHeight * worldController.getRows(),
+    backgroundImage = backgroundImage.scaled(tileWidth * world->getCols(),
+                                             tileHeight * world->getRows(),
                                              Qt::KeepAspectRatioByExpanding);
 
     // Add the background image as a pixmap item to the scene
@@ -294,6 +302,4 @@ void Game2DView::checkItems() {
     qDebug() << "Scene rectangle: " << sceneBounds;
 
 }
-
-
 
