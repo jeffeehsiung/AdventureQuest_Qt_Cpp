@@ -9,6 +9,7 @@ qreal EntityGraphicsItem::tileHeight = 0;
 const int MOVE_DURATION = 100;
 const int ATTACK_DURATION = 100; // milliseconds
 const int HURT_DURATION = 100;
+const int DYINGT_DURATION = 100;
 const int HEAL_DURATION = 100;
 
 
@@ -44,7 +45,9 @@ void EntityGraphicsItem::nextFrame() {
         currentFrames = &hurtFrames;
         animationDuration = HURT_DURATION;
         break;
-    case DYING: currentFrames = &dyingFrames; break;
+    case DYING: currentFrames = &dyingFrames;
+        animationDuration = DYINGT_DURATION;
+        break;
     case HEAL:
         currentFrames = &healFrames;
         animationDuration = HEAL_DURATION;

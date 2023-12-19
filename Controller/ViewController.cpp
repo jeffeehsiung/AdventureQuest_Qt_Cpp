@@ -15,7 +15,7 @@ void ViewController::initializeViews() {
     //gameTextView = std::make_unique<GameTextView>(nullptr);
 
     // Initialize the views
-    game2DView->initializeView(worldController.getCurrentWorld());
+    game2DView->initializeView();
     //gameTextView->initializeView();
 
     // Optionally set the initial view
@@ -58,8 +58,7 @@ void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
 }
 
 void ViewController::updateLevel() {
-    auto& worldController = WorldController::getInstance();
-    game2DView->initializeView(worldController.getCurrentWorld());
+    game2DView->initializeView();
     currentView = game2DView.get();
     emit viewUpdated(currentView);
 }

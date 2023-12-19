@@ -16,10 +16,7 @@ void EnemyModel::attack() {
 void EnemyModel::takeDamage(float damage) {
     strength -= damage;
     status = HURT;
-    status = HURT;
     if (strength <= 0.0f) {
-        QTimer::singleShot(100, this, [this]() {strength = 0.0f; enemy->setDefeated(true);});
-        qDebug() << "enemy dead strength: " << strength;
         QTimer::singleShot(100, this, [this]() {strength = 0.0f; enemy->setDefeated(true);});
         qDebug() << "enemy dead strength: " << strength;
     }

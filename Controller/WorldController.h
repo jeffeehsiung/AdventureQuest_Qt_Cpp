@@ -91,8 +91,8 @@ class WorldController : public QObject
         coordinate getStart();
         coordinate getExit();
 
-        std::vector<std::shared_ptr<WorldModel>> getWorlds();
-        std::shared_ptr<WorldModel> getCurrentWorld();
+        const std::vector<std::unique_ptr<WorldModel>>& getWorlds() const;
+        const WorldModel& getCurrentWorld() const;
 
         void onUpArrowPressed();
         void onDownArrowPressed();
@@ -104,17 +104,18 @@ class WorldController : public QObject
         void onEncounterHealthPack();
         void onEncounterPEnemy();
 
-signals:
+    signals:
         void updateprotagonistPosition(int protagonistIndex);
         void updateLevel();
 
     private:
         WorldController();
         std::vector<std::unique_ptr<WorldModel>> worlds;
-        std::unique_ptr<WorldModel> currentWorld;
+        std::unique_ptr<WorldModel> currentWorld; // Changed to unique_ptr
         int difficultyIdx;
         coordinate exit = coordinate(5,5);
         coordinate start = coordinate(0,0);
+
         std::vector<std::unique_ptr<TileModel>> healthPacks;
         std::vector<std::unique_ptr<EnemyModel>> enemies;
         std::vector<std::unique_ptr<PEnemyModel>> penemies;

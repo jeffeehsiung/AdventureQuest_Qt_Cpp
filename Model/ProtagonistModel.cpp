@@ -11,7 +11,6 @@ void ProtagonistModel::attack() {
     status = ATTACK;
     float damage = 1.0f;
     QTimer::singleShot(100, this, [this, damage]() {
-    QTimer::singleShot(100, this, [this, damage]() {
         this->takeDamage(damage);
     });
 }

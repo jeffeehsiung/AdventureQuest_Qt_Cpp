@@ -25,7 +25,6 @@ public:
     void switchToTextView();
 
 public slots:
-    void onUpdatedScene();
     void onUpdateProtagonistPosition(int protagonistIndex);
     void updateLevel();
 

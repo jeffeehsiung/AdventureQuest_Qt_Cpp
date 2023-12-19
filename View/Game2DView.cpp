@@ -1,6 +1,6 @@
 #include "Game2DView.h"
 
-void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
+void Game2DView::initializeView() {
     if (!scene) {
         scene = new QGraphicsScene(this);
         setScene(scene);
@@ -10,13 +10,15 @@ void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
     enemyGraphicsItems.clear();
     penemyGraphicsItems.clear();
 
-    // Get the singleton instance of WorldController
+    // Access WorldModel via WorldController
     auto& worldController = WorldController::getInstance();
+    const WorldModel& world = worldController.getCurrentWorld();
 
-    setBackground(worldController.getDifficultyIdx(), world);
+    // Use 'world' as needed...
+    setBackground(worldController.getDifficultyIdx());
 
     qDebug() << "backgroundImage width: " << backgroundImage.width() << "backgroundImage heght" << backgroundImage.height();
-    qDebug() << "worldController cols: " << world->getCols() << "worldController height" << world->getRows();
+    qDebug() << "worldController cols: " << world.getCols() << "worldController height" << world.getRows();
     qDebug() << "view width: " << this->width() << "view height" << this->height();
     qDebug() << "scene width: " << scene->width() << "scene height" << scene->height();
 
@@ -25,11 +27,11 @@ void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
     scaleEntitiesToFitView();
 
     // Extract entities from the WorldController
-    const auto& tileMap = world->getTileMap();
-    const std::vector<std::unique_ptr<TileModel>>& healthPacks = world->getHealthPacks();
-    const std::vector<std::unique_ptr<EnemyModel>>& enemies = world->getEnemies();
-    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = world->getPEnemies();
-    const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = world->getProtagonists();
+    const auto& tileMap = world.getTileMap();
+    const std::vector<std::unique_ptr<TileModel>>& healthPacks = world.getHealthPacks();
+    const std::vector<std::unique_ptr<EnemyModel>>& enemies = world.getEnemies();
+    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = world.getPEnemies();
+    const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = world.getProtagonists();
 
     /** baseFramesDir for tile is constant */
     QString tileBase = ":/images/tiles/";
@@ -95,7 +97,7 @@ void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
 
 }
 
-void Game2DView::setBackground(int backgroundNumber, std::shared_ptr<WorldModel> world) {
+void Game2DView::setBackground(int backgroundNumber) {
     // Load the background image based on the difficulty level
     switch(backgroundNumber) {
     case 1: backgroundImage = easyBackground; tileWidth = 30; tileHeight = 30; break;
@@ -107,8 +109,10 @@ void Game2DView::setBackground(int backgroundNumber, std::shared_ptr<WorldModel>
 
     // Resize the background image based on the number of tiles and their size
     auto& worldController = WorldController::getInstance();
-    backgroundImage = backgroundImage.scaled(tileWidth * world->getCols(),
-                                             tileHeight * world->getRows(),
+    const WorldModel& world = worldController.getCurrentWorld();
+
+    backgroundImage = backgroundImage.scaled(tileWidth * world.getCols(),
+                                             tileHeight * world.getRows(),
                                              Qt::KeepAspectRatioByExpanding);
 
     // Add the background image as a pixmap item to the scene

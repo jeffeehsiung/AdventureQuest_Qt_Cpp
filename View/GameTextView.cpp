@@ -4,11 +4,38 @@
 constexpr int MAX_VIEW_WIDTH = 300;
 constexpr int MAX_VIEW_HEIGHT = 300;
 
-void GameTextView::initializeView(std::shared_ptr<WorldModel> world) {
+void GameTextView::addEntity(const Entity& entity) {
+    // Check if the entity's position is within bounds
+    if (entity.getPosition().xCoordinate >= 0 && entity.getPosition().xCoordinate < MAX_VIEW_WIDTH &&
+        entity.getPosition().yCoordinate >= 0 && entity.getPosition().yCoordinate < MAX_VIEW_HEIGHT) {
+
+        // Attempt to cast to each specific type and add to the vector if within bounds
+        if (const auto* tileModel = dynamic_cast<const TileModel*>(&entity)) {
+            auto textItem = std::make_unique<TileTextItem>(*tileModel);
+            entityTextItems.push_back(std::move(textItem));
+        } else if (const auto* enemyModel = dynamic_cast<const EnemyModel*>(&entity)) {
+            auto textItem = std::make_unique<EnemyTextItem>(*enemyModel);
+            entityTextItems.push_back(std::move(textItem));
+        } else if (const auto* protagonistModel = dynamic_cast<const ProtagonistModel*>(&entity)) {
+            auto textItem = std::make_unique<ProtagonistTextItem>(*protagonistModel);
+            entityTextItems.push_back(std::move(textItem));
+        } else {
+            // Log an error for an unknown entity type
+            qWarning() << "Unknown entity type encountered in GameTextView::addEntity";
+        }
+    }
+}
+
+void GameTextView::initializeView() {
     clear();
 
+    // Access WorldModel via WorldController
     auto& worldController = WorldController::getInstance();
-    setBackground(worldController.getDifficultyIdx(), world);
+    const WorldModel& world = worldController.getCurrentWorld();
+
+    // Use 'world' as needed...
+    setBackground(worldController.getDifficultyIdx());
+
     this->setPlainText(backgroundString);
 
     // Extract entities from the WorldController and add them if within bounds
@@ -40,7 +67,7 @@ void GameTextView::initializeView(std::shared_ptr<WorldModel> world) {
 }
 
 
-void GameTextView::setBackground(int backgroundNumber, std::shared_ptr<WorldModel> world) {
+void GameTextView::setBackground(int backgroundNumber) {
     // Clear any existing content
     backgroundString.clear();
     // Generate a QString representing the text-based background

@@ -30,7 +30,7 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
     difficultyIdx = gameDifficultyIdx;
     worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
     worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies + 3, nrOfHealthpacks, pRatio, false));
-    currentWorld = worlds[0].get();
+    currentWorld = std::move(worlds[0]); // Transfer ownership
     autoplay();
 }
 
@@ -295,18 +295,38 @@ void WorldController::onEncounterPEnemy() {
 }
 
 
-void WorldController::playerReachedExit(){
-    qDebug() << "Current Pos x: " << currentWorld->getProtagonists()[0]->getPosition().getXPos() << " y: " << currentWorld->getProtagonists()[0]->getPosition().getYPos();
-    qDebug() << "Exit: " << currentWorld->getExit().getXPos() << " y: " << currentWorld->getExit().getYPos();
-    if(currentWorld->getProtagonists()[0]->getPosition() == currentWorld->getExit()){
-        currentWorld->getProtagonists()[0]->setPosition(worlds[1]->getStart());
-        worlds[1]->addProtagonist(worlds[0]->removeProtagonists());
-        currentWorld = worlds[1];
-        emit updateLevel();
-        emit updateprotagonistPosition(0);
-        qDebug() << "LevelSwitched!" << "\n";
+void WorldController::playerReachedExit() {
+    qDebug() << "Current Pos x: " << currentWorld->getProtagonists()[0]->getPosition().getXPos()
+             << " y: " << currentWorld->getProtagonists()[0]->getPosition().getYPos();
+    qDebug() << "Exit: " << currentWorld->getExit().getXPos()
+             << " y: " << currentWorld->getExit().getYPos();
+
+    if (currentWorld->getProtagonists()[0]->getPosition() == currentWorld->getExit()) {
+        // Ensure that the next world exists
+        if (worlds.size() > 1 && worlds[1]) {
+            auto protagonist = std::move(currentWorld->removeProtagonists());
+
+            // Update the protagonist's position to the start position of the new world
+            coordinate newStartPos = worlds[1]->getStart();
+            for (auto& prot : protagonist) {
+                prot->setPosition(newStartPos);
+            }
+
+            currentWorld = std::move(worlds[1]); // Transfer ownership to the next world
+            currentWorld->addProtagonist(std::move(protagonist));
+
+            emit updateLevel();
+            emit updateprotagonistPosition(0);
+            qDebug() << "LevelSwitched!" << "\n";
+        } else {
+            // Handle the case where the next world does not exist
+            qDebug() << "Next world does not exist!";
+        }
     }
 }
+
+
+
 /**
  * start and exit position functions
  */
@@ -321,12 +341,15 @@ coordinate WorldController::getExit()
     return currentWorld->getStart();
 }
 
-std::vector<std::shared_ptr<WorldModel>> WorldController::getWorlds(){
+const std::vector<std::unique_ptr<WorldModel>>& WorldController::getWorlds() const {
     return worlds;
 }
 
-std::shared_ptr<WorldModel> WorldController::getCurrentWorld(){
-    return currentWorld;
+const WorldModel& WorldController::getCurrentWorld() const {
+    if (!currentWorld) {
+        throw std::runtime_error("Current world is not initialized.");
+    }
+    return *currentWorld;
 }
 
 
