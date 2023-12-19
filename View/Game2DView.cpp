@@ -34,6 +34,9 @@ void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
         scene = new QGraphicsScene(this);
         setScene(scene);
     }
+    tileGraphicsItems.clear();
+    enemyGraphicsItems.clear();
+    penemyGraphicsItems.clear();
 
     // Get the singleton instance of WorldController
     auto& worldController = WorldController::getInstance();
@@ -71,6 +74,7 @@ void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
         std::unique_ptr<TileGraphicsItem> healthPackGraphicsItem = std::make_unique<TileGraphicsItem>(*healthPack, healthpackBase);
         scene->addItem(healthPackGraphicsItem.get());
         tileGraphicsItems.push_back(std::move(healthPackGraphicsItem));
+        qDebug() << "HealthPack2 X: " << healthPack->getPosition().getXPos() << " Y:" << healthPack->getPosition().getYPos();
     }
 
     /** baseFramesDir for enemy is constant */

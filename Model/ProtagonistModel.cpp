@@ -69,13 +69,13 @@ std::string ProtagonistModel::serialize() const {
 }
 
 void ProtagonistModel::onPosChanged(int x, int y){
-//    QTimer::singleShot(100, this, [this]() {qDebug() << "your position changed status: " << status;});
+    QTimer::singleShot(100, this, [this]() {status = IDLE;});
 }
 
 void ProtagonistModel::onHealthChanged(int h){
     if(h <= 0){
         status = DYING;
-        QTimer::singleShot(100, this, [this]() {qDebug() << "You died!";});
+//        QTimer::singleShot(100, this, [this]() {qDebug() << "You died!";});
     }
     qDebug() << "your status: " << status;
 }

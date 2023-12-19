@@ -33,7 +33,7 @@ public:
     int getXPos() const{return position.getXPos();}
     int getYPos() const{return position.getYPos();}
     node(float node_value, coordinate& pos)
-        : value(node_value), position(pos) {}
+        : f(0.0f), g(0.0f), h(0.0f), visited(false), value(node_value), position(pos), prev(nullptr) {}
 };
 
 

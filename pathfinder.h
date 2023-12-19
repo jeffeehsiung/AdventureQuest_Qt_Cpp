@@ -119,13 +119,13 @@ public:
             switch (newMove)
             {
             case -10: path.push_back(4); break;
-            case -11: path.push_back(5); break;
-            case -1: path.push_back(6); break;
-            case 9: path.push_back(7); break;
+            case -9: path.push_back(5); break;
+            case 1: path.push_back(6); break;
+            case 11: path.push_back(7); break;
             case 10: path.push_back(0); break;
-            case 11: path.push_back(1); break;
-            case 1: path.push_back(2); break;
-            case -9: path.push_back(3); break;
+            case 9: path.push_back(1); break;
+            case -1: path.push_back(2); break;
+            case -11: path.push_back(3); break;
             default: std::cerr << "wrong value for deltaX" << deltaX;
             }
             dest = dest->prev;

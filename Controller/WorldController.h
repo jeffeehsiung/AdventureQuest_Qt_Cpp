@@ -113,7 +113,7 @@ signals:
         std::vector<std::shared_ptr<WorldModel>> worlds;
         std::shared_ptr<WorldModel> currentWorld;
         int difficultyIdx;
-        coordinate exit = coordinate(1,1);
+        coordinate exit = coordinate(5,5);
         coordinate start = coordinate(0,0);
         std::vector<std::unique_ptr<TileModel>> healthPacks;
         std::vector<std::unique_ptr<EnemyModel>> enemies;

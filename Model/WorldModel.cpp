@@ -14,12 +14,16 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
         std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(std::move(tile));
         // After creating TileModel objects, add them to the map for direct access
         coordinate pos = tileModel->getPosition();
+        nodes.push_back(node(tileModel->getValue(), pos));
         tileMap[pos] = std::move(tileModel);
     }
 
     for ( auto &healthPack : world->getHealthPacks() ){
         std::unique_ptr<TileModel> healthPackModel = std::make_unique<TileModel>(std::move(healthPack));
         healthPacks.push_back(std::move(healthPackModel));
+    }
+    for ( auto &healthPack : getHealthPacks()){
+        qDebug() << "HealthPack X: " << healthPack->getPosition().getXPos() << " Y:" << healthPack->getPosition().getYPos();
     }
 
     for (auto &enemy : world->getEnemies()) {
