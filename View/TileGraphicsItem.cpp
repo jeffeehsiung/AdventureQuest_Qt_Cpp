@@ -35,11 +35,6 @@ QRectF TileGraphicsItem::boundingRect() const {
 
 
 void TileGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
-    // Call the base class paint method to draw the base image if needed.
-    // If the tiles are meant to be transparent, showing only the shades of green, then the base image paint call can be omitted.
-    // Draw the base image first
-
-    // Now handle TileModel specific painting for the overlay
     const TileModel* tileModel = dynamic_cast<const TileModel*>(&getEntity());
     if (tileModel) {
 
