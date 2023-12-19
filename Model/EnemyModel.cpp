@@ -16,7 +16,10 @@ void EnemyModel::attack() {
 void EnemyModel::takeDamage(float damage) {
     strength -= damage;
     status = HURT;
+    status = HURT;
     if (strength <= 0.0f) {
+        QTimer::singleShot(100, this, [this]() {strength = 0.0f; enemy->setDefeated(true);});
+        qDebug() << "enemy dead strength: " << strength;
         QTimer::singleShot(100, this, [this]() {strength = 0.0f; enemy->setDefeated(true);});
         qDebug() << "enemy dead strength: " << strength;
     }
@@ -57,10 +60,14 @@ PEnemyModel::PEnemyModel(std::unique_ptr<PEnemy> penemy)
     :penemy(std::move(penemy)) {
     connect(this->penemy.get(), &Enemy::dead, this, &PEnemyModel::onDead);
     connect(this->penemy.get(), &PEnemy::poisonLevelUpdated, this, &PEnemyModel::onPoisonLevelUpdated);
+    connect(this->penemy.get(), &PEnemy::poisonLevelUpdated, this, &PEnemyModel::onPoisonLevelUpdated);
 }
 
 void PEnemyModel::attack() {
     status = ATTACK;
+    QTimer::singleShot(100, this, [this]() {
+        penemy->poison();
+    });
     QTimer::singleShot(100, this, [this]() {
         penemy->poison();
     });
@@ -111,5 +118,6 @@ void PEnemyModel::onDead(){
 void PEnemyModel::onPoisonLevelUpdated(float poisonLevel){
     takeDamage(poisonLevel);
 }
+
 
 
