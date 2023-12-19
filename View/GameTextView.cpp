@@ -4,7 +4,7 @@
 constexpr int MAX_VIEW_WIDTH = 300;
 constexpr int MAX_VIEW_HEIGHT = 300;
 
-void GameTextView::initializeView() {
+void GameTextView::initializeView(std::shared_ptr<WorldModel> world) {
     clear();
 
     auto& worldController = WorldController::getInstance();
