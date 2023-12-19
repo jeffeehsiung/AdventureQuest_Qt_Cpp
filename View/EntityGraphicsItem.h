@@ -32,8 +32,6 @@ public:
 
     virtual ~EntityGraphicsItem();
 
-    void changeAnimationState();
-
     // Advances to the next frame in the current animation
     void nextFrame();
 

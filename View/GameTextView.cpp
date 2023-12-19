@@ -167,8 +167,6 @@ void GameTextView::updateView() {
     }
     // Display only the necessary part of the scene
     displayScene(sceneString);
-
-    emit updateSceneSignal();
 }
 
 

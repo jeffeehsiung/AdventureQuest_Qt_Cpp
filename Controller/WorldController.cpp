@@ -49,7 +49,6 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
         // After creating TileModel objects, add them to the map for direct access
         coordinate pos = tileModel->getPosition();
         tileMap[pos] = std::move(tileModel);
-//        tiles.push_back(std::move(tileModel));
     }
 
     for ( auto &healthPack : world->getHealthPacks() ){
@@ -108,11 +107,6 @@ const std::map<coordinate, std::unique_ptr<TileModel>>& WorldController::getTile
     return tileMap;
 }
 
-//const std::vector<std::unique_ptr<TileModel> > &WorldController::getTiles() const
-//{
-//    return tiles;
-//}
-
 const std::vector<std::unique_ptr<TileModel> > &WorldController::getHealthPacks() const
 {
     return healthPacks;
@@ -153,18 +147,6 @@ bool WorldController::isHealthPack(coordinate coord)
     }
     return false;
 }
-
-//bool WorldController::isPoisonedTiles(coordinate coord)
-//{
-//    for ( auto &tile : tiles )
-//    {
-//        if ( tile->getPosition() == coord && tile->getState() == HURT)
-//        {
-//            // let's say HURT means tile is poisoned
-//            return true;
-//        }
-//    }
-//}
 
 bool WorldController::isPoisonedTiles(coordinate coord)
 {
@@ -234,27 +216,6 @@ int WorldController::getDifficultyIdx() const
 /**
  * PEnemy poisened tiles
  */
-//void WorldController::setAffectedTiles(coordinate coord, float poisonLevel) {
-//    // Determine the range of the poison effect based on the poison level
-//    int range = static_cast<int>(poisonLevel) / 15; // or any other formula you see fit
-
-//    // Apply poison to tiles within the range
-//    for (int dx = -range; dx <= range; ++dx) {
-//        for (int dy = -range; dy <= range; ++dy) {
-//            int affectedX = coord.xCoordinate + dx;
-//            int affectedY = coord.yCoordinate + dy;
-
-//            // Check if the tile is within the world boundaries
-//            if (affectedX >= 0 && affectedX < cols && affectedY >= 0 && affectedY < rows) {
-//                // Here you need to get the actual TileModel and update its poisoned state
-//                auto& tileModel = getTileModelAt(affectedX, affectedY);
-//                if (tileModel) {
-//                    tileModel->takeDamage(poisonLevel - (std::abs(dx) + std::abs(dy))); // Decrease strength with distance
-//                }
-//            }
-//        }
-//    }
-//}
 void WorldController::setAffectedTiles(coordinate coord, float poisonLevel) {
     // Determine the radius of the affected area based on the poison level
     int radius = static_cast<int>(poisonLevel) / 15; // Adjust this formula as needed
@@ -304,23 +265,6 @@ void WorldController::deleteEnemy(coordinate coord)
         }
     }
 }
-
-//void WorldController::deletePsnTile(coordinate coord)
-//{
-//    /**
-//     * delete poisoned tile from vector
-//     * */
-//    for ( auto &tile : tiles )
-//    {
-//        if ( tile->getPosition() == coord )
-//        {
-//            tiles.erase(std::remove_if(tiles.begin(), tiles.end(), [&](std::unique_ptr<TileModel> &tile)
-//            {
-//                return tile->getPosition() == coord;
-//            }), tiles.end());
-//        }
-//    }
-//}
 
 void WorldController::deletePsnTile(coordinate coord) {
     // Assuming tileMap is a std::map<coordinate, std::unique_ptr<TileModel>>

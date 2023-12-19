@@ -152,16 +152,6 @@ void Game2DView::updateView() {
             tileGraphicsItem->updatePosition();
         }
     }
-    for (const auto& enemyGraphicsItem : enemyGraphicsItems) {
-        if (enemyGraphicsItem) {
-            enemyGraphicsItem->updatePosition();
-        }
-    }
-    for (const auto& penemyGraphicsItem : penemyGraphicsItems) {
-        if (penemyGraphicsItem) {
-            penemyGraphicsItem->updatePosition();
-        }
-    }
     this->update();
 }
 

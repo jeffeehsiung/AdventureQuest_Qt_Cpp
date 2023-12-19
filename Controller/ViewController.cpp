@@ -9,8 +9,8 @@ ViewController::~ViewController() {
 }
 
 void ViewController::initializeViews() {
-    game2DView = std::make_unique<Game2DView>();
-    gameTextView = std::make_unique<GameTextView>();
+    game2DView = std::make_unique<Game2DView>(nullptr);
+    gameTextView = std::make_unique<GameTextView>(nullptr);
 
     // Initialize the views
     game2DView->initializeView();

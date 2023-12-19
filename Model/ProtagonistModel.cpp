@@ -9,10 +9,8 @@ ProtagonistModel::ProtagonistModel(std::unique_ptr<Protagonist> protagonist)
 
 void ProtagonistModel::attack() {
     status = ATTACK;
-    qDebug() << "your start attack timer status: " << status;
     float damage = 1.0f;
-    // Using a lambda function as the slot
-    QTimer::singleShot(600, this, [this, damage]() {
+    QTimer::singleShot(100, this, [this, damage]() {
         this->takeDamage(damage);
     });
 }
@@ -20,8 +18,6 @@ void ProtagonistModel::attack() {
 void ProtagonistModel::takeDamage(float damage) {
     if (protagonist) {
         status = HURT;
-        qDebug() << "your take damage status: " << status;
-        // Schedule the following block to be executed after 300 ms
         QTimer::singleShot(100, this, [this, damage]() {
             float currentHealth = protagonist->getHealth();
             float newHealth = currentHealth - damage;
@@ -69,20 +65,21 @@ std::string ProtagonistModel::serialize() const {
 }
 
 void ProtagonistModel::onPosChanged(int x, int y){
-    QTimer::singleShot(600, this, [this]() {status = IDLE;});
+    QTimer::singleShot(100, this, [this]() {status = IDLE;});
 }
 
 void ProtagonistModel::onHealthChanged(int h){
     if(h <= 0){
         status = DYING;
-        qDebug() << "You died!";
+        qDebug() << "Your health is 0!";
     }
-    qDebug() << "your status: " << status;
 }
 
 void ProtagonistModel::oneEnergyChanged(int e){
     if(e <= 0){
-        qDebug() << "your status after energy changed: " << status;
+        status = DYING;
+        qDebug() << "your energy is 0!";
+
     }
 
 }

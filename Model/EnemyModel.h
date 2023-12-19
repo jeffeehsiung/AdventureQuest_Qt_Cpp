@@ -41,10 +41,7 @@ class PEnemyModel : public Entity {
 
         // PEnemy specific functions
         bool isDefeated() const;
-        void setDefeated(bool defeated);
-        bool releasePoison();
         float getPoisonLevel() const;
-        void setPoisonLevel(float poisonLevel);
         std::string serialize() const;
 
     public slots:
@@ -53,8 +50,6 @@ class PEnemyModel : public Entity {
 
     private:
         std::unique_ptr<PEnemy> penemy;
-        float poisonLevel;
-        bool isAlive;
 };
 
 //class XEnemyModel : public Entity {
