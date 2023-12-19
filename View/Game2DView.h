@@ -34,8 +34,6 @@ public:
         delete scene;
     }
 
-    void addEntity(const Entity& entity) override;
-
     /**
      * @brief initializeView
      * @param worldController
@@ -69,7 +67,7 @@ private:
     qreal tileWidth;
     qreal tileHeight;
 
-    std::vector<std::unique_ptr<EntityGraphicsItem>> entityGraphicsItems;
+    std::vector<std::unique_ptr<TileGraphicsItem>> healthpackGraphicsItems;
     std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
     std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
     std::vector<std::unique_ptr<PEnemyGraphicsItem>> penemyGraphicsItems;

@@ -12,7 +12,7 @@ void ViewController::initializeViews() {
     auto& worldController = WorldController::getInstance();
 
     game2DView = std::make_unique<Game2DView>(nullptr);
-    //gameTextView = std::make_unique<GameTextView>();
+    //gameTextView = std::make_unique<GameTextView>(nullptr);
 
     // Initialize the views
     game2DView->initializeView(worldController.getCurrentWorld());
@@ -45,13 +45,6 @@ void ViewController::switchToTextView() {
 
 QWidget* ViewController::getCurrentView() const {
     return currentView;
-}
-
-void ViewController::onUpdatedScene() {
-    if (currentView){
-        currentView->update();
-    }
-    emit viewUpdated(currentView);
 }
 
 void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {

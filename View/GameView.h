@@ -10,8 +10,6 @@
 class GameView {
 public:
     virtual ~GameView(){}
-
-    virtual void addEntity(const Entity& entity) = 0;
     /**
      * @brief initializeView
      * @param worldController

@@ -41,7 +41,6 @@ class PEnemyModel : public Entity {
 
         // PEnemy specific functions
         bool isDefeated() const;
-        bool releasePoison();
         float getPoisonLevel() const;
         std::string serialize() const;
 

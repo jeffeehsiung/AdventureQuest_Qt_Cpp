@@ -16,8 +16,6 @@ public:
         setReadOnly(true);
     }
 
-    void addEntity(const Entity& entity) override;
-
     /**
      * @brief initializeView
      * @param worldController

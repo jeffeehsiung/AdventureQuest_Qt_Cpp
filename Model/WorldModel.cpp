@@ -14,12 +14,16 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
         std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(std::move(tile));
         // After creating TileModel objects, add them to the map for direct access
         coordinate pos = tileModel->getPosition();
+        nodes.push_back(node(tileModel->getValue(), pos));
         tileMap[pos] = std::move(tileModel);
     }
 
     for ( auto &healthPack : world->getHealthPacks() ){
         std::unique_ptr<TileModel> healthPackModel = std::make_unique<TileModel>(std::move(healthPack));
         healthPacks.push_back(std::move(healthPackModel));
+    }
+    for ( auto &healthPack : getHealthPacks()){
+        qDebug() << "HealthPack X: " << healthPack->getPosition().getXPos() << " Y:" << healthPack->getPosition().getYPos();
     }
 
     for (auto &enemy : world->getEnemies()) {
@@ -108,6 +112,7 @@ bool WorldModel::isHealthPack(coordinate coord)
     {
         if ( healthPack->getPosition() == coord )
         {
+            currentHealthpack = healthPack.get();
             return true;
         }
     }
@@ -231,16 +236,28 @@ void WorldModel::removeHealthpack(coordinate coord)
     /**
      * remove healthpack from vector
      * */
-    for ( auto &healthPack : healthPacks )
-    {
-        if ( healthPack->getPosition() == coord )
-        {
-            healthPacks.erase(std::remove_if(healthPacks.begin(), healthPacks.end(), [&](std::unique_ptr<TileModel> &healthPack)
-            {
-                return healthPack->getPosition() == coord;
-            }), healthPacks.end());
+    std::random_device rd;  // Obtain a random number from hardware
+    std::mt19937 eng(rd()); // Seed the generator
+    std::uniform_int_distribution<> distr(0, 20); // Define the range for coordinates
+
+    for (auto& healthPack : healthPacks) {
+        if (healthPack && healthPack->getPosition() == coord) {
+            // Set a new random position for the healthPack
+            coordinate newCoord = {distr(eng), distr(eng)};
+            healthPack->setPosition(newCoord);
+            break;
         }
     }
+    // for ( auto &healthPack : healthPacks )
+    // {
+    //     if ( healthPack->getPosition() == coord )
+    //     {
+    //         healthPacks.erase(std::remove_if(healthPacks.begin(), healthPacks.end(), [&](std::unique_ptr<TileModel> &healthPack)
+    //         {
+    //             return healthPack->getPosition() == coord;
+    //         }), healthPacks.end());
+    //     }
+    // }
 }
 
 coordinate WorldModel::getStart()
