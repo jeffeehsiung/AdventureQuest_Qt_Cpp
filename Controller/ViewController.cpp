@@ -12,7 +12,7 @@ void ViewController::initializeViews() {
     auto& worldController = WorldController::getInstance();
 
     game2DView = std::make_unique<Game2DView>(nullptr);
-    //gameTextView = std::make_unique<GameTextView>();
+    //gameTextView = std::make_unique<GameTextView>(nullptr);
 
     // Initialize the views
     game2DView->initializeView(worldController.getCurrentWorld());
@@ -25,7 +25,6 @@ void ViewController::initializeViews() {
 
     connect(&worldController, &WorldController::updateprotagonistPosition, this, &ViewController::onUpdateProtagonistPosition);
     connect(&worldController, &WorldController::updateLevel, this, &ViewController::updateLevel);
-    connect(game2DView.get(), &Game2DView::updateSceneSignal, this, &ViewController::onUpdatedScene);
 }
 
 void ViewController::switchTo2DView() {
@@ -48,23 +47,12 @@ QWidget* ViewController::getCurrentView() const {
     return currentView;
 }
 
-void ViewController::onUpdatedScene() {
-    if (currentView){
-        currentView->update();
-    }
-    emit viewUpdated(currentView);
-}
-
 void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
     if (currentView == game2DView.get()) {
-        game2DView->animateEntityAction(protagonistIndex);
         game2DView->updateView();
     }
     else if (currentView == gameTextView.get()) {
         gameTextView->updateView();
-    }
-    else {
-        // Do nothing
     }
     emit viewUpdated(currentView);
 }

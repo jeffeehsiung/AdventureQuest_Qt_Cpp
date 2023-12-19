@@ -26,11 +26,6 @@ EntityGraphicsItem::~EntityGraphicsItem() {
     delete animationTimer;
 }
 
-void EntityGraphicsItem::changeAnimationState() {
-    currentFrameIndex = 0;
-    startAnimation();
-}
-
 void EntityGraphicsItem::nextFrame() {
     const state entityState = entity.getState();
     std::vector<QPixmap>* currentFrames = nullptr;

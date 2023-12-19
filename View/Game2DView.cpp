@@ -1,39 +1,11 @@
 #include "Game2DView.h"
 
-void Game2DView::addEntity(const Entity& entity) {
-    // Attempt to cast to each specific type and add to the vector if within bounds
-    if (const auto* tileModel = dynamic_cast<const TileModel*>(&entity)) {
-        QString tileBase = ":/images/tiles/";
-        auto tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tileModel, tileBase);
-        tileGraphicsItems.push_back(std::move(tileGraphicsItem));
-    } else if (const auto* enemyModel = dynamic_cast<const EnemyModel*>(&entity)) {
-        QString enemyBase = ":/images/enemy_golem/PNG Sequences/";
-        auto enemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*enemyModel, enemyBase);
-        enemyGraphicsItems.push_back(std::move(enemyGraphicsItem));
-    } else if (const auto* penemyModel = dynamic_cast<const PEnemyModel*>(&entity)) {
-        QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
-        auto penemyGraphicsItem = std::make_unique<PEnemyGraphicsItem>(*penemyModel, penemyBase);
-        penemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
-    }else if (const auto* protagonistModel = dynamic_cast<const ProtagonistModel*>(&entity)) {
-        QString protagonistBase = ":/images/protagonist_samurai/";
-        auto protagonistGraphicsItem = std::make_unique<ProtagonistGraphicsItem>(*protagonistModel, protagonistBase);
-        protagonistGraphicsItems.push_back(std::move(protagonistGraphicsItem));
-    } else {
-        // Log an error for an unknown entity type
-        qWarning() << "Unknown entity type encountered in GameTextView::addEntity";
-    }
-}
-
-void Game2DView::animateEntityAction(int index) {
-    // Implementation for graphical animation of an entity action
-    protagonistGraphicsItems[index]->changeAnimationState();
-}
-
 void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
     if (!scene) {
         scene = new QGraphicsScene(this);
         setScene(scene);
     }
+    healthpackGraphicsItems.clear();
     tileGraphicsItems.clear();
     enemyGraphicsItems.clear();
     penemyGraphicsItems.clear();
@@ -73,8 +45,7 @@ void Game2DView::initializeView(std::shared_ptr<WorldModel> world) {
     for (const auto& healthPack : healthPacks) {
         std::unique_ptr<TileGraphicsItem> healthPackGraphicsItem = std::make_unique<TileGraphicsItem>(*healthPack, healthpackBase);
         scene->addItem(healthPackGraphicsItem.get());
-        tileGraphicsItems.push_back(std::move(healthPackGraphicsItem));
-        qDebug() << "HealthPack2 X: " << healthPack->getPosition().getXPos() << " Y:" << healthPack->getPosition().getYPos();
+        healthpackGraphicsItems.push_back(std::move(healthPackGraphicsItem));
     }
 
     /** baseFramesDir for enemy is constant */
@@ -159,19 +130,9 @@ void Game2DView::updateView() {
             protagonistGraphicsItem->updatePosition();
         }
     }
-    for (const auto& tileGraphicsItem : tileGraphicsItems) {
-        if (tileGraphicsItem) {
-            tileGraphicsItem->updatePosition();
-        }
-    }
-    for (const auto& enemyGraphicsItem : enemyGraphicsItems) {
-        if (enemyGraphicsItem) {
-            enemyGraphicsItem->updatePosition();
-        }
-    }
-    for (const auto& penemyGraphicsItem : penemyGraphicsItems) {
-        if (penemyGraphicsItem) {
-            penemyGraphicsItem->updatePosition();
+    for (const auto& healthpackGraphicsItem : healthpackGraphicsItems) {
+        if (healthpackGraphicsItem) {
+            healthpackGraphicsItem->updatePosition();
         }
     }
     this->update();

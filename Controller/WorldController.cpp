@@ -28,9 +28,9 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
         break;
     }
     difficultyIdx = gameDifficultyIdx;
-    worlds.push_back(std::make_shared<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
-    worlds.push_back(std::make_shared<WorldModel>(map, nrOfEnemies + 3, nrOfHealthpacks, pRatio, false));
-    currentWorld = worlds[0];
+    worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
+    worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies + 3, nrOfHealthpacks, pRatio, false));
+    currentWorld = worlds[0].get();
     autoplay();
 }
 
@@ -55,11 +55,6 @@ int WorldController::getCols() const
 const std::map<coordinate, std::unique_ptr<TileModel>>& WorldController::getTileMap() const {
     return currentWorld->getTileMap();
 }
-
-//const std::vector<std::unique_ptr<TileModel> > &WorldController::getTiles() const
-//{
-//    return tiles;
-//}
 
 const std::vector<std::unique_ptr<TileModel> > &WorldController::getHealthPacks() const
 {
@@ -94,18 +89,6 @@ bool WorldController::isHealthPack(coordinate coord)
 {
     return currentWorld->isHealthPack(coord);
 }
-
-//bool WorldController::isPoisonedTiles(coordinate coord)
-//{
-//    for ( auto &tile : tiles )
-//    {
-//        if ( tile->getPosition() == coord && tile->getState() == HURT)
-//        {
-//            // let's say HURT means tile is poisoned
-//            return true;
-//        }
-//    }
-//}
 
 bool WorldController::isPoisonedTiles(coordinate coord)
 {
@@ -268,7 +251,6 @@ void WorldController::onRightArrowPressed() {
 void WorldController::onEncounterEnemy() {
     qDebug() << "Encountered an enemy!" << "\n";
     if (currentWorld->getProtagonists()[0]->getHealth() > 0) {
-        currentWorld->getProtagonists()[0]->setHealth(currentWorld->getProtagonists()[0]->getHealth() - 1);
         currentWorld->getProtagonists()[0]->attack();
         currentWorld->currentEnemy->attack();
     }
@@ -283,6 +265,7 @@ void WorldController::onEncounterHealthPack() {
     qDebug() << "Encountered a health pack!" << "\n";
     if (currentWorld->getProtagonists()[0]->getHealth() < 5) {
         currentWorld->getProtagonists()[0]->setHealth(currentWorld->getProtagonists()[0]->getHealth() + 1);
+        currentWorld->removeHealthpack(currentWorld->getProtagonists()[0]->getPosition());
     }
     else {
         qDebug() << "Health is full!" << "\n";

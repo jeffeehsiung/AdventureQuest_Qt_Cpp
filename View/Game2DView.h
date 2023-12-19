@@ -34,8 +34,6 @@ public:
         delete scene;
     }
 
-    void addEntity(const Entity& entity) override;
-    void animateEntityAction(int index) override;
     /**
      * @brief initializeView
      * @param worldController
@@ -51,17 +49,6 @@ public:
     void updateView() override;
 
     void checkItems();
-
-signals:
-    /**
-     * @brief updateSceneSignal
-     * In your user interface, create two buttons, one for selecting 2D view and another for selecting text view.
-     * Connect the button signals (e.g., clicked() signals) to slots in your view controller or main application class.
-     * In these slots, based on the button pressed, you can decide whether to create an instance of Game2DView or GameTextView.
-     * When instantiating the selected view, you can connect its signals (such as updateSceneSignal()) to slots
-     * in your view controller or main application class that handle updating the view.
-     */
-    void updateSceneSignal() override;
 
 protected:
     void wheelEvent(QWheelEvent *event) override;
@@ -80,7 +67,7 @@ private:
     qreal tileWidth;
     qreal tileHeight;
 
-    std::vector<std::unique_ptr<EntityGraphicsItem>> entityGraphicsItems;
+    std::vector<std::unique_ptr<TileGraphicsItem>> healthpackGraphicsItems;
     std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
     std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
     std::vector<std::unique_ptr<PEnemyGraphicsItem>> penemyGraphicsItems;

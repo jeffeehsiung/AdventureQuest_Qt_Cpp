@@ -112,6 +112,7 @@ bool WorldModel::isHealthPack(coordinate coord)
     {
         if ( healthPack->getPosition() == coord )
         {
+            currentHealthpack = healthPack.get();
             return true;
         }
     }
@@ -168,21 +169,27 @@ int WorldModel::getNumOfProtagonists() const
  */
 
 void WorldModel::setAffectedTiles(coordinate coord, float poisonLevel) {
-    // Determine the range of the poison effect based on the poison level
-    int range = static_cast<int>(poisonLevel) / 15; // or any other formula you see fit
+    // Determine the radius of the affected area based on the poison level
+    int radius = static_cast<int>(poisonLevel) / 15; // Adjust this formula as needed
 
-    // Apply poison to tiles within the range
-    for (int dx = -range; dx <= range; ++dx) {
-        for (int dy = -range; dy <= range; ++dy) {
-            int affectedX = coord.xCoordinate + dx;
-            int affectedY = coord.yCoordinate + dy;
+    // Apply poison to tiles within the circular radius
+    for (int dx = -radius; dx <= radius; ++dx) {
+        for (int dy = -radius; dy <= radius; ++dy) {
+            // Calculate the distance from the center
+            float distance = std::sqrt(dx * dx + dy * dy);
 
-            // Check if the tile is within the world boundaries
-            if (affectedX >= 0 && affectedX < cols && affectedY >= 0 && affectedY < rows) {
-                // Here you need to get the actual TileModel and update its poisoned state
-                auto& tileModel = getTileModelAt(affectedX, affectedY);
-                if (tileModel) {
-                    tileModel->takeDamage(poisonLevel - (std::abs(dx) + std::abs(dy))); // Decrease strength with distance
+            // Check if the distance is within the radius
+            if (distance <= radius) {
+                int affectedX = coord.xCoordinate + dx;
+                int affectedY = coord.yCoordinate + dy;
+
+                // Check if the tile is within the world boundaries
+                if (affectedX >= 0 && affectedX < cols && affectedY >= 0 && affectedY < rows) {
+                    // Here you need to get the actual TileModel and update its poisoned state
+                    auto& tileModel = getTileModelAt(affectedX, affectedY);
+                    if (tileModel) {
+                        tileModel->takeDamage(poisonLevel - distance); // Decrease strength with distance
+                    }
                 }
             }
         }
@@ -229,16 +236,28 @@ void WorldModel::removeHealthpack(coordinate coord)
     /**
      * remove healthpack from vector
      * */
-    for ( auto &healthPack : healthPacks )
-    {
-        if ( healthPack->getPosition() == coord )
-        {
-            healthPacks.erase(std::remove_if(healthPacks.begin(), healthPacks.end(), [&](std::unique_ptr<TileModel> &healthPack)
-            {
-                return healthPack->getPosition() == coord;
-            }), healthPacks.end());
+    std::random_device rd;  // Obtain a random number from hardware
+    std::mt19937 eng(rd()); // Seed the generator
+    std::uniform_int_distribution<> distr(0, 20); // Define the range for coordinates
+
+    for (auto& healthPack : healthPacks) {
+        if (healthPack && healthPack->getPosition() == coord) {
+            // Set a new random position for the healthPack
+            coordinate newCoord = {distr(eng), distr(eng)};
+            healthPack->setPosition(newCoord);
+            break;
         }
     }
+    // for ( auto &healthPack : healthPacks )
+    // {
+    //     if ( healthPack->getPosition() == coord )
+    //     {
+    //         healthPacks.erase(std::remove_if(healthPacks.begin(), healthPacks.end(), [&](std::unique_ptr<TileModel> &healthPack)
+    //         {
+    //             return healthPack->getPosition() == coord;
+    //         }), healthPacks.end());
+    //     }
+    // }
 }
 
 coordinate WorldModel::getStart()

@@ -32,8 +32,6 @@ public:
 
     virtual ~EntityGraphicsItem();
 
-    void changeAnimationState();
-
     // Advances to the next frame in the current animation
     void nextFrame();
 
@@ -45,7 +43,6 @@ public:
     virtual QRectF boundingRect() const override;
 
     virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
-
 
 protected:
 

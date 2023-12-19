@@ -16,11 +16,6 @@ public:
 
     void addProtagonist(std::vector<std::unique_ptr<ProtagonistModel>>);
     std::vector<std::unique_ptr<ProtagonistModel>> removeProtagonists();
-
-    /**
-         * get single entity functions
-        */
-    std::unique_ptr<TileModel>& getTileModelAt(int x, int y);
     /**
          * get vector of entities functions
          */
@@ -30,6 +25,11 @@ public:
     const std::vector<std::unique_ptr<PEnemyModel>>& getPEnemies() const;
     //      const std::vector<std::unique_ptr<XEnemyModel>> getXEnemies() const;
     const std::vector<std::unique_ptr<ProtagonistModel>>& getProtagonists() const;
+
+    /**
+         * get single entity functions
+        */
+     std::unique_ptr<TileModel>& getTileModelAt(int x, int y);
 
     /**
          * type of tiles check
