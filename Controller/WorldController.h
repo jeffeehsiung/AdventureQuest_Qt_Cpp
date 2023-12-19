@@ -2,9 +2,9 @@
 #define WORLDCONTROLLER_H
 
 #include "Model/structs.h"
-#include "Model/ProtagonistModel.h"
-#include "Model/EnemyModel.h"
-#include "Model/TileModel.h"
+//#include "Model/ProtagonistModel.h"
+//#include "Model/EnemyModel.h"
+//#include "Model/TileModel.h"
 #include "Model/WorldModel.h"
 #include "pathfinder.h"
 

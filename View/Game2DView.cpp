@@ -150,19 +150,9 @@ void Game2DView::updateView() {
             protagonistGraphicsItem->updatePosition();
         }
     }
-    for (const auto& tileGraphicsItem : tileGraphicsItems) {
+    for (const auto& tileGraphicsItem : tileGraphicsItems) { // TODO: change to healphpack graphics item for faster position update
         if (tileGraphicsItem) {
             tileGraphicsItem->updatePosition();
-        }
-    }
-    for (const auto& enemyGraphicsItem : enemyGraphicsItems) {
-        if (enemyGraphicsItem) {
-            enemyGraphicsItem->updatePosition();
-        }
-    }
-    for (const auto& penemyGraphicsItem : penemyGraphicsItems) {
-        if (penemyGraphicsItem) {
-            penemyGraphicsItem->updatePosition();
         }
     }
     this->update();

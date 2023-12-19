@@ -25,7 +25,6 @@ void ViewController::initializeViews() {
 
     connect(&worldController, &WorldController::updateprotagonistPosition, this, &ViewController::onUpdateProtagonistPosition);
     connect(&worldController, &WorldController::updateLevel, this, &ViewController::updateLevel);
-    connect(game2DView.get(), &Game2DView::updateSceneSignal, this, &ViewController::onUpdatedScene);
 }
 
 void ViewController::switchTo2DView() {
@@ -61,9 +60,6 @@ void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
     }
     else if (currentView == gameTextView.get()) {
         gameTextView->updateView();
-    }
-    else {
-        // Do nothing
     }
     emit viewUpdated(currentView);
 }

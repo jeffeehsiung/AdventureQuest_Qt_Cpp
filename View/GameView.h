@@ -25,16 +25,6 @@ public:
     virtual void zoomIn(int delta) = 0;
     virtual void zoomOut(int delta) = 0;
     virtual void updateView() = 0;
-signals:
-    /**
-     * @brief updateSceneSignal
-     * In your user interface, create two buttons, one for selecting 2D view and another for selecting text view.
-     * Connect the button signals (e.g., clicked() signals) to slots in your view controller or main application class.
-     * In these slots, based on the button pressed, you can decide whether to create an instance of Game2DView or GameTextView.
-     * When instantiating the selected view, you can connect its signals (such as updateSceneSignal()) to slots
-     * in your view controller or main application class that handle updating the view.
-     */
-    virtual void updateSceneSignal() = 0;
 };
 
 #endif // GAMEVIEW_H

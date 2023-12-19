@@ -5,12 +5,15 @@
 #include "Model/TileModel.h"
 #include "Model/EnemyModel.h"
 #include "Model/ProtagonistModel.h"
+#include "Model/Entity.h"
 #include <memory>
 #include <QString>
+#include <QObject>
 
-class WorldModel{
+class WorldModel: public QObject{
+    Q_OBJECT
 public:
-    WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float pRatio, bool firstWorld);
+    explicit WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float pRatio, bool firstWorld);
     int getRows() const;
     int getCols() const;
 
