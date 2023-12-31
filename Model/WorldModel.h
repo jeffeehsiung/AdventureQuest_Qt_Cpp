@@ -7,7 +7,7 @@
 #include <map>
 #include <memory>
 #include <random>
-#include "world.h"
+#include "Model/world.h"
 #include "Model/structs.h"
 #include "Model/TileModel.h"
 #include "Model/EnemyModel.h"

@@ -196,9 +196,9 @@ void Game2DView::scaleEntitiesToFitView() {
     qreal sceneHeight = scene->height();
     qreal someFactor;
     switch(currentBackgroundNumber){
-    case 1: someFactor = 20; break;
-    case 2: someFactor = 20; break;
-    case 3: someFactor = 20; break;
+    case 1: someFactor = 25; break;
+    case 2: someFactor = 25; break;
+    case 3: someFactor = 25; break;
     default: someFactor = 30; break;
     }
     qreal desiredItemWidth = sceneWidth / someFactor; // 'someFactor' is a value you choose based on how many items you want to fit across the width of the view.
