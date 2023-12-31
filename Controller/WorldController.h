@@ -6,7 +6,7 @@
 //#include "Model/EnemyModel.h"
 //#include "Model/TileModel.h"
 #include "Model/WorldModel.h"
-#include "pathfinder.h"
+//#include "pathfinder_class.h"
 
 #include <iostream>
 #include <map>
@@ -98,7 +98,7 @@ class WorldController : public QObject
         void onDownArrowPressed();
         void onLeftArrowPressed();
         void onRightArrowPressed();
-        void autoplay();
+//        void autoplay();
 
         void onEncounterEnemy();
         void onEncounterHealthPack();
