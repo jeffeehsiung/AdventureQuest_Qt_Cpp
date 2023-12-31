@@ -48,6 +48,9 @@ class PEnemyModel : public Entity {
         void onDead();
         void onPoisonLevelUpdated(float poisonLevel);
 
+    signals:
+        void psnTilesUpdated(float newPoisonLevel);
+
     private:
         std::unique_ptr<PEnemy> penemy;
 };

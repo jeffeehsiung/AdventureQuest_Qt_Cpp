@@ -57,7 +57,6 @@ PEnemyModel::PEnemyModel(std::unique_ptr<PEnemy> penemy)
     :penemy(std::move(penemy)) {
     connect(this->penemy.get(), &Enemy::dead, this, &PEnemyModel::onDead);
     connect(this->penemy.get(), &PEnemy::poisonLevelUpdated, this, &PEnemyModel::onPoisonLevelUpdated);
-    connect(this->penemy.get(), &PEnemy::poisonLevelUpdated, this, &PEnemyModel::onPoisonLevelUpdated);
 }
 
 void PEnemyModel::attack() {
@@ -65,15 +64,13 @@ void PEnemyModel::attack() {
     QTimer::singleShot(100, this, [this]() {
         penemy->poison();
     });
-    QTimer::singleShot(100, this, [this]() {
-        penemy->poison();
-    });
 }
 
 void PEnemyModel::takeDamage(float newPoisonLevel) {
     status = HURT;
-    QTimer::singleShot(100, this, [this]() {
+    QTimer::singleShot(5, this, [this, newPoisonLevel]() {
         status = IDLE;
+        emit psnTilesUpdated(newPoisonLevel);
     });
 }
 

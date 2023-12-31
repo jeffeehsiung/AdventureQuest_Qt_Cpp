@@ -52,8 +52,12 @@ int WorldController::getCols() const
  * */
 
 // New method to access the map of tiles
-const std::map<coordinate, std::unique_ptr<TileModel>>& WorldController::getTileMap() const {
-    return currentWorld->getTileMap();
+//const std::map<coordinate, std::unique_ptr<TileModel>>& WorldController::getTileMap() const {
+//    return currentWorld->getTileMap();
+//}
+const std::vector<std::unique_ptr<TileModel> > &WorldController::getTiles() const
+{
+    return tiles;
 }
 
 const std::vector<std::unique_ptr<TileModel> > &WorldController::getHealthPacks() const
@@ -137,8 +141,8 @@ int WorldController::getDifficultyIdx() const
 /**
  * PEnemy poisened tiles
  */
-void WorldController::setAffectedTiles(coordinate coord, float poisonLevel) {
-    currentWorld->setAffectedTiles(coord, poisonLevel);
+void WorldController::setAffectedTiles(float poisonLevel) {
+    currentWorld->setAffectedTiles(poisonLevel);
 }
 
 
@@ -169,14 +173,18 @@ void WorldController::onUpArrowPressed() {
     if ((newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1)) && (newY >= 0) ){
         // Move the protagonist up
         currentWorld->getProtagonists()[0]->move(0, -1);
-        if (isEnemy(currentWorld->getProtagonists()[0]->getPosition())) {
+        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+        if (isEnemy(currentPosition)) {
             onEncounterEnemy();
         }
-        if (isHealthPack(currentWorld->getProtagonists()[0]->getPosition())) {
+        else if (isHealthPack(currentPosition)) {
             onEncounterHealthPack();
         }
-        else if (isPEnemy(currentWorld->getProtagonists()[0]->getPosition())){
+        else if (isPEnemy(currentPosition)){
             onEncounterPEnemy();
+        }
+        else if(isPoisonedTiles(currentPosition)){
+            onEncounterPsnTiles();
         }
         emit updateprotagonistPosition(0);
     }
@@ -194,14 +202,18 @@ void WorldController::onDownArrowPressed() {
     if ((newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1)) && (newY >= 0)){
         // Move the protagonist down
         currentWorld->getProtagonists()[0]->move(0, 1); // Assuming the first protagonist in the vector
-        if (isEnemy(currentWorld->getProtagonists()[0]->getPosition())) {
+        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+        if (isEnemy(currentPosition)) {
             onEncounterEnemy();
         }
-        if (isHealthPack(currentWorld->getProtagonists()[0]->getPosition())) {
+        else if (isHealthPack(currentPosition)) {
             onEncounterHealthPack();
         }
-        else if (isPEnemy(currentWorld->getProtagonists()[0]->getPosition())){
+        else if (isPEnemy(currentPosition)){
             onEncounterPEnemy();
+        }
+        else if(isPoisonedTiles(currentPosition)){
+            onEncounterPsnTiles();
         }
         emit updateprotagonistPosition(0);
     }
@@ -218,14 +230,18 @@ void WorldController::onLeftArrowPressed() {
     if ((newX >= 0) && (newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1))){
         // Move the protagonist left
         currentWorld->getProtagonists()[0]->move(-1, 0); // Assuming the first protagonist in the vector
-        if (isEnemy(currentWorld->getProtagonists()[0]->getPosition())) {
+        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+        if (isEnemy(currentPosition)) {
             onEncounterEnemy();
         }
-        if (isHealthPack(currentWorld->getProtagonists()[0]->getPosition())) {
+        else if (isHealthPack(currentPosition)) {
             onEncounterHealthPack();
         }
-        else if (isPEnemy(currentWorld->getProtagonists()[0]->getPosition())){
+        else if (isPEnemy(currentPosition)){
             onEncounterPEnemy();
+        }
+        else if(isPoisonedTiles(currentPosition)){
+            onEncounterPsnTiles();
         }
         emit updateprotagonistPosition(0);
     }
@@ -242,14 +258,18 @@ void WorldController::onRightArrowPressed() {
     if ((newX >= 0) && (newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1))){
         // Move the protagonist right
         currentWorld->getProtagonists()[0]->move(1, 0); // Assuming the first protagonist in the vector
-        if (isEnemy(currentWorld->getProtagonists()[0]->getPosition())) {
+        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+        if (isEnemy(currentPosition)) {
             onEncounterEnemy();
         }
-        if (isHealthPack(currentWorld->getProtagonists()[0]->getPosition())) {
+        else if (isHealthPack(currentPosition)) {
             onEncounterHealthPack();
         }
-        else if (isPEnemy(currentWorld->getProtagonists()[0]->getPosition())){
+        else if (isPEnemy(currentPosition)){
             onEncounterPEnemy();
+        }
+        else if(isPoisonedTiles(currentPosition)){
+            onEncounterPsnTiles();
         }
         emit updateprotagonistPosition(0);
     }
@@ -286,7 +306,7 @@ void WorldController::onEncounterPEnemy() {
     if (currentWorld->getProtagonists()[0]->getHealth() > 0) {
         currentWorld->getProtagonists()[0]->attack();
         currentWorld->currentPEnemy->attack();
-        currentWorld->setAffectedTiles(currentWorld->currentPEnemy->getPosition(), currentWorld->currentPEnemy->getPoisonLevel());
+        currentWorld->setAffectedTiles(currentWorld->currentPEnemy->getPoisonLevel());
     }
     else {
         currentWorld->getProtagonists()[0]->setHealth(0);
@@ -294,6 +314,17 @@ void WorldController::onEncounterPEnemy() {
     qDebug() << "Health: " << currentWorld->getProtagonists()[0]->getHealth() << "\n";
 }
 
+void WorldController::onEncounterPsnTiles(){
+    qDebug() << "Encountered a poisoned tile!" << "\n";
+    if (currentWorld->getProtagonists()[0]->getHealth() > 0) {
+        float damage = 0.2f;
+        currentWorld->getProtagonists()[0]->takeDamage(damage);
+        qDebug() << "Health: " << currentWorld->getProtagonists()[0]->getHealth() << "\n";
+    }
+    else {
+        currentWorld->getProtagonists()[0]->setHealth(0);
+    }
+}
 
 void WorldController::playerReachedExit() {
     qDebug() << "Current Pos x: " << currentWorld->getProtagonists()[0]->getPosition().getXPos()
