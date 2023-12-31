@@ -75,5 +75,4 @@ CMakeLists.txt.user*
 .vscode
 build
 ```
-*.pro
 APTgame.pro
