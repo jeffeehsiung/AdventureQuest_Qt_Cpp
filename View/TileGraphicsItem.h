@@ -16,14 +16,14 @@ public:
     // Implement any Tile-specific functionality or behavior here, if needed
     QRectF boundingRect() const override;
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;
-//    void nextFrame() override;
-//protected:
-//    void startAnimation() override;
-//    void handleAnimationEnd() override;
+    void nextFrame() override;
 private:
+    const TileModel& tileModel;
     QString baseFramesDir;
+    QPixmap backgroundImage;
     void loadAnimationFrames();
     void loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames);
 };
 
 #endif // TILEGRAPHICSITEM_H
+

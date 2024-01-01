@@ -433,6 +433,21 @@
         <file>images/tiles/Moving/01.png</file>
         <file>images/tiles/Moving/02.png</file>
         <file>images/tiles/Moving/03.png</file>
-        <file>images/tiles/Dying/5.png</file>
+        <file>images/tiles/Attack/5.png</file>
+        <file>images/tiles/Idle/00.png</file>
+        <file>images/tiles/Idle/01.png</file>
+        <file>images/tiles/Idle/02.png</file>
+        <file>images/tiles/Idle/03.png</file>
+        <file>images/tiles/Idle/04.png</file>
+        <file>images/tiles/Idle/05.png</file>
+        <file>images/tiles/Idle/06.png</file>
+        <file>images/tiles/Idle/07.png</file>
+        <file>images/tiles/Idle/08.png</file>
+        <file>images/tiles/Idle/09.png</file>
+        <file>images/tiles/Idle/10.png</file>
+        <file>images/tiles/Idle/11.png</file>
+        <file>images/tiles/Idle/12.png</file>
+        <file>images/tiles/Idle/13.png</file>
+        <file>images/tiles/Idle/14.png</file>
     </qresource>
 </RCC>
