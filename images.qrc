@@ -446,8 +446,5 @@
         <file>images/tiles/Idle/09.png</file>
         <file>images/tiles/Idle/10.png</file>
         <file>images/tiles/Idle/11.png</file>
-        <file>images/tiles/Idle/12.png</file>
-        <file>images/tiles/Idle/13.png</file>
-        <file>images/tiles/Idle/14.png</file>
     </qresource>
 </RCC>
