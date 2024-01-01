@@ -1,10 +1,12 @@
 #include "TileGraphicsItem.h"
 
-const float maxValue = 0.7;
+const float maxValue = 0.95;
 // the naming should be changed to TileGraphicsItem
 
 TileGraphicsItem::TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
     : EntityGraphicsItem(tileModel, parent), baseFramesDir(baseFramesDir), tileModel(tileModel) {
+    this->animationTimer->stop();
+    tileModel.addObserver(this);
     loadAnimationFrames();
 }
 
@@ -39,13 +41,21 @@ void TileGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* 
     Q_UNUSED(option);
     Q_UNUSED(widget);
     // Calculate the backgorund index and draw the background image
-    int backgroundIndex = static_cast<int>(this->tileModel.getValue() / maxValue * (idleFrames.size()-1));
+    int backgroundIndex = static_cast<int>(this->tileModel.getValue() * (idleFrames.size()-1) / maxValue) % (idleFrames.size()-1);
     backgroundImage = idleFrames[backgroundIndex];
+
     painter->drawPixmap(0, 0, backgroundImage);
 
     // draw the animation frame if not null
     if(!image.isNull()){
         painter->drawPixmap(0, 0, image);
+    }
+}
+
+void TileGraphicsItem::onTileChanged(){
+    // re-activate timer
+    if (!this->animationTimer->isActive()) {
+        this->animationTimer->start(100);
     }
 }
 

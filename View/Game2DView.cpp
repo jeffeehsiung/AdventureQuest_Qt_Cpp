@@ -146,8 +146,10 @@ void Game2DView::updateView() {
             healthpackGraphicsItem->updatePosition();
         }
     }
+    scene->setSceneRect(scene->itemsBoundingRect());
     this->update();
 }
+
 
 void Game2DView::zoomIn(int delta) {
     qreal maxZoomLevel = initZoomLevel * 2;
@@ -196,6 +198,7 @@ void Game2DView::wheelEvent(QWheelEvent* event) {
         zoomOut(std::abs(delta)); // Zoom out when the wheel is scrolled down
     }
 }
+
 
 // This function should be called after setting the background and calculating tileWidth and tileHeight.
 void Game2DView::scaleEntitiesToFitView() {

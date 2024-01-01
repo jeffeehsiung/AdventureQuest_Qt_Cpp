@@ -111,13 +111,6 @@
         <file>images/enemy_golem/PNG Sequences/Walking/15.png</file>
         <file>images/enemy_golem/PNG Sequences/Walking/16.png</file>
         <file>images/enemy_golem/PNG Sequences/Walking/17.png</file>
-        <file>images/fixed_attack_direction/PNG/00.png</file>
-        <file>images/fixed_attack_direction/PNG/01.png</file>
-        <file>images/fixed_attack_direction/PNG/02.png</file>
-        <file>images/fixed_attack_direction/PNG/03.png</file>
-        <file>images/fixed_attack_direction/PNG/04.png</file>
-        <file>images/fixed_attack_direction/PNG/05.png</file>
-        <file>images/fixed_attack_direction/PNG/06.png</file>
         <file>images/penemy_wraith/PNG Sequences/Attacking/00.png</file>
         <file>images/penemy_wraith/PNG Sequences/Attacking/01.png</file>
         <file>images/penemy_wraith/PNG Sequences/Attacking/02.png</file>
@@ -245,26 +238,6 @@
         <file>images/world_images/maze3.png</file>
         <file>images/world_images/worldmap.png</file>
         <file>images/world_images/worldmap4.png</file>
-        <file>images/xenemy_monster/00.png</file>
-        <file>images/xenemy_monster/01.png</file>
-        <file>images/xenemy_monster/02.png</file>
-        <file>images/xenemy_monster/03.png</file>
-        <file>images/xenemy_monster/04.png</file>
-        <file>images/xenemy_monster/05.png</file>
-        <file>images/xenemy_monster/06.png</file>
-        <file>images/xenemy_monster/07.png</file>
-        <file>images/xenemy_monster/08.png</file>
-        <file>images/xenemy_monster/09.png</file>
-        <file>images/xenemy_monster/10.png</file>
-        <file>images/xenemy_monster/11.png</file>
-        <file>images/xenemy_monster/12.png</file>
-        <file>images/xenemy_monster/13.png</file>
-        <file>images/xenemy_monster/14.png</file>
-        <file>images/xenemy_monster/15.png</file>
-        <file>images/xenemy_monster/16.png</file>
-        <file>images/xenemy_monster/17.png</file>
-        <file>images/xenemy_monster/18.png</file>
-        <file>images/xenemy_monster/19.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Attacking/00.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Attacking/01.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Attacking/02.png</file>
@@ -376,17 +349,6 @@
         <file>images/xenemy_wraith/PNG Sequences/Walking/09.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Walking/10.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Walking/11.png</file>
-        <file>images/xenemy_wraith/Vector Parts/Animations.scml</file>
-        <file>images/xenemy_wraith/Vector Parts/Body.png</file>
-        <file>images/xenemy_wraith/Vector Parts/Face 01.png</file>
-        <file>images/xenemy_wraith/Vector Parts/Face 02.png</file>
-        <file>images/xenemy_wraith/Vector Parts/Face 03.png</file>
-        <file>images/xenemy_wraith/Vector Parts/Head.png</file>
-        <file>images/xenemy_wraith/Vector Parts/Left Arm.png</file>
-        <file>images/xenemy_wraith/Vector Parts/Left Hand.png</file>
-        <file>images/xenemy_wraith/Vector Parts/Right Arm.png</file>
-        <file>images/xenemy_wraith/Vector Parts/Right Hand.png</file>
-        <file>images/xenemy_wraith/Vector Parts/Spells-Effect.png</file>
         <file>images/xenemy_wraith_attack/1.png</file>
         <file>images/xenemy_wraith_attack/2.png</file>
         <file>images/xenemy_wraith_attack/3.png</file>
@@ -415,9 +377,6 @@
         <file>images/protagonist_shinobi/Moving/Walk.png</file>
         <file>images/protagonist_shinobi/Run/Run.png</file>
         <file>images/protagonist_shinobi/Shield/Shield.png</file>
-        <file>images/background/houses.png</file>
-        <file>images/background/residence.png</file>
-        <file>images/background/road.png</file>
         <file>images/protagonist_fighter/Moving/01.png</file>
         <file>images/healthpack/Idle/1.png</file>
         <file>images/healthpack/Idle/2.png</file>
@@ -448,5 +407,6 @@
         <file>images/tiles/Idle/11.png</file>
         <file>images/tiles/Idle/12.png</file>
         <file>images/tiles/Idle/13.png</file>
+        <file>images/tiles/Idle/14.png</file>
     </qresource>
 </RCC>

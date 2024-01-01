@@ -186,6 +186,7 @@ void WorldController::onUpArrowPressed() {
         else if(isPoisonedTiles(currentPosition)){
             onEncounterPsnTiles();
         }
+        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
         emit updateprotagonistPosition(0);
     }
     playerReachedExit();
@@ -216,6 +217,7 @@ void WorldController::onDownArrowPressed() {
             onEncounterPsnTiles();
         }
         emit updateprotagonistPosition(0);
+        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
     }
     playerReachedExit();
 }
@@ -244,6 +246,7 @@ void WorldController::onLeftArrowPressed() {
             onEncounterPsnTiles();
         }
         emit updateprotagonistPosition(0);
+        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
     }
     playerReachedExit();
 }
@@ -272,6 +275,7 @@ void WorldController::onRightArrowPressed() {
             onEncounterPsnTiles();
         }
         emit updateprotagonistPosition(0);
+        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
     }
     playerReachedExit();
 }

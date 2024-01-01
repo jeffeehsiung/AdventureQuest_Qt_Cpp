@@ -273,25 +273,15 @@ void WorldModel::removeHealthpack(coordinate coord)
     std::random_device rd;  // Obtain a random number from hardware
     std::mt19937 eng(rd()); // Seed the generator
     std::uniform_int_distribution<> distr(0, 20); // Define the range for coordinates
+        auto it = std::find_if(healthPacks.begin(), healthPacks.end(),
+                               [&](const std::unique_ptr<TileModel>& healthPack) {
+                                   return healthPack->getPosition() == coord;
+                               });
 
-    for (auto& healthPack : healthPacks) {
-        if (healthPack && healthPack->getPosition() == coord) {
-            // Set a new random position for the healthPack
+        if (it != healthPacks.end()) {
             coordinate newCoord = {distr(eng), distr(eng)};
-            healthPack->setPosition(newCoord);
-            break;
+            (*it)->setPosition(newCoord);
         }
-    }
-    // for ( auto &healthPack : healthPacks )
-    // {
-    //     if ( healthPack->getPosition() == coord )
-    //     {
-    //         healthPacks.erase(std::remove_if(healthPacks.begin(), healthPacks.end(), [&](std::unique_ptr<TileModel> &healthPack)
-    //         {
-    //             return healthPack->getPosition() == coord;
-    //         }), healthPacks.end());
-    //     }
-    // }
 }
 
 coordinate WorldModel::getStart()

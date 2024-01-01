@@ -8,6 +8,7 @@
 #include "world.h"
 
 class Entity: public QObject{
+    Q_OBJECT
 public:
     Entity() : status(IDLE) {}
     virtual ~Entity() {}

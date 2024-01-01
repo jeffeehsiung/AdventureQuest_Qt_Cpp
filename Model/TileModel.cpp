@@ -29,6 +29,10 @@ std::string TileModel::serialize() const {
 void TileModel::attack() {
     // tile is affected by penemy hence is poisoned
     status = ATTACK;
+    // notify tile observers
+    notifyObservers();
+
+    qDebug() << "tile timer reactivated";
 }
 void TileModel::takeDamage(float strength) {
     poisoned = true;

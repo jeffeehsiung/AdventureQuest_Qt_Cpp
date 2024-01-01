@@ -34,6 +34,7 @@ HEADERS  += MainWindow.h\
     Model/Entity.h \
     Model/ProtagonistModel.h \
     Model/TileModel.h \
+    Model/TileObserver.h \
     Model/WorldModel.h\
     Model/structs.h \
     Model/world.h \

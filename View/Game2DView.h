@@ -26,6 +26,8 @@ public:
         zoomSpeed = 0.001; // Example value, adjust based on testing
         zoomLevel = 1.0;
         initZoomLevel = 1.0;
+        setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         scene = new QGraphicsScene(this);
         setScene(scene);
     }
@@ -47,7 +49,6 @@ public:
     void zoomIn(int delta) override;
     void zoomOut(int delta) override;
     void updateView() override;
-
     void checkItems();
 
 protected:
