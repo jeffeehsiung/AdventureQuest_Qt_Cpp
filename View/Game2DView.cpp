@@ -27,7 +27,8 @@ void Game2DView::initializeView() {
     scaleEntitiesToFitView();
 
     // Extract entities from the WorldController
-    const auto& tileMap = world.getTileMap();
+    //    const auto& tileMap = world.getTileMap();
+    const std::vector<std::unique_ptr<TileModel>>& tiles = world.getTiles();
     const std::vector<std::unique_ptr<TileModel>>& healthPacks = world.getHealthPacks();
     const std::vector<std::unique_ptr<EnemyModel>>& enemies = world.getEnemies();
     const std::vector<std::unique_ptr<PEnemyModel>>& penemies = world.getPEnemies();
@@ -35,11 +36,17 @@ void Game2DView::initializeView() {
 
     /** baseFramesDir for tile is constant */
     QString tileBase = ":/images/tiles/";
-    for (const auto& [coord, tileModel] : tileMap) {
-        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tileModel, tileBase);
+    //    for (const auto& [coord, tileModel] : tileMap) {
+    //        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tileModel, tileBase);
+    //        scene->addItem(tileGraphicsItem.get());
+    //        tileGraphicsItems.push_back(std::move(tileGraphicsItem));
+    //    }
+    for (const auto& tile : tiles) {
+        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
         scene->addItem(tileGraphicsItem.get());
         tileGraphicsItems.push_back(std::move(tileGraphicsItem));
     }
+
 
 
     /** baseFramesDir for healthpack is constant */

@@ -26,7 +26,8 @@ public:
     /**
          * get vector of entities functions
          */
-    const std::map<coordinate, std::unique_ptr<TileModel>>& getTileMap() const;
+    //    const std::map<coordinate, std::unique_ptr<TileModel>>& getTileMap() const;
+    const std::vector<std::unique_ptr<TileModel>>& getTiles() const;
     const std::vector<std::unique_ptr<TileModel>>& getHealthPacks() const;
     const std::vector<std::unique_ptr<EnemyModel>>& getEnemies() const;
     const std::vector<std::unique_ptr<PEnemyModel>>& getPEnemies() const;
@@ -36,7 +37,7 @@ public:
     /**
          * get single entity functions
         */
-     std::unique_ptr<TileModel>& getTileModelAt(int x, int y);
+    //     std::unique_ptr<TileModel>& getTileModelAt(int x, int y);
 
     /**
          * type of tiles check
@@ -56,7 +57,7 @@ public:
     /**
          * PEnemy poisened tiles
          */
-    void setAffectedTiles(coordinate coord, float poisonLevel);
+    //    void setAffectedTiles(float poisonLevel);
 
     /**
          * defeated functions
@@ -86,7 +87,9 @@ public:
     //        XEnemyModel* currentXEnemy;
     TileModel* currentHealthpack;
 
-
+public slots:
+    //    void onPsnTilesUpdated(float newPoisonLevel);
+    void setAffectedTiles(float poisonLevel);
 private:
 
     std::unique_ptr<World> world;
@@ -95,7 +98,8 @@ private:
     int difficultyIdx;
     coordinate exit = coordinate(2,2);
     coordinate start = coordinate(0,0);
-    std::map<coordinate, std::unique_ptr<TileModel>> tileMap;
+    //    std::map<coordinate, std::unique_ptr<TileModel>> tileMap;
+    std::vector<std::unique_ptr<TileModel>> tiles;
     std::vector<std::unique_ptr<TileModel>> healthPacks;
     std::vector<std::unique_ptr<EnemyModel>> enemies;
     std::vector<std::unique_ptr<PEnemyModel>> penemies;

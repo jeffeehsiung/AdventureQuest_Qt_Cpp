@@ -39,15 +39,19 @@ void GameTextView::initializeView() {
     this->setPlainText(backgroundString);
 
     // Extract entities from the WorldController and add them if within bounds
-    const auto& tileMap = worldController.getTileMap();
+    //    const auto& tileMap = worldController.getTileMap();
+    const auto& tiles = worldController.getTiles();
     const auto& healthPacks = worldController.getHealthPacks();
     const auto& enemies = worldController.getEnemies();
     const auto& penemies = worldController.getPEnemies();
     const auto& protagonists = worldController.getProtagonists();
 
 
-    for (const auto& [coord, tileModel] : tileMap) {
-        addEntity(*tileModel);
+    //    for (const auto& [coord, tileModel] : tileMap) {
+    //        addEntity(*tileModel);
+    //    }
+    for (const auto& tile : tiles) {
+        addEntity((*tile));
     }
 
     for (const auto& healthPack : healthPacks) {

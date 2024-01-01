@@ -1,9 +1,10 @@
 #include "TileGraphicsItem.h"
 
+const float maxValue = 0.9;
 // the naming should be changed to TileGraphicsItem
 
 TileGraphicsItem::TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
-    : EntityGraphicsItem(tileModel, parent), baseFramesDir(baseFramesDir)  {
+    : EntityGraphicsItem(tileModel, parent), baseFramesDir(baseFramesDir), tileModel(tileModel) {
     loadAnimationFrames();
 }
 
@@ -35,32 +36,39 @@ QRectF TileGraphicsItem::boundingRect() const {
 
 
 void TileGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) {
-    const TileModel* tileModel = dynamic_cast<const TileModel*>(&getEntity());
-    if (tileModel) {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+    // Calculate the backgorund index and draw the background image
+    int backgroundIndex = static_cast<int>(this->tileModel.getValue() / maxValue * (idleFrames.size()-1));
+    backgroundImage = idleFrames[backgroundIndex];
+    painter->drawPixmap(0, 0, backgroundImage);
 
-        if(!image.isNull()){
-            painter->drawPixmap(0, 0, image);
-        }
-
-//        int value = tileModel->getValue();
-
-//        // Assuming value is between 0 and some maximum value, map it to an alpha value between 0 and 255.
-//        // The maximum value here should be the maximum possible value of your tiles.
-//        const int maxValue = 255 * 0.5; // Replace with your maximum tile value if different
-//        int alpha = static_cast<int>((static_cast<double>(value) / maxValue) * 255);
-
-//        // Create a green color with the calculated alpha for transparency
-//        QColor overlayColor(0, 255, 0, alpha); // Semi-transparent green based on 'value'
-
-//        // Set the brush to the determined color with transparency and draw the overlay
-//        painter->setBrush(overlayColor);
-//        painter->setPen(Qt::NoPen); // No border for the overlay
-//        painter->drawRect(boundingRect());
-    }else{
-        qDebug() << "TileGraphicsItem::paint() - tileModel is null";
+    // draw the animation frame if not null
+    if(!image.isNull()){
+        painter->drawPixmap(0, 0, image);
     }
-
 }
 
+void TileGraphicsItem::nextFrame() {
+    const state entityState = entity.getState();
+    switch (entityState) {
+    case MOVING:
+        if(!moveFrames.empty()){
+            currentFrameIndex = (currentFrameIndex + 1) % moveFrames.size();
+            image = moveFrames[currentFrameIndex];
+        }
+        break;
+    case ATTACK:
+        if(!attackFrames.empty()){
+            currentFrameIndex = (currentFrameIndex + 1) % attackFrames.size();
+            image = attackFrames[currentFrameIndex];
+        }
+        break;
+    case DYING:
+        this->animationTimer->stop();
+        break;
+    }
+    update();
+}
 
 
