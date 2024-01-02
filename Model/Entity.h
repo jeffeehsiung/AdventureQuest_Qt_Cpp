@@ -4,11 +4,13 @@
 #include <QObject>
 #include <QTimer>
 #include <QDebug>
+#include <sstream> // Include for std::stringstream
+#include <random>
 #include "Model/structs.h"
 #include "world.h"
 
-class Entity: public QObject{
-    Q_OBJECT
+class Entity/*: public QObject*/{
+//    Q_OBJECT
 public:
     Entity() : status(IDLE) {}
     virtual ~Entity() {}

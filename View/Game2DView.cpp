@@ -9,6 +9,7 @@ void Game2DView::initializeView() {
     tileGraphicsItems.clear();
     enemyGraphicsItems.clear();
     penemyGraphicsItems.clear();
+    xenemyGraphicsItems.clear();
 
     // Access WorldModel via WorldController
     auto& worldController = WorldController::getInstance();
@@ -17,30 +18,25 @@ void Game2DView::initializeView() {
     // Use 'world' as needed...
     setBackground(worldController.getDifficultyIdx());
 
-    qDebug() << "backgroundImage width: " << backgroundImage.width() << "backgroundImage heght" << backgroundImage.height();
-    qDebug() << "worldController cols: " << world.getCols() << "worldController height" << world.getRows();
-    qDebug() << "view width: " << this->width() << "view height" << this->height();
-    qDebug() << "scene width: " << scene->width() << "scene height" << scene->height();
+//    qDebug() << "backgroundImage width: " << backgroundImage.width() << "backgroundImage heght" << backgroundImage.height();
+//    qDebug() << "worldController cols: " << world.getCols() << "worldController height" << world.getRows();
+//    qDebug() << "view width: " << this->width() << "view height" << this->height();
+//    qDebug() << "scene width: " << scene->width() << "scene height" << scene->height();
 
-    qDebug() << "tilewidth: " << tileWidth << " tileheight: " << tileHeight;
+//    qDebug() << "tilewidth: " << tileWidth << " tileheight: " << tileHeight;
 
     scaleEntitiesToFitView();
 
     // Extract entities from the WorldController
-//    const auto& tileMap = world.getTileMap();
     const std::vector<std::unique_ptr<TileModel>>& tiles = world.getTiles();
     const std::vector<std::unique_ptr<TileModel>>& healthPacks = world.getHealthPacks();
     const std::vector<std::unique_ptr<EnemyModel>>& enemies = world.getEnemies();
     const std::vector<std::unique_ptr<PEnemyModel>>& penemies = world.getPEnemies();
+    const std::vector<std::unique_ptr<XEnemyModel>>& xenemies = world.getXEnemies();
     const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = world.getProtagonists();
 
     /** baseFramesDir for tile is constant */
     QString tileBase = ":/images/tiles/";
-//    for (const auto& [coord, tileModel] : tileMap) {
-//        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tileModel, tileBase);
-//        scene->addItem(tileGraphicsItem.get());
-//        tileGraphicsItems.push_back(std::move(tileGraphicsItem));
-//    }
     for (const auto& tile : tiles) {
         std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
         scene->addItem(tileGraphicsItem.get());
@@ -75,6 +71,14 @@ void Game2DView::initializeView() {
         std::unique_ptr<PEnemyGraphicsItem> penemyGraphicsItem = std::make_unique<PEnemyGraphicsItem>(*penemy, penemyBase);
         scene->addItem(penemyGraphicsItem.get());
         penemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
+    }
+
+    /** baseFramesDir for xenemy is constant */
+    QString xenemyBase = ":/images/xenemy_wraith/PNG Sequences/";
+    for (const auto& xenemy : xenemies) {
+        std::unique_ptr<XEnemyGraphicsItem> xenemyGraphicsItem = std::make_unique<XEnemyGraphicsItem>(*xenemy, xenemyBase);
+        scene->addItem(xenemyGraphicsItem.get());
+        xenemyGraphicsItems.push_back(std::move(xenemyGraphicsItem));
     }
 
     /** baseFramesDir for protagonist depends on numbers of protagonist*/
@@ -112,8 +116,8 @@ void Game2DView::setBackground(int backgroundNumber) {
     // Load the background image based on the difficulty level
     switch(backgroundNumber) {
     case 1: backgroundImage = easyBackground; tileWidth = 30; tileHeight = 30; break;
-    case 2: backgroundImage = mediumBackground; tileWidth = 30; tileHeight = 30; break;
-    case 3: backgroundImage = hardBackground; tileWidth = 20; tileHeight = 20; break;
+//    case 2: backgroundImage = mediumBackground; tileWidth = 30; tileHeight = 30; break;
+//    case 3: backgroundImage = hardBackground; tileWidth = 20; tileHeight = 20; break;
     default: backgroundImage= easyBackground; tileWidth = 30; tileHeight = 30; break;
     }
 
@@ -148,6 +152,11 @@ void Game2DView::updateView() {
     for (const auto& healthpackGraphicsItem : healthpackGraphicsItems) {
         if (healthpackGraphicsItem) {
             healthpackGraphicsItem->updatePosition();
+        }
+    }
+    for (const auto& xenemyGraphicsItem : xenemyGraphicsItems) {
+        if (xenemyGraphicsItem) {
+            xenemyGraphicsItem->updatePosition();
         }
     }
     scene->setSceneRect(scene->itemsBoundingRect());

@@ -21,8 +21,8 @@ public:
     explicit Game2DView(QWidget* parent = nullptr)
         : QGraphicsView(parent){
         easyBackground.load(":/images/world_images/worldmap.png");
-        mediumBackground.load(":/images/world_images/maze1.png");
-        hardBackground.load(":/images/world_images/maze2.png");
+//        mediumBackground.load(":/images/world_images/maze1.png");
+//        hardBackground.load(":/images/world_images/maze2.png");
         zoomSpeed = 0.001; // Example value, adjust based on testing
         zoomLevel = 1.0;
         initZoomLevel = 1.0;
@@ -57,8 +57,8 @@ protected:
 private:
     QGraphicsScene* scene;
     QPixmap easyBackground;
-    QPixmap mediumBackground;
-    QPixmap hardBackground;
+//    QPixmap mediumBackground;
+//    QPixmap hardBackground;
     QPixmap backgroundImage;
     int currentBackgroundNumber;
     qreal zoomSpeed; // Zoom sensitivity factor
@@ -72,6 +72,7 @@ private:
     std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
     std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
     std::vector<std::unique_ptr<PEnemyGraphicsItem>> penemyGraphicsItems;
+    std::vector<std::unique_ptr<XEnemyGraphicsItem>> xenemyGraphicsItems;
     std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
 
     std::unique_ptr<TileGraphicsItem> portalGraphicsItem;

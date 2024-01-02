@@ -66,7 +66,6 @@ std::string ProtagonistModel::serialize() const {
 
 void ProtagonistModel::onPosChanged(int x, int y){
     QTimer::singleShot(100, this, [this]() {status = IDLE;});
-    QTimer::singleShot(100, this, [this]() {status = IDLE;});
 }
 
 void ProtagonistModel::onHealthChanged(int h){

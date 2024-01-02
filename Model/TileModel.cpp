@@ -16,32 +16,29 @@ float TileModel::getValue() const {
     return tile->getValue();
 }
 
-// Set the value of the tile
-void TileModel::setValue(float value) {
-    tile->setValue(value);
-}
-
 // Serialize the tile data
 std::string TileModel::serialize() const {
     return tile->serialize();
 }
 
 void TileModel::attack() {
-    // tile is affected by penemy hence is poisoned
-    status = ATTACK;
-    // notify tile observers
+    if(poisoned){
+        // afftected by penemy
+        status = ATTACK;
+    }else{
+        //affected by xenemy
+        status = HURT;
+    }
     notifyObservers();
 
-    qDebug() << "tile timer reactivated";
+//    qDebug() << "tile timer reactivated";
 }
+
 void TileModel::takeDamage(float strength) {
-    poisoned = true;
-    // set the poison strength
-    poisonStrength = strength;
-    if(poisonStrength > 10){
+    if(strength > 10){
         attack();
     }else{
-        QTimer::singleShot(1000, this, [this]() {
+        QTimer::singleShot(6000, this, [this]() {
             status = DYING;
         });
     }

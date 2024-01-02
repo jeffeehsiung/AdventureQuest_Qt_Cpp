@@ -70,7 +70,7 @@ void PEnemyModel::takeDamage(float newPoisonLevel) {
     status = HURT;
     QTimer::singleShot(5, this, [this, newPoisonLevel]() {
         status = IDLE;
-        emit psnTilesUpdated(newPoisonLevel);
+        emit psnTilesUpdated(false, newPoisonLevel);
     });
 }
 
@@ -111,6 +111,94 @@ void PEnemyModel::onDead(){
 
 void PEnemyModel::onPoisonLevelUpdated(float poisonLevel){
     takeDamage(poisonLevel);
+}
+
+
+/** XEnemy Class */
+XEnemyModel::XEnemyModel(int xPosition, int yPosition, float strength)
+    : Enemy(xPosition, yPosition, strength), thunderLevel(strength){
+    connect(this, &Enemy::dead, this, &XEnemyModel::onDead);
+}
+
+void XEnemyModel::attack() {
+    status = ATTACK;
+    QTimer::singleShot(100, this, [this]() {
+        releaseThunder();
+        if (!getDefeated()) {
+            // xenemy is still alive
+            status = IDLE;
+        }
+    });
+}
+
+void XEnemyModel::takeDamage(float damage) {
+    status = HURT;
+
+    if (!getDefeated()) {
+        QTimer::singleShot(300, this, [this, damage]() {
+            this->thunderLevel-= damage;
+            this->attack();
+            qDebug()<< "currentXEnemey attack";
+        });
+    }
+    std::random_device rd;  // Seed with a real random value, if available
+    std::mt19937 eng(rd()); // Standard mersenne_twister_engine seeded with rd()
+    std::uniform_int_distribution<> distr(0, 3); // Range 0 to 5
+    move(distr(eng), distr(eng));
+}
+
+coordinate XEnemyModel::getPosition() const {
+    return {getXPos(), getYPos()}; // Replace with actual position variables
+}
+
+void XEnemyModel::setPosition(coordinate position) {
+    setXPos(position.xCoordinate);
+    setYPos(position.yCoordinate);
+}
+
+void XEnemyModel::move(int deltaX, int deltaY) {
+    status = MOVING;
+    setXPos(getXPos() + deltaX);
+    setYPos(getYPos() + deltaY);
+   qDebug()<< "currentXEnemy new pos: " << this->getXPos() << "," << this->getYPos();
+}
+
+bool XEnemyModel::releaseThunder() {
+    thunderLevel-= 10.0f;
+    if (thunderLevel > 0.0f)
+    {
+        emit thunderLevelUpdated(true, thunderLevel);
+        int t = arc4random() % 5;
+        std::cout << "starting timer for " << t << " seconds"
+                  << " with thunderLevel = " << thunderLevel << std::endl;
+        QTimer::singleShot(t * 100, this, SLOT(releaseThunder()));
+        return true;
+    }
+    else
+    {
+        thunderLevel = 0.0f;
+        setDefeated(true);
+    }
+    return false;
+}
+
+float XEnemyModel::getThunderLevel() const {
+    return thunderLevel;
+}
+
+bool XEnemyModel::isDefeated() const {
+    return getDefeated();
+}
+
+
+std::string XEnemyModel::serialize() {
+    std::stringstream res;
+    res << Enemy::serialize() << "," << thunderLevel;
+    return res.str();
+}
+
+void XEnemyModel::onDead(){
+    status = DYING;
 }
 
 

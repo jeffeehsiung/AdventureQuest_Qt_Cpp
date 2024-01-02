@@ -349,11 +349,6 @@
         <file>images/xenemy_wraith/PNG Sequences/Walking/09.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Walking/10.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Walking/11.png</file>
-        <file>images/xenemy_wraith_attack/1.png</file>
-        <file>images/xenemy_wraith_attack/2.png</file>
-        <file>images/xenemy_wraith_attack/3.png</file>
-        <file>images/xenemy_wraith_attack/4.png</file>
-        <file>images/xenemy_wraith_attack/5.png</file>
         <file>images/protagonist_fighter/Jump/Jump.png</file>
         <file>images/protagonist_fighter/Run/Run.png</file>
         <file>images/protagonist_fighter/Shield/Shield.png</file>
@@ -412,5 +407,10 @@
         <file>images/portal/Idle/02.png</file>
         <file>images/portal/Idle/03.png</file>
         <file>images/portal/Idle/04.png</file>
+        <file>images/tiles/Hurt/1.png</file>
+        <file>images/tiles/Hurt/2.png</file>
+        <file>images/tiles/Hurt/3.png</file>
+        <file>images/tiles/Hurt/4.png</file>
+        <file>images/tiles/Hurt/5.png</file>
     </qresource>
 </RCC>

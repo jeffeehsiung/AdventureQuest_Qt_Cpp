@@ -4,7 +4,7 @@ const float maxValue = 0.95;
 // the naming should be changed to TileGraphicsItem
 
 TileGraphicsItem::TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
-    : EntityGraphicsItem(tileModel, parent), baseFramesDir(baseFramesDir), tileModel(tileModel) {
+    : EntityGraphicsItem(tileModel, parent), tileModel(tileModel), baseFramesDir(baseFramesDir){
     this->animationTimer->stop();
     tileModel.addObserver(this);
     loadAnimationFrames();
@@ -15,6 +15,7 @@ void TileGraphicsItem::loadAnimationFrames() {
     loadFramesFromDirectory(baseFramesDir + "Idle/", idleFrames);
     loadFramesFromDirectory(baseFramesDir + "Moving/", moveFrames);
     loadFramesFromDirectory(baseFramesDir + "Attack/", attackFrames);
+    loadFramesFromDirectory(baseFramesDir + "Hurt/", hurtFrames);
 }
 
 void TileGraphicsItem::loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames) {
@@ -65,6 +66,7 @@ void TileGraphicsItem::onTileChanged(){
 void TileGraphicsItem::nextFrame() {
     const state entityState = entity.getState();
     switch (entityState) {
+        Q_UNUSED(HEAL);
     case MOVING:
         if(!moveFrames.empty()){
             currentFrameIndex = (currentFrameIndex + 1) % moveFrames.size();
@@ -75,6 +77,12 @@ void TileGraphicsItem::nextFrame() {
         if(!attackFrames.empty()){
             currentFrameIndex = (currentFrameIndex + 1) % attackFrames.size();
             image = attackFrames[currentFrameIndex];
+        }
+        break;
+    case HURT:
+        if(!hurtFrames.empty()){
+            currentFrameIndex = (currentFrameIndex + 1) % hurtFrames.size();
+            image = hurtFrames[currentFrameIndex];
         }
         break;
     case DYING:

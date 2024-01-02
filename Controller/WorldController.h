@@ -2,9 +2,6 @@
 #define WORLDCONTROLLER_H
 
 #include "Model/structs.h"
-//#include "Model/ProtagonistModel.h"
-//#include "Model/EnemyModel.h"
-//#include "Model/TileModel.h"
 #include "Model/WorldModel.h"
 //#include "pathfinder_class.h"
 
@@ -37,40 +34,8 @@ class WorldController : public QObject
         void addProtagonist(ProtagonistModel&);
         void removeProtagonist(ProtagonistModel&);
 
-        /**
-         * get single entity functions
-        */
-//        std::unique_ptr<TileModel>& getTileModelAt(int x, int y);
-        /**
-         * get vector of entities functions
-         */
-//        const std::map<coordinate, std::unique_ptr<TileModel>>& getTileMap() const;
-        const std::vector<std::unique_ptr<TileModel> >& getTiles() const;
-        const std::vector<std::unique_ptr<TileModel>>& getHealthPacks() const;
-        const std::vector<std::unique_ptr<EnemyModel>>& getEnemies() const;
-        const std::vector<std::unique_ptr<PEnemyModel>>& getPEnemies() const;
-//      const std::vector<std::unique_ptr<XEnemyModel>> getXEnemies() const;
-        const std::vector<std::unique_ptr<ProtagonistModel>>& getProtagonists() const;
-
-        /**
-         * type of tiles check
-         */
-        bool isHealthPack(coordinate);
-        bool isPoisonedTiles(coordinate);
-        /**
-         * type of enemy check
-         */
-        bool isEnemy(coordinate);
-        bool isPEnemy(coordinate);
-        bool isXEnemy(coordinate);
-
         int getNumOfProtagonists() const;
         int getDifficultyIdx() const;
-
-        /**
-         * PEnemy poisened tiles
-         */
-        void setAffectedTiles(float poisonLevel);
 
         /**
          * defeated functions
@@ -101,10 +66,11 @@ class WorldController : public QObject
         void onRightArrowPressed();
 //        void autoplay();
 
-        void onEncounterEnemy();
         void onEncounterHealthPack();
+        void onEncounterEnemy();
         void onEncounterPEnemy();
-        void onEncounterPsnTiles();
+        void onEncounterXEnemy();
+        void onEncounterAffectedTiles();
 
     signals:
         void updateprotagonistPosition(int protagonistIndex);
@@ -117,15 +83,6 @@ class WorldController : public QObject
         int difficultyIdx;
         coordinate exit = coordinate(5,5);
         coordinate start = coordinate(0,0);
-
-        std::vector<std::unique_ptr<TileModel>> tiles;
-        std::vector<std::unique_ptr<TileModel>> healthPacks;
-        std::vector<std::unique_ptr<EnemyModel>> enemies;
-        std::vector<std::unique_ptr<PEnemyModel>> penemies;
-//        std::vector<std::unique_ptr<XEnemyModel>> xenemies;
-        std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
-
-        // current (p)enemy, protagonist, hp
 
 };
 

@@ -40,16 +40,12 @@ void GameTextView::initializeView() {
 
     // Extract entities from the WorldController and add them if within bounds
 //    const auto& tileMap = worldController.getTileMap();
-    const auto& tiles = worldController.getTiles();
-    const auto& healthPacks = worldController.getHealthPacks();
-    const auto& enemies = worldController.getEnemies();
-    const auto& penemies = worldController.getPEnemies();
-    const auto& protagonists = worldController.getProtagonists();
+    const auto& tiles = world.getTiles();
+    const auto& healthPacks = world.getHealthPacks();
+    const auto& enemies = world.getEnemies();
+    const auto& penemies = world.getPEnemies();
+    const auto& protagonists = world.getProtagonists();
 
-
-//    for (const auto& [coord, tileModel] : tileMap) {
-//        addEntity(*tileModel);
-//    }
     for (const auto& tile : tiles) {
         addEntity((*tile));
     }
@@ -72,6 +68,7 @@ void GameTextView::initializeView() {
 
 
 void GameTextView::setBackground(int backgroundNumber) {
+    Q_UNUSED(backgroundNumber);
     // Clear any existing content
     backgroundString.clear();
     // Generate a QString representing the text-based background
@@ -106,10 +103,12 @@ void GameTextView::displayScene(const QString& sceneString) {
 
 void GameTextView::zoomIn(int delta) {
     // No zooming functionality in the text view
+    Q_UNUSED(delta);
 }
 
 void GameTextView::zoomOut(int delta) {
     // No zooming functionality in the text view
+    Q_UNUSED(delta);
 }
 
 
