@@ -133,6 +133,10 @@ void XEnemyModel::attack() {
 
 void XEnemyModel::takeDamage(float damage) {
     status = HURT;
+    std::random_device rd;  // Seed with a real random value, if available
+    std::mt19937 eng(rd()); // Standard mersenne_twister_engine seeded with rd()
+    std::uniform_int_distribution<> distr(0, 3); // Range 0 to 5
+    move(distr(eng), distr(eng));
 
     if (!getDefeated()) {
         QTimer::singleShot(300, this, [this, damage]() {
@@ -141,10 +145,6 @@ void XEnemyModel::takeDamage(float damage) {
             qDebug()<< "currentXEnemey attack";
         });
     }
-    std::random_device rd;  // Seed with a real random value, if available
-    std::mt19937 eng(rd()); // Standard mersenne_twister_engine seeded with rd()
-    std::uniform_int_distribution<> distr(0, 3); // Range 0 to 5
-    move(distr(eng), distr(eng));
 }
 
 coordinate XEnemyModel::getPosition() const {
@@ -164,7 +164,7 @@ void XEnemyModel::move(int deltaX, int deltaY) {
 }
 
 bool XEnemyModel::releaseThunder() {
-    thunderLevel-= 10.0f;
+    thunderLevel-= 5.0f;
     if (thunderLevel > 0.0f)
     {
         emit thunderLevelUpdated(true, thunderLevel);

@@ -17,7 +17,7 @@ public:
 
     virtual ~EntityTextItem() {}
 
-    virtual QString getTextRepresentation() const{
+    virtual QString getTextRepresentation() const {
         return textRepresentation;
     }
 
@@ -25,10 +25,20 @@ public:
         return entity.getPosition();
     }
 
+    void setIndex(int newIndex) {
+        index = newIndex;
+    }
+
+    int getIndex() const {
+        return index;
+    }
+
 protected:
     const Entity& entity; // Presuming Entity has position and other relevant attributes
     QString textRepresentation;
 
+private:
+    int index; // Stores the index position within the grid
 };
 
 #endif // ENTITYTEXTITEM_H
@@ -42,14 +52,35 @@ protected:
 
 class TileTextItem : public EntityTextItem {
 public:
-    TileTextItem(const TileModel& tile) : EntityTextItem(tile) {
+    TileTextItem(const TileModel& tile) : EntityTextItem(tile), status(IDLE) {
         // Set a text representation specific to tiles
-        textRepresentation = " ";
+        updateTextRepresentation();
+    }
+    void setState(state newState) {
+        status = newState;
+        updateTextRepresentation();
     }
 
-    QString getTextRepresentation() const {
-        return textRepresentation;
+    state getState() const {
+        return status;
     }
+
+    void updateTextRepresentation() {
+        switch (status) {
+        case IDLE:
+            textRepresentation = " ";  // Normal tile
+            break;
+        case ATTACK:
+            textRepresentation = "Ω";  // Poisoned tile
+            break;
+        case HURT:
+            textRepresentation = "∫";  // Thundered tile
+            break;
+        }
+    }
+
+private:
+    state status;
 };
 
 #endif // TILETEXTITEM_H
@@ -87,6 +118,28 @@ public:
     EnemyTextItem(const EnemyModel& enemy) : EntityTextItem(enemy) {
         // Set a text representation specific to enemies
         textRepresentation = "E";
+    }
+    QString getTextRepresentation() const {
+        return textRepresentation;
+    }
+};
+
+class PEnemyTextItem : public EntityTextItem {
+public:
+    PEnemyTextItem(const PEnemyModel& penemy) : EntityTextItem(penemy) {
+        // Set a text representation specific to enemies
+        textRepresentation = "@";
+    }
+    QString getTextRepresentation() const {
+        return textRepresentation;
+    }
+};
+
+class XEnemyTextItem : public EntityTextItem {
+public:
+    XEnemyTextItem(const XEnemyModel& xenemy) : EntityTextItem(xenemy) {
+        // Set a text representation specific to enemies
+        textRepresentation = "X";
     }
     QString getTextRepresentation() const {
         return textRepresentation;
