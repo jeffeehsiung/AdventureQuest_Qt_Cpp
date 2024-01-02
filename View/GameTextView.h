@@ -12,7 +12,7 @@ class GameTextView : public QTextEdit, public GameView {
     Q_OBJECT
 
 public:
-    GameTextView(QWidget* parent = nullptr) : QTextEdit(parent) {
+    GameTextView(QWidget* parent = nullptr) : QTextEdit(parent), worldController(WorldController::getInstance()) {
         setReadOnly(true);
     }
 
@@ -36,6 +36,8 @@ private:
     std::vector<std::unique_ptr<EntityTextItem>> entityTextItems;
     QString backgroundString;
     QString sceneString;
+
+    WorldController& worldController;
 };
 
 #endif // GAMETEXTVIEW_H

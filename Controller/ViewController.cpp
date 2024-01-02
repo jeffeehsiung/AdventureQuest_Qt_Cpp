@@ -12,11 +12,11 @@ void ViewController::initializeViews() {
     auto& worldController = WorldController::getInstance();
 
     game2DView = std::make_unique<Game2DView>(nullptr);
-    //gameTextView = std::make_unique<GameTextView>(nullptr);
+    gameTextView = std::make_unique<GameTextView>(nullptr);
 
     // Initialize the views
     game2DView->initializeView();
-    //gameTextView->initializeView();
+    gameTextView->initializeView();
 
     // Optionally set the initial view
     currentView = game2DView.get();
