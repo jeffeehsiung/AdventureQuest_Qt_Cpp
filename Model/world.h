@@ -36,7 +36,7 @@ public:
     Enemy(int xPosition, int yPosition, float strength);
     ~Enemy() override = default;
     bool getDefeated() const {return defeated;}
-    void setDefeated(bool value) {defeated = value; if (defeated) emit dead();};
+    void setDefeated(bool value) {defeated = value; if (defeated) emit dead();}
     std::string serialize() override;
 
   signals:

@@ -152,7 +152,7 @@ bool WorldModel::isEnemy(coordinate coord)
         if ( enemy->getPosition() == coord )
         {
             currentEnemy = enemy.get();
-            return true;
+            return !currentEnemy->isDefeated();
         }
     }
     return false;
@@ -166,7 +166,7 @@ bool WorldModel::isPEnemy(coordinate coord)
         {
             currentPEnemy = penemy.get();
             connect(currentPEnemy, &PEnemyModel::psnTilesUpdated, this, &WorldModel::setAffectedTiles);
-            return true;
+            return !currentPEnemy->isDefeated();
         }
     }
     return false;
@@ -284,24 +284,24 @@ void WorldModel::removeHealthpack(coordinate coord)
         }
 }
 
-coordinate WorldModel::getStart()
+coordinate WorldModel::getStart() const
 {
     return start;
 }
 
-coordinate WorldModel::getExit()
+coordinate WorldModel::getExit() const
 {
     return exit;
 }
 
-coordinate* WorldModel::getStartValue()
+const coordinate& WorldModel::getStartValue() const
 {
-    return &start;
+    return start;
 }
 
-coordinate* WorldModel::getExitValue()
+const coordinate& WorldModel::getExitValue() const
 {
-    return &exit;
+    return exit;
 }
 
 void WorldModel::addProtagonist(std::vector<std::unique_ptr<ProtagonistModel>> incoming){

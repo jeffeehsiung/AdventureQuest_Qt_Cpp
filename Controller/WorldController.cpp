@@ -186,7 +186,7 @@ void WorldController::onUpArrowPressed() {
         else if(isPoisonedTiles(currentPosition)){
             onEncounterPsnTiles();
         }
-        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
+//        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
         emit updateprotagonistPosition(0);
     }
     playerReachedExit();
@@ -217,7 +217,7 @@ void WorldController::onDownArrowPressed() {
             onEncounterPsnTiles();
         }
         emit updateprotagonistPosition(0);
-        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
+//        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
     }
     playerReachedExit();
 }
@@ -246,7 +246,7 @@ void WorldController::onLeftArrowPressed() {
             onEncounterPsnTiles();
         }
         emit updateprotagonistPosition(0);
-        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
+//        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
     }
     playerReachedExit();
 }
@@ -275,7 +275,7 @@ void WorldController::onRightArrowPressed() {
             onEncounterPsnTiles();
         }
         emit updateprotagonistPosition(0);
-        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
+//        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
     }
     playerReachedExit();
 }
@@ -331,10 +331,6 @@ void WorldController::onEncounterPsnTiles(){
 }
 
 void WorldController::playerReachedExit() {
-    qDebug() << "Current Pos x: " << currentWorld->getProtagonists()[0]->getPosition().getXPos()
-             << " y: " << currentWorld->getProtagonists()[0]->getPosition().getYPos();
-    qDebug() << "Exit: " << currentWorld->getExit().getXPos()
-             << " y: " << currentWorld->getExit().getYPos();
 
     if (currentWorld->getProtagonists()[0]->getPosition() == currentWorld->getExit()) {
         // Ensure that the next world exists

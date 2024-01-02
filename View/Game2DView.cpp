@@ -47,9 +47,13 @@ void Game2DView::initializeView() {
         tileGraphicsItems.push_back(std::move(tileGraphicsItem));
     }
 
-
-
     /** baseFramesDir for healthpack is constant */
+    QString portalBase = ":/images/portal/";
+    // compute the exit tile index and set the picture
+    const std::unique_ptr<TileModel>& exit = world.getTiles().at((world.getExit().yCoordinate) * world.getCols() + (world.getExit().xCoordinate));
+    portalGraphicsItem = std::make_unique<TileGraphicsItem>(*exit, portalBase);
+    scene->addItem(portalGraphicsItem.get());
+
     QString healthpackBase = ":/images/healthpack/";
     for (const auto& healthPack : healthPacks) {
         std::unique_ptr<TileGraphicsItem> healthPackGraphicsItem = std::make_unique<TileGraphicsItem>(*healthPack, healthpackBase);

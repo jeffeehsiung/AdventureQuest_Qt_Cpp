@@ -56,26 +56,26 @@ class PEnemyModel : public Entity {
 };
 
 //class XEnemyModel : public Entity {
-    //public:
-    //    explicit XEnemyModel(std::unique_ptr<XPEnemy> xenemy);
+//    public:
+//        explicit XEnemyModel(std::unique_ptr<XEnemy> xenemy);
 
-    //    void attack() override;
-    //    void takeDamage(float damage) override;
-    //    coordinate getPosition() const override;
-    //    void setPosition(coordinate position) override;
-    //    void move(int deltaX, int deltaY) override;
+//        void attack() override;
+//        void takeDamage(float damage) override;
+//        coordinate getPosition() const override;
+//        void setPosition(coordinate position) override;
+//        void move(int deltaX, int deltaY) override;
 
-    //    // PEnemy specific functions
-    //    bool isDefeated() const;
-    //    void setDefeated(bool defeated);
-    //    bool releasePoison();
-    //    float getPoisonLevel() const;
-    //    void setPoisonLevel(float poisonLevel);
-    //    std::string serialize() const;
+//        // PEnemy specific functions
+//        bool isDefeated() const;
+//        void setDefeated(bool defeated);
+//        bool releasePoison();
+//        float getPoisonLevel() const;
+//        void setPoisonLevel(float poisonLevel);
+//        std::string serialize() const;
 
-    //private:
-    //    std::unique_ptr<XEnemy> xenemy;
-    //    float health;
+//    private:
+//        std::unique_ptr<XEnemy> xenemy;
+//        float health;
 //};
 
 #endif // ENEMYMODEL_H

@@ -75,10 +75,10 @@ public:
          * start and exit position functions
          */
 
-    coordinate getStart();
-    coordinate getExit();
-    coordinate* getStartValue();
-    coordinate* getExitValue();
+    coordinate getStart() const;
+    coordinate getExit() const;
+    const coordinate& getStartValue() const;
+    const coordinate& getExitValue() const;
     std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
     std::vector<node> nodes;
     ProtagonistModel* currentProtagonist;
@@ -103,7 +103,7 @@ private:
     std::vector<std::unique_ptr<TileModel>> healthPacks;
     std::vector<std::unique_ptr<EnemyModel>> enemies;
     std::vector<std::unique_ptr<PEnemyModel>> penemies;
-    //std::vector<std::unique_ptr<XEnemyModel>> xenemies;
+//    std::vector<std::unique_ptr<XEnemyModel>> xenemies;
 
 
 

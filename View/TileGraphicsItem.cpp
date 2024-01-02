@@ -19,6 +19,9 @@ void TileGraphicsItem::loadAnimationFrames() {
 
 void TileGraphicsItem::loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames) {
     QDir dir(dirPath);
+    if(!dir.exists()){
+        return;
+    }
     QStringList fileNames = dir.entryList(QStringList() << "*.png", QDir::Files, QDir::Name);
     for (const QString& fileName : fileNames) {
         QPixmap frame(dirPath + fileName);

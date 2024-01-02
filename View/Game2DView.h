@@ -74,6 +74,8 @@ private:
     std::vector<std::unique_ptr<PEnemyGraphicsItem>> penemyGraphicsItems;
     std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
 
+    std::unique_ptr<TileGraphicsItem> portalGraphicsItem;
+
     void scaleEntitiesToFitView();
 
 

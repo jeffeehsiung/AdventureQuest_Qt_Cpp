@@ -41,7 +41,7 @@ void TileModel::takeDamage(float strength) {
     if(poisonStrength > 10){
         attack();
     }else{
-        QTimer::singleShot(100, this, [this]() {
+        QTimer::singleShot(1000, this, [this]() {
             status = DYING;
         });
     }
