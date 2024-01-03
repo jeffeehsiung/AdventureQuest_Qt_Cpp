@@ -168,7 +168,7 @@ bool XEnemyModel::releaseThunder() {
     if (thunderLevel > 0.0f)
     {
         emit thunderLevelUpdated(true, thunderLevel);
-        int t = arc4random() % 5;
+        int t = random() % 5;
         std::cout << "starting timer for " << t << " seconds"
                   << " with thunderLevel = " << thunderLevel << std::endl;
         QTimer::singleShot(t * 100, this, SLOT(releaseThunder()));
