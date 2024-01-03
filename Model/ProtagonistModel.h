@@ -4,7 +4,7 @@
 #include <memory>
 #include "Entity.h"
 
-class ProtagonistModel : public Entity {
+class ProtagonistModel : public QObject, public Entity {
     Q_OBJECT
     public:
         explicit ProtagonistModel(std::unique_ptr<Protagonist> protagonist); // Constructor declaration

@@ -92,7 +92,7 @@ void EntityGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem
     Q_UNUSED(widget);
     // Calculate the offset to ensure the image is centered on the tile
     qreal xOffset = (tileWidth - commonWidth) / 2;
-    qreal yOffset = (tileHeight - commonHeight) / 2;
+    qreal yOffset = (tileHeight - commonHeight) / 1.4;
 
     // Draw the pixmap centered within the tile
     painter->drawPixmap(xOffset, yOffset, image);

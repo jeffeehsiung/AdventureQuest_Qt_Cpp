@@ -75,5 +75,9 @@ CMakeLists.txt.user*
 .vscode
 build
 ```
-*.pro
+<<<<<<< HEAD
 APTgame.pro
+=======
+# *.pro
+# APTgame.pro
+>>>>>>> view

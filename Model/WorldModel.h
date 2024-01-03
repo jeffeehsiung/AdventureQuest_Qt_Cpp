@@ -7,7 +7,7 @@
 #include <map>
 #include <memory>
 #include <random>
-#include "world.h"
+#include "Model/world.h"
 #include "Model/structs.h"
 #include "Model/TileModel.h"
 #include "Model/EnemyModel.h"
@@ -26,23 +26,24 @@ public:
     /**
          * get vector of entities functions
          */
-    const std::map<coordinate, std::unique_ptr<TileModel>>& getTileMap() const;
+//    const std::map<coordinate, std::unique_ptr<TileModel>>& getTileMap() const;
+    const std::vector<std::unique_ptr<TileModel>>& getTiles() const;
     const std::vector<std::unique_ptr<TileModel>>& getHealthPacks() const;
     const std::vector<std::unique_ptr<EnemyModel>>& getEnemies() const;
     const std::vector<std::unique_ptr<PEnemyModel>>& getPEnemies() const;
-    //      const std::vector<std::unique_ptr<XEnemyModel>> getXEnemies() const;
+    const std::vector<std::unique_ptr<XEnemyModel>>& getXEnemies() const;
     const std::vector<std::unique_ptr<ProtagonistModel>>& getProtagonists() const;
 
     /**
          * get single entity functions
         */
-     std::unique_ptr<TileModel>& getTileModelAt(int x, int y);
+//     std::unique_ptr<TileModel>& getTileModelAt(int x, int y);
 
     /**
          * type of tiles check
          */
     bool isHealthPack(coordinate);
-    bool isPoisonedTiles(coordinate);
+    bool isAffectedTiles(coordinate);
     /**
          * type of enemy check
          */
@@ -56,7 +57,7 @@ public:
     /**
          * PEnemy poisened tiles
          */
-    void setAffectedTiles(coordinate coord, float poisonLevel);
+//    void setAffectedTiles(float poisonLevel);
 
     /**
          * defeated functions
@@ -74,32 +75,32 @@ public:
          * start and exit position functions
          */
 
-    coordinate getStart();
-    coordinate getExit();
-    coordinate* getStartValue();
-    coordinate* getExitValue();
+    coordinate getStart() const;
+    coordinate getExit() const;
+    const coordinate& getStartValue() const;
+    const coordinate& getExitValue() const;
     std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
     std::vector<node> nodes;
     ProtagonistModel* currentProtagonist;
     EnemyModel* currentEnemy;
     PEnemyModel* currentPEnemy;
-    //        XEnemyModel* currentXEnemy;
+    XEnemyModel* currentXEnemy;
     TileModel* currentHealthpack;
 
-
+public slots:
+    void setAffectedTiles(bool xenemyType, float value);
 private:
 
     std::unique_ptr<World> world;
     int rows;
     int cols;
-    int difficultyIdx;
     coordinate exit = coordinate(2,2);
     coordinate start = coordinate(0,0);
-    std::map<coordinate, std::unique_ptr<TileModel>> tileMap;
+    std::vector<std::unique_ptr<TileModel>> tiles;
     std::vector<std::unique_ptr<TileModel>> healthPacks;
     std::vector<std::unique_ptr<EnemyModel>> enemies;
     std::vector<std::unique_ptr<PEnemyModel>> penemies;
-    //std::vector<std::unique_ptr<XEnemyModel>> xenemies;
+    std::vector<std::unique_ptr<XEnemyModel>> xenemies;
 
 
 

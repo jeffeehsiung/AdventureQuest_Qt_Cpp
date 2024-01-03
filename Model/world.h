@@ -13,14 +13,14 @@ class WORLDSHARED_EXPORT Tile
 public:
     Tile(int xPosition, int yPosition, float tileWeight);
     virtual ~Tile() =default;
-    float getValue() const {return value;}
-    void setValue(float newValue) {value = newValue;}
-    int getXPos() const {return xPos;}
-    int getYPos() const {return yPos;}
-    virtual void setXPos(int newPos) {xPos = newPos;}
-    virtual void setYPos(int newPos) {yPos = newPos;}
+    float getValue() const {return value;};
+    void setValue(float newValue) {value = newValue;};
+    int getXPos() const {return xPos;};
+    int getYPos() const {return yPos;};
+    virtual void setXPos(int newPos) {xPos = newPos;};
+    virtual void setYPos(int newPos) {yPos = newPos;};
     bool operator== (const Tile & other) const
-        {return (getXPos() == other.getXPos()) && (getYPos() == other.getYPos());}
+        {return (getXPos() == other.getXPos()) && (getYPos() == other.getYPos());};
     virtual std::string serialize();
 
 protected:
@@ -60,7 +60,7 @@ public slots:
     bool poison();
 
 signals:
-    void poisonLevelUpdated(float value);
+    void poisonLevelUpdated(int value);
 
 private:
     float poisonLevel;

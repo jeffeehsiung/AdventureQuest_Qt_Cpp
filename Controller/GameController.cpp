@@ -66,9 +66,9 @@ void GameController::initializeWorld() {
 
     auto& worldController = WorldController::getInstance();
     worldController.createWorld(gameMap, gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
-    worldController.getProtagonists()[0]->setHealth(5);
-    gameHealth1 = worldController.getProtagonists()[0]->getHealth();
-    gameEnergy1 = worldController.getProtagonists()[0]->getEnergy();
+    worldController.getCurrentWorld().getProtagonists()[0]->setHealth(5);
+    gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+    gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
     qDebug()<< "world Controller";
 
     auto& viewController = ViewController::getInstance();
@@ -100,7 +100,7 @@ void GameController::onUpArrowPressed() {
     auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
         worldController.onUpArrowPressed();
-        gameHealth1 = worldController.getProtagonists()[0]->getHealth();
+        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
     }
 }
 
@@ -108,7 +108,7 @@ void GameController::onDownArrowPressed() {
     auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
         worldController.onDownArrowPressed();
-        gameHealth1 = worldController.getProtagonists()[0]->getHealth();
+        gameHealth1 =worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
     }
 }
 
@@ -116,7 +116,7 @@ void GameController::onLeftArrowPressed() {
     auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
         worldController.onLeftArrowPressed();
-        gameHealth1 = worldController.getProtagonists()[0]->getHealth();
+        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
     }
 }
 
@@ -124,7 +124,7 @@ void GameController::onRightArrowPressed() {
     auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
         worldController.onRightArrowPressed();
-        gameHealth1 = worldController.getProtagonists()[0]->getHealth();
+        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
     }
 }
 

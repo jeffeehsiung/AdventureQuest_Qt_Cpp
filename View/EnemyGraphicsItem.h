@@ -26,4 +26,15 @@ private:
 
 };
 
+class XEnemyGraphicsItem : public EntityGraphicsItem {
+public:
+    XEnemyGraphicsItem(const XEnemyModel& xenemyModel, const QString& baseFramesDir, QGraphicsRectItem* parent = nullptr);
+
+private:
+    QString baseFramesDir;
+    void loadAnimationFrames();
+    void loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames);
+
+};
+
 #endif // ENEMYGRAPHICSITEM_H

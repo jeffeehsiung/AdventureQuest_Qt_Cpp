@@ -33,7 +33,7 @@ public:
     virtual ~EntityGraphicsItem();
 
     // Advances to the next frame in the current animation
-    void nextFrame();
+    virtual void nextFrame();
 
     const Entity& getEntity() const;
 
