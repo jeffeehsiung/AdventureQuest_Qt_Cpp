@@ -63,36 +63,6 @@
         <file>images/enemy_golem/PNG Sequences/Idle/09.png</file>
         <file>images/enemy_golem/PNG Sequences/Idle/10.png</file>
         <file>images/enemy_golem/PNG Sequences/Idle/11.png</file>
-        <file>images/enemy_golem/PNG Sequences/Jump Loop/00.png</file>
-        <file>images/enemy_golem/PNG Sequences/Jump Loop/01.png</file>
-        <file>images/enemy_golem/PNG Sequences/Jump Loop/02.png</file>
-        <file>images/enemy_golem/PNG Sequences/Jump Loop/03.png</file>
-        <file>images/enemy_golem/PNG Sequences/Jump Loop/04.png</file>
-        <file>images/enemy_golem/PNG Sequences/Jump Loop/05.png</file>
-        <file>images/enemy_golem/PNG Sequences/Jump Start/00.png</file>
-        <file>images/enemy_golem/PNG Sequences/Jump Start/01.png</file>
-        <file>images/enemy_golem/PNG Sequences/Jump Start/02.png</file>
-        <file>images/enemy_golem/PNG Sequences/Jump Start/03.png</file>
-        <file>images/enemy_golem/PNG Sequences/Jump Start/04.png</file>
-        <file>images/enemy_golem/PNG Sequences/Jump Start/05.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/00.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/01.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/02.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/03.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/04.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/05.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/06.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/07.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/08.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/09.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/10.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/11.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/12.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/13.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/14.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/15.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/16.png</file>
-        <file>images/enemy_golem/PNG Sequences/Taunt/17.png</file>
         <file>images/enemy_golem/PNG Sequences/Walking/00.png</file>
         <file>images/enemy_golem/PNG Sequences/Walking/01.png</file>
         <file>images/enemy_golem/PNG Sequences/Walking/02.png</file>
@@ -168,18 +138,6 @@
         <file>images/penemy_wraith/PNG Sequences/Hurt/09.png</file>
         <file>images/penemy_wraith/PNG Sequences/Hurt/10.png</file>
         <file>images/penemy_wraith/PNG Sequences/Hurt/11.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Idle Blink/00.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Idle Blink/01.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Idle Blink/02.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Idle Blink/03.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Idle Blink/04.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Idle Blink/05.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Idle Blink/06.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Idle Blink/07.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Idle Blink/08.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Idle Blink/09.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Idle Blink/10.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Idle Blink/11.png</file>
         <file>images/penemy_wraith/PNG Sequences/Idle/00.png</file>
         <file>images/penemy_wraith/PNG Sequences/Idle/01.png</file>
         <file>images/penemy_wraith/PNG Sequences/Idle/02.png</file>
@@ -192,24 +150,6 @@
         <file>images/penemy_wraith/PNG Sequences/Idle/09.png</file>
         <file>images/penemy_wraith/PNG Sequences/Idle/10.png</file>
         <file>images/penemy_wraith/PNG Sequences/Idle/11.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/00.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/01.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/02.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/03.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/04.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/05.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/06.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/07.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/08.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/09.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/10.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/11.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/12.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/13.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/14.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/15.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/16.png</file>
-        <file>images/penemy_wraith/PNG Sequences/Taunt/17.png</file>
         <file>images/penemy_wraith/PNG Sequences/Walking/00.png</file>
         <file>images/penemy_wraith/PNG Sequences/Walking/01.png</file>
         <file>images/penemy_wraith/PNG Sequences/Walking/02.png</file>
@@ -295,18 +235,6 @@
         <file>images/xenemy_wraith/PNG Sequences/Hurt/09.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Hurt/10.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Hurt/11.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Idle Blink/00.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Idle Blink/01.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Idle Blink/02.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Idle Blink/03.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Idle Blink/04.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Idle Blink/05.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Idle Blink/06.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Idle Blink/07.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Idle Blink/08.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Idle Blink/09.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Idle Blink/10.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Idle Blink/11.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Idle/00.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Idle/01.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Idle/02.png</file>
@@ -319,24 +247,6 @@
         <file>images/xenemy_wraith/PNG Sequences/Idle/09.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Idle/10.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Idle/11.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/00.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/01.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/02.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/03.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/04.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/05.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/06.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/07.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/08.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/09.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/10.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/11.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/12.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/13.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/14.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/15.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/16.png</file>
-        <file>images/xenemy_wraith/PNG Sequences/Taunt/17.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Walking/00.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Walking/01.png</file>
         <file>images/xenemy_wraith/PNG Sequences/Walking/02.png</file>
