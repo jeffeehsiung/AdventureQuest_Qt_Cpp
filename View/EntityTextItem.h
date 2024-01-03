@@ -34,6 +34,11 @@ public:
         return index;
     }
 
+    const Entity& getEntity() const{
+        return entity;
+    }
+
+
 //    void updateTextRepresentation() {
 //        // Assuming Entity has a method getStatus to get the entity's current status
 //        const state entityState = entity.getState();

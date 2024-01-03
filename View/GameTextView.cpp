@@ -184,11 +184,25 @@ void GameTextView::setBackground(int backgroundNumber) {
 
 void GameTextView::updateView() {
     sceneString = backgroundString; // Start with the base grid
+    const WorldModel& world = worldController.getCurrentWorld();
+    // Assuming the grid cell is 3 characters wide and 1 character tall, plus borders
+    int evenCellWidth = 4; // 3 characters for the cell + 1 for the right border
+    int oddCellWidth = 7; // 5 characters for the cell + 1 for the right border
+
+    int rows = world.getRows();
+    int cols = world.getCols();
+
+    int evengridWidth = cols * evenCellWidth + 1 + 1; // 3 spaces for each cell and 1 for the left border and 1 for new line at the end
+    int oddgridWidth = cols * oddCellWidth + 2 + 1; // 5 spaces for each cell and 2 for the left border and 1 for new line at the end
+
 
     for (const auto& entityTextItem : entityTextItems) {
         if (entityTextItem) {
-            // Use the index calculated in addEntity to place the text representation in the correct grid position
-            int index = entityTextItem->getIndex();
+            // Calculate the index for the entity's position in the backgroundString
+            int index = evengridWidth + entityTextItem->getEntity().getPosition().yCoordinate * oddgridWidth + entityTextItem->getEntity().getPosition().yCoordinate * evengridWidth;
+            index += ( 1 + entityTextItem->getEntity().getPosition().xCoordinate * oddCellWidth + (oddCellWidth - 1) / 2);
+            // Assign the index for the text item
+            entityTextItems.back()->setIndex(index);
             sceneString.replace(index, 1, entityTextItem->getTextRepresentation());
         }
     }
