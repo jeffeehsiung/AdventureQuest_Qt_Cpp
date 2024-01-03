@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <vector>
 #include <memory>
+#include <QRegularExpression>
 #include "View/GameView.h"
 #include "View/EntityTextItem.h"
 
@@ -29,6 +30,8 @@ public:
     void zoomIn(int delta) override;
     void zoomOut(int delta) override;
     void updateView() override;
+
+    void testHtmlDisplay();
 
 private:
     void addEntity(const Entity& entity);

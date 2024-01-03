@@ -74,11 +74,6 @@ void GameController::initializeWorld() {
     auto& viewController = ViewController::getInstance();
     viewController.initializeViews(); // Optional: switch to initial view
 
-
-//    if (isGameStarted) {
-//        worldController.autoplay();
-//    }
-
 }
 
 // Methods to switch between views

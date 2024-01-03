@@ -35,8 +35,6 @@ private:
     ViewController(QObject *parent = nullptr);
     ~ViewController();
 
-    void syncState();
-
     std::unique_ptr<Game2DView> game2DView;
     std::unique_ptr<GameTextView> gameTextView;
     QWidget* currentView;

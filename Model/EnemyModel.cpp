@@ -122,7 +122,7 @@ XEnemyModel::XEnemyModel(int xPosition, int yPosition, float strength)
 
 void XEnemyModel::attack() {
     status = ATTACK;
-    QTimer::singleShot(100, this, [this]() {
+    QTimer::singleShot(200, this, [this]() {
         releaseThunder();
         if (!getDefeated()) {
             // xenemy is still alive
@@ -138,13 +138,11 @@ void XEnemyModel::takeDamage(float damage) {
     std::uniform_int_distribution<> distr(0, 3); // Range 0 to 5
     move(distr(eng), distr(eng));
 
-    if (!getDefeated()) {
-        QTimer::singleShot(300, this, [this, damage]() {
-            this->thunderLevel-= damage;
-            this->attack();
-            qDebug()<< "currentXEnemey attack";
-        });
-    }
+    QTimer::singleShot(100, this, [this, damage]() {
+        this->thunderLevel-= damage;
+        this->attack();
+        qDebug()<< "currentXEnemey attack";
+    });
 }
 
 coordinate XEnemyModel::getPosition() const {
@@ -163,24 +161,53 @@ void XEnemyModel::move(int deltaX, int deltaY) {
    qDebug()<< "currentXEnemy new pos: " << this->getXPos() << "," << this->getYPos();
 }
 
+//bool XEnemyModel::releaseThunder() {
+//    thunderLevel-= 5.0f;
+//    if (thunderLevel > 0.0f)
+//    {
+//        emit thunderLevelUpdated(true, thunderLevel);
+//        int t = arc4random() % 5;
+//        std::cout << "starting timer for " << t << " seconds"
+//                  << " with thunderLevel = " << thunderLevel << std::endl;
+//        QTimer::singleShot(t * 100, this, SLOT(releaseThunder()));
+//        return true;
+//    }
+//    else
+//    {
+//        thunderLevel = 0.0f;
+//        setDefeated(true);
+//    }
+//    return false;
+//}
+
+// In your XEnemyModel implementation file, modify releaseThunder():
 bool XEnemyModel::releaseThunder() {
-    thunderLevel-= 5.0f;
-    if (thunderLevel > 0.0f)
-    {
-        emit thunderLevelUpdated(true, thunderLevel);
-        int t = arc4random() % 5;
-        std::cout << "starting timer for " << t << " seconds"
-                  << " with thunderLevel = " << thunderLevel << std::endl;
-        QTimer::singleShot(t * 100, this, SLOT(releaseThunder()));
-        return true;
-    }
-    else
-    {
+   // Increment the call counter
+   thunderCallCount++;
+
+   // Thunder logic
+   thunderLevel -= 5.0f;
+   emit thunderLevelUpdated(true, thunderLevel);
+
+   // Check for defeat
+   if (thunderLevel <= 0.0f) {
         thunderLevel = 0.0f;
         setDefeated(true);
-    }
-    return false;
+        return false;
+   }
+
+   if (thunderCallCount < 2) {
+        // Schedule the next call with a random delay
+        int delay = arc4random() % 5; // Random delay between 0 and 4 seconds
+        QTimer::singleShot(delay * 1000, this, SLOT(releaseThunder()));
+        return true;
+   } else {
+        // Reset the call counter for future attacks
+        thunderCallCount = 0;
+        return false;
+   }
 }
+
 
 float XEnemyModel::getThunderLevel() const {
     return thunderLevel;

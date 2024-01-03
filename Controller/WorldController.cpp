@@ -277,16 +277,16 @@ void WorldController::playerReachedExit() {
     if (currentWorld->getProtagonists()[0]->getPosition() == currentWorld->getExit()) {
         // Ensure that the next world exists
         if (worlds.size() > 1 && worlds[1]) {
-            auto protagonist = std::move(currentWorld->removeProtagonists());
+            auto protagonists = currentWorld->removeProtagonists();
 
             // Update the protagonist's position to the start position of the new world
             coordinate newStartPos = worlds[1]->getStart();
-            for (auto& prot : protagonist) {
+            for (auto& prot : protagonists) {
                 prot->setPosition(newStartPos);
             }
 
             currentWorld = std::move(worlds[1]); // Transfer ownership to the next world
-            currentWorld->addProtagonist(std::move(protagonist));
+            currentWorld->addProtagonist(std::move(protagonists));
 
             emit updateLevel();
             emit updateprotagonistPosition(0);
