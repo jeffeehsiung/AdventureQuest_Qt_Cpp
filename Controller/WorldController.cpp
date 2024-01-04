@@ -272,21 +272,81 @@ void WorldController::onEncounterAffectedTiles(){
     }
 }
 
+
+void WorldController::moveProtagonist(Direction direction) {
+    // Get the current position of the protagonist
+    coordinate currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+
+    // Calculate the new position based on direction
+    int newX = currentPosition.xCoordinate;
+    int newY = currentPosition.yCoordinate;
+
+    switch (direction) {
+    case UP:    newY--; break;
+    case DOWN:  newY++; break;
+    case LEFT:  newX--; break;
+    case RIGHT: newX++; break;
+    }
+
+    // Clamp the new position to ensure it's within the world boundaries
+    if (newX >= 0 && newX < currentWorld->getCols() && newY >= 0 && newY < currentWorld->getRows()) {
+        // Move the protagonist
+        currentWorld->getProtagonists()[0]->move(newX - currentPosition.xCoordinate, newY - currentPosition.yCoordinate);
+
+        // Perform checks after movement
+        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+        handleEncounters(currentPosition);
+
+        emit updateprotagonistPosition(0);
+    }
+    playerReachedExit();
+}
+
+void WorldController::moveProtagonist(int x, int y) {
+    // Clamp the new position to ensure it's within the world boundaries
+    if (x >= 0 && x < currentWorld->getCols() && y >= 0 && y < currentWorld->getRows()) {
+        // Move the protagonist
+        currentWorld->getProtagonists()[0]->move(x, y);
+
+        // Perform checks after movement
+        coordinate currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+        handleEncounters(currentPosition);
+
+        emit updateprotagonistPosition(0);
+    }
+    playerReachedExit();
+}
+
+void WorldController::handleEncounters(const coordinate& position) {
+    if (currentWorld->isEnemy(position)) {
+        onEncounterEnemy();
+    } else if (currentWorld->isHealthPack(position)) {
+        onEncounterHealthPack();
+    } else if (currentWorld->isPEnemy(position)) {
+        onEncounterPEnemy();
+    } else if (currentWorld->isXEnemy(position)) {
+        onEncounterXEnemy();
+    } else if (currentWorld->isAffectedTiles(position)) {
+        onEncounterAffectedTiles();
+    }
+}
+
+
 void WorldController::playerReachedExit() {
 
     if (currentWorld->getProtagonists()[0]->getPosition() == currentWorld->getExit()) {
         // Ensure that the next world exists
         if (worlds.size() > 1 && worlds[1]) {
-            auto protagonist = std::move(currentWorld->removeProtagonists());
+            auto protagonists = currentWorld->removeProtagonists();
 
             // Update the protagonist's position to the start position of the new world
             coordinate newStartPos = worlds[1]->getStart();
-            for (auto& prot : protagonist) {
+            for (auto& prot : protagonists) {
                 prot->setPosition(newStartPos);
             }
 
             currentWorld = std::move(worlds[1]); // Transfer ownership to the next world
-            currentWorld->addProtagonist(std::move(protagonist));
+            currentWorld->addProtagonist(std::move(protagonists));
 
             emit updateLevel();
             emit updateprotagonistPosition(0);

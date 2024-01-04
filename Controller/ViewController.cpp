@@ -1,6 +1,9 @@
 #include "Controller/ViewController.h"
 
-ViewController::ViewController(QObject *parent) : QObject(parent), currentView(nullptr) {
+ViewController::ViewController(QObject *parent) :
+    QObject(parent),
+    worldController(WorldController::getInstance()),
+    currentView(nullptr) {
     
 }
 
@@ -9,10 +12,12 @@ ViewController::~ViewController() {
 }
 
 void ViewController::initializeViews() {
-    auto& worldController = WorldController::getInstance();
-
     game2DView = std::make_unique<Game2DView>(nullptr);
     gameTextView = std::make_unique<GameTextView>(nullptr);
+
+    const WorldModel& world = worldController.getCurrentWorld();
+    game2DView->setCurrentWorld(world);
+    gameTextView->setCurrentWorld(world);
 
     // Initialize the views
     game2DView->initializeView();
@@ -22,14 +27,12 @@ void ViewController::initializeViews() {
     currentView = game2DView.get();
     emit viewUpdated(currentView);
 
-
     connect(&worldController, &WorldController::updateprotagonistPosition, this, &ViewController::onUpdateProtagonistPosition);
     connect(&worldController, &WorldController::updateLevel, this, &ViewController::updateLevel);
 }
 
 void ViewController::switchTo2DView() {
     if (currentView != game2DView.get()) {
-        syncState(); // Sync state from the current view to the 2D view
         currentView = game2DView.get();
         emit viewUpdated(currentView);
     }
@@ -37,7 +40,6 @@ void ViewController::switchTo2DView() {
 
 void ViewController::switchToTextView() {
     if (currentView != gameTextView.get()) {
-        syncState(); // Sync state from the current view to the text view
         currentView = gameTextView.get();
         emit viewUpdated(currentView);
     }
@@ -48,24 +50,15 @@ QWidget* ViewController::getCurrentView() const {
 }
 
 void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
-    if (currentView == game2DView.get()) {
-        game2DView->updateView();
-    }
-    else if (currentView == gameTextView.get()) {
-        gameTextView->updateView();
-    }
-    emit viewUpdated(currentView);
+    game2DView->updateView();
+    gameTextView->updateView();
+//    emit viewUpdated(currentView);
 }
 
 void ViewController::updateLevel() {
+    const WorldModel& world = worldController.getCurrentWorld();
+    game2DView->setCurrentWorld(world);
+    gameTextView->setCurrentWorld(world);
     game2DView->initializeView();
-    currentView = game2DView.get();
-    emit viewUpdated(currentView);
-}
-
-
-void ViewController::syncState() {
-    // This method should transfer the state from one view to the other.
-    // Depending on how your state is represented, this could be a direct data copy,
-    // or more complex logic to ensure both views are equivalent in terms of game state.
+    gameTextView->initializeView();
 }

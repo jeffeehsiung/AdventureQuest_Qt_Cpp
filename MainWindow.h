@@ -56,8 +56,7 @@ private:
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
-
-//signals:
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 private slots:
     void onStartButtonClicked();
@@ -66,6 +65,7 @@ private slots:
     void onQuitButtonClicked();
     void onViewTabChanged(int index);
     void onViewUpdateRequested(QWidget* view);
+    void displayText(const QString& text);
 };
 
 #endif // MAINWINDOW_H
