@@ -15,16 +15,7 @@ void Game2DView::initializeView() {
     auto& worldController = WorldController::getInstance();
     const WorldModel& world = worldController.getCurrentWorld();
 
-    // Use 'world' as needed...
     setBackground(worldController.getDifficultyIdx());
-
-//    qDebug() << "backgroundImage width: " << backgroundImage.width() << "backgroundImage heght" << backgroundImage.height();
-//    qDebug() << "worldController cols: " << world.getCols() << "worldController height" << world.getRows();
-//    qDebug() << "view width: " << this->width() << "view height" << this->height();
-//    qDebug() << "scene width: " << scene->width() << "scene height" << scene->height();
-
-//    qDebug() << "tilewidth: " << tileWidth << " tileheight: " << tileHeight;
-
     scaleEntitiesToFitView();
 
     // Extract entities from the WorldController
@@ -116,8 +107,8 @@ void Game2DView::setBackground(int backgroundNumber) {
     // Load the background image based on the difficulty level
     switch(backgroundNumber) {
     case 1: backgroundImage = easyBackground; tileWidth = 30; tileHeight = 30; break;
-//    case 2: backgroundImage = mediumBackground; tileWidth = 30; tileHeight = 30; break;
-//    case 3: backgroundImage = hardBackground; tileWidth = 20; tileHeight = 20; break;
+    case 2: backgroundImage = mediumBackground; tileWidth = 30; tileHeight = 30; break;
+    case 3: backgroundImage = hardBackground; tileWidth = 20; tileHeight = 20; break;
     default: backgroundImage= easyBackground; tileWidth = 30; tileHeight = 30; break;
     }
 
@@ -239,59 +230,4 @@ void Game2DView::scaleEntitiesToFitView() {
     EntityGraphicsItem::setTileDimensions(tileWidth, tileHeight);
 }
 
-
-
-// Example function to check each item's position and bounding rectangle
-void Game2DView::checkItems() {
-    QRectF sceneBounds = scene->sceneRect();
-    for (const auto& protagonistGraphicsItem : protagonistGraphicsItems) {
-        if (protagonistGraphicsItem) {
-            QRectF itemBounds = protagonistGraphicsItem->boundingRect();
-            QRectF itemSceneBounds = protagonistGraphicsItem->mapToScene(itemBounds).boundingRect();
-            // Check if the item's bounding rectangle in scene coordinates is within the scene's bounds
-            if (sceneBounds.contains(itemSceneBounds)) {
-            } else {
-                qDebug() << "Entity is NOT within scene bounds.";
-            }
-
-            // Log the details for debugging
-            qDebug() << "Entity position: " << protagonistGraphicsItem->pos();
-            qDebug() << "Bounding rectangle (local): " << itemBounds;
-        }
-    }
-    for (const auto& enemyGraphicsItem : enemyGraphicsItems) {
-        if (enemyGraphicsItem) {
-            QRectF itemBounds = enemyGraphicsItem->boundingRect();
-            QRectF itemSceneBounds = enemyGraphicsItem->mapToScene(itemBounds).boundingRect();
-
-            // Check if the item's bounding rectangle in scene coordinates is within the scene's bounds
-            if (sceneBounds.contains(itemSceneBounds)) {
-            } else {
-                qDebug() << "Entity is NOT within scene bounds.";
-            }
-
-            // Log the details for debugging
-            qDebug() << "Entity position: " << enemyGraphicsItem->pos();
-            qDebug() << "Bounding rectangle (local): " << itemBounds;
-        }
-    }
-    for (const auto& tileGraphicsItem : tileGraphicsItems) {
-        if (tileGraphicsItem) {
-            QRectF itemBounds = tileGraphicsItem->boundingRect();
-            QRectF itemSceneBounds = tileGraphicsItem->mapToScene(itemBounds).boundingRect();
-
-            // Check if the item's bounding rectangle in scene coordinates is within the scene's bounds
-            if (sceneBounds.contains(itemSceneBounds)) {
-            } else {
-                qDebug() << "Entity is NOT within scene bounds.";
-            }
-
-            // Log the details for debugging
-            qDebug() << "Entity position: " << tileGraphicsItem->pos();
-            qDebug() << "Bounding rectangle (local): " << itemBounds;
-        }
-    }
-    qDebug() << "Scene rectangle: " << sceneBounds;
-
-}
 

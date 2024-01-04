@@ -156,29 +156,23 @@ void XEnemyModel::setPosition(coordinate position) {
 
 void XEnemyModel::move(int deltaX, int deltaY) {
     status = MOVING;
-    setXPos(getXPos() + deltaX);
-    setYPos(getYPos() + deltaY);
-   qDebug()<< "currentXEnemy new pos: " << this->getXPos() << "," << this->getYPos();
+    int upperBound = 29;
+    int lowerBound = 0;
+    int newX = getXPos() + deltaX;
+    int newY = getXPos() + deltaX;
+    if (newX < lowerBound) {
+        newX = lowerBound;
+    }else if (newX > upperBound){
+        newX = upperBound;
+    }
+    if (newY < lowerBound){
+        newY = lowerBound;
+    }else if (newY > upperBound){
+        newY = upperBound;
+    }
+    setXPos(newX);
+    setYPos(newY);
 }
-
-//bool XEnemyModel::releaseThunder() {
-//    thunderLevel-= 5.0f;
-//    if (thunderLevel > 0.0f)
-//    {
-//        emit thunderLevelUpdated(true, thunderLevel);
-//        int t = arc4random() % 5;
-//        std::cout << "starting timer for " << t << " seconds"
-//                  << " with thunderLevel = " << thunderLevel << std::endl;
-//        QTimer::singleShot(t * 100, this, SLOT(releaseThunder()));
-//        return true;
-//    }
-//    else
-//    {
-//        thunderLevel = 0.0f;
-//        setDefeated(true);
-//    }
-//    return false;
-//}
 
 // In your XEnemyModel implementation file, modify releaseThunder():
 bool XEnemyModel::releaseThunder() {

@@ -19,9 +19,6 @@ public:
      * add it to the scene
      */
     virtual void initializeView() = 0;
-    virtual void setBackground(int backgroundNumber) = 0;
-    virtual void zoomIn(int delta) = 0;
-    virtual void zoomOut(int delta) = 0;
     virtual void updateView() = 0;
 };
 

@@ -46,17 +46,18 @@ QWidget* ViewController::getCurrentView() const {
 }
 
 void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
-    if (currentView == game2DView.get()) {
-        game2DView->updateView();
-    }
-    else if (currentView == gameTextView.get()) {
-        gameTextView->updateView();
-    }
-    emit viewUpdated(currentView);
+//    if (currentView == game2DView.get()) {
+//        game2DView->updateView();
+//    }
+//    else if (currentView == gameTextView.get()) {
+//        gameTextView->updateView();
+//    }
+    game2DView->updateView();
+    gameTextView->updateView();
+//    emit viewUpdated(currentView);
 }
 
 void ViewController::updateLevel() {
     game2DView->initializeView();
-    currentView = game2DView.get();
-    emit viewUpdated(currentView);
+    gameTextView->initializeView();
 }
