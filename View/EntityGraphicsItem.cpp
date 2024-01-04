@@ -32,7 +32,9 @@ void EntityGraphicsItem::nextFrame() {
     std::vector<QPixmap>* currentFrames = nullptr;
     int animationDuration = 100; // default duration
     switch (entityState) {
-    case IDLE: currentFrames = &idleFrames; break;
+    case IDLE:
+        currentFrames = &idleFrames;
+        break;
     case MOVING:
         currentFrames = &moveFrames;
         animationDuration = MOVE_DURATION;

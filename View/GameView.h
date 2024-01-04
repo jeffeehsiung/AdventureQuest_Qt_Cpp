@@ -4,7 +4,6 @@
 #include <QString>
 #include <vector>
 #include <memory>
-#include "Controller/WorldController.h"
 #include "Model/WorldModel.h"
 
 class GameView {
@@ -18,10 +17,8 @@ public:
      * based on which iteratively create grahpicsRectItems or entityTextItem(string) and
      * add it to the scene
      */
+    virtual void setCurrentWorld(const WorldModel& world) = 0;
     virtual void initializeView() = 0;
-    virtual void setBackground(int backgroundNumber) = 0;
-    virtual void zoomIn(int delta) = 0;
-    virtual void zoomOut(int delta) = 0;
     virtual void updateView() = 0;
 };
 
