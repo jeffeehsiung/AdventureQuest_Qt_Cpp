@@ -65,6 +65,8 @@ std::string ProtagonistModel::serialize() const {
 }
 
 void ProtagonistModel::onPosChanged(int x, int y){
+    Q_UNUSED(x);
+    Q_UNUSED(y);
     QTimer::singleShot(100, this, [this]() {status = IDLE;});
 }
 

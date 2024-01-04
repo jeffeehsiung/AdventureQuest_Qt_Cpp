@@ -44,23 +44,23 @@ public:
      * based on which iteratively create grahpicsRectItems or entityTextItem(string) and
      * add it to the scene
      */
+    void setCurrentWorld(const WorldModel& world) override;
     void initializeView() override;
-    void setBackground(int backgroundNumber) override;
-    void zoomIn(int delta) override;
-    void zoomOut(int delta) override;
     void updateView() override;
-    void checkItems();
 
 protected:
     void wheelEvent(QWheelEvent *event) override;
+    void setBackground(int backgroundNumber);
+    void setBackgroundNumber(int backgroundNumber);
 
 private:
+    const WorldModel* world;
     QGraphicsScene* scene;
     QPixmap Background1;
     QPixmap Background2;
     QPixmap Background3;
     QPixmap backgroundImage;
-    int currentBackgroundNumber;
+    int backgroundNumber;
     qreal zoomSpeed; // Zoom sensitivity factor
     qreal zoomLevel;
     qreal initZoomLevel;
@@ -68,17 +68,18 @@ private:
     qreal tileWidth;
     qreal tileHeight;
 
-    std::vector<std::unique_ptr<TileGraphicsItem>> healthpackGraphicsItems;
     std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
+    std::vector<std::unique_ptr<HPGraphicsItem>> healthpackGraphicsItems;
     std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
     std::vector<std::unique_ptr<PEnemyGraphicsItem>> penemyGraphicsItems;
     std::vector<std::unique_ptr<XEnemyGraphicsItem>> xenemyGraphicsItems;
     std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
 
-    std::unique_ptr<TileGraphicsItem> portalGraphicsItem;
+    std::unique_ptr<PortalGraphicsItem> portalGraphicsItem;
 
     void scaleEntitiesToFitView();
-
+    void zoomIn(int delta);
+    void zoomOut(int delta);
 
 };
 

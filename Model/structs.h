@@ -39,6 +39,13 @@ public:
 
 enum state { IDLE, MOVING, ATTACK, HURT, DYING, HEAL };
 
+enum Direction {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT
+};
+
 // Declare the operator== for coordinate
 bool operator==(const coordinate& lhs, const coordinate& rhs);
 
