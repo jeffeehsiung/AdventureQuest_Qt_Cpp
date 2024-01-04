@@ -289,6 +289,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         default: QMainWindow::keyPressEvent(event); break;
         }
         updateHealthDisplay();
+        updateEnergyDisplay();
     } else {
         QMainWindow::keyPressEvent(event);
     }
@@ -311,9 +312,15 @@ void MainWindow::updateHealthDisplay() {
 }
 
 void MainWindow::updateEnergyDisplay() {
-
+    int currentEnergy = gameController->getEnergy1();
+    for (int i = 0; i < energyLabels.size(); ++i) {
+        if (i < currentEnergy) {
+            energyLabels[i]->setVisible(true);
+        } else {
+            energyLabels[i]->setVisible(false);
+        }
+    }
 }
-
 
 void MainWindow::displayText(const QString& text) {
     graphicsMessageWidget->append(text);
