@@ -15,6 +15,8 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
      * */
     for (auto &tile : world->getTiles()) {
         std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(std::move(tile));
+        coordinate pos = tileModel->getPosition();
+        nodes.push_back(node(tileModel->getValue(), pos));
         tiles.push_back(std::move(tileModel));
     }
 
@@ -319,14 +321,14 @@ coordinate WorldModel::getExit() const
     return exit;
 }
 
-const coordinate& WorldModel::getStartValue() const
+coordinate* WorldModel::getStartValue()
 {
-    return start;
+    return &start;
 }
 
-const coordinate& WorldModel::getExitValue() const
+coordinate* WorldModel::getExitValue()
 {
-    return exit;
+    return &exit;
 }
 
 void WorldModel::addProtagonist(std::vector<std::unique_ptr<ProtagonistModel>> incoming){

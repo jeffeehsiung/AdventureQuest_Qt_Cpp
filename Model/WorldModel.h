@@ -77,8 +77,8 @@ public:
 
     coordinate getStart() const;
     coordinate getExit() const;
-    const coordinate& getStartValue() const;
-    const coordinate& getExitValue() const;
+    coordinate* getStartValue();
+    coordinate* getExitValue();
     std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
     std::vector<node> nodes;
     ProtagonistModel* currentProtagonist;

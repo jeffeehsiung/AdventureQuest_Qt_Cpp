@@ -31,7 +31,7 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
     worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
     worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies+3, nrOfHealthpacks, pRatio, false));
     currentWorld = worlds[0];
-//    autoplay();
+    autoplay();
 }
 
 /**
@@ -362,15 +362,6 @@ void WorldController::playerReachedExit() {
  * start and exit position functions
  */
 
-coordinate WorldController::getStart()
-{
-    return currentWorld->getStart();
-}
-
-coordinate WorldController::getExit()
-{
-    return currentWorld->getStart();
-}
 
 const std::vector<std::shared_ptr<WorldModel>>& WorldController::getWorlds() const {
     return worlds;
@@ -385,20 +376,20 @@ const WorldModel& WorldController::getCurrentWorld() const {
 
 
 
-//void WorldController::autoplay(){
-//   Comparator<node> comparator = [](const node& a, const node& b) {
-//        return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
-//   };
-//   qDebug() << "start Pos: " << currentWorld->getStart().getXPos() << " "<< currentWorld->getStart().getYPos();
-//   qDebug() << "exit Pos: " << currentWorld->getExit().getXPos() << " "<< currentWorld->getExit().getYPos();
-//   PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getStartValue(), currentWorld->getExitValue(), comparator, this->getRows(), 0);
+void WorldController::autoplay(){
+   Comparator<node> comparator = [](const node& a, const node& b) {
+        return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
+   };
+   qDebug() << "start Pos: " << currentWorld->getStart().getXPos() << " "<< currentWorld->getStart().getYPos();
+   qDebug() << "exit Pos: " << currentWorld->getExit().getXPos() << " "<< currentWorld->getExit().getYPos();
+   PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getStartValue(), currentWorld->getExitValue(), comparator, this->getRows(), 0);
 
-//   std::vector<int> result = pathFinder.A_star();
-//   qDebug() << "Path to destination:";
-//   for (int move : result) {
-//        qDebug() << move << "path";
-//   }
-//}
+   std::vector<int> result = pathFinder.A_star();
+   qDebug() << "Path to destination:";
+   for (int move : result) {
+        qDebug() << move << "path";
+   }
+}
 
 
 
