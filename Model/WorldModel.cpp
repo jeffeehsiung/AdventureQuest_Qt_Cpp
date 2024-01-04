@@ -302,7 +302,7 @@ int WorldModel::getNumOfProtagonists() const
 void WorldModel::setAffectedTiles(bool xenemyType, float value) {
     int maxVal = 32; // Maximum poison level
     int minRadius = 1; // Minimum radius at max poison level
-    int maxRadius = 7; // Maximum radius at zero poison level
+    int maxRadius = 8; // Maximum radius at zero poison level
     int radius = (minRadius + (maxRadius - minRadius) * (1 - value / maxVal));
 
     qDebug() << "new radius: "<< radius;

@@ -10,8 +10,17 @@ public:
 
 private:
     QString baseFramesDir;
-    void loadAnimationFrames();
-    void loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames);
+
+    static std::vector<QPixmap> sharedIdleFrames;
+    static std::vector<QPixmap> sharedMoveFrames;
+    static std::vector<QPixmap> sharedHurtFrames;
+    static std::vector<QPixmap> sharedDyingFrames;
+    static std::vector<QPixmap> sharedAttackFrames;
+    static std::vector<QPixmap> sharedHealFrames;
+
+    static bool imagesLoaded;
+    static void loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames);
+    static void loadSharedImages();
 
 };
 
@@ -21,8 +30,17 @@ public:
 
 private:
     QString baseFramesDir;
-    void loadAnimationFrames();
-    void loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames);
+
+    static std::vector<QPixmap> sharedIdleFrames;
+    static std::vector<QPixmap> sharedMoveFrames;
+    static std::vector<QPixmap> sharedHurtFrames;
+    static std::vector<QPixmap> sharedDyingFrames;
+    static std::vector<QPixmap> sharedAttackFrames;
+    static std::vector<QPixmap> sharedHealFrames;
+
+    static bool imagesLoaded;
+    static void loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames);
+    static void loadSharedImages();
 
 };
 
@@ -32,8 +50,17 @@ public:
 
 private:
     QString baseFramesDir;
-    void loadAnimationFrames();
-    void loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames);
+
+    static std::vector<QPixmap> sharedIdleFrames;
+    static std::vector<QPixmap> sharedMoveFrames;
+    static std::vector<QPixmap> sharedHurtFrames;
+    static std::vector<QPixmap> sharedDyingFrames;
+    static std::vector<QPixmap> sharedAttackFrames;
+    static std::vector<QPixmap> sharedHealFrames;
+
+    static bool imagesLoaded;
+    static void loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames);
+    static void loadSharedImages();
 
 };
 
