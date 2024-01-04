@@ -1,5 +1,9 @@
 #include "Game2DView.h"
 
+void Game2DView::setCurrentWorld(const WorldModel& world){
+    this->world = &world;
+}
+
 void Game2DView::initializeView() {
     if (!scene) {
         scene = new QGraphicsScene(this);
@@ -11,20 +15,16 @@ void Game2DView::initializeView() {
     penemyGraphicsItems.clear();
     xenemyGraphicsItems.clear();
 
-    // Access WorldModel via WorldController
-    auto& worldController = WorldController::getInstance();
-    const WorldModel& world = worldController.getCurrentWorld();
-
-    setBackground(worldController.getDifficultyIdx());
+    setBackground(backgroundNumber);
     scaleEntitiesToFitView();
 
     // Extract entities from the WorldController
-    const std::vector<std::unique_ptr<TileModel>>& tiles = world.getTiles();
-    const std::vector<std::unique_ptr<TileModel>>& healthPacks = world.getHealthPacks();
-    const std::vector<std::unique_ptr<EnemyModel>>& enemies = world.getEnemies();
-    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = world.getPEnemies();
-    const std::vector<std::unique_ptr<XEnemyModel>>& xenemies = world.getXEnemies();
-    const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = world.getProtagonists();
+    const std::vector<std::unique_ptr<TileModel>>& tiles = world->getTiles();
+    const std::vector<std::unique_ptr<TileModel>>& healthPacks = world->getHealthPacks();
+    const std::vector<std::unique_ptr<EnemyModel>>& enemies = world->getEnemies();
+    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = world->getPEnemies();
+    const std::vector<std::unique_ptr<XEnemyModel>>& xenemies = world->getXEnemies();
+    const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = world->getProtagonists();
 
     /** baseFramesDir for tile is constant */
     QString tileBase = ":/images/tiles/";
@@ -34,16 +34,17 @@ void Game2DView::initializeView() {
         tileGraphicsItems.push_back(std::move(tileGraphicsItem));
     }
 
-    /** baseFramesDir for healthpack is constant */
+    /** baseFramesDir for portal is constant */
     QString portalBase = ":/images/portal/";
     // compute the exit tile index and set the picture
-    const std::unique_ptr<TileModel>& exit = world.getTiles().at((world.getExit().yCoordinate) * world.getCols() + (world.getExit().xCoordinate));
-    portalGraphicsItem = std::make_unique<TileGraphicsItem>(*exit, portalBase);
+    const std::unique_ptr<TileModel>& exit = world->getTiles().at((world->getExit().yCoordinate) * world->getCols() + (world->getExit().xCoordinate));
+    portalGraphicsItem = std::make_unique<PortalGraphicsItem>(*exit, portalBase);
     scene->addItem(portalGraphicsItem.get());
 
+    /** baseFramesDir for healthpack is constant */
     QString healthpackBase = ":/images/healthpack/";
     for (const auto& healthPack : healthPacks) {
-        std::unique_ptr<TileGraphicsItem> healthPackGraphicsItem = std::make_unique<TileGraphicsItem>(*healthPack, healthpackBase);
+        std::unique_ptr<HPGraphicsItem> healthPackGraphicsItem = std::make_unique<HPGraphicsItem>(*healthPack, healthpackBase);
         scene->addItem(healthPackGraphicsItem.get());
         healthpackGraphicsItems.push_back(std::move(healthPackGraphicsItem));
     }
@@ -103,37 +104,6 @@ void Game2DView::initializeView() {
 
 }
 
-void Game2DView::setBackground(int backgroundNumber) {
-    // Load the background image based on the difficulty level
-    switch(backgroundNumber) {
-    case 1: backgroundImage = easyBackground; tileWidth = 30; tileHeight = 30; break;
-    case 2: backgroundImage = mediumBackground; tileWidth = 30; tileHeight = 30; break;
-    case 3: backgroundImage = hardBackground; tileWidth = 20; tileHeight = 20; break;
-    default: backgroundImage= easyBackground; tileWidth = 30; tileHeight = 30; break;
-    }
-
-
-    // Resize the background image based on the number of tiles and their size
-    auto& worldController = WorldController::getInstance();
-    const WorldModel& world = worldController.getCurrentWorld();
-
-    backgroundImage = backgroundImage.scaled(tileWidth * world.getCols(),
-                                             tileHeight * world.getRows(),
-                                             Qt::KeepAspectRatioByExpanding);
-
-    // Add the background image as a pixmap item to the scene
-    QGraphicsPixmapItem* backgroundItem = new QGraphicsPixmapItem(backgroundImage);
-    backgroundItem->setZValue(-1); // Ensure it's drawn below all other items
-    scene->addItem(backgroundItem);
-
-    // Set the scene's rectangle to the size of the resized background image
-    scene->setSceneRect(0, 0, backgroundImage.width(), backgroundImage.height());
-
-    currentBackgroundNumber = backgroundNumber;
-    this->update();
-}
-
-
 void Game2DView::updateView() {
     for(const auto& protagonistGraphicsItem : protagonistGraphicsItems) {
         if (protagonistGraphicsItem) {
@@ -154,6 +124,41 @@ void Game2DView::updateView() {
     this->update();
 }
 
+void Game2DView::wheelEvent(QWheelEvent* event) {
+    int delta = event->angleDelta().y() / 12 ;
+    if (delta > 0) {
+        zoomIn(std::abs(delta));  // Zoom in when the wheel is scrolled up
+    }else{
+        zoomOut(std::abs(delta)); // Zoom out when the wheel is scrolled down
+    }
+}
+
+void Game2DView::setBackgroundNumber(int backgroundNumber){
+    this->backgroundNumber = backgroundNumber;
+}
+
+void Game2DView::setBackground(int backgroundNumber) {
+    // Load the background image based on the difficulty level
+    switch(backgroundNumber) {
+    case 1: backgroundImage = easyBackground; tileWidth = 30; tileHeight = 30; break;
+    case 2: backgroundImage = mediumBackground; tileWidth = 30; tileHeight = 30; break;
+    case 3: backgroundImage = hardBackground; tileWidth = 20; tileHeight = 20; break;
+    default: backgroundImage= easyBackground; tileWidth = 30; tileHeight = 30; break;
+    }
+
+    backgroundImage = backgroundImage.scaled(tileWidth * world->getCols(),
+                                             tileHeight * world->getRows(),
+                                             Qt::KeepAspectRatioByExpanding);
+
+    // Add the background image as a pixmap item to the scene
+    QGraphicsPixmapItem* backgroundItem = new QGraphicsPixmapItem(backgroundImage);
+    backgroundItem->setZValue(-1); // Ensure it's drawn below all other items
+    scene->addItem(backgroundItem);
+
+    // Set the scene's rectangle to the size of the resized background image
+    scene->setSceneRect(0, 0, backgroundImage.width(), backgroundImage.height());
+    this->update();
+}
 
 void Game2DView::zoomIn(int delta) {
     qreal maxZoomLevel = initZoomLevel * 2;
@@ -194,22 +199,12 @@ void Game2DView::zoomOut(int delta) {
     this->update();
 }
 
-void Game2DView::wheelEvent(QWheelEvent* event) {
-    int delta = event->angleDelta().y() / 12 ;
-    if (delta > 0) {
-        zoomIn(std::abs(delta));  // Zoom in when the wheel is scrolled up
-    }else{
-        zoomOut(std::abs(delta)); // Zoom out when the wheel is scrolled down
-    }
-}
-
-
 // This function should be called after setting the background and calculating tileWidth and tileHeight.
 void Game2DView::scaleEntitiesToFitView() {
     qreal sceneWidth = scene->width();
     qreal sceneHeight = scene->height();
     qreal someFactor;
-    switch(currentBackgroundNumber){
+    switch(backgroundNumber){
     case 1: someFactor = 25; break;
     case 2: someFactor = 25; break;
     case 3: someFactor = 25; break;

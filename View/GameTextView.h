@@ -15,26 +15,20 @@ class GameTextView : public QTextEdit, public GameView {
     Q_OBJECT
 
 public:
-    GameTextView(QWidget* parent = nullptr) : QTextEdit(parent), worldController(WorldController::getInstance()) {
+    explicit GameTextView(QWidget* parent = nullptr) : QTextEdit(parent){
         setReadOnly(true);
-
         // Set the font family
         QFont font;
         font.setFamily("Trebuchet MS");
         setFont(font);
     }
 
+    void setCurrentWorld(const WorldModel& world) override;
     void initializeView() override;
     void updateView() override;
 
 private:
-    void displayScene(const QString& sceneString);
-    QString getNonTileRepresentation(int row, int col);
-
-    template <typename T>
-    QString getRepresentationAt(const std::vector<std::unique_ptr<T>>& items, int row, int col);
-
-    std::vector<std::unique_ptr<EntityTextItem>> entityTextItems;
+    const WorldModel* world;
     std::vector<std::unique_ptr<TileTextItem>> tileTextItems;
     std::vector<std::unique_ptr<HPTextItem>> healthpackTextItems;
     std::vector<std::unique_ptr<EnemyTextItem>> enemyTextItems;
@@ -42,11 +36,12 @@ private:
     std::vector<std::unique_ptr<XEnemyTextItem>> xenemyTextItems;
     std::vector<std::unique_ptr<ProtagonistTextItem>> protagonistTextItems;
 
-    QString backgroundString;
-    QString sceneString;
+    void displayScene(const QString& sceneString);
+    QString getNonTileRepresentation(int row, int col);
 
+    template <typename T>
+    QString getRepresentationAt(const std::vector<std::unique_ptr<T>>& items, int row, int col);
 
-    WorldController& worldController;
 
 };
 

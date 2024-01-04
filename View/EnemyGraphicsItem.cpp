@@ -3,20 +3,37 @@
 
 //QString EntityGraphicsItem::baseFramesDir = "images/enemy_golem/PNG Sequences/";
 
+bool EnemyGraphicsItem::imagesLoaded = false;
+std::vector<QPixmap> EnemyGraphicsItem::sharedIdleFrames;
+std::vector<QPixmap> EnemyGraphicsItem::sharedMoveFrames;
+std::vector<QPixmap> EnemyGraphicsItem::sharedHurtFrames;
+std::vector<QPixmap> EnemyGraphicsItem::sharedDyingFrames;
+std::vector<QPixmap> EnemyGraphicsItem::sharedAttackFrames;
+std::vector<QPixmap> EnemyGraphicsItem::sharedHealFrames;
 
 EnemyGraphicsItem::EnemyGraphicsItem(const EnemyModel& enemyModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
     : EntityGraphicsItem(enemyModel, parent), baseFramesDir(baseFramesDir){
-    loadAnimationFrames();
+    loadSharedImages();
+    idleFrames = sharedIdleFrames;
+    moveFrames = sharedMoveFrames;
+    hurtFrames = sharedHurtFrames;
+    dyingFrames = sharedDyingFrames;
+    attackFrames = sharedAttackFrames;
+    healFrames = sharedHealFrames;
 }
 
-void EnemyGraphicsItem::loadAnimationFrames() {
-    // Load the frames for each animation state
-    loadFramesFromDirectory(baseFramesDir + "Idle/", idleFrames);
-    loadFramesFromDirectory(baseFramesDir + "Moving/", moveFrames);
-    loadFramesFromDirectory(baseFramesDir + "Hurt/", hurtFrames);
-    loadFramesFromDirectory(baseFramesDir + "Dying/", dyingFrames);
-    loadFramesFromDirectory(baseFramesDir + "Attack/", attackFrames);
-    loadFramesFromDirectory(baseFramesDir + "Heal/", healFrames);
+void EnemyGraphicsItem::loadSharedImages() {
+    if(!imagesLoaded){
+        QString baseFramesDir = ":/images/enemy_golem/PNG Sequences/";
+        // Load the frames for each animation state
+        loadFramesFromDirectory(baseFramesDir + "Idle/", sharedIdleFrames);
+        loadFramesFromDirectory(baseFramesDir + "Moving/", sharedMoveFrames);
+        loadFramesFromDirectory(baseFramesDir + "Hurt/", sharedHurtFrames);
+        loadFramesFromDirectory(baseFramesDir + "Dying/", sharedDyingFrames);
+        loadFramesFromDirectory(baseFramesDir + "Attack/", sharedAttackFrames);
+        loadFramesFromDirectory(baseFramesDir + "Heal/", sharedHealFrames);
+        imagesLoaded = true;
+    }
 }
 
 void EnemyGraphicsItem::loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames) {
@@ -34,20 +51,38 @@ void EnemyGraphicsItem::loadFramesFromDirectory(const QString& dirPath, std::vec
     }
 }
 
+bool PEnemyGraphicsItem::imagesLoaded = false;
+std::vector<QPixmap> PEnemyGraphicsItem::sharedIdleFrames;
+std::vector<QPixmap> PEnemyGraphicsItem::sharedMoveFrames;
+std::vector<QPixmap> PEnemyGraphicsItem::sharedHurtFrames;
+std::vector<QPixmap> PEnemyGraphicsItem::sharedDyingFrames;
+std::vector<QPixmap> PEnemyGraphicsItem::sharedAttackFrames;
+std::vector<QPixmap> PEnemyGraphicsItem::sharedHealFrames;
 
 PEnemyGraphicsItem::PEnemyGraphicsItem(const PEnemyModel& penemyModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
     : EntityGraphicsItem(penemyModel, parent), baseFramesDir(baseFramesDir){
-    loadAnimationFrames();
+    loadSharedImages();
+    idleFrames = sharedIdleFrames;
+    moveFrames = sharedMoveFrames;
+    hurtFrames = sharedHurtFrames;
+    dyingFrames = sharedDyingFrames;
+    attackFrames = sharedAttackFrames;
+    healFrames = sharedHealFrames;
 }
 
-void PEnemyGraphicsItem::loadAnimationFrames() {
-    // Load the frames for each animation state
-    loadFramesFromDirectory(baseFramesDir + "Idle/", idleFrames);
-    loadFramesFromDirectory(baseFramesDir + "Moving/", moveFrames);
-    loadFramesFromDirectory(baseFramesDir + "Hurt/", hurtFrames);
-    loadFramesFromDirectory(baseFramesDir + "Dying/", dyingFrames);
-    loadFramesFromDirectory(baseFramesDir + "Attack/", attackFrames);
-    loadFramesFromDirectory(baseFramesDir + "Heal/", healFrames);
+void PEnemyGraphicsItem::loadSharedImages() {
+
+    if(!imagesLoaded){
+        QString baseFramesDir = ":/images/penemy_wraith/PNG Sequences/";
+        // Load the frames for each animation state
+        loadFramesFromDirectory(baseFramesDir + "Idle/", sharedIdleFrames);
+        loadFramesFromDirectory(baseFramesDir + "Moving/", sharedMoveFrames);
+        loadFramesFromDirectory(baseFramesDir + "Hurt/", sharedHurtFrames);
+        loadFramesFromDirectory(baseFramesDir + "Dying/", sharedDyingFrames);
+        loadFramesFromDirectory(baseFramesDir + "Attack/", sharedAttackFrames);
+        loadFramesFromDirectory(baseFramesDir + "Heal/", sharedHealFrames);
+        imagesLoaded = true;
+    }
 }
 
 void PEnemyGraphicsItem::loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames) {
@@ -65,19 +100,37 @@ void PEnemyGraphicsItem::loadFramesFromDirectory(const QString& dirPath, std::ve
     }
 }
 
+bool XEnemyGraphicsItem::imagesLoaded = false;
+std::vector<QPixmap> XEnemyGraphicsItem::sharedIdleFrames;
+std::vector<QPixmap> XEnemyGraphicsItem::sharedMoveFrames;
+std::vector<QPixmap> XEnemyGraphicsItem::sharedHurtFrames;
+std::vector<QPixmap> XEnemyGraphicsItem::sharedDyingFrames;
+std::vector<QPixmap> XEnemyGraphicsItem::sharedAttackFrames;
+std::vector<QPixmap> XEnemyGraphicsItem::sharedHealFrames;
+
 XEnemyGraphicsItem::XEnemyGraphicsItem(const XEnemyModel& xenemyModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
     : EntityGraphicsItem(xenemyModel, parent), baseFramesDir(baseFramesDir){
-    loadAnimationFrames();
+    loadSharedImages();
+    idleFrames = sharedIdleFrames;
+    moveFrames = sharedMoveFrames;
+    hurtFrames = sharedHurtFrames;
+    dyingFrames = sharedDyingFrames;
+    attackFrames = sharedAttackFrames;
+    healFrames = sharedHealFrames;
 }
 
-void XEnemyGraphicsItem::loadAnimationFrames() {
-    // Load the frames for each animation state
-    loadFramesFromDirectory(baseFramesDir + "Idle/", idleFrames);
-    loadFramesFromDirectory(baseFramesDir + "Moving/", moveFrames);
-    loadFramesFromDirectory(baseFramesDir + "Hurt/", hurtFrames);
-    loadFramesFromDirectory(baseFramesDir + "Dying/", dyingFrames);
-    loadFramesFromDirectory(baseFramesDir + "Attack/", attackFrames);
-    loadFramesFromDirectory(baseFramesDir + "Heal/", healFrames);
+void XEnemyGraphicsItem::loadSharedImages() {
+    if(!imagesLoaded){
+        QString baseFramesDir = ":/images/xenemy_wraith/PNG Sequences/";
+        // Load the frames for each animation state
+        loadFramesFromDirectory(baseFramesDir + "Idle/", sharedIdleFrames);
+        loadFramesFromDirectory(baseFramesDir + "Moving/", sharedMoveFrames);
+        loadFramesFromDirectory(baseFramesDir + "Hurt/", sharedHurtFrames);
+        loadFramesFromDirectory(baseFramesDir + "Dying/", sharedDyingFrames);
+        loadFramesFromDirectory(baseFramesDir + "Attack/", sharedAttackFrames);
+        loadFramesFromDirectory(baseFramesDir + "Heal/", sharedHealFrames);
+        imagesLoaded = true;
+    }
 }
 
 void XEnemyGraphicsItem::loadFramesFromDirectory(const QString& dirPath, std::vector<QPixmap>& frames) {

@@ -1,14 +1,17 @@
 #include "GameTextView.h"
 
+void GameTextView::setCurrentWorld(const WorldModel& world){
+    this->world = &world;
+}
+
 void GameTextView::initializeView() {
-    const WorldModel& world = worldController.getCurrentWorld();
     // Extract entities from the WorldController and add them if within bounds
-    const auto& tiles = world.getTiles();
-    const auto& healthPacks = world.getHealthPacks();
-    const auto& enemies = world.getEnemies();
-    const auto& penemies = world.getPEnemies();
-    const auto& xenemies = world.getXEnemies();
-    const auto& protagonists = world.getProtagonists();
+    const auto& tiles = world->getTiles();
+    const auto& healthPacks = world->getHealthPacks();
+    const auto& enemies = world->getEnemies();
+    const auto& penemies = world->getPEnemies();
+    const auto& xenemies = world->getXEnemies();
+    const auto& protagonists = world->getProtagonists();
 
     tileTextItems.clear();
     healthpackTextItems.clear();
@@ -40,9 +43,8 @@ void GameTextView::initializeView() {
 
 
 void GameTextView::updateView() {
-    const WorldModel& world = worldController.getCurrentWorld();
-    int rows = world.getRows();
-    int cols = world.getCols();
+    int rows = world->getRows();
+    int cols = world->getCols();
 
     QString htmlString = "<html><body><pre>"; // Start HTML document
 
@@ -104,12 +106,12 @@ QString GameTextView::getNonTileRepresentation(int row, int col) {
  *      setBackground(worldController.getDifficultyIdx());
  *      this->setPlainText(backgroundString);
  *      // Extract entities from the WorldController and add them if within bounds
- *      const auto& tiles = world.getTiles();
- *      const auto& healthPacks = world.getHealthPacks();
- *      const auto& enemies = world.getEnemies();
- *      const auto& penemies = world.getPEnemies();
- *      const auto& xenemies = world.getXEnemies();
- *      const auto& protagonists = world.getProtagonists();
+ *      const auto& tiles = world->getTiles();
+ *      const auto& healthPacks = world->getHealthPacks();
+ *      const auto& enemies = world->getEnemies();
+ *      const auto& penemies = world->getPEnemies();
+ *      const auto& xenemies = world->getXEnemies();
+ *      const auto& protagonists = world->getProtagonists();
  *      for (const auto& tile : tiles) {
  *          std::unique_ptr<TileTextItem> tileTextItem = std::make_unique<TileTextItem>(*tile);
  *          tileTextItem->setIndex(calculateIndex(*tile));
@@ -146,8 +148,8 @@ QString GameTextView::getNonTileRepresentation(int row, int col) {
  *      Q_UNUSED(backgroundNumber);
  *      backgroundString.clear();
  *      const WorldModel& world = worldController.getCurrentWorld();
- *      int rows = world.getRows();
- *      int cols = world.getCols();
+ *      int rows = world->getRows();
+ *      int cols = world->getCols();
  *      QString boarderColString = ".---+";
  *      QString dataColString = "     |";
  *      QString borderGrid = "+" + boarderColString.repeated(cols) + '\n';

@@ -2,13 +2,31 @@
 
 GameController::GameController(QObject *parent)
     : QObject(parent),
+    worldController(WorldController::getInstance()),
+    viewController(ViewController::getInstance()),
     isGameStarted(false),
     isGamePaused(false),
     isGameAutoplayed(false)
 {
     /** set up connections: viewcontroller to gamecontroller */
-    auto& viewController = ViewController::getInstance();
     connect(&viewController, &ViewController::viewUpdated, this, &GameController::onViewUpdated);
+
+    // Setup the command map
+    commandMap["up"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(UP); };
+    commandMap["down"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(DOWN); };
+    commandMap["left"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(LEFT); };
+    commandMap["right"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(RIGHT); };
+    commandMap["goto"] = [this](const QStringList& args) {
+        if(args.size() >= 3) {
+            int x = args[1].toInt();
+            int y = args[2].toInt();
+            worldController.moveProtagonist(x, y);
+        }
+    };
+    commandMap["help"] = [this](const QStringList& args) {
+        Q_UNUSED(args); // This macro indicates that the args parameter is intentionally unused
+        this->displayHelp();
+    };
 }
 
 GameController::~GameController() {
@@ -62,28 +80,22 @@ void GameController::decideGameParameters() {
 
 void GameController::initializeWorld() {
     decideGameParameters();
-    qDebug()<< "help Game Controller";
 
-    auto& worldController = WorldController::getInstance();
     worldController.createWorld(gameMap, gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
     worldController.getCurrentWorld().getProtagonists()[0]->setHealth(5);
     gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
     gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
-    qDebug()<< "world Controller";
 
-    auto& viewController = ViewController::getInstance();
-    viewController.initializeViews(); // Optional: switch to initial view
-
+    viewController.initializeViews();
 }
+
 
 // Methods to switch between views
 void GameController::switchTo2DView() {
-    auto& viewController = ViewController::getInstance();
     viewController.switchTo2DView();
 }
 
 void GameController::switchToTextView() {
-    auto& viewController = ViewController::getInstance();
     viewController.switchToTextView();
 }
 
@@ -92,36 +104,38 @@ void GameController::onViewUpdated(QWidget* currentView) {
 }
 
 void GameController::onUpArrowPressed() {
-    auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
-        worldController.onUpArrowPressed();
-        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+        worldController.moveProtagonist(UP);
+        updateHealthAndEnergy();
     }
 }
 
 void GameController::onDownArrowPressed() {
-    auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
-        worldController.onDownArrowPressed();
-        gameHealth1 =worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+        worldController.moveProtagonist(DOWN);
+        updateHealthAndEnergy();
     }
 }
 
 void GameController::onLeftArrowPressed() {
-    auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
-        worldController.onLeftArrowPressed();
-        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+        worldController.moveProtagonist(LEFT);
+        updateHealthAndEnergy();
     }
 }
 
 void GameController::onRightArrowPressed() {
-    auto& worldController = WorldController::getInstance();
     if (isGameStarted) {
-        worldController.onRightArrowPressed();
-        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+        worldController.moveProtagonist(RIGHT);
+        updateHealthAndEnergy();
     }
 }
+
+void GameController::updateHealthAndEnergy() {
+    gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+    gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
+}
+
 
 int GameController::getHealth1() {
     return gameHealth1;
@@ -143,3 +157,62 @@ bool GameController::isGameOver() {
 void GameController::setGameOver() {
     isGameStarted = false;
 }
+
+void GameController::processCommand(const QString& command) {
+    QStringList args = command.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+    QString action = args.first().toLower();
+
+    auto cmdIter = commandMap.find(action);
+    if (cmdIter != commandMap.end()) {
+        cmdIter->second(args); // Execute the command
+    } else {
+        qDebug() << "Unknown command";
+        displayHelp();
+    }
+}
+
+
+void GameController::displayHelp() const {
+    QString helpText =
+        "Available commands:\n"
+        "  - up: Move the protagonist up\n"
+        "  - down: Move the protagonist down\n"
+        "  - left: Move the protagonist left\n"
+        "  - right: Move the protagonist right\n"
+        "  - goto x y: Move to the specified coordinates (x, y)\n"
+        "  - attack: Attack the nearest enemy\n"
+        "  - take: Take the nearest health pack\n"
+        "  - help: Display this help text\n";
+
+    qDebug() << helpText;
+    emit sendTextToGUI(helpText);
+}
+
+
+//void GameController::onUpArrowPressed() {
+//    if (isGameStarted) {
+//        worldController.onUpArrowPressed();
+//        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+//    }
+//}
+
+//void GameController::onDownArrowPressed() {
+//    if (isGameStarted) {
+//        worldController.onDownArrowPressed();
+//        gameHealth1 =worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+//    }
+//}
+
+//void GameController::onLeftArrowPressed() {
+//    if (isGameStarted) {
+//        worldController.onLeftArrowPressed();
+//        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+//    }
+//}
+
+//void GameController::onRightArrowPressed() {
+//    if (isGameStarted) {
+//        worldController.onRightArrowPressed();
+//        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+//    }
+//}

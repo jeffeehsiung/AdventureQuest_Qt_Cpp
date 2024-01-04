@@ -66,11 +66,8 @@ class WorldController : public QObject
         void onRightArrowPressed();
 //        void autoplay();
 
-        void onEncounterHealthPack();
-        void onEncounterEnemy();
-        void onEncounterPEnemy();
-        void onEncounterXEnemy();
-        void onEncounterAffectedTiles();
+        void moveProtagonist(Direction direction);
+        void moveProtagonist(int x, int y);
 
     signals:
         void updateprotagonistPosition(int protagonistIndex);
@@ -78,11 +75,19 @@ class WorldController : public QObject
 
     private:
         WorldController();
+
         std::vector<std::unique_ptr<WorldModel>> worlds;
         std::unique_ptr<WorldModel> currentWorld; // Changed to unique_ptr
         int difficultyIdx;
         coordinate exit = coordinate(5,5);
         coordinate start = coordinate(0,0);
+
+        void handleEncounters(const coordinate& position);
+        void onEncounterHealthPack();
+        void onEncounterEnemy();
+        void onEncounterPEnemy();
+        void onEncounterXEnemy();
+        void onEncounterAffectedTiles();
 
 };
 

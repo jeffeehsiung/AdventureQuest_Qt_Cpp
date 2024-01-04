@@ -135,7 +135,7 @@ void XEnemyModel::takeDamage(float damage) {
     status = HURT;
     std::random_device rd;  // Seed with a real random value, if available
     std::mt19937 eng(rd()); // Standard mersenne_twister_engine seeded with rd()
-    std::uniform_int_distribution<> distr(0, 3); // Range 0 to 5
+    std::uniform_int_distribution<> distr(-5, 5);
     move(distr(eng), distr(eng));
 
     QTimer::singleShot(100, this, [this, damage]() {
