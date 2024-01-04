@@ -29,8 +29,8 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
     }
     difficultyIdx = gameDifficultyIdx;
     worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
-    worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies + 3, nrOfHealthpacks, pRatio, false));
-    currentWorld = std::move(worlds[0]); // Transfer ownership
+    worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies+3, nrOfHealthpacks, pRatio, false));
+    currentWorld = worlds[0];
 //    autoplay();
 }
 
@@ -358,8 +358,6 @@ void WorldController::playerReachedExit() {
     }
 }
 
-
-
 /**
  * start and exit position functions
  */
@@ -374,7 +372,7 @@ coordinate WorldController::getExit()
     return currentWorld->getStart();
 }
 
-const std::vector<std::unique_ptr<WorldModel>>& WorldController::getWorlds() const {
+const std::vector<std::shared_ptr<WorldModel>>& WorldController::getWorlds() const {
     return worlds;
 }
 
