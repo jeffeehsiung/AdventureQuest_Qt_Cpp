@@ -42,7 +42,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     /** MainWindow connections to GameController */
     connect(gameController, &GameController::viewUpdateRequested, this, &MainWindow::onViewUpdateRequested);
-    connect(gameController, &GameController::sendTextToGUI, this, &MainWindow::displayText);
 }
 
 
@@ -80,11 +79,9 @@ void MainWindow::setupUI()
 
 
     // Add a widget for game messages in the textual tab
-    textualMessageWidget->setReadOnly(false);
+    textualMessageWidget->setReadOnly(true);
     textualMessageWidget->setStyleSheet("background-color: white;");
     textualMessageWidget->setFixedHeight(100);
-    textualMessageWidget->setPlaceholderText("> Type command here and press Enter...");
-    textualMessageWidget->installEventFilter(this);
 
     viewTabs->addTab(textualTab, "Textual");
 
@@ -255,9 +252,7 @@ void MainWindow::onViewTabChanged(int index)
     if (index == 0) {
         gameController->switchTo2DView();
     } else if (index == 1) {
-        textualMessageWidget->clear();
         gameController->switchToTextView();
-        textualMessageWidget->setFocus();
     }
 }
 
@@ -280,20 +275,33 @@ void MainWindow::displayView(QWidget* view) {
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (!gameController->isGameOver()) {
-        // Handle movement keys only when the game is not over
+        setFocusPolicy(Qt::StrongFocus);
         switch (event->key()) {
-        case Qt::Key_W: gameController->onUpArrowPressed(); break;
-        case Qt::Key_S: gameController->onDownArrowPressed(); break;
-        case Qt::Key_A: gameController->onLeftArrowPressed(); break;
-        case Qt::Key_D: gameController->onRightArrowPressed(); break;
-        default: QMainWindow::keyPressEvent(event); break;
+        case Qt::Key_W:
+            gameController->onUpArrowPressed();
+            updateHealthDisplay();
+            updateEnergyDisplay();
+            break;
+        case Qt::Key_S:
+            gameController->onDownArrowPressed();
+            updateHealthDisplay();
+            updateEnergyDisplay();
+            break;
+        case Qt::Key_A:
+            gameController->onLeftArrowPressed();
+            updateHealthDisplay();
+            updateEnergyDisplay();
+            break;
+        case Qt::Key_D:
+            gameController->onRightArrowPressed();
+            updateHealthDisplay();
+            updateEnergyDisplay();
+            break;
+        default:
+            QMainWindow::keyPressEvent(event);
         }
-        updateHealthDisplay();
-    } else {
-        QMainWindow::keyPressEvent(event);
     }
 }
-
 
 void MainWindow::updateHealthDisplay() {
     int currentHealth = gameController->getHealth1();
@@ -319,56 +327,4 @@ void MainWindow::updateEnergyDisplay() {
             energyLabels[i]->setVisible(false);
         }
     }
-}
-
-
-void MainWindow::displayText(const QString& text) {
-    graphicsMessageWidget->append(text);
-
-    QString currentText = textualMessageWidget->toPlainText();
-    textualMessageWidget->setPlainText(currentText + "\n" + text);
-    QTextCursor cursor = textualMessageWidget->textCursor();
-    cursor.movePosition(QTextCursor::End);
-    textualMessageWidget->setTextCursor(cursor);
-}
-
-bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
-    if (watched == textualMessageWidget && event->type() == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-        if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return) {
-            // Handle the Enter key press
-            QString command = textualMessageWidget->toPlainText().trimmed();
-            gameController->processCommand(command);
-            textualMessageWidget->clear();
-            return true; // indicate that the event was handled
-        }
-    }
-    // Call base class method for default processing
-    return QMainWindow::eventFilter(watched, event);
-}
-
-
-void MainWindow::displayText(const QString& text) {
-    graphicsMessageWidget->append(text);
-
-    QString currentText = textualMessageWidget->toPlainText();
-    textualMessageWidget->setPlainText(currentText + "\n" + text);
-    QTextCursor cursor = textualMessageWidget->textCursor();
-    cursor.movePosition(QTextCursor::End);
-    textualMessageWidget->setTextCursor(cursor);
-}
-
-bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
-    if (watched == textualMessageWidget && event->type() == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-        if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return) {
-            // Handle the Enter key press
-            QString command = textualMessageWidget->toPlainText().trimmed();
-            gameController->processCommand(command);
-            textualMessageWidget->clear();
-            return true; // indicate that the event was handled
-        }
-    }
-    // Call base class method for default processing
-    return QMainWindow::eventFilter(watched, event);
 }
