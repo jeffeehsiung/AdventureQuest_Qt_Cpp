@@ -3,7 +3,7 @@
 
 #include "Model/structs.h"
 #include "Model/WorldModel.h"
-//#include "pathfinder_class.h"
+#include "pathfinder.h"
 
 #include <iostream>
 #include <map>
@@ -54,8 +54,6 @@ public:
     /**
          * start and exit position functions
          */
-    coordinate getStart();
-    coordinate getExit();
 
     const std::vector<std::shared_ptr<WorldModel>>& getWorlds() const;
     const WorldModel& getCurrentWorld() const;
@@ -64,7 +62,7 @@ public:
         void onDownArrowPressed();
         void onLeftArrowPressed();
         void onRightArrowPressed();
-//        void autoplay();
+        void autoplay();
 
         void moveProtagonist(Direction direction);
         void moveProtagonist(int x, int y);
