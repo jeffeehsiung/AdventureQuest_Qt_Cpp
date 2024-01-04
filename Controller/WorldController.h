@@ -57,7 +57,7 @@ public:
     coordinate getStart();
     coordinate getExit();
 
-    const std::vector<std::unique_ptr<WorldModel>>& getWorlds() const;
+    const std::vector<std::shared_ptr<WorldModel>>& getWorlds() const;
     const WorldModel& getCurrentWorld() const;
 
         void onUpArrowPressed();
@@ -78,12 +78,9 @@ signals:
 
 private:
     WorldController();
-    std::vector<std::unique_ptr<WorldModel>> worlds;
-    std::unique_ptr<WorldModel> currentWorld; // Changed to unique_ptr
+    std::vector<std::shared_ptr<WorldModel>> worlds;
+    std::shared_ptr<WorldModel> currentWorld;
     int difficultyIdx;
-    coordinate exit = coordinate(5,5);
-    coordinate start = coordinate(0,0);
-
 };
 
 #endif // WORLDCONTROLLER_H

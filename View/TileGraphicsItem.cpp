@@ -3,11 +3,13 @@
 const float maxValue = 0.95;
 // the naming should be changed to TileGraphicsItem
 
-TileGraphicsItem::TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
+TileGraphicsItem::TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir,bool spritesLoaded , QGraphicsRectItem* parent)
     : EntityGraphicsItem(tileModel, parent), tileModel(tileModel), baseFramesDir(baseFramesDir){
     this->animationTimer->stop();
     tileModel.addObserver(this);
-    loadAnimationFrames();
+    if (!spritesLoaded) {
+        loadAnimationFrames();
+    }
 }
 
 void TileGraphicsItem::loadAnimationFrames() {

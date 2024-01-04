@@ -102,8 +102,6 @@ private:
     std::vector<std::unique_ptr<PEnemyModel>> penemies;
     std::vector<std::unique_ptr<XEnemyModel>> xenemies;
 
-
-
 };
 
 #endif // WORLDMODEL_H

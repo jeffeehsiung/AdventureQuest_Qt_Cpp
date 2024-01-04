@@ -20,9 +20,9 @@ class Game2DView : public QGraphicsView, public GameView {
 public:
     explicit Game2DView(QWidget* parent = nullptr)
         : QGraphicsView(parent){
-        easyBackground.load(":/images/world_images/worldmap.png");
-//        mediumBackground.load(":/images/world_images/maze1.png");
-//        hardBackground.load(":/images/world_images/maze2.png");
+        Background1.load(":/images/world_images/worldmap.png");
+        Background2.load(":/images/world_images/worldmap4.png");
+        Background3.load(":/images/world_images/maze2.png");
         zoomSpeed = 0.001; // Example value, adjust based on testing
         zoomLevel = 1.0;
         initZoomLevel = 1.0;
@@ -56,9 +56,9 @@ protected:
 
 private:
     QGraphicsScene* scene;
-    QPixmap easyBackground;
-//    QPixmap mediumBackground;
-//    QPixmap hardBackground;
+    QPixmap Background1;
+    QPixmap Background2;
+    QPixmap Background3;
     QPixmap backgroundImage;
     int currentBackgroundNumber;
     qreal zoomSpeed; // Zoom sensitivity factor

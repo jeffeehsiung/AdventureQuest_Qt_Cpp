@@ -10,7 +10,6 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
     // for avoding placing xenemy on the used cell
     std::vector<bool> used;
     used.reserve(rows * cols);
-
     /**
      * create tilemodels, enemymodels, penemymodels, xenemymodels, and protagonistmodels based on created world
      * */

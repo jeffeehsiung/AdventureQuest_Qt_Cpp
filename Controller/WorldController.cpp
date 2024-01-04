@@ -29,8 +29,8 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
     }
     difficultyIdx = gameDifficultyIdx;
     worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
-    worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies + 3, nrOfHealthpacks, pRatio, false));
-    currentWorld = std::move(worlds[0]); // Transfer ownership
+    worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies+3, nrOfHealthpacks, pRatio, false));
+    currentWorld = worlds[0]; // Transfer ownership
 //    autoplay();
 }
 
@@ -277,15 +277,14 @@ void WorldController::playerReachedExit() {
     if (currentWorld->getProtagonists()[0]->getPosition() == currentWorld->getExit()) {
         // Ensure that the next world exists
         if (worlds.size() > 1 && worlds[1]) {
-            auto protagonist = std::move(currentWorld->removeProtagonists());
-
+            auto protagonist = currentWorld->removeProtagonists();
             // Update the protagonist's position to the start position of the new world
             coordinate newStartPos = worlds[1]->getStart();
             for (auto& prot : protagonist) {
                 prot->setPosition(newStartPos);
             }
 
-            currentWorld = std::move(worlds[1]); // Transfer ownership to the next world
+            currentWorld = worlds[1]; // Transfer ownership to the next world
             currentWorld->addProtagonist(std::move(protagonist));
 
             emit updateLevel();
@@ -297,8 +296,6 @@ void WorldController::playerReachedExit() {
         }
     }
 }
-
-
 
 /**
  * start and exit position functions
@@ -314,7 +311,7 @@ coordinate WorldController::getExit()
     return currentWorld->getStart();
 }
 
-const std::vector<std::unique_ptr<WorldModel>>& WorldController::getWorlds() const {
+const std::vector<std::shared_ptr<WorldModel>>& WorldController::getWorlds() const {
     return worlds;
 }
 

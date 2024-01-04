@@ -18,15 +18,7 @@ void Game2DView::initializeView() {
     // Use 'world' as needed...
     setBackground(worldController.getDifficultyIdx());
 
-//    qDebug() << "backgroundImage width: " << backgroundImage.width() << "backgroundImage heght" << backgroundImage.height();
-//    qDebug() << "worldController cols: " << world.getCols() << "worldController height" << world.getRows();
-//    qDebug() << "view width: " << this->width() << "view height" << this->height();
-//    qDebug() << "scene width: " << scene->width() << "scene height" << scene->height();
-
-//    qDebug() << "tilewidth: " << tileWidth << " tileheight: " << tileHeight;
-
     scaleEntitiesToFitView();
-
     // Extract entities from the WorldController
     const std::vector<std::unique_ptr<TileModel>>& tiles = world.getTiles();
     const std::vector<std::unique_ptr<TileModel>>& healthPacks = world.getHealthPacks();
@@ -34,13 +26,21 @@ void Game2DView::initializeView() {
     const std::vector<std::unique_ptr<PEnemyModel>>& penemies = world.getPEnemies();
     const std::vector<std::unique_ptr<XEnemyModel>>& xenemies = world.getXEnemies();
     const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = world.getProtagonists();
-
+    bool yesman = true;
     /** baseFramesDir for tile is constant */
     QString tileBase = ":/images/tiles/";
     for (const auto& tile : tiles) {
-        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
-        scene->addItem(tileGraphicsItem.get());
-        tileGraphicsItems.push_back(std::move(tileGraphicsItem));
+        if(yesman == true){
+            std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase, false);
+            scene->addItem(tileGraphicsItem.get());
+            tileGraphicsItems.push_back(std::move(tileGraphicsItem));
+            yesman = false;
+        }
+        else{
+            std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase, true);
+            scene->addItem(tileGraphicsItem.get());
+            tileGraphicsItems.push_back(std::move(tileGraphicsItem));
+        }
     }
 
     /** baseFramesDir for healthpack is constant */
@@ -81,6 +81,7 @@ void Game2DView::initializeView() {
         xenemyGraphicsItems.push_back(std::move(xenemyGraphicsItem));
     }
 
+
     /** baseFramesDir for protagonist depends on numbers of protagonist*/
     QString pro1Base = ":/images/protagonist_fighter/";
     QString pro2Base = ":/images/protagonist_samurai/";
@@ -115,10 +116,10 @@ void Game2DView::initializeView() {
 void Game2DView::setBackground(int backgroundNumber) {
     // Load the background image based on the difficulty level
     switch(backgroundNumber) {
-    case 1: backgroundImage = easyBackground; tileWidth = 30; tileHeight = 30; break;
-//    case 2: backgroundImage = mediumBackground; tileWidth = 30; tileHeight = 30; break;
+    case 1: backgroundImage = Background1; tileWidth = 30; tileHeight = 30; break;
+    case 2: backgroundImage = Background2; tileWidth = 30; tileHeight = 30; break;
 //    case 3: backgroundImage = hardBackground; tileWidth = 20; tileHeight = 20; break;
-    default: backgroundImage= easyBackground; tileWidth = 30; tileHeight = 30; break;
+    default: backgroundImage= Background3; tileWidth = 30; tileHeight = 30; break;
     }
 
 
