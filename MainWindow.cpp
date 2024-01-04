@@ -307,6 +307,10 @@ void MainWindow::updateHealthDisplay() {
 
 void MainWindow::updateEnergyDisplay() {
     int currentEnergy = gameController->getEnergy1();
+    if (currentEnergy == 0) {
+        gameController->setGameOver();
+        QMessageBox::information(this, "Game Over", "DIE! YOU'VE GOT NOTHING! YOU LOSE!");
+    }
     for (int i = 0; i < energyLabels.size(); ++i) {
         if (i < currentEnergy) {
             energyLabels[i]->setVisible(true);

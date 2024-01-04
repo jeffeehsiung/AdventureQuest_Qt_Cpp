@@ -78,6 +78,27 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
         }
     }
 
+    for (const auto& XEnemyModel : xenemies) {
+        coordinate xEnemyPos = XEnemyModel->getPosition();
+        int radius = 1; 
+        for (int dx = -radius; dx <= radius; ++dx) {
+            for (int dy = -radius; dy <= radius; ++dy) {
+                int tileX = xEnemyPos.xCoordinate + dx;
+                int tileY = xEnemyPos.yCoordinate + dy;
+
+                // Check if the tile coordinates are within the world boundaries
+                if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
+                    try {
+                        auto& tileModel = this->tiles.at(tileY*this->getRows()+tileX);
+                        tileModel->setEnergyValue(2);
+                    } catch (const std::out_of_range& e) {
+                        // Handle or ignore the exception if the tile does not exist
+                    }
+                }
+            }
+        }
+    }
+
     // Choose a random distribution for x, y and strength for Xenemy
     std::random_device r;
     std::default_random_engine e1(r());

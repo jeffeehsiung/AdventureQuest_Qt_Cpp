@@ -83,6 +83,7 @@ void GameController::initializeWorld() {
 
     worldController.createWorld(gameMap, gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
     worldController.getCurrentWorld().getProtagonists()[0]->setHealth(5);
+    worldController.getCurrentWorld().getProtagonists()[0]->setEnergy(100);
     gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
     gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
 
@@ -134,6 +135,7 @@ void GameController::onRightArrowPressed() {
 void GameController::updateHealthAndEnergy() {
     gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
     gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
+    qDebug() << "Health: " << gameHealth1 << "Energy: " << gameEnergy1;
 }
 
 
