@@ -92,8 +92,22 @@ void WorldController::onUpArrowPressed() {
     if ((newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1)) && (newY >= 0) ){
         // Move the protagonist up
         currentWorld->getProtagonists()[0]->move(0, -1);
-        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
-        if (currentWorld->isEnemy(currentPosition)) {
+        if (currentWorld->getProtagonists()[0]->getEnergy() > 0) {
+            currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() - currentWorld->valueEnergyComsumingTiles(currentWorld->getProtagonists()[0]->getPosition()));
+        }
+        if (currentWorld->isEnergyRestoringTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 30);
+            }
+            currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        }
+        if (currentWorld->isEnergyBoostTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 100);
+            }
+            currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        }
+        if (currentWorld->isEnemy(currentWorld->getProtagonists()[0]->getPosition())) {
             onEncounterEnemy();
         }
         else if (currentWorld->isHealthPack(currentPosition)) {
@@ -125,8 +139,22 @@ void WorldController::onDownArrowPressed() {
     if ((newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1)) && (newY >= 0)){
         // Move the protagonist down
         currentWorld->getProtagonists()[0]->move(0, 1); // Assuming the first protagonist in the vector
-        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
-        if (currentWorld->isEnemy(currentPosition)) {
+        if (currentWorld->getProtagonists()[0]->getEnergy() > 0) {
+            currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() - currentWorld->valueEnergyComsumingTiles(currentWorld->getProtagonists()[0]->getPosition()));
+        }
+        if (currentWorld->isEnergyRestoringTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 30);
+            }
+            currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        }
+        if (currentWorld->isEnergyBoostTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 100);
+            }
+            currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        }
+        if (currentWorld->isEnemy(currentWorld->getProtagonists()[0]->getPosition())) {
             onEncounterEnemy();
         }
         else if (currentWorld->isHealthPack(currentPosition)) {
@@ -157,8 +185,22 @@ void WorldController::onLeftArrowPressed() {
     if ((newX >= 0) && (newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1))){
         // Move the protagonist left
         currentWorld->getProtagonists()[0]->move(-1, 0); // Assuming the first protagonist in the vector
-        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
-        if (currentWorld->isEnemy(currentPosition)) {
+        if (currentWorld->getProtagonists()[0]->getEnergy() > 0) {
+            currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() - currentWorld->valueEnergyComsumingTiles(currentWorld->getProtagonists()[0]->getPosition()));
+        }
+        if (currentWorld->isEnergyRestoringTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 30);
+            }
+            currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        }
+        if (currentWorld->isEnergyBoostTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 100);
+            }
+            currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        }
+        if (currentWorld->isEnemy(currentWorld->getProtagonists()[0]->getPosition())) {
             onEncounterEnemy();
         }
         else if (currentWorld->isHealthPack(currentPosition)) {
@@ -189,8 +231,22 @@ void WorldController::onRightArrowPressed() {
     if ((newX >= 0) && (newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1))){
         // Move the protagonist right
         currentWorld->getProtagonists()[0]->move(1, 0); // Assuming the first protagonist in the vector
-        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
-        if (currentWorld->isEnemy(currentPosition)) {
+        if (currentWorld->getProtagonists()[0]->getEnergy() > 0) {
+            currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() - currentWorld->valueEnergyComsumingTiles(currentWorld->getProtagonists()[0]->getPosition()));
+        }
+        if (currentWorld->isEnergyRestoringTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 30);
+            }
+            currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        }
+        if (currentWorld->isEnergyBoostTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 100);
+            }
+            currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        }
+        if (currentWorld->isEnemy(currentWorld->getProtagonists()[0]->getPosition())) {
             onEncounterEnemy();
         }
         else if (currentWorld->isHealthPack(currentPosition)) {

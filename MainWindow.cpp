@@ -117,9 +117,9 @@ void MainWindow::setupUI()
     controlLayout->addStretch(1); // Push the remaining elements to the right
 
     const int maxHealth = 5;
-    const int maxEnergy = 50;
-    const QSize heartSize(30, 30);
-    const QSize energySize(5, 5);
+    const int maxEnergy = 100;
+    const QSize heartSize(20, 20);
+    const QSize energySize(3, 3);
 
     for (int i = 0; i < maxHealth; ++i) {
         QLabel* healthLabel = new QLabel(this);
@@ -280,18 +280,22 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_W:
             gameController->onUpArrowPressed();
             updateHealthDisplay();
+            updateEnergyDisplay();
             break;
         case Qt::Key_S:
             gameController->onDownArrowPressed();
             updateHealthDisplay();
+            updateEnergyDisplay();
             break;
         case Qt::Key_A:
             gameController->onLeftArrowPressed();
             updateHealthDisplay();
+            updateEnergyDisplay();
             break;
         case Qt::Key_D:
             gameController->onRightArrowPressed();
             updateHealthDisplay();
+            updateEnergyDisplay();
             break;
         default:
             QMainWindow::keyPressEvent(event);
@@ -315,5 +319,12 @@ void MainWindow::updateHealthDisplay() {
 }
 
 void MainWindow::updateEnergyDisplay() {
-
+    int currentEnergy = gameController->getEnergy1();
+    for (int i = 0; i < energyLabels.size(); ++i) {
+        if (i < currentEnergy) {
+            energyLabels[i]->setVisible(true);
+        } else {
+            energyLabels[i]->setVisible(false);
+        }
+    }
 }

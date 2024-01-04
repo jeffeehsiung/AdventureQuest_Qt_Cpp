@@ -101,6 +101,7 @@ void GameController::onUpArrowPressed() {
     if (isGameStarted) {
         worldController.onUpArrowPressed();
         gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+        gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
     }
 }
 
@@ -109,6 +110,7 @@ void GameController::onDownArrowPressed() {
     if (isGameStarted) {
         worldController.onDownArrowPressed();
         gameHealth1 =worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+        gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
     }
 }
 
@@ -117,6 +119,7 @@ void GameController::onLeftArrowPressed() {
     if (isGameStarted) {
         worldController.onLeftArrowPressed();
         gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+        gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
     }
 }
 
@@ -125,6 +128,7 @@ void GameController::onRightArrowPressed() {
     if (isGameStarted) {
         worldController.onRightArrowPressed();
         gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+        gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
     }
 }
 
