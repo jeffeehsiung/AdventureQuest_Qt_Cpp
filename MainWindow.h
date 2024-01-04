@@ -32,7 +32,8 @@ private:
     QPushButton *pauseButton;
     QPushButton *quitButton;
     QVector<QLabel*> healthLabels;
-    QVector<QLabel*> energyLabels;
+    QLabel *energyLabel;
+    QLabel *energyValueLabel;
     QSlider *animationDelaySlider;
     QSlider *heuristicWeightFactorSlider;
     QLabel *animationDelayLabel;

@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent)
     difficultyLevelComboBox(new QComboBox(this)),
     playerNumberLabel(new QLabel("Number of Players", this)),
     difficultyLevelLabel(new QLabel("Difficulty Level", this)),
+    energyLabel(new QLabel("Energy: ", this)),
+    energyValueLabel(new QLabel("100", this)),
     graphicsMessageWidget(new QTextEdit(this)),
     textualMessageWidget(new QTextEdit(this)),
     isGamePaused(false),
@@ -118,8 +120,7 @@ void MainWindow::setupUI()
 
     const int maxHealth = 5;
     const int maxEnergy = 100;
-    const QSize heartSize(20, 20);
-    const QSize energySize(3, 3);
+    const QSize heartSize(30, 30);
 
     for (int i = 0; i < maxHealth; ++i) {
         QLabel* healthLabel = new QLabel(this);
@@ -129,13 +130,8 @@ void MainWindow::setupUI()
         controlLayout->addWidget(healthLabel);
     }
 
-    for (int i = 0; i < maxEnergy; ++i) {
-        QLabel* energyLabel = new QLabel(this);
-        QPixmap starPixmap(":/images/tiles/Idle/00.png");
-        energyLabel->setPixmap(starPixmap.scaled(energySize, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        energyLabels.append(energyLabel);
-        controlLayout->addWidget(energyLabel);
-    }
+    controlLayout->addWidget(energyLabel);
+    controlLayout->addWidget(energyValueLabel);
 
     // Add control layout to the main layout
     mainLayout->addLayout(controlLayout);
@@ -150,7 +146,7 @@ void MainWindow::onStartButtonClicked()
     QString difficultyLevel = difficultyLevelComboBox->currentText();
 
     QString message = QString("Game started with %1 players and level of difficulty: %2")
-                          .arg(numberOfPlayers, difficultyLevel);
+                        .arg(numberOfPlayers, difficultyLevel);
 
     graphicsMessageWidget->append(message);
     textualMessageWidget->append(message);
@@ -179,7 +175,11 @@ void MainWindow::onStartButtonClicked()
     gameController->readGameAutoplayed(false);
     gameController->readGameNumberOfPlayers(numberOfPlayers);
     gameController->readGameDifficultyLevel(difficultyLevel);
-    gameController->initializeWorld();
+    if (startButton->text() != "Restart") {
+        gameController->initializeWorld();
+    } else {
+        gameController->reInitializeWorld();
+    }
 }
 
 void MainWindow::onPauseButtonClicked()
@@ -187,6 +187,7 @@ void MainWindow::onPauseButtonClicked()
     if (isGamePaused) {
         graphicsMessageWidget->append("Game unpaused!");
         textualMessageWidget->append("Game unpaused!");
+        gameController->readGameStarted(true);
         pauseButton->setText("Pause");
         autoPlayButton->setEnabled(true);
         autoPlayButton->setStyleSheet("");
@@ -194,12 +195,12 @@ void MainWindow::onPauseButtonClicked()
     } else {
         graphicsMessageWidget->append("Game paused!");
         textualMessageWidget->append("Game paused!");
+        gameController->readGameStarted(false);
         pauseButton->setText("Unpause");
         autoPlayButton->setEnabled(false);
         autoPlayButton->setStyleSheet("background-color: grey;");
         isGamePaused = true;
     }
-    gameController->readGamePaused(isGamePaused);
     gameController->printAllGameInfo();
 }
 
@@ -244,7 +245,7 @@ void MainWindow::onQuitButtonClicked()
     gameController->printAllGameInfo();
 
     gameController->setGameOver();
-    startButton->setText("Exit");
+    startButton->setText("Restart");
 }
 
 void MainWindow::onViewTabChanged(int index)
@@ -311,13 +312,7 @@ void MainWindow::updateEnergyDisplay() {
         gameController->setGameOver();
         QMessageBox::information(this, "Game Over", "DIE! YOU'VE GOT NOTHING! YOU LOSE!");
     }
-    for (int i = 0; i < energyLabels.size(); ++i) {
-        if (i < currentEnergy) {
-            energyLabels[i]->setVisible(true);
-        } else {
-            energyLabels[i]->setVisible(false);
-        }
-    }
+    energyValueLabel->setText(QString::number(currentEnergy));
 }
 
 void MainWindow::displayText(const QString& text) {

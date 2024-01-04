@@ -90,6 +90,12 @@ void GameController::initializeWorld() {
     viewController.initializeViews();
 }
 
+void GameController::reInitializeWorld() {
+    worldController.getCurrentWorld().getProtagonists()[0]->setHealth(5);
+    worldController.getCurrentWorld().getProtagonists()[0]->setEnergy(100);
+    gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+    gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
+}
 
 // Methods to switch between views
 void GameController::switchTo2DView() {

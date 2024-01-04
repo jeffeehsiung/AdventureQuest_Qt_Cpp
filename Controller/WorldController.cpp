@@ -183,6 +183,19 @@ void WorldController::moveProtagonist(Direction direction) {
             }
             currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
         }
+        if (currentWorld->isEnergyHealthBoostTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+            qDebug() << "Encountered a energy health boost tile!!!!!" << "\n";
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 100);
+                if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
+                    currentWorld->getProtagonists()[0]->setEnergy(100);
+                }
+            }
+            if (currentWorld->getProtagonists()[0]->getHealth() > 0 && currentWorld->getProtagonists()[0]->getHealth() < 5) {
+                currentWorld->getProtagonists()[0]->setHealth(currentWorld->getProtagonists()[0]->getHealth() + 5);
+            }
+            // currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        }
 
         currentPosition = currentWorld->getProtagonists()[0]->getPosition();
         handleEncounters(currentPosition);

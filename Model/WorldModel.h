@@ -47,6 +47,7 @@ public:
      int valueEnergyComsumingTiles(coordinate);
      bool isEnergyRestoringTiles(coordinate coord);
      bool isEnergyBoostTiles(coordinate coord);
+     bool isEnergyHealthBoostTiles(coordinate coord);
      void setEnergyRestoringTilesZero(coordinate coord);
     /**
          * type of enemy check
