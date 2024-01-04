@@ -11,7 +11,7 @@
 
 class TileGraphicsItem : public EntityGraphicsItem, public TileObserver {
 public:
-    TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, bool spritesLoaded = false, QGraphicsRectItem* parent = nullptr);
+    TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent = nullptr);
 
     QRectF boundingRect() const override;
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget) override;

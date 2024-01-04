@@ -192,7 +192,7 @@ bool XEnemyModel::releaseThunder() {
 
    if (thunderCallCount < 2) {
         // Schedule the next call with a random delay
-        int delay = arc4random() % 5; // Random delay between 0 and 4 seconds
+        int delay = rand() % 5; // Random delay between 0 and 4 seconds
         QTimer::singleShot(delay * 1000, this, SLOT(releaseThunder()));
         return true;
    } else {

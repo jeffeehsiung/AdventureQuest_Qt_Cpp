@@ -30,7 +30,7 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
     difficultyIdx = gameDifficultyIdx;
     worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
     worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies+3, nrOfHealthpacks, pRatio, false));
-    currentWorld = worlds[0]; // Transfer ownership
+    currentWorld = worlds[0];
 //    autoplay();
 }
 

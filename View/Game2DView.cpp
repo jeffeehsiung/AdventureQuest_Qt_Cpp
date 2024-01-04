@@ -28,17 +28,11 @@ void Game2DView::initializeView() {
     /** baseFramesDir for tile is constant */
     QString tileBase = ":/images/tiles/";
     for (const auto& tile : tiles) {
-        if(yesman == true){
-            std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase, false);
+
+            std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
             scene->addItem(tileGraphicsItem.get());
             tileGraphicsItems.push_back(std::move(tileGraphicsItem));
-            yesman = false;
-        }
-        else{
-            std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase, true);
-            scene->addItem(tileGraphicsItem.get());
-            tileGraphicsItems.push_back(std::move(tileGraphicsItem));
-        }
+
     }
 
     /** baseFramesDir for portal is constant */
@@ -148,10 +142,10 @@ void Game2DView::setBackgroundNumber(int backgroundNumber){
 void Game2DView::setBackground(int backgroundNumber) {
     // Load the background image based on the difficulty level
     switch(backgroundNumber) {
-    case 1: backgroundImage = easyBackground; tileWidth = 30; tileHeight = 30; break;
-    case 2: backgroundImage = mediumBackground; tileWidth = 30; tileHeight = 30; break;
-    case 3: backgroundImage = hardBackground; tileWidth = 20; tileHeight = 20; break;
-    default: backgroundImage= easyBackground; tileWidth = 30; tileHeight = 30; break;
+    case 1: backgroundImage = Background1; tileWidth = 30; tileHeight = 30; break;
+    case 2: backgroundImage = Background2; tileWidth = 30; tileHeight = 30; break;
+    case 3: backgroundImage = Background3; tileWidth = 20; tileHeight = 20; break;
+    default: backgroundImage= Background1; tileWidth = 30; tileHeight = 30; break;
     }
 
     backgroundImage = backgroundImage.scaled(tileWidth * world->getCols(),

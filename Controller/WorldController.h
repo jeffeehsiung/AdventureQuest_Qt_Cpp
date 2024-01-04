@@ -76,11 +76,9 @@ signals:
     private:
         WorldController();
 
-        std::vector<std::unique_ptr<WorldModel>> worlds;
-        std::unique_ptr<WorldModel> currentWorld; // Changed to unique_ptr
+        std::vector<std::shared_ptr<WorldModel>> worlds;
+        std::shared_ptr<WorldModel> currentWorld; // Changed to unique_ptr
         int difficultyIdx;
-        coordinate exit = coordinate(5,5);
-        coordinate start = coordinate(0,0);
 
         void handleEncounters(const coordinate& position);
         void onEncounterHealthPack();
