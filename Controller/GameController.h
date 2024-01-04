@@ -4,6 +4,10 @@
 #include <QObject>
 #include <QString>
 #include <QDebug>
+#include <QRegularExpression>
+#include <functional>
+#include <map>
+#include <QStringList>
 #include "Controller/WorldController.h"
 #include "Controller/ViewController.h"
 
@@ -33,6 +37,9 @@ public:
     void onLeftArrowPressed();
     void onRightArrowPressed();
 
+//    void processCommand(const QString& command);
+    void displayHelp() const;
+
     int getHealth1();
     int getEnergy1();
 
@@ -41,11 +48,16 @@ public:
 
 public slots:
     void onViewUpdated(QWidget* currentView);
+    void processCommand(const QString& command);
 
 signals:
     void viewUpdateRequested(QWidget* currentView);
+    void sendTextToGUI(const QString& text) const;
 
 private:
+    WorldController& worldController;
+    ViewController& viewController;
+
     bool isGameStarted;
     bool isGamePaused;
     bool isGameAutoplayed;
@@ -56,6 +68,10 @@ private:
     float gamePRatio;
     int gameHealth1;
     int gameEnergy1;
+
+    std::map<QString, std::function<void(const QStringList&)>> commandMap;
+
+    void updateHealthAndEnergy();
 };
 
 #endif // GAMECONTROLLER_H

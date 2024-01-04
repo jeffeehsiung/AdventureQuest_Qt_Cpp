@@ -80,6 +80,7 @@ class XEnemyModel : public Enemy, public Entity {
 
     private:
         float thunderLevel;
+        int thunderCallCount = 0;
 };
 
 #endif // ENEMYMODEL_H
