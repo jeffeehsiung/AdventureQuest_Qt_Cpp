@@ -42,7 +42,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     /** MainWindow connections to GameController */
     connect(gameController, &GameController::viewUpdateRequested, this, &MainWindow::onViewUpdateRequested);
-    connect(gameController, &GameController::sendTextToGUI, this, &MainWindow::displayText);
 }
 
 
@@ -80,11 +79,9 @@ void MainWindow::setupUI()
 
 
     // Add a widget for game messages in the textual tab
-    textualMessageWidget->setReadOnly(false);
+    textualMessageWidget->setReadOnly(true);
     textualMessageWidget->setStyleSheet("background-color: white;");
     textualMessageWidget->setFixedHeight(100);
-    textualMessageWidget->setPlaceholderText("> Type command here and press Enter...");
-    textualMessageWidget->installEventFilter(this);
 
     viewTabs->addTab(textualTab, "Textual");
 
@@ -255,9 +252,7 @@ void MainWindow::onViewTabChanged(int index)
     if (index == 0) {
         gameController->switchTo2DView();
     } else if (index == 1) {
-        textualMessageWidget->clear();
         gameController->switchToTextView();
-        textualMessageWidget->setFocus();
     }
 }
 
@@ -280,7 +275,7 @@ void MainWindow::displayView(QWidget* view) {
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (!gameController->isGameOver()) {
-        // Handle movement keys only when the game is not over
+        setFocusPolicy(Qt::StrongFocus);
         switch (event->key()) {
         case Qt::Key_W: gameController->onUpArrowPressed(); break;
         case Qt::Key_S: gameController->onDownArrowPressed(); break;
@@ -294,7 +289,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         QMainWindow::keyPressEvent(event);
     }
 }
-
 
 void MainWindow::updateHealthDisplay() {
     int currentHealth = gameController->getHealth1();
