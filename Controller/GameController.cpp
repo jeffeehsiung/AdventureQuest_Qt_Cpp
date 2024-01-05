@@ -68,7 +68,7 @@ void GameController::decideGameParameters() {
         gameDifficultyIdx = 1;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.1 : 0.2;
     } else if (gameDifficultyLevel == "Medium") {
-        gameMap = ":/images/world_images/maze1.png";
+        gameMap = ":/images/world_images/worldmap2.png";
         gameDifficultyIdx = 2;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.2 : 0.4;
     } else if (gameDifficultyLevel == "Hard") {

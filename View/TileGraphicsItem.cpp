@@ -62,7 +62,7 @@ void TileGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* 
     float tileVal = this->tileModel.getValue();
     int maxIndex = idleFrames.size()-1;
     if(tileVal < 1){
-        int backgroundIndex = static_cast<int>(this->tileModel.getValue() * maxIndex / maxValue) % (maxIndex);
+        int backgroundIndex = static_cast<int>((1.0 - this->tileModel.getValue()) * maxIndex) % maxIndex;
         backgroundImage = idleFrames[backgroundIndex];
     }else{
         backgroundImage = idleFrames[maxIndex];
