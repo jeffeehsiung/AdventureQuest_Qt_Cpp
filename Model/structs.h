@@ -20,6 +20,15 @@ struct coordinate {
 public:
     int getXPos() const{return xCoordinate;}
     int getYPos() const{return yCoordinate;}
+
+    void setXPos(int x) {
+        xCoordinate = x;
+    }
+
+    // Setter method for yCoordinate
+    void setYPos(int y) {
+        yCoordinate = y;
+    }
 };
 
 struct node {

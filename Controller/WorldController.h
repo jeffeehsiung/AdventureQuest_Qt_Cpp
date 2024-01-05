@@ -75,7 +75,7 @@ signals:
         WorldController();
 
         std::vector<std::shared_ptr<WorldModel>> worlds;
-        std::shared_ptr<WorldModel> currentWorld; // Changed to unique_ptr
+        std::shared_ptr<WorldModel> currentWorld;
         int difficultyIdx;
 
         void handleEncounters(const coordinate& position);
