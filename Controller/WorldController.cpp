@@ -298,6 +298,41 @@ void WorldController::moveProtagonist(Direction direction) {
         currentWorld->getProtagonists()[0]->move(newX - currentPosition.xCoordinate, newY - currentPosition.yCoordinate);
 
         // Perform checks after movement
+        if (currentWorld->getProtagonists()[0]->getEnergy() > 0) {
+            currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() - currentWorld->valueEnergyComsumingTiles(currentWorld->getProtagonists()[0]->getPosition()));
+        }
+        if (currentWorld->isEnergyRestoringTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 30);
+                if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
+                    currentWorld->getProtagonists()[0]->setEnergy(100);
+                }
+            }
+            currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        }
+        if (currentWorld->isEnergyBoostTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 100);
+                if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
+                    currentWorld->getProtagonists()[0]->setEnergy(100);
+                }
+            }
+            currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        }
+        if (currentWorld->isEnergyHealthBoostTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+            qDebug() << "Encountered a energy health boost tile!!!!!" << "\n";
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 100);
+                if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
+                    currentWorld->getProtagonists()[0]->setEnergy(100);
+                }
+            }
+            if (currentWorld->getProtagonists()[0]->getHealth() > 0 && currentWorld->getProtagonists()[0]->getHealth() < 5) {
+                currentWorld->getProtagonists()[0]->setHealth(currentWorld->getProtagonists()[0]->getHealth() + 5);
+            }
+            // currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        }
+
         currentPosition = currentWorld->getProtagonists()[0]->getPosition();
         handleEncounters(currentPosition);
 
