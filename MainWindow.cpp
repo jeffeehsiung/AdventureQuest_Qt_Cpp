@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     playerNumberLabel(new QLabel("Number of Players", this)),
     difficultyLevelLabel(new QLabel("Difficulty Level", this)),
     energyLabel(new QLabel("Energy: ", this)),
-    energyValueLabel(new QLabel("100", this)),
+    energyValueLabel(new QLabel("100.00", this)),
     graphicsMessageWidget(new QTextEdit(this)),
     textualMessageWidget(new QTextEdit(this)),
     isGamePaused(false),
@@ -293,7 +293,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 
 void MainWindow::updateHealthDisplay() {
     int currentHealth = gameController->getHealth1();
-    if (currentHealth == 0) {
+    if (currentHealth <= 0) {
         gameController->setGameOver();
         QMessageBox::information(this, "Game Over", "DIE! YOU'VE GOT NOTHING! YOU LOSE!");
     }
@@ -307,12 +307,14 @@ void MainWindow::updateHealthDisplay() {
 }
 
 void MainWindow::updateEnergyDisplay() {
-    int currentEnergy = gameController->getEnergy1();
-    if (currentEnergy == 0) {
+    float currentEnergy = gameController->getEnergy1();
+    if (currentEnergy <= 0) {
         gameController->setGameOver();
         QMessageBox::information(this, "Game Over", "DIE! YOU'VE GOT NOTHING! YOU LOSE!");
     }
-    energyValueLabel->setText(QString::number(currentEnergy));
+    QString b;
+    b.setNum(currentEnergy);
+    energyValueLabel->setText(b);
 }
 
 void MainWindow::displayText(const QString& text) {

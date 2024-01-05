@@ -18,7 +18,7 @@ class ProtagonistModel : public QObject, public Entity {
         // Additional functionalities specific to ProtagonistModel
         int getHealth() const;
         void setHealth(float health);
-        int getEnergy() const;
+        float getEnergy() const;
         void setEnergy(float energy);
         std::string serialize() const;
 

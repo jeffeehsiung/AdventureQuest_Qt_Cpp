@@ -149,7 +149,7 @@ int GameController::getHealth1() {
     return gameHealth1;
 }
 
-int GameController::getEnergy1() {
+float GameController::getEnergy1() {
     return gameEnergy1;
 }
 

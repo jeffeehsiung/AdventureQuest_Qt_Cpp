@@ -44,7 +44,7 @@ public:
          */
     bool isHealthPack(coordinate);
     bool isAffectedTiles(coordinate);
-     int valueEnergyComsumingTiles(coordinate);
+     float valueEnergyComsumingTiles(coordinate);
      bool isEnergyRestoringTiles(coordinate coord);
      bool isEnergyBoostTiles(coordinate coord);
      bool isEnergyHealthBoostTiles(coordinate coord);

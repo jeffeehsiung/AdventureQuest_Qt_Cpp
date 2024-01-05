@@ -212,11 +212,11 @@ bool WorldModel::isAffectedTiles(coordinate coord)
     return false;
 }
 
-int WorldModel::valueEnergyComsumingTiles(coordinate coord)
+float WorldModel::valueEnergyComsumingTiles(coordinate coord)
 {
     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
         qDebug() << "Tile value: " << tileModel->getValue() << "\n";
-        return std::ceil(tileModel->getValue() + 0.5f);
+        return (1-tileModel->getValue());
     }
 }
 
