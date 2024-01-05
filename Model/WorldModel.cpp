@@ -340,3 +340,69 @@ std::vector<std::unique_ptr<ProtagonistModel>> WorldModel::removeProtagonists(){
     return std::move(protagonists);
 }
 
+coordinate WorldModel::findNearestHealthPack(){
+    int distance = 1000;
+    coordinate returnCoordinate(0,0);
+    for (const auto& tile : healthPacks ){
+        int thisDistance = floor(sqrt( pow(protagonists[0]->getPosition().getXPos() - tile->getPosition().getXPos(),2) + pow(protagonists[0]->getPosition().getYPos() - tile->getPosition().getYPos(),2) ));
+        if ( thisDistance < distance ){
+            //cout << "new distance: " << thisDistance << endl;
+            distance = thisDistance;
+            returnCoordinate.setXPos(tile->getPosition().getXPos());
+            returnCoordinate.setYPos(tile->getPosition().getYPos());
+        }
+    }
+    return returnCoordinate;
+}
+
+coordinate WorldModel::findNearestEnemy(){
+    int distance = 1000;
+    coordinate returnCoordinate(0,0);
+    for (const auto& tile : enemies ){
+        if(!tile->isDefeated()){
+            int thisDistance = floor(sqrt( pow(protagonists[0]->getPosition().getXPos() - tile->getPosition().getXPos(),2) + pow(protagonists[0]->getPosition().getYPos() - tile->getPosition().getYPos(),2) ));
+            if ( thisDistance < distance ){
+                //cout << "new distance: " << thisDistance << endl;
+                distance = thisDistance;
+                returnCoordinate.setXPos(tile->getPosition().getXPos());
+                returnCoordinate.setYPos(tile->getPosition().getYPos());
+            }
+        }
+    }
+    return returnCoordinate;
+}
+
+coordinate WorldModel::findNearestPEnemy(){
+    int distance = 1000;
+    coordinate returnCoordinate(0,0);
+    for (const auto& tile : penemies ){
+        if(!tile->isDefeated()){
+            int thisDistance = floor(sqrt( pow(protagonists[0]->getPosition().getXPos() - tile->getPosition().getXPos(),2) + pow(protagonists[0]->getPosition().getYPos() - tile->getPosition().getYPos(),2) ));
+            if ( thisDistance < distance ){
+                //cout << "new distance: " << thisDistance << endl;
+                distance = thisDistance;
+                returnCoordinate.setXPos(tile->getPosition().getXPos());
+                returnCoordinate.setYPos(tile->getPosition().getYPos());
+            }
+        }
+    }
+    return returnCoordinate;
+}
+
+coordinate WorldModel::findNearestXEnemy(){
+    int distance = 1000;
+    coordinate returnCoordinate(0,0);
+    for (const auto& tile : xenemies ){
+        if(!tile->isDefeated()){
+            int thisDistance = floor(sqrt( pow(protagonists[0]->getPosition().getXPos() - tile->getPosition().getXPos(),2) + pow(protagonists[0]->getPosition().getYPos() - tile->getPosition().getYPos(),2) ));
+            if ( thisDistance < distance ){
+                //cout << "new distance: " << thisDistance << endl;
+                distance = thisDistance;
+                returnCoordinate.setXPos(tile->getPosition().getXPos());
+                returnCoordinate.setYPos(tile->getPosition().getYPos());
+            }
+        }
+    }
+    return returnCoordinate;
+}
+

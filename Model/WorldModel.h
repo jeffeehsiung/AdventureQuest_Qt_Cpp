@@ -79,13 +79,19 @@ public:
     coordinate getExit() const;
     coordinate* getStartValue();
     coordinate* getExitValue();
-    std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
+    coordinate findNearestHealthPack();
+    coordinate findNearestEnemy();
+    coordinate findNearestPEnemy();
+    coordinate findNearestXEnemy();
+
     std::vector<node> nodes;
     ProtagonistModel* currentProtagonist;
     EnemyModel* currentEnemy;
     PEnemyModel* currentPEnemy;
     XEnemyModel* currentXEnemy;
     TileModel* currentHealthpack;
+
+
 
 public slots:
     void setAffectedTiles(bool xenemyType, float value);
@@ -101,6 +107,7 @@ private:
     std::vector<std::unique_ptr<EnemyModel>> enemies;
     std::vector<std::unique_ptr<PEnemyModel>> penemies;
     std::vector<std::unique_ptr<XEnemyModel>> xenemies;
+    std::vector<std::unique_ptr<ProtagonistModel>> protagonists;
 
 };
 

@@ -32,6 +32,10 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
     worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies+3, nrOfHealthpacks, pRatio, false));
     currentWorld = worlds[0];
     autoplay();
+    qDebug() << "Nearest Healthpack: " << currentWorld->findNearestHealthPack().getXPos() << " " << currentWorld->findNearestHealthPack().getYPos();
+    qDebug() << "Nearest Enemy: " << currentWorld->findNearestEnemy().getXPos() << " " << currentWorld->findNearestEnemy().getYPos();
+    qDebug() << "Nearest PEnemy: " << currentWorld->findNearestPEnemy().getXPos() << " " << currentWorld->findNearestPEnemy().getYPos();
+    qDebug() << "Nearest XEnemy: " << currentWorld->findNearestXEnemy().getXPos() << " " << currentWorld->findNearestXEnemy().getYPos();
 }
 
 /**
@@ -56,7 +60,7 @@ int WorldController::getCols() const
 int WorldController::getNumOfProtagonists() const
 {
     /** return the size of protagonist vector */
-    return currentWorld->protagonists.size();
+    return currentWorld->getProtagonists().size();
 }
 
 int WorldController::getDifficultyIdx() const
@@ -206,7 +210,7 @@ void WorldController::onRightArrowPressed() {
             onEncounterAffectedTiles();
         }
         emit updateprotagonistPosition(0);
-//        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
+        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
     }
     playerReachedExit();
 }
@@ -390,6 +394,7 @@ void WorldController::autoplay(){
         qDebug() << move << "path";
    }
 }
+
 
 
 
