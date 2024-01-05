@@ -31,7 +31,7 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
     worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
     worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies+3, nrOfHealthpacks, pRatio, false));
     currentWorld = worlds[0];
-//    autoplay();
+    //    autoplay();
     qDebug() << "Nearest Healthpack: " << currentWorld->findNearestHealthPack().getXPos() << " " << currentWorld->findNearestHealthPack().getYPos();
     qDebug() << "Nearest Enemy: " << currentWorld->findNearestEnemy().getXPos() << " " << currentWorld->findNearestEnemy().getYPos();
     qDebug() << "Nearest PEnemy: " << currentWorld->findNearestPEnemy().getXPos() << " " << currentWorld->findNearestPEnemy().getYPos();
@@ -112,7 +112,7 @@ void WorldController::onUpArrowPressed() {
         else if(currentWorld->isAffectedTiles(currentPosition)){
             onEncounterAffectedTiles();
         }
-//        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
+        //        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
         emit updateprotagonistPosition(0);
     }
     playerReachedExit();
@@ -146,7 +146,7 @@ void WorldController::onDownArrowPressed() {
             onEncounterAffectedTiles();
         }
         emit updateprotagonistPosition(0);
-//        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
+        //        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
     }
     playerReachedExit();
 }
@@ -178,7 +178,7 @@ void WorldController::onLeftArrowPressed() {
             onEncounterAffectedTiles();
         }
         emit updateprotagonistPosition(0);
-//        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
+        //        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
     }
     playerReachedExit();
 }
@@ -301,36 +301,66 @@ void WorldController::moveProtagonist(Direction direction) {
         if (currentWorld->getProtagonists()[0]->getEnergy() > 0) {
             currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() - currentWorld->valueEnergyComsumingTiles(currentWorld->getProtagonists()[0]->getPosition()));
         }
-        if (currentWorld->isEnergyRestoringTiles(currentWorld->getProtagonists()[0]->getPosition())) {
-            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
-                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 30);
-                if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
-                    currentWorld->getProtagonists()[0]->setEnergy(100);
-                }
+        // if (currentWorld->isEnergyRestoringTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+        //     if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+        //         currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 30);
+        //         if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
+        //             currentWorld->getProtagonists()[0]->setEnergy(100);
+        //         }
+        //     }
+        //     currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        // }
+        // if (currentWorld->isEnergyBoostTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+        //     if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+        //         currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 100);
+        //         if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
+        //             currentWorld->getProtagonists()[0]->setEnergy(100);
+        //         }
+        //     }
+        //     currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        // }
+        // if (currentWorld->isEnergyHealthBoostTiles(currentWorld->getProtagonists()[0]->getPosition())) {
+        //     qDebug() << "Encountered a energy health boost tile!!!!!" << "\n";
+        //     if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
+        //         currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 100);
+        //         if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
+        //             currentWorld->getProtagonists()[0]->setEnergy(100);
+        //         }
+        //     }
+        //     if (currentWorld->getProtagonists()[0]->getHealth() > 0 && currentWorld->getProtagonists()[0]->getHealth() < 5) {
+        //         currentWorld->getProtagonists()[0]->setHealth(currentWorld->getProtagonists()[0]->getHealth() + 5);
+        //     }
+        //     // currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
+        // }
+        int tempEnemy = flagEnemy;
+        flagEnemy = currentWorld->getEnemies().size() - currentWorld->getEnemyCounts();
+        if (tempEnemy != flagEnemy) {
+            currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 10);
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(100);
             }
-            currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
         }
-        if (currentWorld->isEnergyBoostTiles(currentWorld->getProtagonists()[0]->getPosition())) {
-            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
-                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 100);
-                if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
-                    currentWorld->getProtagonists()[0]->setEnergy(100);
-                }
+
+        int tempPEnemy = flagPEnemy;
+        flagPEnemy = currentWorld->getPEnemies().size() - currentWorld->getPEnemyCounts();
+        if (tempPEnemy != flagPEnemy) {
+            currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 30);
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(100);
             }
-            currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
         }
-        if (currentWorld->isEnergyHealthBoostTiles(currentWorld->getProtagonists()[0]->getPosition())) {
-            qDebug() << "Encountered a energy health boost tile!!!!!" << "\n";
-            if (currentWorld->getProtagonists()[0]->getEnergy() > 0 && currentWorld->getProtagonists()[0]->getEnergy() < 100) {
-                currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 100);
-                if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
-                    currentWorld->getProtagonists()[0]->setEnergy(100);
-                }
+
+        int tempXEnemy = flagXEnemy;
+        flagXEnemy = currentWorld->getXEnemies().size() - currentWorld->getXEnemyCounts();
+        if (tempXEnemy != flagXEnemy) {
+            currentWorld->getProtagonists()[0]->setEnergy(currentWorld->getProtagonists()[0]->getEnergy() + 50);
+            if (currentWorld->getProtagonists()[0]->getEnergy() > 100) {
+                currentWorld->getProtagonists()[0]->setEnergy(100);
             }
-            if (currentWorld->getProtagonists()[0]->getHealth() > 0 && currentWorld->getProtagonists()[0]->getHealth() < 5) {
-                currentWorld->getProtagonists()[0]->setHealth(currentWorld->getProtagonists()[0]->getHealth() + 5);
+            currentWorld->getProtagonists()[0]->setHealth(currentWorld->getProtagonists()[0]->getHealth() + 5);
+            if (currentWorld->getProtagonists()[0]->getHealth() > 5) {
+                currentWorld->getProtagonists()[0]->setHealth(5);
             }
-            // currentWorld->setEnergyRestoringTilesZero(currentWorld->getProtagonists()[0]->getPosition());
         }
 
         currentPosition = currentWorld->getProtagonists()[0]->getPosition();

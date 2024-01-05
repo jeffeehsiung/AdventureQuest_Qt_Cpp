@@ -45,10 +45,13 @@ public:
     bool isHealthPack(coordinate);
     bool isAffectedTiles(coordinate);
      float valueEnergyComsumingTiles(coordinate);
-     bool isEnergyRestoringTiles(coordinate coord);
-     bool isEnergyBoostTiles(coordinate coord);
-     bool isEnergyHealthBoostTiles(coordinate coord);
-     void setEnergyRestoringTilesZero(coordinate coord);
+     // bool isEnergyRestoringTiles(coordinate coord);
+     // bool isEnergyBoostTiles(coordinate coord);
+     // bool isEnergyHealthBoostTiles(coordinate coord);
+     // void setEnergyRestoringTilesZero(coordinate coord);
+     int getEnemyCounts();
+     int getPEnemyCounts();
+     int getXEnemyCounts();
     /**
          * type of enemy check
          */

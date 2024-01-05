@@ -34,10 +34,10 @@ public:
     void addProtagonist(ProtagonistModel&);
     void removeProtagonist(ProtagonistModel&);
 
-        int getNumOfProtagonists() const;
-        int getDifficultyIdx() const;
+    int getNumOfProtagonists() const;
+    int getDifficultyIdx() const;
 
-        /**
+    /**
          * defeated functions
          */
 
@@ -58,32 +58,36 @@ public:
     const std::vector<std::shared_ptr<WorldModel>>& getWorlds() const;
     const WorldModel& getCurrentWorld() const;
 
-        void onUpArrowPressed();
-        void onDownArrowPressed();
-        void onLeftArrowPressed();
-        void onRightArrowPressed();
-        void autoplay();
+    void onUpArrowPressed();
+    void onDownArrowPressed();
+    void onLeftArrowPressed();
+    void onRightArrowPressed();
+    void autoplay();
 
-        void moveProtagonist(Direction direction);
-        void moveProtagonist(int x, int y);
+    void moveProtagonist(Direction direction);
+    void moveProtagonist(int x, int y);
 
 signals:
     void updateprotagonistPosition(int protagonistIndex);
     void updateLevel();
 
-    private:
-        WorldController();
+private:
+    WorldController();
 
-        std::vector<std::shared_ptr<WorldModel>> worlds;
-        std::shared_ptr<WorldModel> currentWorld;
-        int difficultyIdx;
+    std::vector<std::shared_ptr<WorldModel>> worlds;
+    std::shared_ptr<WorldModel> currentWorld;
+    int difficultyIdx;
 
-        void handleEncounters(const coordinate& position);
-        void onEncounterHealthPack();
-        void onEncounterEnemy();
-        void onEncounterPEnemy();
-        void onEncounterXEnemy();
-        void onEncounterAffectedTiles();
+    void handleEncounters(const coordinate& position);
+    void onEncounterHealthPack();
+    void onEncounterEnemy();
+    void onEncounterPEnemy();
+    void onEncounterXEnemy();
+    void onEncounterAffectedTiles();
+
+    int flagEnemy = 0;
+    int flagPEnemy = 0;
+    int flagXEnemy = 0;
 
 };
 
