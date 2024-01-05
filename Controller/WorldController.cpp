@@ -29,9 +29,13 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
     }
     difficultyIdx = gameDifficultyIdx;
     worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
-    worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies + 3, nrOfHealthpacks, pRatio, false));
-    currentWorld = std::move(worlds[0]); // Transfer ownership
-//    autoplay();
+    worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies+3, nrOfHealthpacks, pRatio, false));
+    currentWorld = worlds[0];
+    autoplay();
+    qDebug() << "Nearest Healthpack: " << currentWorld->findNearestHealthPack().getXPos() << " " << currentWorld->findNearestHealthPack().getYPos();
+    qDebug() << "Nearest Enemy: " << currentWorld->findNearestEnemy().getXPos() << " " << currentWorld->findNearestEnemy().getYPos();
+    qDebug() << "Nearest PEnemy: " << currentWorld->findNearestPEnemy().getXPos() << " " << currentWorld->findNearestPEnemy().getYPos();
+    qDebug() << "Nearest XEnemy: " << currentWorld->findNearestXEnemy().getXPos() << " " << currentWorld->findNearestXEnemy().getYPos();
 }
 
 /**
@@ -56,7 +60,7 @@ int WorldController::getCols() const
 int WorldController::getNumOfProtagonists() const
 {
     /** return the size of protagonist vector */
-    return currentWorld->protagonists.size();
+    return currentWorld->getProtagonists().size();
 }
 
 int WorldController::getDifficultyIdx() const
@@ -77,6 +81,138 @@ void WorldController::deleteEnemy(coordinate coord)
 void WorldController::deletePsnTile(coordinate coord)
 {
     currentWorld->deletePsnTile(coord);
+}
+
+
+
+void WorldController::onUpArrowPressed() {
+
+    // Get the current position of the protagonist
+    coordinate currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+    // Calculate the new position
+    int newX = currentPosition.xCoordinate;
+    int newY = currentPosition.yCoordinate - 1;
+    // Clamp the new position to ensure it's within the world boundaries
+    if ((newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1)) && (newY >= 0) ){
+        // Move the protagonist up
+        currentWorld->getProtagonists()[0]->move(0, -1);
+        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+        if (currentWorld->isEnemy(currentPosition)) {
+            onEncounterEnemy();
+        }
+        else if (currentWorld->isHealthPack(currentPosition)) {
+            onEncounterHealthPack();
+        }
+        else if (currentWorld->isPEnemy(currentPosition)){
+            onEncounterPEnemy();
+        }
+        else if (currentWorld->isXEnemy(currentPosition)){
+            onEncounterXEnemy();
+        }
+        else if(currentWorld->isAffectedTiles(currentPosition)){
+            onEncounterAffectedTiles();
+        }
+//        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
+        emit updateprotagonistPosition(0);
+    }
+    playerReachedExit();
+}
+
+void WorldController::onDownArrowPressed() {
+
+    // Get the current position of the protagonist
+    coordinate currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+    // Calculate the new position
+    int newX = currentPosition.xCoordinate;
+    int newY = currentPosition.yCoordinate + 1;
+    // Clamp the new position to ensure it's within the world boundaries
+    if ((newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1)) && (newY >= 0)){
+        // Move the protagonist down
+        currentWorld->getProtagonists()[0]->move(0, 1); // Assuming the first protagonist in the vector
+        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+        if (currentWorld->isEnemy(currentPosition)) {
+            onEncounterEnemy();
+        }
+        else if (currentWorld->isHealthPack(currentPosition)) {
+            onEncounterHealthPack();
+        }
+        else if (currentWorld->isPEnemy(currentPosition)){
+            onEncounterPEnemy();
+        }
+        else if (currentWorld->isXEnemy(currentPosition)){
+            onEncounterXEnemy();
+        }
+        else if(currentWorld->isAffectedTiles(currentPosition)){
+            onEncounterAffectedTiles();
+        }
+        emit updateprotagonistPosition(0);
+//        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
+    }
+    playerReachedExit();
+}
+
+void WorldController::onLeftArrowPressed() {
+    // Get the current position of the protagonist
+    coordinate currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+    // Calculate the new position
+    int newX = currentPosition.xCoordinate - 1;
+    int newY = currentPosition.yCoordinate;
+    // Clamp the new position to ensure it's within the world boundaries
+    if ((newX >= 0) && (newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1))){
+        // Move the protagonist left
+        currentWorld->getProtagonists()[0]->move(-1, 0); // Assuming the first protagonist in the vector
+        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+        if (currentWorld->isEnemy(currentPosition)) {
+            onEncounterEnemy();
+        }
+        else if (currentWorld->isHealthPack(currentPosition)) {
+            onEncounterHealthPack();
+        }
+        else if (currentWorld->isPEnemy(currentPosition)){
+            onEncounterPEnemy();
+        }
+        else if (currentWorld->isXEnemy(currentPosition)){
+            onEncounterXEnemy();
+        }
+        else if(currentWorld->isAffectedTiles(currentPosition)){
+            onEncounterAffectedTiles();
+        }
+        emit updateprotagonistPosition(0);
+//        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
+    }
+    playerReachedExit();
+}
+
+void WorldController::onRightArrowPressed() {
+    // Get the current position of the protagonist
+    coordinate currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+    // Calculate the new position
+    int newX = currentPosition.xCoordinate + 1;
+    int newY = currentPosition.yCoordinate;
+    // Clamp the new position to ensure it's within the world boundaries
+    if ((newX >= 0) && (newX <= (currentWorld->getCols() -1)) && (newY <= (currentWorld->getRows() -1))){
+        // Move the protagonist right
+        currentWorld->getProtagonists()[0]->move(1, 0); // Assuming the first protagonist in the vector
+        currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+        if (currentWorld->isEnemy(currentPosition)) {
+            onEncounterEnemy();
+        }
+        else if (currentWorld->isHealthPack(currentPosition)) {
+            onEncounterHealthPack();
+        }
+        else if (currentWorld->isPEnemy(currentPosition)){
+            onEncounterPEnemy();
+        }
+        else if (currentWorld->isXEnemy(currentPosition)){
+            onEncounterXEnemy();
+        }
+        else if(currentWorld->isAffectedTiles(currentPosition)){
+            onEncounterAffectedTiles();
+        }
+        emit updateprotagonistPosition(0);
+        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
+    }
+    playerReachedExit();
 }
 
 void WorldController::onEncounterEnemy() {
@@ -261,23 +397,12 @@ void WorldController::playerReachedExit() {
     }
 }
 
-
-
 /**
  * start and exit position functions
  */
 
-coordinate WorldController::getStart()
-{
-    return currentWorld->getStart();
-}
 
-coordinate WorldController::getExit()
-{
-    return currentWorld->getStart();
-}
-
-const std::vector<std::unique_ptr<WorldModel>>& WorldController::getWorlds() const {
+const std::vector<std::shared_ptr<WorldModel>>& WorldController::getWorlds() const {
     return worlds;
 }
 
@@ -290,20 +415,21 @@ const WorldModel& WorldController::getCurrentWorld() const {
 
 
 
-//void WorldController::autoplay(){
-//   Comparator<node> comparator = [](const node& a, const node& b) {
-//        return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
-//   };
-//   qDebug() << "start Pos: " << currentWorld->getStart().getXPos() << " "<< currentWorld->getStart().getYPos();
-//   qDebug() << "exit Pos: " << currentWorld->getExit().getXPos() << " "<< currentWorld->getExit().getYPos();
-//   PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getStartValue(), currentWorld->getExitValue(), comparator, this->getRows(), 0);
+void WorldController::autoplay(){
+   Comparator<node> comparator = [](const node& a, const node& b) {
+        return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
+   };
+   qDebug() << "start Pos: " << currentWorld->getStart().getXPos() << " "<< currentWorld->getStart().getYPos();
+   qDebug() << "exit Pos: " << currentWorld->getExit().getXPos() << " "<< currentWorld->getExit().getYPos();
+   PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getStartValue(), currentWorld->getExitValue(), comparator, this->getRows(), 0);
 
-//   std::vector<int> result = pathFinder.A_star();
-//   qDebug() << "Path to destination:";
-//   for (int move : result) {
-//        qDebug() << move << "path";
-//   }
-//}
+   std::vector<int> result = pathFinder.A_star();
+   qDebug() << "Path to destination:";
+   for (int move : result) {
+        qDebug() << move << "path";
+   }
+}
+
 
 
 
