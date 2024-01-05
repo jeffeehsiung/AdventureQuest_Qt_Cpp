@@ -18,6 +18,9 @@ public:
     void setPosition(coordinate position) override;
     coordinate getPosition() const override;
     float getValue() const;
+    void setValue(float value);
+    int getEnergyValue() const;
+    void setEnergyValue(int value);
     std::string serialize() const;
     void attack() override;
     void takeDamage(float strength) override;
@@ -57,6 +60,7 @@ private:
     std::unique_ptr<Tile> tile;
     bool poisoned {false};
     bool thundered {false};
+    int energyValue = 0;
 };
 
 #endif // TILEMODEL_H

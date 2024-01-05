@@ -16,6 +16,19 @@ float TileModel::getValue() const {
     return tile->getValue();
 }
 
+// Set the value of the tile
+void TileModel::setValue(float value) {
+    tile->setValue(value);
+}
+
+int TileModel::getEnergyValue() const {
+    return energyValue;
+}
+
+void TileModel::setEnergyValue(int energyValue) {
+    this->energyValue = energyValue;
+}
+
 // Serialize the tile data
 std::string TileModel::serialize() const {
     return tile->serialize();
