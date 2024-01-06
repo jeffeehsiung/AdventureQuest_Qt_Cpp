@@ -105,7 +105,7 @@ private:
     std::unique_ptr<World> world;
     int rows;
     int cols;
-    coordinate exit = coordinate(2,2);
+    coordinate exit = coordinate(29,29);
     coordinate start = coordinate(0,0);
     std::vector<std::unique_ptr<TileModel>> tiles;
     std::vector<std::unique_ptr<TileModel>> healthPacks;
