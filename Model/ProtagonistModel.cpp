@@ -51,7 +51,7 @@ void ProtagonistModel::setHealth(float health) {
     protagonist->setHealth(health);
 }
 
-int ProtagonistModel::getEnergy() const {
+float ProtagonistModel::getEnergy() const {
     return protagonist->getEnergy();
 }
 
