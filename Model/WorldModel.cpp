@@ -37,68 +37,68 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
         }
     }
 
-    for (const auto& enemyModel : enemies) {
-        coordinate enemyPos = enemyModel->getPosition();
-        int radius = 1; 
-        for (int dx = -radius; dx <= radius; ++dx) {
-            for (int dy = -radius; dy <= radius; ++dy) {
-                int tileX = enemyPos.xCoordinate + dx;
-                int tileY = enemyPos.yCoordinate + dy;
+    // for (const auto& enemyModel : enemies) {
+    //     coordinate enemyPos = enemyModel->getPosition();
+    //     int radius = 1; 
+    //     for (int dx = -radius; dx <= radius; ++dx) {
+    //         for (int dy = -radius; dy <= radius; ++dy) {
+    //             int tileX = enemyPos.xCoordinate + dx;
+    //             int tileY = enemyPos.yCoordinate + dy;
 
-                // Check if the tile coordinates are within the world boundaries
-                if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
-                    try {
-                        auto& tileModel = this->tiles.at(tileY*this->getRows()+tileX);
-                        tileModel->setEnergyValue(1);
-                    } catch (const std::out_of_range& e) {
-                        // Handle or ignore the exception if the tile does not exist
-                    }
-                }
-            }
-        }
-    }
+    //             // Check if the tile coordinates are within the world boundaries
+    //             if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
+    //                 try {
+    //                     auto& tileModel = this->tiles.at(tileY*this->getRows()+tileX);
+    //                     tileModel->setEnergyValue(1);
+    //                 } catch (const std::out_of_range& e) {
+    //                     // Handle or ignore the exception if the tile does not exist
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
-    for (const auto& pEnemyModel : penemies) {
-        coordinate pEnemyPos = pEnemyModel->getPosition();
-        int radius = 1; 
-        for (int dx = -radius; dx <= radius; ++dx) {
-            for (int dy = -radius; dy <= radius; ++dy) {
-                int tileX = pEnemyPos.xCoordinate + dx;
-                int tileY = pEnemyPos.yCoordinate + dy;
+    // for (const auto& pEnemyModel : penemies) {
+    //     coordinate pEnemyPos = pEnemyModel->getPosition();
+    //     int radius = 1; 
+    //     for (int dx = -radius; dx <= radius; ++dx) {
+    //         for (int dy = -radius; dy <= radius; ++dy) {
+    //             int tileX = pEnemyPos.xCoordinate + dx;
+    //             int tileY = pEnemyPos.yCoordinate + dy;
 
-                // Check if the tile coordinates are within the world boundaries
-                if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
-                    try {
-                        auto& tileModel = this->tiles.at(tileY*this->getRows()+tileX);
-                        tileModel->setEnergyValue(2);
-                    } catch (const std::out_of_range& e) {
-                        // Handle or ignore the exception if the tile does not exist
-                    }
-                }
-            }
-        }
-    }
+    //             // Check if the tile coordinates are within the world boundaries
+    //             if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
+    //                 try {
+    //                     auto& tileModel = this->tiles.at(tileY*this->getRows()+tileX);
+    //                     tileModel->setEnergyValue(2);
+    //                 } catch (const std::out_of_range& e) {
+    //                     // Handle or ignore the exception if the tile does not exist
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
-    for (const auto& XEnemyModel : xenemies) {
-        coordinate xEnemyPos = XEnemyModel->getPosition();
-        int radius = 1; 
-        for (int dx = -radius; dx <= radius; ++dx) {
-            for (int dy = -radius; dy <= radius; ++dy) {
-                int tileX = xEnemyPos.xCoordinate + dx;
-                int tileY = xEnemyPos.yCoordinate + dy;
+    // for (const auto& XEnemyModel : xenemies) {
+    //     coordinate xEnemyPos = XEnemyModel->getPosition();
+    //     int radius = 1; 
+    //     for (int dx = -radius; dx <= radius; ++dx) {
+    //         for (int dy = -radius; dy <= radius; ++dy) {
+    //             int tileX = xEnemyPos.xCoordinate + dx;
+    //             int tileY = xEnemyPos.yCoordinate + dy;
 
-                // Check if the tile coordinates are within the world boundaries
-                if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
-                    try {
-                        auto& tileModel = this->tiles.at(tileY*this->getRows()+tileX);
-                        tileModel->setEnergyValue(3);
-                    } catch (const std::out_of_range& e) {
-                        // Handle or ignore the exception if the tile does not exist
-                    }
-                }
-            }
-        }
-    }
+    //             // Check if the tile coordinates are within the world boundaries
+    //             if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
+    //                 try {
+    //                     auto& tileModel = this->tiles.at(tileY*this->getRows()+tileX);
+    //                     tileModel->setEnergyValue(3);
+    //                 } catch (const std::out_of_range& e) {
+    //                     // Handle or ignore the exception if the tile does not exist
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     // Choose a random distribution for x, y and strength for Xenemy
     std::random_device r;
@@ -213,69 +213,108 @@ bool WorldModel::isAffectedTiles(coordinate coord)
     return false;
 }
 
-int WorldModel::valueEnergyComsumingTiles(coordinate coord)
+float WorldModel::valueEnergyComsumingTiles(coordinate coord)
 {
     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
         qDebug() << "Tile value: " << tileModel->getValue() << "\n";
-        return std::ceil(tileModel->getValue() + 0.5f);
+        return (1-tileModel->getValue());
     }
 }
 
-bool WorldModel::isEnergyRestoringTiles(coordinate coord)
+// bool WorldModel::isEnergyRestoringTiles(coordinate coord)
+// {
+//     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
+//         // Directly access the tile and check if it's poisoned
+//         bool flagDefeated = false;
+//         for ( auto &enemy : enemies )
+//         {
+//             if ( enemy->getPosition() == coord )
+//             {
+//                 currentEnemy = enemy.get();
+//                 flagDefeated = currentEnemy->isDefeated();
+//             }
+//         }
+//         return tileModel->getEnergyValue() == 1 && flagDefeated;
+//     }
+// }
+
+// void WorldModel::setEnergyRestoringTilesZero(coordinate coord) {
+//     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
+//         tileModel->setEnergyValue(0);
+//     }
+// }
+
+// bool WorldModel::isEnergyBoostTiles(coordinate coord)
+// {
+//     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
+//         // Directly access the tile and check if it's poisoned
+//         bool flagDefeated = false;
+//         for ( auto &penemy : penemies )
+//         {
+//             if ( penemy->getPosition() == coord )
+//             {
+//                 currentPEnemy = penemy.get();
+//                 flagDefeated = currentPEnemy->isDefeated();
+//             }
+//         }
+//         return tileModel->getEnergyValue() == 2 && flagDefeated;
+//     }
+// }
+
+// bool WorldModel::isEnergyHealthBoostTiles(coordinate coord)
+// {
+//     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
+//         // Directly access the tile and check if it's poisoned
+//         bool flagDefeated = false;
+//         for ( auto &xenemy : xenemies )
+//         {
+//             if ( xenemy->getPosition() == coord )
+//             {
+//                 currentXEnemy = xenemy.get();
+//                 flagDefeated = currentXEnemy->isDefeated();
+//             }
+//         }
+//         return tileModel->getEnergyValue() == 3 && flagDefeated;
+//     }
+// }
+
+int WorldModel::getEnemyCounts()
 {
-    if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
-        // Directly access the tile and check if it's poisoned
-        bool flagDefeated = false;
-        for ( auto &enemy : enemies )
+    int count = 0;
+    for ( auto &enemy : enemies )
+    {
+        if ( !enemy->isDefeated() )
         {
-            if ( enemy->getPosition() == coord )
-            {
-                currentEnemy = enemy.get();
-                flagDefeated = currentEnemy->isDefeated();
-            }
+            count++;
         }
-        return tileModel->getEnergyValue() == 1 && flagDefeated;
     }
+    return count;
 }
 
-void WorldModel::setEnergyRestoringTilesZero(coordinate coord) {
-    if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
-        tileModel->setEnergyValue(0);
-    }
-}
-
-bool WorldModel::isEnergyBoostTiles(coordinate coord)
+int WorldModel::getPEnemyCounts()
 {
-    if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
-        // Directly access the tile and check if it's poisoned
-        bool flagDefeated = false;
-        for ( auto &penemy : penemies )
+    int count = 0;
+    for ( auto &penemy : penemies )
+    {
+        if ( !penemy->isDefeated() )
         {
-            if ( penemy->getPosition() == coord )
-            {
-                currentPEnemy = penemy.get();
-                flagDefeated = currentPEnemy->isDefeated();
-            }
+            count++;
         }
-        return tileModel->getEnergyValue() == 2 && flagDefeated;
     }
+    return count;
 }
 
-bool WorldModel::isEnergyHealthBoostTiles(coordinate coord)
+int WorldModel::getXEnemyCounts()
 {
-    if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
-        // Directly access the tile and check if it's poisoned
-        bool flagDefeated = false;
-        for ( auto &xenemy : xenemies )
+    int count = 0;
+    for ( auto &xenemy : xenemies )
+    {
+        if ( !xenemy->isDefeated() )
         {
-            if ( xenemy->getPosition() == coord )
-            {
-                currentXEnemy = xenemy.get();
-                flagDefeated = currentXEnemy->isDefeated();
-            }
+            count++;
         }
-        return tileModel->getEnergyValue() == 3 && flagDefeated;
     }
+    return count;
 }
 
 /**
@@ -320,11 +359,11 @@ bool WorldModel::isXEnemy(coordinate coord)
             currentXEnemy = xenemy.get();
 //            qDebug()<< "currentXEnemy pos: " << currentXEnemy->getXPos() << "," << currentXEnemy->getYPos();
             qDebug()<< "currentXEnemey dead: "<< currentXEnemy->isDefeated();
-            if (currentXEnemy->isDefeated()) {
-                if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
-                    tileModel->setEnergyValue(3);
-                }
-            }
+            // if (currentXEnemy->isDefeated()) {
+            //     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
+            //         tileModel->setEnergyValue(3);
+            //     }
+            // }
             connect(currentXEnemy, &XEnemyModel::thunderLevelUpdated, this, &WorldModel::setAffectedTiles);
             return !currentXEnemy->isDefeated();
         }
@@ -440,7 +479,23 @@ void WorldModel::removeHealthpack(coordinate coord)
                                return healthPack->getPosition() == coord;});
     if (it != healthPacks.end()) {
         coordinate newCoord = {(*it)->getPosition().xCoordinate + distr(eng), (*it)->getPosition().yCoordinate + distr(eng)};
-        (*it)->setPosition(newCoord);
+        int tileX = newCoord.getXPos();
+        int tileY = newCoord.getYPos();
+        if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
+            (*it)->setPosition(newCoord);
+        }
+        if (tileX < 0) {
+            (*it)->setPosition({0, tileY});
+        }
+        if (tileX >= cols) {
+            (*it)->setPosition({tileX - cols, tileY});
+        }
+        if (tileY < 0) {
+            (*it)->setPosition({tileX, 0});
+        }
+        if (tileY >= rows) {
+            (*it)->setPosition({tileX, tileY - rows});
+        }
     }
 }
 

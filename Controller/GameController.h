@@ -42,7 +42,7 @@ public:
     void displayHelp() const;
 
     int getHealth1();
-    int getEnergy1();
+    float getEnergy1();
 
     bool isGameOver();
     void setGameOver();
@@ -68,7 +68,7 @@ private:
     int gameDifficultyIdx;
     float gamePRatio;
     int gameHealth1;
-    int gameEnergy1;
+    float gameEnergy1;
 
     std::map<QString, std::function<void(const QStringList&)>> commandMap;
 
