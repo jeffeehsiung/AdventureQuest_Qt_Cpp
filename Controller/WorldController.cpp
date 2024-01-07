@@ -28,8 +28,13 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
         break;
     }
     difficultyIdx = gameDifficultyIdx;
-    worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
-    worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies+3, nrOfHealthpacks, pRatio, false));
+    if(firstWorld){
+        worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies, nrOfHealthpacks, pRatio, true));
+        firstWorld = false;
+    }
+    else{
+        worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies+3, nrOfHealthpacks, pRatio, false));
+    }
     currentWorld = worlds[0];
     //    autoplay();
     qDebug() << "Nearest Healthpack: " << currentWorld->findNearestHealthPack().getXPos() << " " << currentWorld->findNearestHealthPack().getYPos();
@@ -369,6 +374,7 @@ void WorldController::moveProtagonist(Direction direction) {
         emit updateprotagonistPosition(0);
     }
     playerReachedExit();
+
 }
 
 void WorldController::moveProtagonist(int x, int y) {
@@ -405,16 +411,28 @@ void WorldController::playerReachedExit() {
 
     if (currentWorld->getProtagonists()[0]->getPosition() == currentWorld->getExit()) {
         // Ensure that the next world exists
-        if (worlds.size() > 1 && worlds[1]) {
-            auto protagonists = currentWorld->removeProtagonists();
+        if (worlds.size() > 1) {
+            auto it = std::find(worlds.begin(), worlds.end(), currentWorld);
+            size_t position = 0;
+            if (it != worlds.end()) {
+                // Calculate the position/index of currentWorld in the vector
+                position = std::distance(worlds.begin(), it);
+                qDebug() << "Current world is at position " << position;
+                if(position >= 4){
+                    //WINGAME
+                }
+            } else {
+                qDebug() << "Current world not found in the vector!";
+            }
 
+            auto protagonists = currentWorld->removeProtagonists();
             // Update the protagonist's position to the start position of the new world
-            coordinate newStartPos = worlds[1]->getStart();
+            coordinate newStartPos = worlds[position + 1]->getStart();
             for (auto& prot : protagonists) {
                 prot->setPosition(newStartPos);
             }
 
-            currentWorld = std::move(worlds[1]); // Transfer ownership to the next world
+            currentWorld = worlds[position + 1]; // Transfer ownership to the next world
             currentWorld->addProtagonist(std::move(protagonists));
 
             emit updateLevel();
@@ -425,7 +443,43 @@ void WorldController::playerReachedExit() {
             qDebug() << "Next world does not exist!";
         }
     }
+    else if(currentWorld->getProtagonists()[0]->getPosition() == currentWorld->getStart()) {
+        // Ensure that the next world exists
+        if (worlds.size() > 1) {
+            auto it = std::find(worlds.begin(), worlds.end(), currentWorld);
+            size_t position = 0;
+            if (it != worlds.end()) {
+               // Calculate the position/index of currentWorld in the vector
+                position = std::distance(worlds.begin(), it);
+                qDebug() << "Current world is at position " << position;
+                if(position == 0){
+                return;
+                }
+            }    else {
+                qDebug() << "Current world not found in the vector!";
+            }
+
+            auto protagonists = currentWorld->removeProtagonists();
+            // Update the protagonist's position to the start position of the new world
+            coordinate newStartPos = worlds[position - 1]->getExit();
+
+            for (auto& prot : protagonists) {
+                prot->setPosition(newStartPos);
+            }
+
+            currentWorld = worlds[position - 1]; // Transfer ownership to the next world
+            currentWorld->addProtagonist(std::move(protagonists));
+
+            emit updateLevel();
+            emit updateprotagonistPosition(0);
+            qDebug() << "LevelSwitched!" << "\n";
+        } else {
+            // Handle the case where the next world does not exist
+            qDebug() << "Next world does not exist!";
+        }
+   }
 }
+
 
 /**
  * start and exit position functions

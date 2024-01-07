@@ -64,15 +64,12 @@ void GameController::printAllGameInfo() {
 
 void GameController::decideGameParameters() {
     if (gameDifficultyLevel == "Easy") {
-        gameMap = ":/images/world_images/worldmap.png";
         gameDifficultyIdx = 1;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.1 : 0.2;
     } else if (gameDifficultyLevel == "Medium") {
-        gameMap = ":/images/world_images/worldmap2.png";
         gameDifficultyIdx = 2;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.2 : 0.4;
     } else if (gameDifficultyLevel == "Hard") {
-        gameMap = ":/images/world_images/maze2.png";
         gameDifficultyIdx = 3;
         gamePRatio = (gameNumberOfPlayers.toInt() == 1) ? 0.3 : 0.6;
     }
@@ -81,7 +78,11 @@ void GameController::decideGameParameters() {
 void GameController::initializeWorld() {
     decideGameParameters();
 
-    worldController.createWorld(gameMap, gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
+    worldController.createWorld(":/images/world_images/worldmap.png", gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
+    worldController.createWorld(":/images/world_images/worldmap2.png", gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
+    worldController.createWorld(":/images/world_images/worldmap3.png", gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
+    worldController.createWorld(":/images/world_images/worldmap4.png", gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
+    worldController.createWorld(":/images/world_images/worldmap5.png", gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
     worldController.getCurrentWorld().getProtagonists()[0]->setHealth(5);
     worldController.getCurrentWorld().getProtagonists()[0]->setEnergy(100);
     gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();

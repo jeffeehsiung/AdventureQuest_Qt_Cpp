@@ -89,6 +89,8 @@ private:
     int flagPEnemy = 0;
     int flagXEnemy = 0;
 
+    bool firstWorld = true;
+
 };
 
 #endif // WORLDCONTROLLER_H
