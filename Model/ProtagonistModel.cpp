@@ -32,6 +32,12 @@ coordinate ProtagonistModel::getPosition() const {
     return {protagonist->getXPos(), protagonist->getYPos()};
 }
 
+coordinate* ProtagonistModel::getPositionValue() {
+    protagonistPos.setXPos(protagonist->getXPos());
+    protagonistPos.setYPos(protagonist->getYPos());
+    return &protagonistPos;
+}
+
 void ProtagonistModel::setPosition(coordinate position) {
     protagonist->setXPos(position.xCoordinate);
     protagonist->setYPos(position.yCoordinate);
