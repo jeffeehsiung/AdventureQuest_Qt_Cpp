@@ -478,24 +478,28 @@ void WorldModel::removeHealthpack(coordinate coord)
                            [&](const std::unique_ptr<TileModel>& healthPack) {
                                return healthPack->getPosition() == coord;});
     if (it != healthPacks.end()) {
-        coordinate newCoord = {(*it)->getPosition().xCoordinate + distr(eng), (*it)->getPosition().yCoordinate + distr(eng)};
-        int tileX = newCoord.getXPos();
-        int tileY = newCoord.getYPos();
-        if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
-            (*it)->setPosition(newCoord);
-        }
+        int incrementX = distr(eng);
+        int incrementY = distr(eng);
+        int tileX = (*it)->getPosition().xCoordinate + incrementX;
+        int tileY = (*it)->getPosition().yCoordinate + incrementY;
         if (tileX < 0) {
-            (*it)->setPosition({0, tileY});
+            tileX = 0;
         }
         if (tileX >= cols) {
-            (*it)->setPosition({tileX - cols, tileY});
+            tileX = tileX - cols;
         }
         if (tileY < 0) {
-            (*it)->setPosition({tileX, 0});
+            tileY = 0;
         }
         if (tileY >= rows) {
-            (*it)->setPosition({tileX, tileY - rows});
+            tileY = tileY - rows;
         }
+        qDebug() << "old healthpack position: " << (*it)->getPosition().xCoordinate << "," << (*it)->getPosition().yCoordinate;
+        qDebug() << "random generated position increment: " << incrementX << "," << incrementY;
+        qDebug() << "new healthpack position: " << tileX << "," << tileY;
+        qDebug() << "map bound is: " << cols << "," << rows;
+        coordinate newCoord = {tileX, tileY};
+        (*it)->setPosition(newCoord);
     }
 }
 
