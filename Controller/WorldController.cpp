@@ -226,7 +226,7 @@ void WorldController::onEncounterEnemy() {
         currentWorld->getProtagonists()[0]->setHealth(0);
         qDebug() << "You died!" << "\n";
     }
-    autoplay();
+    // autoplay();
 }
 
 void WorldController::onEncounterHealthPack() {
@@ -495,70 +495,70 @@ const WorldModel& WorldController::getCurrentWorld() const {
 
 
 
-void WorldController::autoplay(){
-   Comparator<node> comparator = [](const node& a, const node& b) {
-        return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
-   };
-   qDebug() << "start Pos: " << currentWorld->getStart().getXPos() << " "<< currentWorld->getStart().getYPos();
-   qDebug() << "exit Pos: " << currentWorld->getExit().getXPos() << " "<< currentWorld->getExit().getYPos();
-   PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getProtagonists()[0]->getPositionValue(), currentWorld->getExitValue(), comparator, this->getRows(), 0);
+// void WorldController::autoplay(){
+//    Comparator<node> comparator = [](const node& a, const node& b) {
+//         return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
+//    };
+//    qDebug() << "start Pos: " << currentWorld->getStart().getXPos() << " "<< currentWorld->getStart().getYPos();
+//    qDebug() << "exit Pos: " << currentWorld->getExit().getXPos() << " "<< currentWorld->getExit().getYPos();
+//    PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getProtagonists()[0]->getPositionValue(), currentWorld->getExitValue(), comparator, this->getRows(), 0);
 
-   std::vector<int> result = pathFinder.A_star();
-   qDebug() << "Path to destination:" << result;
-   for (int move : result) {
-        qDebug() << move << "path";
-        switch(move){
-            case 0:
-                moveProtagonistWithDelay(UP);
-                break;
-            case 1:
-                moveProtagonistWithDelay(RIGHT);
-                moveProtagonistWithDelay(UP);
-                break;
-            case 2:
-                moveProtagonistWithDelay(RIGHT);
-                break;
-            case 3:
-                moveProtagonistWithDelay(RIGHT);
-                moveProtagonistWithDelay(DOWN);
-                break;
-            case 4:
-                moveProtagonistWithDelay(DOWN);
-                break;
-            case 5:
-                moveProtagonistWithDelay(DOWN);
-                moveProtagonistWithDelay(LEFT);
-                break;
-            case 6:
-                moveProtagonistWithDelay(LEFT);
-                break;
-            case 7:
-                moveProtagonistWithDelay(LEFT);
-                moveProtagonistWithDelay(UP);
-                break;
-            default:
-                // Handle unexpected move values
-                break;
-        }
-   }
-}
+//    std::vector<int> result = pathFinder.A_star();
+//    qDebug() << "Path to destination:" << result;
+//    for (int move : result) {
+//         qDebug() << move << "path";
+//         switch(move){
+//             case 0:
+//                 moveProtagonistWithDelay(UP);
+//                 break;
+//             case 1:
+//                 moveProtagonistWithDelay(RIGHT);
+//                 moveProtagonistWithDelay(UP);
+//                 break;
+//             case 2:
+//                 moveProtagonistWithDelay(RIGHT);
+//                 break;
+//             case 3:
+//                 moveProtagonistWithDelay(RIGHT);
+//                 moveProtagonistWithDelay(DOWN);
+//                 break;
+//             case 4:
+//                 moveProtagonistWithDelay(DOWN);
+//                 break;
+//             case 5:
+//                 moveProtagonistWithDelay(DOWN);
+//                 moveProtagonistWithDelay(LEFT);
+//                 break;
+//             case 6:
+//                 moveProtagonistWithDelay(LEFT);
+//                 break;
+//             case 7:
+//                 moveProtagonistWithDelay(LEFT);
+//                 moveProtagonistWithDelay(UP);
+//                 break;
+//             default:
+//                 // Handle unexpected move values
+//                 break;
+//         }
+//    }
+// }
 
-void WorldController::moveProtagonistWithDelay(Direction direction) {
-   moveProtagonist(direction);
+// void WorldController::moveProtagonistWithDelay(Direction direction) {
+//    moveProtagonist(direction);
 
-   // Introduce a delay using QTimer
-   QTimer timer;
-   connect(&timer, &QTimer::timeout, [&]() {
-       // Code to be executed after the delay
-       timer.stop();  // Stop the timer after the delay
-   });
+//    // Introduce a delay using QTimer
+//    QTimer timer;
+//    connect(&timer, &QTimer::timeout, [&]() {
+//        // Code to be executed after the delay
+//        timer.stop();  // Stop the timer after the delay
+//    });
 
-   // Set the delay time (adjust as needed, 1000 = 1 second)
-   timer.start(500);  // 1000 milliseconds = 1 second
-   QEventLoop loop;
-   connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
-   loop.exec();
-}
+//    // Set the delay time (adjust as needed, 1000 = 1 second)
+//    timer.start(500);  // 1000 milliseconds = 1 second
+//    QEventLoop loop;
+//    connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+//    loop.exec();
+// }
 
 
 

@@ -3,7 +3,7 @@
 
 #include "Model/structs.h"
 #include "Model/WorldModel.h"
-#include "pathfinder.h"
+// #include "pathfinder.h"
 #include <QEventLoop>
 #include <QTimer>
 #include <iostream>
