@@ -219,6 +219,9 @@ float WorldModel::valueEnergyComsumingTiles(coordinate coord)
         qDebug() << "Tile value: " << tileModel->getValue() << "\n";
         return (1-tileModel->getValue());
     }
+    else{
+        return 0;
+    }
 }
 
 // bool WorldModel::isEnergyRestoringTiles(coordinate coord)
