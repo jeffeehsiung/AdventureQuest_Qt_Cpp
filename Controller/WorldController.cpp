@@ -36,7 +36,6 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
         worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies+3, nrOfHealthpacks, pRatio, false));
     }
     currentWorld = worlds[0];
-    autoplay();
     qDebug() << "Nearest Healthpack: " << currentWorld->findNearestHealthPack().getXPos() << " " << currentWorld->findNearestHealthPack().getYPos();
     qDebug() << "Nearest Enemy: " << currentWorld->findNearestEnemy().getXPos() << " " << currentWorld->findNearestEnemy().getYPos();
     qDebug() << "Nearest PEnemy: " << currentWorld->findNearestPEnemy().getXPos() << " " << currentWorld->findNearestPEnemy().getYPos();
@@ -120,7 +119,6 @@ void WorldController::onUpArrowPressed() {
         //        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
         emit updateprotagonistPosition(0);
     }
-    playerReachedExit();
 }
 
 void WorldController::onDownArrowPressed() {
@@ -153,7 +151,6 @@ void WorldController::onDownArrowPressed() {
         emit updateprotagonistPosition(0);
         //        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
     }
-    playerReachedExit();
 }
 
 void WorldController::onLeftArrowPressed() {
@@ -185,7 +182,6 @@ void WorldController::onLeftArrowPressed() {
         emit updateprotagonistPosition(0);
         //        qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
     }
-    playerReachedExit();
 }
 
 void WorldController::onRightArrowPressed() {
@@ -217,7 +213,7 @@ void WorldController::onRightArrowPressed() {
         emit updateprotagonistPosition(0);
         qDebug() << "tile value: "<< currentWorld->getTiles().at(newY*currentWorld->getCols()+newX)->getValue();
     }
-    playerReachedExit();
+
 }
 
 void WorldController::onEncounterEnemy() {
@@ -230,6 +226,7 @@ void WorldController::onEncounterEnemy() {
         currentWorld->getProtagonists()[0]->setHealth(0);
         qDebug() << "You died!" << "\n";
     }
+    autoplay();
 }
 
 void WorldController::onEncounterHealthPack() {
@@ -389,7 +386,6 @@ void WorldController::moveProtagonist(int x, int y) {
 
         emit updateprotagonistPosition(0);
     }
-    playerReachedExit();
 }
 
 void WorldController::handleEncounters(const coordinate& position) {
@@ -505,13 +501,63 @@ void WorldController::autoplay(){
    };
    qDebug() << "start Pos: " << currentWorld->getStart().getXPos() << " "<< currentWorld->getStart().getYPos();
    qDebug() << "exit Pos: " << currentWorld->getExit().getXPos() << " "<< currentWorld->getExit().getYPos();
-   PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getStartValue(), currentWorld->getExitValue(), comparator, this->getRows(), 0);
+   PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getProtagonists()[0]->getPositionValue(), currentWorld->getExitValue(), comparator, this->getRows(), 0);
 
    std::vector<int> result = pathFinder.A_star();
-   qDebug() << "Path to destination:";
+   qDebug() << "Path to destination:" << result;
    for (int move : result) {
         qDebug() << move << "path";
+        switch(move){
+            case 0:
+                moveProtagonistWithDelay(UP);
+                break;
+            case 1:
+                moveProtagonistWithDelay(RIGHT);
+                moveProtagonistWithDelay(UP);
+                break;
+            case 2:
+                moveProtagonistWithDelay(RIGHT);
+                break;
+            case 3:
+                moveProtagonistWithDelay(RIGHT);
+                moveProtagonistWithDelay(DOWN);
+                break;
+            case 4:
+                moveProtagonistWithDelay(DOWN);
+                break;
+            case 5:
+                moveProtagonistWithDelay(DOWN);
+                moveProtagonistWithDelay(LEFT);
+                break;
+            case 6:
+                moveProtagonistWithDelay(LEFT);
+                break;
+            case 7:
+                moveProtagonistWithDelay(LEFT);
+                moveProtagonistWithDelay(UP);
+                break;
+            default:
+                // Handle unexpected move values
+                break;
+        }
    }
+}
+
+void WorldController::moveProtagonistWithDelay(Direction direction) {
+   moveProtagonist(direction);
+
+   // Introduce a delay using QTimer
+   QTimer timer;
+   connect(&timer, &QTimer::timeout, [&]() {
+       // Code to be executed after the delay
+       timer.stop();  // Stop the timer after the delay
+   });
+
+   // Set the delay time (adjust as needed, 1000 = 1 second)
+   timer.start(500);  // 1000 milliseconds = 1 second
+   QEventLoop loop;
+   connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+   loop.exec();
 }
 
 

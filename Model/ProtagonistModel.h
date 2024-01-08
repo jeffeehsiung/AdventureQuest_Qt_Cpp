@@ -12,6 +12,7 @@ class ProtagonistModel : public QObject, public Entity {
         void attack() override;
         void takeDamage(float damage) override;
         coordinate getPosition() const override;
+        coordinate* getPositionValue();
         void setPosition(coordinate position) override;
         void move(int deltaX, int deltaY) override;
 
@@ -29,6 +30,7 @@ class ProtagonistModel : public QObject, public Entity {
 
     private:
         std::unique_ptr<Protagonist> protagonist;
+        coordinate protagonistPos = coordinate(0,0);
 };
 
 #endif // PROTAGONISTMODEL_H

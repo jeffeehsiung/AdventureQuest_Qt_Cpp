@@ -4,7 +4,8 @@
 #include "Model/structs.h"
 #include "Model/WorldModel.h"
 #include "pathfinder.h"
-
+#include <QEventLoop>
+#include <QTimer>
 #include <iostream>
 #include <map>
 #include <QObject>
@@ -65,6 +66,7 @@ public:
     void autoplay();
 
     void moveProtagonist(Direction direction);
+    void moveProtagonistWithDelay(Direction direction);
     void moveProtagonist(int x, int y);
 
 signals:
