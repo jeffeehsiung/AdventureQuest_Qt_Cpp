@@ -227,7 +227,7 @@ void WorldController::onEncounterEnemy() {
         currentWorld->getProtagonists()[0]->setHealth(0);
         qDebug() << "You died!" << "\n";
     }
-//    autoplay();
+    // autoplay();
 }
 
 void WorldController::onEncounterHealthPack() {
@@ -424,8 +424,9 @@ void WorldController::playerReachedExit() {
                 // Calculate the position/index of currentWorld in the vector
                 position = std::distance(worlds.begin(), it);
                 qDebug() << "Current world is at position " << position;
-                if(position >= 4){
+                if(position >= 3){
                     //WINGAME
+                    emit gameWon();
                 }
             } else {
                 qDebug() << "Current world not found in the vector!";
@@ -584,22 +585,22 @@ void WorldController::autoplay(){
    }
 }
 
-void WorldController::moveProtagonistWithDelay(Direction direction) {
-   moveProtagonist(direction);
+// void WorldController::moveProtagonistWithDelay(Direction direction) {
+//    moveProtagonist(direction);
 
-   // Introduce a delay using QTimer
-   QTimer timer;
-   connect(&timer, &QTimer::timeout, [&]() {
-       // Code to be executed after the delay
-       timer.stop();  // Stop the timer after the delay
-   });
+//    // Introduce a delay using QTimer
+//    QTimer timer;
+//    connect(&timer, &QTimer::timeout, [&]() {
+//        // Code to be executed after the delay
+//        timer.stop();  // Stop the timer after the delay
+//    });
 
-   // Set the delay time (adjust as needed, 1000 = 1 second)
-   timer.start(500);  // 1000 milliseconds = 1 second
-   QEventLoop loop;
-   connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
-   loop.exec();
-}
+//    // Set the delay time (adjust as needed, 1000 = 1 second)
+//    timer.start(500);  // 1000 milliseconds = 1 second
+//    QEventLoop loop;
+//    connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+//    loop.exec();
+// }
 
 
 

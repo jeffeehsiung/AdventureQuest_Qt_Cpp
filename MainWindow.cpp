@@ -292,6 +292,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         }
         updateHealthDisplay();
         updateEnergyDisplay();
+        qDebug() << "win status: " << gameController->isWon() << endl;
+        if (gameController->isWon()) {
+            QMessageBox::information(this, "Game Over", "YOU WIN!");
+            gameController->setGameOver();
+        }
     } else {
         QMainWindow::keyPressEvent(event);
     }
