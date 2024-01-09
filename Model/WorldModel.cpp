@@ -535,7 +535,7 @@ std::vector<std::unique_ptr<ProtagonistModel>> WorldModel::removeProtagonists(){
     return std::move(protagonists);
 }
 
-coordinate WorldModel::findNearestHealthPack(){
+coordinate WorldModel::findNearestHealthPack() const{
     int distance = 1000;
     coordinate returnCoordinate(0,0);
     for (const auto& tile : healthPacks ){
@@ -550,7 +550,7 @@ coordinate WorldModel::findNearestHealthPack(){
     return returnCoordinate;
 }
 
-coordinate WorldModel::findNearestEnemy(){
+coordinate WorldModel::findNearestEnemy() const {
     int distance = 1000;
     coordinate returnCoordinate(0,0);
     for (const auto& tile : enemies ){
@@ -567,7 +567,7 @@ coordinate WorldModel::findNearestEnemy(){
     return returnCoordinate;
 }
 
-coordinate WorldModel::findNearestPEnemy(){
+coordinate WorldModel::findNearestPEnemy() const{
     int distance = 1000;
     coordinate returnCoordinate(0,0);
     for (const auto& tile : penemies ){
@@ -584,7 +584,7 @@ coordinate WorldModel::findNearestPEnemy(){
     return returnCoordinate;
 }
 
-coordinate WorldModel::findNearestXEnemy(){
+coordinate WorldModel::findNearestXEnemy() const{
     int distance = 1000;
     coordinate returnCoordinate(0,0);
     for (const auto& tile : xenemies ){

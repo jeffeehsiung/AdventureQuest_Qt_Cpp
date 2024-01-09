@@ -34,7 +34,6 @@ signals:
 
 private:
     ViewController(QObject *parent = nullptr);
-    ~ViewController();
 
     WorldController& worldController;
     std::unique_ptr<Game2DView> game2DView;

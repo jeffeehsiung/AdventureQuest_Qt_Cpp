@@ -33,6 +33,27 @@ public:
     }
 
     virtual ~Game2DView(){
+        for (auto& item : tileGraphicsItems) {
+            item.release();
+        }
+        for (auto& item : healthpackGraphicsItems) {
+            item.release();
+        }
+        for (auto& item : enemyGraphicsItems) {
+            item.release();
+        }
+        for (auto& item : penemyGraphicsItems) {
+            item.release();
+        }
+        for (auto& item : xenemyGraphicsItems) {
+            item.release();
+        }
+        for (auto& item : portalGraphicsItems) {
+            item.release();
+        }
+        for (auto& item : protagonistGraphicsItems) {
+            item.release();
+        }
         delete scene;
     }
 
@@ -70,12 +91,11 @@ private:
 
     std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
     std::vector<std::unique_ptr<HPGraphicsItem>> healthpackGraphicsItems;
+    std::vector<std::unique_ptr<PortalGraphicsItem>> portalGraphicsItems;
     std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
     std::vector<std::unique_ptr<PEnemyGraphicsItem>> penemyGraphicsItems;
     std::vector<std::unique_ptr<XEnemyGraphicsItem>> xenemyGraphicsItems;
     std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
-
-    std::unique_ptr<PortalGraphicsItem> portalGraphicsItem;
 
     void scaleEntitiesToFitView();
     void zoomIn(int delta);
