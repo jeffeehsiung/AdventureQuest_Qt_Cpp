@@ -21,8 +21,42 @@ GameController::GameController(QObject *parent)
         if(args.size() >= 3) {
             int x = args[1].toInt();
             int y = args[2].toInt();
-            worldController.moveProtagonist(x, y);
+            coordinate coord(x,y);
+            worldController.moveProtagonist(coord);
         }
+    };
+    // TODO: make a comparator to compare enemy, penenmy, xenemy
+    commandMap["attack"] = [this](const QStringList& args){
+        Q_UNUSED(args);
+        const WorldModel& currentWorld = worldController.getCurrentWorld();
+        const coordinate& protagonistPos = currentWorld.getProtagonists()[0]->getPosition();
+        coordinate coord1 = worldController.getCurrentWorld().findNearestEnemy();
+        coordinate coord2 = worldController.getCurrentWorld().findNearestPEnemy();
+        coordinate coord3 = worldController.getCurrentWorld().findNearestXEnemy();
+        // Calculate distances to each enemy
+        double dist1 = protagonistPos.distanceTo(coord1);
+        double dist2 = protagonistPos.distanceTo(coord2);
+        double dist3 = protagonistPos.distanceTo(coord3);
+
+        // Determine the nearest enemy
+        coordinate nearestCoord = coord1; // Assume the regular enemy is the closest
+        double minDist = dist1;
+
+        if (dist2 < minDist) {
+            nearestCoord = coord2;
+            minDist = dist2;
+        }
+        if (dist3 < minDist) {
+            nearestCoord = coord3;
+        }
+
+        // Move the protagonist to the nearest enemy
+        worldController.moveProtagonist(nearestCoord);
+    };
+    commandMap["take"] = [this](const QStringList& args){
+        Q_UNUSED(args);
+        coordinate coord = worldController.getCurrentWorld().findNearestHealthPack();
+        worldController.moveProtagonist(coord);
     };
     commandMap["help"] = [this](const QStringList& args) {
         Q_UNUSED(args); // This macro indicates that the args parameter is intentionally unused
@@ -44,6 +78,9 @@ void GameController::readGamePaused(bool isPaused) {
 
 void GameController::readGameAutoplayed(bool isAutoPlayed) {
     isGameAutoplayed = isAutoPlayed;
+    if(isAutoPlayed){
+        worldController.autoplay();
+    }
 }
 
 void GameController::readGameNumberOfPlayers(const QString &numberOfPlayers) {
@@ -207,30 +244,3 @@ void GameController::displayHelp() const {
 }
 
 
-//void GameController::onUpArrowPressed() {
-//    if (isGameStarted) {
-//        worldController.onUpArrowPressed();
-//        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-//    }
-//}
-
-//void GameController::onDownArrowPressed() {
-//    if (isGameStarted) {
-//        worldController.onDownArrowPressed();
-//        gameHealth1 =worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-//    }
-//}
-
-//void GameController::onLeftArrowPressed() {
-//    if (isGameStarted) {
-//        worldController.onLeftArrowPressed();
-//        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-//    }
-//}
-
-//void GameController::onRightArrowPressed() {
-//    if (isGameStarted) {
-//        worldController.onRightArrowPressed();
-//        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-//    }
-//}

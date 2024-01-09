@@ -56,8 +56,9 @@ public:
          * start and exit position functions
          */
 
-    const std::vector<std::shared_ptr<WorldModel>>& getWorlds() const;
+    const std::vector<std::unique_ptr<WorldModel>>& getWorlds() const;
     const WorldModel& getCurrentWorld() const;
+
 
     void onUpArrowPressed();
     void onDownArrowPressed();
@@ -66,8 +67,8 @@ public:
     void autoplay();
 
     void moveProtagonist(Direction direction);
+    void moveProtagonist(coordinate coord);
     void moveProtagonistWithDelay(Direction direction);
-    void moveProtagonist(int x, int y);
 
 signals:
     void updateprotagonistPosition(int protagonistIndex);
@@ -77,8 +78,10 @@ signals:
 private:
     WorldController();
 
-    std::vector<std::shared_ptr<WorldModel>> worlds;
-    std::shared_ptr<WorldModel> currentWorld;
+    std::vector<std::unique_ptr<WorldModel>> worlds;
+//    std::shared_ptr<WorldModel> currentWorld; // Changed to std::shared_ptr
+//    std::unique_ptr<WorldModel> currentWorld;
+    WorldModel* currentWorld;
     int difficultyIdx;
 
     void handleEncounters(const coordinate& position);

@@ -14,6 +14,8 @@ void Game2DView::initializeView() {
     enemyGraphicsItems.clear();
     penemyGraphicsItems.clear();
     xenemyGraphicsItems.clear();
+    portalGraphicsItems.clear();
+    protagonistGraphicsItems.clear();
 
     setBackground(backgroundNumber);
     scaleEntitiesToFitView();
@@ -29,9 +31,9 @@ void Game2DView::initializeView() {
     QString tileBase = ":/images/tiles/";
     for (const auto& tile : tiles) {
 
-            std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
-            scene->addItem(tileGraphicsItem.get());
-            tileGraphicsItems.push_back(std::move(tileGraphicsItem));
+        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
+        scene->addItem(tileGraphicsItem.get());
+        tileGraphicsItems.push_back(std::move(tileGraphicsItem));
 
     }
 
@@ -39,8 +41,13 @@ void Game2DView::initializeView() {
     QString portalBase = ":/images/portal/";
     // compute the exit tile index and set the picture
     const std::unique_ptr<TileModel>& exit = world->getTiles().at((world->getExit().yCoordinate) * world->getCols() + (world->getExit().xCoordinate));
-    portalGraphicsItem = std::make_unique<PortalGraphicsItem>(*exit, portalBase);
-    scene->addItem(portalGraphicsItem.get());
+    const std::unique_ptr<TileModel>& start = world->getTiles().at((world->getStart().yCoordinate) * world->getCols() + (world->getStart().xCoordinate));
+    std::unique_ptr<PortalGraphicsItem> exitGraphicsItem = std::make_unique<PortalGraphicsItem>(*exit, portalBase);
+    std::unique_ptr<PortalGraphicsItem> startGraphicsItem = std::make_unique<PortalGraphicsItem>(*start, portalBase);
+    scene->addItem(exitGraphicsItem.get());
+    scene->addItem(startGraphicsItem.get());
+    portalGraphicsItems.push_back(std::move(exitGraphicsItem));
+    portalGraphicsItems.push_back(std::move(startGraphicsItem));
 
     /** baseFramesDir for healthpack is constant */
     QString healthpackBase = ":/images/healthpack/";
@@ -95,7 +102,6 @@ void Game2DView::initializeView() {
         std::unique_ptr<ProtagonistGraphicsItem> protagonistGraphicsItem = std::make_unique<ProtagonistGraphicsItem>(*protagonists[i], protagonistBase);
         scene->addItem(protagonistGraphicsItem.get());
         protagonistGraphicsItems.push_back(std::move(protagonistGraphicsItem));
-
     }
     scene->setSceneRect(0, 0, backgroundImage.width() + tileWidth, backgroundImage.height() + tileHeight);
     this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);

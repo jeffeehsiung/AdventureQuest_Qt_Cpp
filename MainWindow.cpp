@@ -79,11 +79,13 @@ void MainWindow::setupUI()
     graphicsLayout->addWidget(graphicsMessageWidget);
     graphicsTab->setLayout(graphicsLayout);
 
-
     // Add a widget for game messages in the textual tab
-    textualMessageWidget->setReadOnly(true);
+    textualMessageWidget->setReadOnly(false);
     textualMessageWidget->setStyleSheet("background-color: white;");
     textualMessageWidget->setFixedHeight(100);
+    textualMessageWidget->setPlaceholderText("> Type command here and press Enter...");
+    textualMessageWidget->installEventFilter(this);
+
 
     viewTabs->addTab(textualTab, "Textual");
 
@@ -253,7 +255,10 @@ void MainWindow::onViewTabChanged(int index)
     if (index == 0) {
         gameController->switchTo2DView();
     } else if (index == 1) {
+        textualMessageWidget->clear();
         gameController->switchToTextView();
+        textualMessageWidget->setFocus();
+
     }
 }
 
@@ -276,7 +281,7 @@ void MainWindow::displayView(QWidget* view) {
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (!gameController->isGameOver()) {
-        setFocusPolicy(Qt::StrongFocus);
+//        setFocusPolicy(Qt::StrongFocus);
         switch (event->key()) {
         case Qt::Key_W: gameController->onUpArrowPressed(); break;
         case Qt::Key_S: gameController->onDownArrowPressed(); break;

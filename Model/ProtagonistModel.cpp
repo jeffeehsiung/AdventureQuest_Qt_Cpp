@@ -39,6 +39,7 @@ coordinate* ProtagonistModel::getPositionValue() {
 }
 
 void ProtagonistModel::setPosition(coordinate position) {
+    status = MOVING;
     protagonist->setXPos(position.xCoordinate);
     protagonist->setYPos(position.yCoordinate);
 }
