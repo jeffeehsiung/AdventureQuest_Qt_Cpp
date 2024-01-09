@@ -35,14 +35,12 @@ MainWindow::MainWindow(QWidget *parent)
     quitButton->setEnabled(false);
     quitButton->setStyleSheet("background-color: grey;");
 
-    /** UI connections to MainWindow */
     connect(startButton, &QPushButton::clicked, this, &MainWindow::onStartButtonClicked);
     connect(pauseButton, &QPushButton::clicked, this, &MainWindow::onPauseButtonClicked);
     connect(autoPlayButton, &QPushButton::clicked, this, &MainWindow::onAutoPlayButtonClicked);
     connect(quitButton, &QPushButton::clicked, this, &MainWindow::onQuitButtonClicked);
     connect(viewTabs, &QTabWidget::currentChanged, this, &MainWindow::onViewTabChanged);
 
-    /** MainWindow connections to GameController */
     connect(gameController, &GameController::viewUpdateRequested, this, &MainWindow::onViewUpdateRequested);
     connect(gameController, &GameController::sendTextToGUI, this, &MainWindow::displayText);
 }
@@ -174,7 +172,6 @@ void MainWindow::onStartButtonClicked()
 
     // Interact with game controller
     gameController->readGameStarted(true);
-    gameController->readGamePaused(false);
     gameController->readGameAutoplayed(false);
     gameController->readGameNumberOfPlayers(numberOfPlayers);
     gameController->readGameDifficultyLevel(difficultyLevel);
@@ -204,7 +201,6 @@ void MainWindow::onPauseButtonClicked()
         autoPlayButton->setStyleSheet("background-color: grey;");
         isGamePaused = true;
     }
-    gameController->printAllGameInfo();
 }
 
 void MainWindow::onAutoPlayButtonClicked()
@@ -212,7 +208,6 @@ void MainWindow::onAutoPlayButtonClicked()
     graphicsMessageWidget->append("Auto playing...");
     textualMessageWidget->append("Auto playing...");
     gameController->readGameAutoplayed(true);
-    gameController->printAllGameInfo();
 }
 
 void MainWindow::onQuitButtonClicked()
@@ -227,7 +222,6 @@ void MainWindow::onQuitButtonClicked()
     pauseButton->setEnabled(false);
     pauseButton->setStyleSheet("background-color: grey;");
     isGamePaused = false;
-    gameController->readGamePaused(isGamePaused);
 
     autoPlayButton->setEnabled(false);
     autoPlayButton->setStyleSheet("background-color: grey;");
@@ -244,8 +238,6 @@ void MainWindow::onQuitButtonClicked()
     difficultyLevelComboBox->setEnabled(true);
     difficultyLevelComboBox->setStyleSheet("");
     gameController->readGameDifficultyLevel("Not Selected");
-
-    gameController->printAllGameInfo();
 
     gameController->setGameOver();
     startButton->setText("Restart");
@@ -282,7 +274,6 @@ void MainWindow::displayView(QWidget* view) {
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (!gameController->isGameOver()) {
-//        setFocusPolicy(Qt::StrongFocus);
         switch (event->key()) {
         case Qt::Key_W: gameController->onUpArrowPressed(); break;
         case Qt::Key_S: gameController->onDownArrowPressed(); break;

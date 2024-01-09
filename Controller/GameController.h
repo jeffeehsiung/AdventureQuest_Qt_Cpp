@@ -18,13 +18,10 @@ public:
     explicit GameController(QObject *parent = nullptr);
     ~GameController();
 
-    // Interface for MainWindow to notify about user actions
     void readGameStarted(bool isStarted);
-    void readGamePaused(bool isPaused);
     void readGameAutoplayed(bool isAutoPlayed);
     void readGameNumberOfPlayers(const QString &numberOfPlayers);
     void readGameDifficultyLevel(const QString &difficultyLevel);
-    void printAllGameInfo();
     void decideGameParameters();
 
     void initializeWorld();
@@ -38,7 +35,6 @@ public:
     void onLeftArrowPressed();
     void onRightArrowPressed();
 
-//    void processCommand(const QString& command);
     void displayHelp() const;
 
     int getHealth1();

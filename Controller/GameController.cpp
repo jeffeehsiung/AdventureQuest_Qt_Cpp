@@ -8,11 +8,10 @@ GameController::GameController(QObject *parent)
     isGamePaused(false),
     isGameAutoplayed(false)
 {
-    /** set up connections: viewcontroller to gamecontroller */
+    // Connect signals and slots
     connect(&viewController, &ViewController::viewUpdated, this, &GameController::onViewUpdated);
     connect(&worldController, &WorldController::gameWon, this, &GameController::setWon);
 
-    // Setup the command map
     commandMap["up"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(UP); };
     commandMap["down"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(DOWN); };
     commandMap["left"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(LEFT); };
@@ -25,7 +24,7 @@ GameController::GameController(QObject *parent)
             worldController.moveProtagonist(coord);
         }
     };
-    // TODO: make a comparator to compare enemy, penenmy, xenemy
+
     commandMap["attack"] = [this](const QStringList& args){
         Q_UNUSED(args);
         const WorldModel& currentWorld = worldController.getCurrentWorld();
@@ -65,15 +64,11 @@ GameController::GameController(QObject *parent)
 }
 
 GameController::~GameController() {
-    // Destructor for clean-up if necessary
+    
 }
 
 void GameController::readGameStarted(bool isStarted) {
     isGameStarted = isStarted;
-}
-
-void GameController::readGamePaused(bool isPaused) {
-    isGamePaused = isPaused;
 }
 
 void GameController::readGameAutoplayed(bool isAutoPlayed) {
@@ -89,15 +84,6 @@ void GameController::readGameNumberOfPlayers(const QString &numberOfPlayers) {
 
 void GameController::readGameDifficultyLevel(const QString &difficultyLevel) {
     gameDifficultyLevel = difficultyLevel;
-}
-
-void GameController::printAllGameInfo() {
-    qDebug() << "Game Info: "
-             << "\nGame Started? " << isGameStarted
-             << "\nGame Paused? " << isGamePaused
-             << "\nGame Autoplayed? " << isGameAutoplayed
-             << "\nNumber of Players: " << gameNumberOfPlayers
-             << "\nDifficulty Level: " << gameDifficultyLevel << "\n";
 }
 
 void GameController::decideGameParameters() {
@@ -136,7 +122,6 @@ void GameController::reInitializeWorld() {
     gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
 }
 
-// Methods to switch between views
 void GameController::switchTo2DView() {
     viewController.switchTo2DView();
 }
