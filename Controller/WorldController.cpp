@@ -566,10 +566,7 @@ void WorldController::autoplay(){
             case 6:
                 currentPos.xCoordinate -= 1;
                 currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
-//                moveProtagonistWithDelay(LEFT);
-                QTimer::singleShot(500, this, [this, currentPos]() {
-                    currentWorld->getProtagonists()[0]->setPosition(currentPos);
-                });
+                moveProtagonistWithDelay(LEFT);
                 break;
             case 7:
                 currentPos.yCoordinate -= 1;
@@ -585,22 +582,22 @@ void WorldController::autoplay(){
    }
 }
 
-// void WorldController::moveProtagonistWithDelay(Direction direction) {
-//    moveProtagonist(direction);
+ void WorldController::moveProtagonistWithDelay(Direction direction) {
+    moveProtagonist(direction);
 
-//    // Introduce a delay using QTimer
-//    QTimer timer;
-//    connect(&timer, &QTimer::timeout, [&]() {
-//        // Code to be executed after the delay
-//        timer.stop();  // Stop the timer after the delay
-//    });
+    // Introduce a delay using QTimer
+    QTimer timer;
+    connect(&timer, &QTimer::timeout, [&]() {
+        // Code to be executed after the delay
+        timer.stop();  // Stop the timer after the delay
+    });
 
-//    // Set the delay time (adjust as needed, 1000 = 1 second)
-//    timer.start(500);  // 1000 milliseconds = 1 second
-//    QEventLoop loop;
-//    connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
-//    loop.exec();
-// }
+    // Set the delay time (adjust as needed, 1000 = 1 second)
+    timer.start(500);  // 1000 milliseconds = 1 second
+    QEventLoop loop;
+    connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
+    loop.exec();
+ }
 
 
 

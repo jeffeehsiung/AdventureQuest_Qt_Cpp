@@ -9,6 +9,7 @@
 #include <memory>
 #include <qloggingcategory.h>
 
+
 /*
  * A_star has 2 template parameters, T and U
  * T is the Node object which needs to have the fields as defined by the concept validNodeType
