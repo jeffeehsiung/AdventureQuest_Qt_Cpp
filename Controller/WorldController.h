@@ -72,6 +72,7 @@ public:
 signals:
     void updateprotagonistPosition(int protagonistIndex);
     void updateLevel();
+    void gameWon();
 
 private:
     WorldController();

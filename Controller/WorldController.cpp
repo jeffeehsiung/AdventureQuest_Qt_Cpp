@@ -414,8 +414,9 @@ void WorldController::playerReachedExit() {
                 // Calculate the position/index of currentWorld in the vector
                 position = std::distance(worlds.begin(), it);
                 qDebug() << "Current world is at position " << position;
-                if(position >= 4){
+                if(position >= 3){
                     //WINGAME
+                    emit gameWon();
                 }
             } else {
                 qDebug() << "Current world not found in the vector!";

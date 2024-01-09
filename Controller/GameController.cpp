@@ -10,6 +10,7 @@ GameController::GameController(QObject *parent)
 {
     /** set up connections: viewcontroller to gamecontroller */
     connect(&viewController, &ViewController::viewUpdated, this, &GameController::onViewUpdated);
+    connect(&worldController, &WorldController::gameWon, this, &GameController::setWon);
 
     // Setup the command map
     commandMap["up"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(UP); };
@@ -165,6 +166,14 @@ bool GameController::isGameOver() {
 
 void GameController::setGameOver() {
     isGameStarted = false;
+}
+
+bool GameController::isWon() {
+    return isGameWon;
+}
+
+void GameController::setWon() {
+    isGameWon = true;
 }
 
 void GameController::processCommand(const QString& command) {

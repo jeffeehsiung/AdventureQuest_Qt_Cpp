@@ -47,6 +47,9 @@ public:
     bool isGameOver();
     void setGameOver();
 
+    bool isWon();
+    void setWon();
+
 public slots:
     void onViewUpdated(QWidget* currentView);
     void processCommand(const QString& command);
@@ -62,6 +65,7 @@ private:
     bool isGameStarted;
     bool isGamePaused;
     bool isGameAutoplayed;
+    bool isGameWon = false;
     QString gameNumberOfPlayers;
     QString gameDifficultyLevel;
     QString gameMap;
