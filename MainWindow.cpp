@@ -44,6 +44,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     /** MainWindow connections to GameController */
     connect(gameController, &GameController::viewUpdateRequested, this, &MainWindow::onViewUpdateRequested);
+    connect(gameController, &GameController::sendTextToGUI, this, &MainWindow::displayText);
 }
 
 
