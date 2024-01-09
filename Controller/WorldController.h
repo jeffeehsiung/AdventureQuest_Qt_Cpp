@@ -53,6 +53,9 @@ signals:
     void updateprotagonistPosition(int protagonistIndex);
     void updateLevel();
     void gameWon();
+    void updateHealthAndEnergy();
+    void onProtagonistDead();
+    void onHealthAndEnergyUpdate();
 
 private:
     WorldController();
@@ -60,6 +63,7 @@ private:
     std::vector<std::unique_ptr<WorldModel>> worlds;
     WorldModel* currentWorld;
     int difficultyIdx;
+    size_t currentWorldIndex;
 
     void handleEncounters(const coordinate& position);
     void onEncounterHealthPack();

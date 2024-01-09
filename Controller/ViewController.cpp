@@ -47,9 +47,9 @@ QWidget* ViewController::getCurrentView() const {
 }
 
 void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
+    Q_UNUSED(protagonistIndex);
     game2DView->updateView();
     gameTextView->updateView();
-//    emit viewUpdated(currentView);
 }
 
 void ViewController::updateLevel() {
@@ -58,4 +58,6 @@ void ViewController::updateLevel() {
     gameTextView->setCurrentWorld(world);
     game2DView->initializeView();
     gameTextView->initializeView();
+    game2DView->updateView();
+    gameTextView->updateView();
 }

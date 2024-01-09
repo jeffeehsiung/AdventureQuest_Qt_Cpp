@@ -9,13 +9,21 @@ void Game2DView::initializeView() {
         scene = new QGraphicsScene(this);
         setScene(scene);
     }
-    healthpackGraphicsItems.clear();
+    /** avoid adding duplicated tile observer */
+    if (tileGraphicsItems.size() != 0){
+        for (const auto& tileGraphicsItem : tileGraphicsItems) {
+            tileGraphicsItem->getTileModel().removeObserver(tileGraphicsItem.get());
+        }
+    }
+    /** clear all vectors */
     tileGraphicsItems.clear();
+    healthpackGraphicsItems.clear();
     enemyGraphicsItems.clear();
     penemyGraphicsItems.clear();
     xenemyGraphicsItems.clear();
     portalGraphicsItems.clear();
     protagonistGraphicsItems.clear();
+
 
     setBackground(backgroundNumber);
     scaleEntitiesToFitView();

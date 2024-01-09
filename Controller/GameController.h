@@ -19,7 +19,7 @@ public:
     ~GameController();
 
     void readGameStarted(bool isStarted);
-    void readGameAutoplayed(bool isAutoPlayed);
+    void readGameAutoplayed();
     void readGameNumberOfPlayers(const QString &numberOfPlayers);
     void readGameDifficultyLevel(const QString &difficultyLevel);
     void decideGameParameters();
@@ -37,22 +37,23 @@ public:
 
     void displayHelp() const;
 
-    int getHealth1();
-    float getEnergy1();
-
     bool isGameOver();
     void setGameOver();
-
-    bool isWon();
-    void setWon();
 
 public slots:
     void onViewUpdated(QWidget* currentView);
     void processCommand(const QString& command);
+    void onUpdateHealthAndEnergy();
+    void setWon();
+    void setLost();
 
 signals:
     void viewUpdateRequested(QWidget* currentView);
     void sendTextToGUI(const QString& text) const;
+    void sendGameWon();
+    void sendGameLost();
+    void updateStatusDisplay(int health, float energy);
+    void autoPlayed();
 
 private:
     WorldController& worldController;
@@ -60,19 +61,13 @@ private:
 
     bool isGameStarted;
     bool isGamePaused;
-    bool isGameAutoplayed;
-    bool isGameWon = false;
     QString gameNumberOfPlayers;
     QString gameDifficultyLevel;
     QString gameMap;
     int gameDifficultyIdx;
     float gamePRatio;
-    int gameHealth1;
-    float gameEnergy1;
 
     std::map<QString, std::function<void(const QStringList&)>> commandMap;
-
-    void updateHealthAndEnergy();
 };
 
 #endif // GAMECONTROLLER_H

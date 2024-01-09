@@ -5,12 +5,14 @@ GameController::GameController(QObject *parent)
     worldController(WorldController::getInstance()),
     viewController(ViewController::getInstance()),
     isGameStarted(false),
-    isGamePaused(false),
-    isGameAutoplayed(false)
+    isGamePaused(false)
 {
     // Connect signals and slots
     connect(&viewController, &ViewController::viewUpdated, this, &GameController::onViewUpdated);
     connect(&worldController, &WorldController::gameWon, this, &GameController::setWon);
+    connect(&worldController, &WorldController::onProtagonistDead, this, &GameController::setLost);
+    connect(&worldController, &WorldController::onHealthAndEnergyUpdate, this, &GameController::onUpdateHealthAndEnergy);
+
 
     commandMap["up"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(UP); };
     commandMap["down"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(DOWN); };
@@ -71,11 +73,9 @@ void GameController::readGameStarted(bool isStarted) {
     isGameStarted = isStarted;
 }
 
-void GameController::readGameAutoplayed(bool isAutoPlayed) {
-    isGameAutoplayed = isAutoPlayed;
-    if(isAutoPlayed){
-        worldController.autoplay();
-    }
+void GameController::readGameAutoplayed() {
+    worldController.autoplay();
+    emit autoPlayed();
 }
 
 void GameController::readGameNumberOfPlayers(const QString &numberOfPlayers) {
@@ -109,8 +109,6 @@ void GameController::initializeWorld() {
     worldController.createWorld(":/images/world_images/worldmap5.png", gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
     worldController.getCurrentWorld().getProtagonists()[0]->setHealth(5);
     worldController.getCurrentWorld().getProtagonists()[0]->setEnergy(100);
-    gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-    gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
 
     viewController.initializeViews();
 }
@@ -118,8 +116,6 @@ void GameController::initializeWorld() {
 void GameController::reInitializeWorld() {
     worldController.getCurrentWorld().getProtagonists()[0]->setHealth(5);
     worldController.getCurrentWorld().getProtagonists()[0]->setEnergy(100);
-    gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-    gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
 }
 
 void GameController::switchTo2DView() {
@@ -137,44 +133,41 @@ void GameController::onViewUpdated(QWidget* currentView) {
 void GameController::onUpArrowPressed() {
     if (isGameStarted) {
         worldController.moveProtagonist(UP);
-        updateHealthAndEnergy();
     }
 }
 
 void GameController::onDownArrowPressed() {
     if (isGameStarted) {
         worldController.moveProtagonist(DOWN);
-        updateHealthAndEnergy();
     }
 }
 
 void GameController::onLeftArrowPressed() {
     if (isGameStarted) {
         worldController.moveProtagonist(LEFT);
-        updateHealthAndEnergy();
     }
 }
 
 void GameController::onRightArrowPressed() {
     if (isGameStarted) {
         worldController.moveProtagonist(RIGHT);
-        updateHealthAndEnergy();
     }
 }
 
-void GameController::updateHealthAndEnergy() {
-    gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-    gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
-    qDebug() << "Health: " << gameHealth1 << "Energy: " << gameEnergy1;
+void GameController::onUpdateHealthAndEnergy() {
+    int gameHealth = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+    float gameEnergy = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
+    emit updateStatusDisplay(gameHealth, gameEnergy);
 }
 
-
-int GameController::getHealth1() {
-    return gameHealth1;
+void GameController::setWon() {
+    this->setGameOver();
+    emit sendGameWon();
 }
 
-float GameController::getEnergy1() {
-    return gameEnergy1;
+void GameController::setLost() {
+    this->setGameOver();
+    emit sendGameLost();
 }
 
 bool GameController::isGameOver() {
@@ -188,14 +181,6 @@ bool GameController::isGameOver() {
 
 void GameController::setGameOver() {
     isGameStarted = false;
-}
-
-bool GameController::isWon() {
-    return isGameWon;
-}
-
-void GameController::setWon() {
-    isGameWon = true;
 }
 
 void GameController::processCommand(const QString& command) {

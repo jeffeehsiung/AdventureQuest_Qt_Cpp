@@ -81,14 +81,18 @@ void ProtagonistModel::onHealthChanged(int h){
     if(h <= 0){
         status = DYING;
         qDebug() << "Your health is 0!";
+        emit protagonistDead();
     }
+    emit healthUpdate();
 }
 
 void ProtagonistModel::oneEnergyChanged(int e){
     if(e <= 0){
         status = DYING;
         qDebug() << "your energy is 0!";
+        emit protagonistDead();
     }
+    emit energyUpdate();
 
 }
 

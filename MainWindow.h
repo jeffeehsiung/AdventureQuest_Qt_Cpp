@@ -23,31 +23,29 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void displayView(QWidget* view);
-    void updateHealthDisplay();
-    void updateEnergyDisplay();
 
 private:
     QWidget *centralWidget;
-    QPushButton *startButton;
-    QPushButton *pauseButton;
-    QPushButton *quitButton;
-    QVector<QLabel*> healthLabels;
-    QLabel *energyLabel;
-    QLabel *energyValueLabel;
-    QSlider *animationDelaySlider;
-    QSlider *heuristicWeightFactorSlider;
-    QLabel *animationDelayLabel;
-    QLabel *heuristicWeightFactorLabel;
     QTabWidget *viewTabs;
     QWidget *graphicsTab;
     QWidget *textualTab;
-    QPushButton *autoPlayButton;
-    QComboBox *playerNumberComboBox;
-    QComboBox *difficultyLevelComboBox;
-    QLabel *playerNumberLabel;
-    QLabel *difficultyLevelLabel;
     QTextEdit *graphicsMessageWidget;
     QTextEdit *textualMessageWidget;
+    QPushButton *startButton;
+    QPushButton *pauseButton;
+    QPushButton *quitButton;
+    QPushButton *autoPlayButton;
+    QSlider *animationDelaySlider;
+    QSlider *heuristicWeightFactorSlider;
+    QLabel *heuristicWeightFactorLabel;
+    QLabel *animationDelayLabel;
+    QVector<QLabel*> healthLabels;
+    QLabel *energyLabel;
+    QLabel *energyValueLabel;
+    QComboBox *playerNumberComboBox;
+    QLabel *playerNumberLabel;
+    QComboBox *difficultyLevelComboBox;
+    QLabel *difficultyLevelLabel;
 
     bool isGamePaused;
 
@@ -66,7 +64,11 @@ private slots:
     void onQuitButtonClicked();
     void onViewTabChanged(int index);
     void onViewUpdateRequested(QWidget* view);
-    void displayText(const QString& text);
+    void onDisplayText(const QString& text);
+    void onUpdateStatusDisplay(int currentHealth, float currentEnergy);
+    void onGameWon();
+    void onGameLost();
+    void onAutoPlayed();
 };
 
 #endif // MAINWINDOW_H

@@ -2,7 +2,7 @@
 #define TILEOBSERVER_H
 class TileObserver {
 public:
-     virtual ~TileObserver() {}
+    virtual ~TileObserver() {}
     virtual void onTileChanged() = 0;
 };
 
