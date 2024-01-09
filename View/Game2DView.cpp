@@ -23,6 +23,7 @@ void Game2DView::initializeView() {
     xenemyGraphicsItems.clear();
     portalGraphicsItems.clear();
     protagonistGraphicsItems.clear();
+    scene->clear();
 
 
     setBackground(backgroundNumber);

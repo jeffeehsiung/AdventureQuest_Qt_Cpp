@@ -18,8 +18,8 @@
 class Game2DView : public QGraphicsView, public GameView {
     Q_OBJECT
 public:
-    explicit Game2DView(QWidget* parent = nullptr)
-        : QGraphicsView(parent){
+    explicit Game2DView(QWidget* parent)
+        : QGraphicsView(parent), scene(new QGraphicsScene(this)) {
         Background1.load(":/images/world_images/worldmap.png");
         Background2.load(":/images/world_images/worldmap4.png");
         Background3.load(":/images/world_images/maze2.png");
@@ -28,34 +28,34 @@ public:
         initZoomLevel = 1.0;
         setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-        scene = new QGraphicsScene(this);
         setScene(scene);
     }
 
-    virtual ~Game2DView(){
-        for (auto& item : tileGraphicsItems) {
-            item.release();
-        }
-        for (auto& item : healthpackGraphicsItems) {
-            item.release();
-        }
-        for (auto& item : enemyGraphicsItems) {
-            item.release();
-        }
-        for (auto& item : penemyGraphicsItems) {
-            item.release();
-        }
-        for (auto& item : xenemyGraphicsItems) {
-            item.release();
-        }
-        for (auto& item : portalGraphicsItems) {
-            item.release();
-        }
-        for (auto& item : protagonistGraphicsItems) {
-            item.release();
-        }
-        delete scene;
-    }
+//    virtual ~Game2DView(){
+//        for (auto& item : tileGraphicsItems) {
+//            item.release();
+//        }
+//        for (auto& item : healthpackGraphicsItems) {
+//            item.release();
+//        }
+//        for (auto& item : enemyGraphicsItems) {
+//            item.release();
+//        }
+//        for (auto& item : penemyGraphicsItems) {
+//            item.release();
+//        }
+//        for (auto& item : xenemyGraphicsItems) {
+//            item.release();
+//        }
+//        for (auto& item : portalGraphicsItems) {
+//            item.release();
+//        }
+//        for (auto& item : protagonistGraphicsItems) {
+//            item.release();
+//        }
+//        delete scene;
+//    }
+    virtual ~Game2DView() = default;
 
     /**
      * @brief initializeView

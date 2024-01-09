@@ -240,13 +240,11 @@ void WorldController::handleEncounters(const coordinate& position) {
 
 void WorldController::playerReachedExit() {
     // avoid going out of bound
-
-    if(((currentWorldIndex + 1) > worlds.size()) || (static_cast<int>(currentWorldIndex - 1) < (-1))){
-        qDebug() << "no next level. worlds size: " << worlds.size() << "currentWorldIndex: " << currentWorldIndex;
-        return;
-    }
     if (currentWorld->getProtagonists()[0]->getPosition() == currentWorld->getExit()) {
-        if (currentWorldIndex == (worlds.size()-1)){
+        if((currentWorldIndex + 1) > worlds.size()){
+            qDebug() << "no next level. worlds size: " << worlds.size() << "currentWorldIndex: " << currentWorldIndex;
+            return;
+        }else if (currentWorldIndex == (worlds.size()-1)){
             emit gameWon();
             return;
         }
@@ -263,6 +261,10 @@ void WorldController::playerReachedExit() {
         qDebug() << "LevelSwitched!" << "\n";
     }
     else if(currentWorld->getProtagonists()[0]->getPosition() == currentWorld->getStart()) {
+        if(static_cast<int>(currentWorldIndex - 1) == -1){
+            qDebug() << "no next level. worlds size: " << worlds.size() << "currentWorldIndex: " << currentWorldIndex;
+            return;
+        }
         auto protagonists = currentWorld->removeProtagonists();
         // Update the protagonist's position to the start position of the new world
         currentWorldIndex-= 1;

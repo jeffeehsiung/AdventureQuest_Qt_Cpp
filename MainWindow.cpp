@@ -289,17 +289,28 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     }
 }
 
+//void MainWindow::onDisplayText(const QString& text) {
+//    graphicsMessageWidget->append(text);
+
+//    QString currentText = textualMessageWidget->toPlainText();
+//    textualMessageWidget->setPlainText(currentText + "\n" + text);
+//    QTextCursor cursor = textualMessageWidget->textCursor();
+//    cursor.movePosition(QTextCursor::End);
+//    textualMessageWidget->setTextCursor(cursor);
+//}
+
 void MainWindow::onDisplayText(const QString& text) {
     graphicsMessageWidget->append(text);
 
-    QString currentText = textualMessageWidget->toPlainText();
-    textualMessageWidget->setPlainText(currentText + "\n" + text);
-    QTextCursor cursor = textualMessageWidget->textCursor();
-    cursor.movePosition(QTextCursor::End);
-    textualMessageWidget->setTextCursor(cursor);
+    // Append the text to the textualMessageWidget instead of setting plain text
+    textualMessageWidget->moveCursor(QTextCursor::End);
+    textualMessageWidget->append(text);
+    textualMessageWidget->moveCursor(QTextCursor::End);
 }
 
+
 void MainWindow::onGameWon(){
+    autoPlayButton->setEnabled(false);
     QMessageBox::information(this, "Game Over", "YOU WIN!");
     // Disconnect the game won and lost signals from their slots
     disconnect(gameController, &GameController::sendGameWon, this, &MainWindow::onGameWon);
@@ -310,6 +321,7 @@ void MainWindow::onGameWon(){
 }
 
 void MainWindow::onGameLost(){
+    autoPlayButton->setEnabled(false);
     QMessageBox::information(this, "Game Over", "DIE! YOU'VE GOT NOTHING! YOU LOSE!");
     // Disconnect the game won and lost signals from their slots
     disconnect(gameController, &GameController::sendGameWon, this, &MainWindow::onGameWon);
@@ -320,8 +332,11 @@ void MainWindow::onGameLost(){
 }
 
 void MainWindow::onAutoPlayed(){
-    autoPlayButton->setEnabled(true);
-    pauseButton->setEnabled(true);
+    if (!gameController->isGameOver()){
+        autoPlayButton->setEnabled(true);
+        pauseButton->setEnabled(true);
+    }
+    return;
 }
 
 void MainWindow::onUpdateStatusDisplay(int currentHealth, float currentEnergy){
@@ -344,6 +359,9 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
         if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return) {
             // Handle the Enter key press
             QString command = textualMessageWidget->toPlainText().trimmed();
+            if (command.isEmpty()){
+                return QMainWindow::eventFilter(watched, event);
+            }
             gameController->processCommand(command);
             textualMessageWidget->clear();
             return true; // indicate that the event was handled
