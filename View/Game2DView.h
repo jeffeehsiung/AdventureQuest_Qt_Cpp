@@ -89,13 +89,20 @@ private:
     qreal tileWidth;
     qreal tileHeight;
 
-    std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
-    std::vector<std::unique_ptr<HPGraphicsItem>> healthpackGraphicsItems;
-    std::vector<std::unique_ptr<PortalGraphicsItem>> portalGraphicsItems;
-    std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
-    std::vector<std::unique_ptr<PEnemyGraphicsItem>> penemyGraphicsItems;
-    std::vector<std::unique_ptr<XEnemyGraphicsItem>> xenemyGraphicsItems;
-    std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
+//    std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
+//    std::vector<std::unique_ptr<HPGraphicsItem>> healthpackGraphicsItems;
+//    std::vector<std::unique_ptr<PortalGraphicsItem>> portalGraphicsItems;
+//    std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
+//    std::vector<std::unique_ptr<PEnemyGraphicsItem>> penemyGraphicsItems;
+//    std::vector<std::unique_ptr<XEnemyGraphicsItem>> xenemyGraphicsItems;
+//    std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
+    std::vector<TileGraphicsItem*> tileGraphicsItems;
+    std::vector<HPGraphicsItem*> healthpackGraphicsItems;
+    std::vector<PortalGraphicsItem*> portalGraphicsItems;
+    std::vector<EnemyGraphicsItem*> enemyGraphicsItems;
+    std::vector<PEnemyGraphicsItem*> penemyGraphicsItems;
+    std::vector<XEnemyGraphicsItem*> xenemyGraphicsItems;
+    std::vector<ProtagonistGraphicsItem*> protagonistGraphicsItems;
 
     void scaleEntitiesToFitView();
     void zoomIn(int delta);

@@ -7,7 +7,6 @@ std::vector<QPixmap> TileGraphicsItem::sharedPathFoundFrames;
 std::vector<QPixmap> TileGraphicsItem::sharedThunderedFrames;
 std::vector<QPixmap> TileGraphicsItem::sharedPoisonedFrames;
 
-const float maxValue = 0.95;
 // the naming should be changed to TileGraphicsItem
 
 TileGraphicsItem::TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent)

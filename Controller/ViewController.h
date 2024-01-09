@@ -36,8 +36,10 @@ private:
     ViewController(QObject *parent = nullptr);
 
     WorldController& worldController;
-    std::unique_ptr<Game2DView> game2DView;
-    std::unique_ptr<GameTextView> gameTextView;
+//    std::unique_ptr<Game2DView> game2DView;
+//    std::unique_ptr<GameTextView> gameTextView;
+    std::shared_ptr<Game2DView> game2DView;
+    std::shared_ptr<GameTextView> gameTextView;
     QWidget* currentView;
 
 };
