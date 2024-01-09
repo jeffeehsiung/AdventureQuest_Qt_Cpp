@@ -3,25 +3,25 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
     centralWidget(new QWidget(this)),
-    startButton(new QPushButton("Start", this)),
-    pauseButton(new QPushButton("Pause", this)),
-    quitButton(new QPushButton("Quit", this)),
-    animationDelaySlider(new QSlider(Qt::Horizontal, this)),
-    heuristicWeightFactorSlider(new QSlider(Qt::Horizontal, this)),
-    animationDelayLabel(new QLabel("Animation delay", this)),
-    heuristicWeightFactorLabel(new QLabel("Heuristic weight factor", this)),
     viewTabs(new QTabWidget(this)),
     graphicsTab(new QWidget(this)),
     textualTab(new QWidget(this)),
-    autoPlayButton(new QPushButton("Auto Play", this)),
-    playerNumberComboBox(new QComboBox(this)),
-    difficultyLevelComboBox(new QComboBox(this)),
-    playerNumberLabel(new QLabel("Number of Players", this)),
-    difficultyLevelLabel(new QLabel("Difficulty Level", this)),
-    energyLabel(new QLabel("Energy: ", this)),
-    energyValueLabel(new QLabel("100.00", this)),
     graphicsMessageWidget(new QTextEdit(this)),
     textualMessageWidget(new QTextEdit(this)),
+    startButton(new QPushButton("Start", this)),
+    pauseButton(new QPushButton("Pause", this)),
+    quitButton(new QPushButton("Quit", this)),
+    autoPlayButton(new QPushButton("Auto Play", this)),
+    animationDelaySlider(new QSlider(Qt::Horizontal, this)),
+    heuristicWeightFactorSlider(new QSlider(Qt::Horizontal, this)),
+    heuristicWeightFactorLabel(new QLabel("Heuristic weight factor", this)),
+    animationDelayLabel(new QLabel("Animation delay", this)),
+    energyLabel(new QLabel("Energy: ", this)),
+    energyValueLabel(new QLabel("100.00", this)),
+    playerNumberComboBox(new QComboBox(this)),
+    playerNumberLabel(new QLabel("Number of Players", this)),
+    difficultyLevelComboBox(new QComboBox(this)),
+    difficultyLevelLabel(new QLabel("Difficulty Level", this)),
     isGamePaused(false),
     gameController(new GameController(this))
 {
@@ -35,16 +35,18 @@ MainWindow::MainWindow(QWidget *parent)
     quitButton->setEnabled(false);
     quitButton->setStyleSheet("background-color: grey;");
 
-    /** UI connections to MainWindow */
     connect(startButton, &QPushButton::clicked, this, &MainWindow::onStartButtonClicked);
     connect(pauseButton, &QPushButton::clicked, this, &MainWindow::onPauseButtonClicked);
     connect(autoPlayButton, &QPushButton::clicked, this, &MainWindow::onAutoPlayButtonClicked);
     connect(quitButton, &QPushButton::clicked, this, &MainWindow::onQuitButtonClicked);
     connect(viewTabs, &QTabWidget::currentChanged, this, &MainWindow::onViewTabChanged);
 
-    /** MainWindow connections to GameController */
     connect(gameController, &GameController::viewUpdateRequested, this, &MainWindow::onViewUpdateRequested);
-    connect(gameController, &GameController::sendTextToGUI, this, &MainWindow::displayText);
+    connect(gameController, &GameController::sendTextToGUI, this, &MainWindow::onDisplayText);
+    connect(gameController, &GameController::updateStatusDisplay, this, &MainWindow::onUpdateStatusDisplay);
+    connect(gameController, &GameController::sendGameWon, this, &MainWindow::onGameWon);
+    connect(gameController, &GameController::sendGameLost, this, &MainWindow::onGameLost);
+    connect(gameController, &GameController::autoPlayed, this, &MainWindow::onAutoPlayed);
 }
 
 
@@ -122,7 +124,6 @@ void MainWindow::setupUI()
     controlLayout->addStretch(1); // Push the remaining elements to the right
 
     const int maxHealth = 5;
-    const int maxEnergy = 100;
     const QSize heartSize(30, 30);
 
     for (int i = 0; i < maxHealth; ++i) {
@@ -174,8 +175,6 @@ void MainWindow::onStartButtonClicked()
 
     // Interact with game controller
     gameController->readGameStarted(true);
-    gameController->readGamePaused(false);
-    gameController->readGameAutoplayed(false);
     gameController->readGameNumberOfPlayers(numberOfPlayers);
     gameController->readGameDifficultyLevel(difficultyLevel);
     if (startButton->text() != "Restart") {
@@ -204,15 +203,15 @@ void MainWindow::onPauseButtonClicked()
         autoPlayButton->setStyleSheet("background-color: grey;");
         isGamePaused = true;
     }
-    gameController->printAllGameInfo();
 }
 
 void MainWindow::onAutoPlayButtonClicked()
 {
     graphicsMessageWidget->append("Auto playing...");
     textualMessageWidget->append("Auto playing...");
-    gameController->readGameAutoplayed(true);
-    gameController->printAllGameInfo();
+    autoPlayButton->setEnabled(false);
+    pauseButton->setEnabled(false);
+    gameController->readGameAutoplayed();
 }
 
 void MainWindow::onQuitButtonClicked()
@@ -227,11 +226,9 @@ void MainWindow::onQuitButtonClicked()
     pauseButton->setEnabled(false);
     pauseButton->setStyleSheet("background-color: grey;");
     isGamePaused = false;
-    gameController->readGamePaused(isGamePaused);
 
     autoPlayButton->setEnabled(false);
     autoPlayButton->setStyleSheet("background-color: grey;");
-    gameController->readGameAutoplayed(false);
 
     quitButton->setEnabled(false);
     quitButton->setStyleSheet("background-color: grey;");
@@ -244,8 +241,6 @@ void MainWindow::onQuitButtonClicked()
     difficultyLevelComboBox->setEnabled(true);
     difficultyLevelComboBox->setStyleSheet("");
     gameController->readGameDifficultyLevel("Not Selected");
-
-    gameController->printAllGameInfo();
 
     gameController->setGameOver();
     startButton->setText("Restart");
@@ -282,7 +277,6 @@ void MainWindow::displayView(QWidget* view) {
 
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (!gameController->isGameOver()) {
-//        setFocusPolicy(Qt::StrongFocus);
         switch (event->key()) {
         case Qt::Key_W: gameController->onUpArrowPressed(); break;
         case Qt::Key_S: gameController->onDownArrowPressed(); break;
@@ -290,40 +284,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_D: gameController->onRightArrowPressed(); break;
         default: QMainWindow::keyPressEvent(event); break;
         }
-        updateHealthDisplay();
-        updateEnergyDisplay();
     } else {
         QMainWindow::keyPressEvent(event);
     }
 }
 
-void MainWindow::updateHealthDisplay() {
-    int currentHealth = gameController->getHealth1();
-    if (currentHealth <= 0) {
-        gameController->setGameOver();
-        QMessageBox::information(this, "Game Over", "DIE! YOU'VE GOT NOTHING! YOU LOSE!");
-    }
-    for (int i = 0; i < healthLabels.size(); ++i) {
-        if (i < currentHealth) {
-            healthLabels[i]->setVisible(true);
-        } else {
-            healthLabels[i]->setVisible(false);
-        }
-    }
-}
-
-void MainWindow::updateEnergyDisplay() {
-    float currentEnergy = gameController->getEnergy1();
-    if (currentEnergy <= 0) {
-        gameController->setGameOver();
-        QMessageBox::information(this, "Game Over", "DIE! YOU'VE GOT NOTHING! YOU LOSE!");
-    }
-    QString b;
-    b.setNum(currentEnergy);
-    energyValueLabel->setText(b);
-}
-
-void MainWindow::displayText(const QString& text) {
+void MainWindow::onDisplayText(const QString& text) {
     graphicsMessageWidget->append(text);
 
     QString currentText = textualMessageWidget->toPlainText();
@@ -331,6 +297,45 @@ void MainWindow::displayText(const QString& text) {
     QTextCursor cursor = textualMessageWidget->textCursor();
     cursor.movePosition(QTextCursor::End);
     textualMessageWidget->setTextCursor(cursor);
+}
+
+void MainWindow::onGameWon(){
+    QMessageBox::information(this, "Game Over", "YOU WIN!");
+    // Disconnect the game won and lost signals from their slots
+    disconnect(gameController, &GameController::sendGameWon, this, &MainWindow::onGameWon);
+    disconnect(gameController, &GameController::sendGameLost, this, &MainWindow::onGameLost);
+
+    // Now, the onGameWon and onGameLost functions will not be called when sendGameWon and sendGameLost signals are emitted.
+
+}
+
+void MainWindow::onGameLost(){
+    QMessageBox::information(this, "Game Over", "DIE! YOU'VE GOT NOTHING! YOU LOSE!");
+    // Disconnect the game won and lost signals from their slots
+    disconnect(gameController, &GameController::sendGameWon, this, &MainWindow::onGameWon);
+    disconnect(gameController, &GameController::sendGameLost, this, &MainWindow::onGameLost);
+
+    // Now, the onGameWon and onGameLost functions will not be called when sendGameWon and sendGameLost signals are emitted.
+
+}
+
+void MainWindow::onAutoPlayed(){
+    autoPlayButton->setEnabled(true);
+    pauseButton->setEnabled(true);
+}
+
+void MainWindow::onUpdateStatusDisplay(int currentHealth, float currentEnergy){
+
+    for (int i = 0; i < healthLabels.size(); ++i) {
+        if (i < currentHealth) {
+            healthLabels[i]->setVisible(true);
+        } else {
+            healthLabels[i]->setVisible(false);
+        }
+    }
+    QString b;
+    b.setNum(currentEnergy);
+    energyValueLabel->setText(b);
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {

@@ -19,8 +19,6 @@ public:
     coordinate getPosition() const override;
     float getValue() const;
     void setValue(float value);
-    // int getEnergyValue() const;
-    // void setEnergyValue(int value);
     std::string serialize() const;
     void attack() override;
     void takeDamage(float strength) override;

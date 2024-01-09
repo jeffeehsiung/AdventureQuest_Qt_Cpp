@@ -76,6 +76,10 @@ void TileGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* 
     }
 }
 
+const TileModel& TileGraphicsItem::getTileModel(){
+    return tileModel;
+}
+
 void TileGraphicsItem::onTileChanged(){
     // re-activate timer
     if (!this->animationTimer->isActive()) {

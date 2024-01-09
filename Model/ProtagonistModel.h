@@ -28,6 +28,11 @@ class ProtagonistModel : public QObject, public Entity {
         void onHealthChanged(int h);
         void oneEnergyChanged(int e);
 
+    signals:
+        void protagonistDead();
+        void healthUpdate();
+        void energyUpdate();
+
     private:
         std::unique_ptr<Protagonist> protagonist;
         coordinate protagonistPos = coordinate(0,0);

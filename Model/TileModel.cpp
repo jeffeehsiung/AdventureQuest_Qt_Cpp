@@ -21,14 +21,6 @@ void TileModel::setValue(float value) {
     tile->setValue(value);
 }
 
-// int TileModel::getEnergyValue() const {
-//     return energyValue;
-// }
-
-// void TileModel::setEnergyValue(int energyValue) {
-//     this->energyValue = energyValue;
-// }
-
 // Serialize the tile data
 std::string TileModel::serialize() const {
     return tile->serialize();
@@ -43,8 +35,6 @@ void TileModel::attack() {
         status = HURT;
     }
     notifyObservers();
-
-//    qDebug() << "tile timer reactivated";
 }
 
 void TileModel::takeDamage(float strength) {

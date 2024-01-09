@@ -32,38 +32,17 @@ public:
     int getRows() const;
     int getCols() const;
 
-    void addProtagonist(ProtagonistModel&);
-    void removeProtagonist(ProtagonistModel&);
-
     int getNumOfProtagonists() const;
     int getDifficultyIdx() const;
-
-    /**
-         * defeated functions
-         */
 
     void deleteEnemy(coordinate);
     void deletePsnTile(coordinate);
 
     void playerReachedExit();
 
-    /**
-         * healthpack functions
-         */
-    void removeHealthpack(coordinate);
-
-    /**
-         * start and exit position functions
-         */
-
     const std::vector<std::unique_ptr<WorldModel>>& getWorlds() const;
     const WorldModel& getCurrentWorld() const;
 
-
-    void onUpArrowPressed();
-    void onDownArrowPressed();
-    void onLeftArrowPressed();
-    void onRightArrowPressed();
     void autoplay();
 
     void moveProtagonist(Direction direction);
@@ -73,15 +52,18 @@ public:
 signals:
     void updateprotagonistPosition(int protagonistIndex);
     void updateLevel();
+    void gameWon();
+    void updateHealthAndEnergy();
+    void onProtagonistDead();
+    void onHealthAndEnergyUpdate();
 
 private:
     WorldController();
 
     std::vector<std::unique_ptr<WorldModel>> worlds;
-//    std::shared_ptr<WorldModel> currentWorld; // Changed to std::shared_ptr
-//    std::unique_ptr<WorldModel> currentWorld;
     WorldModel* currentWorld;
     int difficultyIdx;
+    size_t currentWorldIndex;
 
     void handleEncounters(const coordinate& position);
     void onEncounterHealthPack();

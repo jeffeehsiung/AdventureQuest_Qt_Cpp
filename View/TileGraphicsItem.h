@@ -18,6 +18,7 @@ public:
     void nextFrame() override;
 
     void onTileChanged() override;
+    const TileModel& getTileModel();
 
 private:
     const TileModel& tileModel;
