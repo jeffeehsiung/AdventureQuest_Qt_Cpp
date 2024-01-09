@@ -2,6 +2,6 @@
 
 #include "structs.h"
 
-bool operator==(const coordinate& lhs, const coordinate& rhs) {
-    return lhs.xCoordinate == rhs.xCoordinate && lhs.yCoordinate == rhs.yCoordinate;
-}
+//bool operator==(const coordinate& lhs, const coordinate& rhs) {
+//    return lhs.xCoordinate == rhs.xCoordinate && lhs.yCoordinate == rhs.yCoordinate;
+//}

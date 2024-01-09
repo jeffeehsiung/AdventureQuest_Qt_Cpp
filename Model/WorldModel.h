@@ -87,10 +87,10 @@ public:
     coordinate getExit() const;
     coordinate* getStartValue();
     coordinate* getExitValue();
-    coordinate findNearestHealthPack();
-    coordinate findNearestEnemy();
-    coordinate findNearestPEnemy();
-    coordinate findNearestXEnemy();
+    coordinate findNearestHealthPack() const;
+    coordinate findNearestEnemy() const;
+    coordinate findNearestPEnemy() const;
+    coordinate findNearestXEnemy() const;
 
     std::vector<node> nodes;
     ProtagonistModel* currentProtagonist;

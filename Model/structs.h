@@ -17,7 +17,9 @@ struct coordinate {
         return xCoordinate < other.xCoordinate;
     }
 
-public:
+    // Spaceship operator
+    auto operator<=>(const coordinate& other) const = default; // C++20 spaceship operator
+
     int getXPos() const{return xCoordinate;}
     int getYPos() const{return yCoordinate;}
 
@@ -28,6 +30,11 @@ public:
     // Setter method for yCoordinate
     void setYPos(int y) {
         yCoordinate = y;
+    }
+
+    // Method to calculate the Manhattan distance to another coordinate
+    int distanceTo(const coordinate& other) const {
+        return std::abs(xCoordinate - other.xCoordinate) + std::abs(yCoordinate - other.yCoordinate);
     }
 };
 
@@ -54,8 +61,5 @@ enum Direction {
     LEFT,
     RIGHT
 };
-
-// Declare the operator== for coordinate
-bool operator==(const coordinate& lhs, const coordinate& rhs);
 
 #endif

@@ -35,7 +35,8 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
     else{
         worlds.push_back(std::make_unique<WorldModel>(map, nrOfEnemies+3, nrOfHealthpacks, pRatio, false));
     }
-    currentWorld = worlds[0];
+//    currentWorld = worlds[0];
+    currentWorld = worlds[0].get();
     qDebug() << "Nearest Healthpack: " << currentWorld->findNearestHealthPack().getXPos() << " " << currentWorld->findNearestHealthPack().getYPos();
     qDebug() << "Nearest Enemy: " << currentWorld->findNearestEnemy().getXPos() << " " << currentWorld->findNearestEnemy().getYPos();
     qDebug() << "Nearest PEnemy: " << currentWorld->findNearestPEnemy().getXPos() << " " << currentWorld->findNearestPEnemy().getYPos();
@@ -226,7 +227,7 @@ void WorldController::onEncounterEnemy() {
         currentWorld->getProtagonists()[0]->setHealth(0);
         qDebug() << "You died!" << "\n";
     }
-    autoplay();
+//    autoplay();
 }
 
 void WorldController::onEncounterHealthPack() {
@@ -374,18 +375,22 @@ void WorldController::moveProtagonist(Direction direction) {
 
 }
 
-void WorldController::moveProtagonist(int x, int y) {
-    // Clamp the new position to ensure it's within the world boundaries
-    if (x >= 0 && x < currentWorld->getCols() && y >= 0 && y < currentWorld->getRows()) {
-        // Move the protagonist
-        currentWorld->getProtagonists()[0]->move(x, y);
-
-        // Perform checks after movement
-        coordinate currentPosition = currentWorld->getProtagonists()[0]->getPosition();
-        handleEncounters(currentPosition);
-
-        emit updateprotagonistPosition(0);
+void WorldController::moveProtagonist(coordinate coord) {
+    int x = coord.xCoordinate;
+    int y = coord.yCoordinate;
+    // Validate the x, y coordinates
+    if (x < 0 || x >= currentWorld->getCols() || y < 0 || y >= currentWorld->getRows()) {
+        // Handle invalid coordinates
+        return;
     }
+    // Move the protagonist to the specified coordinates
+    currentWorld->getProtagonists()[0]->setPosition({x, y});
+
+    // Handle encounters and other logic after movement
+    coordinate currentPosition = currentWorld->getProtagonists()[0]->getPosition();
+    handleEncounters(currentPosition);
+
+    emit updateprotagonistPosition(0);
 }
 
 void WorldController::handleEncounters(const coordinate& position) {
@@ -408,7 +413,12 @@ void WorldController::playerReachedExit() {
     if (currentWorld->getProtagonists()[0]->getPosition() == currentWorld->getExit()) {
         // Ensure that the next world exists
         if (worlds.size() > 1) {
-            auto it = std::find(worlds.begin(), worlds.end(), currentWorld);
+//            auto it = std::find(worlds.begin(), worlds.end(), currentWorld);
+            auto it = std::find_if(worlds.begin(), worlds.end(),
+                                   [this](const std::unique_ptr<WorldModel>& model) {
+                                       return model.get() == currentWorld;
+                                   });
+
             size_t position = 0;
             if (it != worlds.end()) {
                 // Calculate the position/index of currentWorld in the vector
@@ -428,7 +438,7 @@ void WorldController::playerReachedExit() {
                 prot->setPosition(newStartPos);
             }
 
-            currentWorld = worlds[position + 1]; // Transfer ownership to the next world
+            currentWorld = worlds[position + 1].get(); // Transfer ownership to the next world
             currentWorld->addProtagonist(std::move(protagonists));
 
             emit updateLevel();
@@ -442,7 +452,12 @@ void WorldController::playerReachedExit() {
     else if(currentWorld->getProtagonists()[0]->getPosition() == currentWorld->getStart()) {
         // Ensure that the next world exists
         if (worlds.size() > 1) {
-            auto it = std::find(worlds.begin(), worlds.end(), currentWorld);
+//            auto it = std::find(worlds.begin(), worlds.end(), currentWorld);
+            auto it = std::find_if(worlds.begin(), worlds.end(),
+                                   [this](const std::unique_ptr<WorldModel>& model) {
+                                       return model.get() == currentWorld;
+                                   });
+
             size_t position = 0;
             if (it != worlds.end()) {
                // Calculate the position/index of currentWorld in the vector
@@ -463,7 +478,7 @@ void WorldController::playerReachedExit() {
                 prot->setPosition(newStartPos);
             }
 
-            currentWorld = worlds[position - 1]; // Transfer ownership to the next world
+            currentWorld = worlds[position - 1].get(); // Transfer ownership to the next world
             currentWorld->addProtagonist(std::move(protagonists));
 
             emit updateLevel();
@@ -482,7 +497,7 @@ void WorldController::playerReachedExit() {
  */
 
 
-const std::vector<std::shared_ptr<WorldModel>>& WorldController::getWorlds() const {
+const std::vector<std::unique_ptr<WorldModel>>& WorldController::getWorlds() const {
     return worlds;
 }
 
@@ -501,38 +516,64 @@ void WorldController::autoplay(){
    };
    qDebug() << "start Pos: " << currentWorld->getStart().getXPos() << " "<< currentWorld->getStart().getYPos();
    qDebug() << "exit Pos: " << currentWorld->getExit().getXPos() << " "<< currentWorld->getExit().getYPos();
+
+   // Brings the protagonist from portal to portal the fastest
    PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getProtagonists()[0]->getPositionValue(), currentWorld->getExitValue(), comparator, this->getRows(), 0);
 
    std::vector<int> result = pathFinder.A_star();
    qDebug() << "Path to destination:" << result;
    for (int move : result) {
         qDebug() << move << "path";
+        coordinate currentPos = currentWorld->getProtagonists()[0]->getPosition();
         switch(move){
             case 0:
+                currentPos.yCoordinate -= 1;
+                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(UP);
                 break;
             case 1:
+                currentPos.yCoordinate -= 1;
+                currentPos.xCoordinate += 1;
+                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(RIGHT);
                 moveProtagonistWithDelay(UP);
                 break;
             case 2:
+                currentPos.xCoordinate += 1;
+                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(RIGHT);
                 break;
             case 3:
+                currentPos.yCoordinate += 1;
+                currentPos.xCoordinate += 1;
+                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(RIGHT);
                 moveProtagonistWithDelay(DOWN);
                 break;
             case 4:
+                currentPos.yCoordinate += 1;
+                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(DOWN);
                 break;
             case 5:
+                currentPos.yCoordinate += 1;
+                currentPos.xCoordinate -= 1;
+                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(DOWN);
                 moveProtagonistWithDelay(LEFT);
                 break;
             case 6:
-                moveProtagonistWithDelay(LEFT);
+                currentPos.xCoordinate -= 1;
+                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
+//                moveProtagonistWithDelay(LEFT);
+                QTimer::singleShot(500, this, [this, currentPos]() {
+                    currentWorld->getProtagonists()[0]->setPosition(currentPos);
+                });
                 break;
             case 7:
+                currentPos.yCoordinate -= 1;
+                currentPos.xCoordinate -= 1;
+                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(LEFT);
                 moveProtagonistWithDelay(UP);
                 break;

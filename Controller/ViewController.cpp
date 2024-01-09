@@ -7,9 +7,6 @@ ViewController::ViewController(QObject *parent) :
     
 }
 
-ViewController::~ViewController() {
-    // Clean up if necessary
-}
 
 void ViewController::initializeViews() {
     game2DView = std::make_unique<Game2DView>(nullptr);
