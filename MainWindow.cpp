@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(autoPlayButton, &QPushButton::clicked, this, &MainWindow::onAutoPlayButtonClicked);
     connect(quitButton, &QPushButton::clicked, this, &MainWindow::onQuitButtonClicked);
     connect(viewTabs, &QTabWidget::currentChanged, this, &MainWindow::onViewTabChanged);
+    connect(heuristicWeightFactorSlider, &QSlider::valueChanged, this, &MainWindow::onSliderValueChanged);
 
     connect(gameController, &GameController::viewUpdateRequested, this, &MainWindow::onViewUpdateRequested);
     connect(gameController, &GameController::sendTextToGUI, this, &MainWindow::onDisplayText);
@@ -88,6 +89,9 @@ void MainWindow::setupUI()
     textualMessageWidget->setFixedHeight(100);
     textualMessageWidget->setPlaceholderText("> Type command here and press Enter...");
     textualMessageWidget->installEventFilter(this);
+
+    heuristicWeightFactorSlider->setRange(100, 200);
+    heuristicWeightFactorSlider->setValue(100);
 
 
     viewTabs->addTab(textualTab, "Textual");
@@ -369,4 +373,9 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     }
     // Call base class method for default processing
     return QMainWindow::eventFilter(watched, event);
+}
+
+void MainWindow::onSliderValueChanged(int value) {
+    // Emit the custom signal sliderValueChanged when the slider value changes
+    gameController->getWorldController()->setHeuristicWeight(static_cast<float>(value) / 100.0);
 }

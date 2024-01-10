@@ -44,6 +44,7 @@ public:
     const WorldModel& getCurrentWorld() const;
 
     void autoplay();
+    void setHeuristicWeight(float value);
 
     void moveProtagonist(Direction direction);
     void moveProtagonist(coordinate coord);
@@ -75,6 +76,8 @@ private:
     int flagEnemy = 0;
     int flagPEnemy = 0;
     int flagXEnemy = 0;
+
+    float heuristicWeight = 0;
 
     bool firstWorld = true;
 

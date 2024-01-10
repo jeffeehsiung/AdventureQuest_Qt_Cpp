@@ -213,4 +213,7 @@ void GameController::displayHelp() const {
     emit sendTextToGUI(helpText);
 }
 
+WorldController* GameController::getWorldController(){
+    return &worldController;
+}
 

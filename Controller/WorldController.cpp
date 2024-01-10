@@ -295,15 +295,17 @@ const WorldModel& WorldController::getCurrentWorld() const {
     return *currentWorld;
 }
 
-
+void WorldController::setHeuristicWeight(float value){
+    qDebug() << "Heuristic:" << value;
+    heuristicWeight = value;
+}
 
 void WorldController::autoplay(){
     Comparator<node> comparator = [](const node& a, const node& b) {
         return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
     };
-
     // Brings the protagonist from portal to portal the fastest
-    PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getProtagonists()[0]->getPositionValue(), currentWorld->getExitValue(), comparator, this->getRows(), 0);
+    PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getProtagonists()[0]->getPositionValue(), currentWorld->getExitValue(), comparator, this->getRows(), heuristicWeight);
 
     std::vector<int> result = pathFinder.A_star();
     qDebug() << "Path to destination:" << result;
@@ -313,49 +315,41 @@ void WorldController::autoplay(){
         switch(move){
             case 0:
                 currentPos.yCoordinate -= 1;
-                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(UP);
                 break;
             case 1:
                 currentPos.yCoordinate -= 1;
                 currentPos.xCoordinate += 1;
-                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(RIGHT);
                 moveProtagonistWithDelay(UP);
                 break;
             case 2:
                 currentPos.xCoordinate += 1;
-                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(RIGHT);
                 break;
             case 3:
                 currentPos.yCoordinate += 1;
                 currentPos.xCoordinate += 1;
-                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(RIGHT);
                 moveProtagonistWithDelay(DOWN);
                 break;
             case 4:
                 currentPos.yCoordinate += 1;
-                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(DOWN);
                 break;
             case 5:
                 currentPos.yCoordinate += 1;
                 currentPos.xCoordinate -= 1;
-                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(DOWN);
                 moveProtagonistWithDelay(LEFT);
                 break;
             case 6:
                 currentPos.xCoordinate -= 1;
-                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(LEFT);
                 break;
             case 7:
                 currentPos.yCoordinate -= 1;
                 currentPos.xCoordinate -= 1;
-                currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
                 moveProtagonistWithDelay(LEFT);
                 moveProtagonistWithDelay(UP);
                 break;
@@ -363,6 +357,7 @@ void WorldController::autoplay(){
                 // Handle unexpected move values
                 break;
         }
+        currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
     }
 }
 
