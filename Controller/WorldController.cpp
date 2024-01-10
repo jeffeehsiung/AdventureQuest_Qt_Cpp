@@ -356,6 +356,70 @@ void WorldController::autoplay(){
     }
 }
 
+void WorldController::moveto(coordinate destination){
+    Comparator<node> comparator = [](const node& a, const node& b) {
+        return (a.f) > (b.f);  // Assuming you want the node with the lowest 'f' value on top
+    };
+    // Brings the protagonist from portal to portal the fastest
+    qDebug()<< "destination: " << destination.xCoordinate << destination.yCoordinate;
+    PathFinder<node,coordinate> pathFinder(currentWorld->nodes, currentWorld->getProtagonists()[0]->getPositionValue(), &destination , comparator, this->getRows(), heuristicWeight);
+    std::vector<int> paths = pathFinder.A_star();
+    this->pathMapper(paths);
+
+}
+
+void WorldController::pathMapper(std::vector<int> paths){
+    for (int move : paths) {
+        coordinate currentPos = currentWorld->getProtagonists()[0]->getPosition();
+        switch(move){
+        case 0:
+                currentPos.yCoordinate -= 1;
+                moveProtagonistWithDelay(UP);
+                break;
+        case 1:
+                currentPos.yCoordinate -= 1;
+                currentPos.xCoordinate += 1;
+                moveProtagonistWithDelay(RIGHT);
+                moveProtagonistWithDelay(UP);
+                break;
+        case 2:
+                currentPos.xCoordinate += 1;
+                moveProtagonistWithDelay(RIGHT);
+                break;
+        case 3:
+                currentPos.yCoordinate += 1;
+                currentPos.xCoordinate += 1;
+                moveProtagonistWithDelay(RIGHT);
+                moveProtagonistWithDelay(DOWN);
+                break;
+        case 4:
+                currentPos.yCoordinate += 1;
+                moveProtagonistWithDelay(DOWN);
+                break;
+        case 5:
+                currentPos.yCoordinate += 1;
+                currentPos.xCoordinate -= 1;
+                moveProtagonistWithDelay(DOWN);
+                moveProtagonistWithDelay(LEFT);
+                break;
+        case 6:
+                currentPos.xCoordinate -= 1;
+                moveProtagonistWithDelay(LEFT);
+                break;
+        case 7:
+                currentPos.yCoordinate -= 1;
+                currentPos.xCoordinate -= 1;
+                moveProtagonistWithDelay(LEFT);
+                moveProtagonistWithDelay(UP);
+                break;
+        default:
+                // Handle unexpected move values
+                break;
+        }
+        currentWorld->getTiles().at(currentPos.yCoordinate*getCols()+currentPos.xCoordinate)->setState(MOVING);
+    }
+}
+
 void WorldController::moveProtagonistWithDelay(Direction direction) {
     moveProtagonist(direction);
 

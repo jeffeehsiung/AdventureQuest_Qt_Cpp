@@ -49,6 +49,7 @@ public:
 protected:
     void wheelEvent(QWheelEvent *event) override;
     void setBackground(int backgroundNumber);
+    void clearTileObservers();
 
 private:
     const WorldModel* world;

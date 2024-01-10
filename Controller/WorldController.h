@@ -43,12 +43,12 @@ public:
     const std::vector<std::unique_ptr<WorldModel>>& getWorlds() const;
     const WorldModel& getCurrentWorld() const;
 
-    void autoplay();
     void setHeuristicWeight(float value);
+    void autoplay();
+    void moveto(coordinate destination);
 
     void moveProtagonist(Direction direction);
     void moveProtagonist(coordinate coord);
-    void moveProtagonistWithDelay(Direction direction);
 
 signals:
     void updateprotagonistPosition(int protagonistIndex);
@@ -72,6 +72,8 @@ private:
     void onEncounterPEnemy();
     void onEncounterXEnemy();
     void onEncounterAffectedTiles();
+    void pathMapper(std::vector<int> paths);
+    void moveProtagonistWithDelay(Direction direction);
 
     int flagEnemy = 0;
     int flagPEnemy = 0;

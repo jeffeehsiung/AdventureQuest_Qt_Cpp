@@ -10,6 +10,9 @@ void Game2DView::initializeView() {
         setScene(scene);
     }
 
+    /** avoid duplicated observers */
+    this->clearTileObservers();
+
     /** clear all vectors */
     tileGraphicsItems.clear();
     healthpackGraphicsItems.clear();
@@ -28,7 +31,6 @@ void Game2DView::initializeView() {
     /** baseFramesDir for tile is constant */
     QString tileBase = ":/images/tiles/";
     for (const auto& tile : world->getTiles()) {
-        tile->clearObservers();
         TileGraphicsItem* item = new TileGraphicsItem(*tile, tileBase);
         scene->addItem(item);
         tileGraphicsItems.push_back(item);
@@ -166,6 +168,12 @@ void Game2DView::setBackground(int backgroundNumber) {
     // Set the scene's rectangle to the size of the resized background image
     scene->setSceneRect(0, 0, backgroundImage.width(), backgroundImage.height());
     this->update();
+}
+
+void Game2DView::clearTileObservers() {
+    for (auto* tileGraphicsItem : tileGraphicsItems) {
+        tileGraphicsItem->getTileModel().clearObservers();
+    }
 }
 
 

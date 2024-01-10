@@ -21,9 +21,11 @@ GameController::GameController(QObject *parent)
     commandMap["goto"] = [this](const QStringList& args) {
         if(args.size() >= 3) {
             int x = args[1].toInt();
+            qDebug() << "goto x: " << x;
             int y = args[2].toInt();
-            coordinate coord(x,y);
-            worldController.moveProtagonist(coord);
+            qDebug() << "goto y: " << y;
+            coordinate coord = coordinate(x,y);
+            worldController.moveto(coord);
         }
     };
 
@@ -179,7 +181,8 @@ void GameController::setGameOver() {
 }
 
 void GameController::processCommand(const QString& command) {
-    QStringList args = command.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+    static QRegularExpression regex("\\s+"); // Static regex object
+    QStringList args = command.split(regex, Qt::SkipEmptyParts);
     QString action = args.first().toLower();
 
     auto cmdIter = commandMap.find(action);
@@ -190,6 +193,7 @@ void GameController::processCommand(const QString& command) {
         displayHelp();
     }
 }
+
 
 
 void GameController::displayHelp() const {
