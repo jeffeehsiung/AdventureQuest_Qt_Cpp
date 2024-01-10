@@ -158,20 +158,20 @@ void XEnemyModel::move(int deltaX, int deltaY) {
     status = MOVING;
     int upperBound = 29;
     int lowerBound = 0;
-    int newX = getXPos() + deltaX;
-    int newY = getXPos() + deltaX;
-    if (newX < lowerBound) {
-        newX = lowerBound;
-    }else if (newX > upperBound){
-        newX = upperBound;
+    deltaX = getXPos() + deltaX;
+    deltaY = getXPos() + deltaY;
+    if (deltaX < lowerBound) {
+        deltaX = lowerBound;
+    }else if (deltaX > upperBound){
+        deltaX = upperBound;
     }
-    if (newY < lowerBound){
-        newY = lowerBound;
-    }else if (newY > upperBound){
-        newY = upperBound;
+    if (deltaY < lowerBound){
+        deltaY = lowerBound;
+    }else if (deltaY > upperBound){
+        deltaY = upperBound;
     }
-    setXPos(newX);
-    setYPos(newY);
+    setXPos(deltaX);
+    setYPos(deltaY);
 }
 
 // In your XEnemyModel implementation file, modify releaseThunder():

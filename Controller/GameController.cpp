@@ -113,11 +113,6 @@ void GameController::initializeWorld() {
     viewController.initializeViews();
 }
 
-void GameController::reInitializeWorld() {
-    worldController.getCurrentWorld().getProtagonists()[0]->setHealth(5);
-    worldController.getCurrentWorld().getProtagonists()[0]->setEnergy(100);
-}
-
 void GameController::switchTo2DView() {
     viewController.switchTo2DView();
 }

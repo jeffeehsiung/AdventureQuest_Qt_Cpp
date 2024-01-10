@@ -120,7 +120,6 @@ bool WorldModel::isAffectedTiles(coordinate coord) {
 
 float WorldModel::valueEnergyComsumingTiles(coordinate coord) {
     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
-        qDebug() << "Tile value: " << tileModel->getValue() << "\n";
         return (1-tileModel->getValue());
     }
     else{

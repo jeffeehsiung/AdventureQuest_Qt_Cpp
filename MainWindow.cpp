@@ -181,11 +181,7 @@ void MainWindow::onStartButtonClicked()
     gameController->readGameStarted(true);
     gameController->readGameNumberOfPlayers(numberOfPlayers);
     gameController->readGameDifficultyLevel(difficultyLevel);
-    if (startButton->text() != "Restart") {
-        gameController->initializeWorld();
-    } else {
-        gameController->reInitializeWorld();
-    }
+    gameController->initializeWorld();
 }
 
 void MainWindow::onPauseButtonClicked()
@@ -215,6 +211,7 @@ void MainWindow::onAutoPlayButtonClicked()
     textualMessageWidget->append("Auto playing...");
     autoPlayButton->setEnabled(false);
     pauseButton->setEnabled(false);
+    quitButton->setEnabled(false);
     gameController->readGameAutoplayed();
 }
 
@@ -247,7 +244,6 @@ void MainWindow::onQuitButtonClicked()
     gameController->readGameDifficultyLevel("Not Selected");
 
     gameController->setGameOver();
-    startButton->setText("Restart");
 }
 
 void MainWindow::onViewTabChanged(int index)
@@ -296,10 +292,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 void MainWindow::onDisplayText(const QString& text) {
     graphicsMessageWidget->append(text);
 
-    // Append the text to the textualMessageWidget instead of setting plain text
     textualMessageWidget->moveCursor(QTextCursor::End);
     textualMessageWidget->append(text);
     textualMessageWidget->moveCursor(QTextCursor::End);
+    textualMessageWidget->repaint(); // Force the widget to repaint
+
 }
 
 
@@ -329,6 +326,7 @@ void MainWindow::onAutoPlayed(){
     if (!gameController->isGameOver()){
         autoPlayButton->setEnabled(true);
         pauseButton->setEnabled(true);
+        quitButton->setEnabled(true);
     }
     return;
 }
@@ -353,17 +351,23 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
         if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return) {
             // Handle the Enter key press
             QString command = textualMessageWidget->toPlainText().trimmed();
-            if (command.isEmpty()){
+            if (command.isEmpty()) {
                 return QMainWindow::eventFilter(watched, event);
             }
             gameController->processCommand(command);
-            textualMessageWidget->clear();
+
+            // Clear the textualMessageWidget unless the command is "help"
+            if (command.compare("help", Qt::CaseInsensitive) != 0) {
+                textualMessageWidget->clear();
+            }
+
             return true; // indicate that the event was handled
         }
     }
     // Call base class method for default processing
     return QMainWindow::eventFilter(watched, event);
 }
+
 
 void MainWindow::onSliderValueChanged(int value) {
     // Emit the custom signal sliderValueChanged when the slider value changes

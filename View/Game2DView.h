@@ -16,7 +16,6 @@
 
 
 class Game2DView : public QGraphicsView, public GameView {
-    Q_OBJECT
 public:
     explicit Game2DView(QWidget* parent = nullptr)
         : QGraphicsView(parent), scene(new QGraphicsScene(this)) {
@@ -45,10 +44,11 @@ public:
     void initializeView() override;
     void updateView() override;
 
+    void setBackgroundNumber(int backgroundNumber);
+
 protected:
     void wheelEvent(QWheelEvent *event) override;
     void setBackground(int backgroundNumber);
-    void setBackgroundNumber(int backgroundNumber);
 
 private:
     const WorldModel* world;
@@ -65,6 +65,7 @@ private:
     qreal tileWidth;
     qreal tileHeight;
 
+    /** use raw pointers here since items are owned and managed by QGraphicsScene to avoid double deletion */
     std::vector<TileGraphicsItem*> tileGraphicsItems;
     std::vector<HPGraphicsItem*> healthpackGraphicsItems;
     std::vector<PortalGraphicsItem*> portalGraphicsItems;
@@ -76,6 +77,7 @@ private:
     void scaleEntitiesToFitView();
     void zoomIn(int delta);
     void zoomOut(int delta);
+
 
 };
 

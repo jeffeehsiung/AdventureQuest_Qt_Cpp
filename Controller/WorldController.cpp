@@ -43,10 +43,6 @@ void WorldController::createWorld(QString map, int gameNumberOfPlayers, int game
         connect(protagonist.get(), &ProtagonistModel::healthUpdate, this, &WorldController::onHealthAndEnergyUpdate);
         connect(protagonist.get(), &ProtagonistModel::energyUpdate, this, &WorldController::onHealthAndEnergyUpdate);
     }
-    qDebug() << "Nearest Healthpack: " << currentWorld->findNearestHealthPack().getXPos() << " " << currentWorld->findNearestHealthPack().getYPos();
-    qDebug() << "Nearest Enemy: " << currentWorld->findNearestEnemy().getXPos() << " " << currentWorld->findNearestEnemy().getYPos();
-    qDebug() << "Nearest PEnemy: " << currentWorld->findNearestPEnemy().getXPos() << " " << currentWorld->findNearestPEnemy().getYPos();
-    qDebug() << "Nearest XEnemy: " << currentWorld->findNearestXEnemy().getXPos() << " " << currentWorld->findNearestXEnemy().getYPos();
 }
 
 int WorldController::getRows() const
@@ -310,7 +306,6 @@ void WorldController::autoplay(){
     std::vector<int> result = pathFinder.A_star();
     qDebug() << "Path to destination:" << result;
     for (int move : result) {
-        qDebug() << move << "path";
         coordinate currentPos = currentWorld->getProtagonists()[0]->getPosition();
         switch(move){
             case 0:

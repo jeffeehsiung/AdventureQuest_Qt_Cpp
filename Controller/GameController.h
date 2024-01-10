@@ -25,7 +25,6 @@ public:
     void decideGameParameters();
 
     void initializeWorld();
-    void reInitializeWorld();
 
     void switchTo2DView();
     void switchToTextView();

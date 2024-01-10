@@ -4,6 +4,7 @@
 #include <QObject>
 #include <memory>
 #include "Controller/WorldController.h"
+#include "View/GameView.h"
 #include "View/Game2DView.h"
 #include "View/GameTextView.h"
 
@@ -36,8 +37,8 @@ private:
     ViewController(QObject *parent = nullptr);
 
     WorldController& worldController;
-    std::shared_ptr<Game2DView> game2DView;
-    std::shared_ptr<GameTextView> gameTextView;
+    std::unique_ptr<Game2DView> game2DView;
+    std::unique_ptr<GameTextView> gameTextView;
     QWidget* currentView;
 
 };

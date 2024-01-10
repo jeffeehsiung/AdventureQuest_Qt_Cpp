@@ -9,12 +9,7 @@ void Game2DView::initializeView() {
         scene = new QGraphicsScene(this);
         setScene(scene);
     }
-    /** avoid adding duplicated tile observer */
-    if (tileGraphicsItems.size() != 0) {
-        for (auto* tileGraphicsItem : tileGraphicsItems) {
-            tileGraphicsItem->getTileModel().removeObserver(tileGraphicsItem);
-        }
-    }
+
     /** clear all vectors */
     tileGraphicsItems.clear();
     healthpackGraphicsItems.clear();
@@ -25,7 +20,6 @@ void Game2DView::initializeView() {
     protagonistGraphicsItems.clear();
     scene->clear();
 
-
     setBackground(backgroundNumber);
     scaleEntitiesToFitView();
     // Extract entities from the WorldController
@@ -34,6 +28,7 @@ void Game2DView::initializeView() {
     /** baseFramesDir for tile is constant */
     QString tileBase = ":/images/tiles/";
     for (const auto& tile : world->getTiles()) {
+        tile->clearObservers();
         TileGraphicsItem* item = new TileGraphicsItem(*tile, tileBase);
         scene->addItem(item);
         tileGraphicsItems.push_back(item);
@@ -172,6 +167,7 @@ void Game2DView::setBackground(int backgroundNumber) {
     scene->setSceneRect(0, 0, backgroundImage.width(), backgroundImage.height());
     this->update();
 }
+
 
 void Game2DView::zoomIn(int delta) {
     qreal maxZoomLevel = initZoomLevel * 2;

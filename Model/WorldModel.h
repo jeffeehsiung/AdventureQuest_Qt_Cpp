@@ -41,7 +41,6 @@ public:
      bool isXEnemy(coordinate);
 
      int getNumOfProtagonists() const;
-     int getDifficultyIdx() const;
 
      void deleteEnemy(coordinate);
      void deletePsnTile(coordinate);

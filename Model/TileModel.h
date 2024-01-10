@@ -50,6 +50,10 @@ public:
         }
     }
 
+    inline void clearObservers() const {
+        observers.clear();
+    }
+
     // Functions unused by TileModel
     void move(int deltaX, int deltaY) override{
         Q_UNUSED(deltaX);
