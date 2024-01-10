@@ -21,8 +21,8 @@ public:
     explicit Game2DView(QWidget* parent)
         : QGraphicsView(parent), scene(new QGraphicsScene(this)) {
         Background1.load(":/images/world_images/worldmap.png");
-        Background2.load(":/images/world_images/worldmap4.png");
-        Background3.load(":/images/world_images/maze2.png");
+        Background2.load(":/images/world_images/worldmap2.png");
+        Background3.load(":/images/world_images/worldmap3.png");
         zoomSpeed = 0.001; // Example value, adjust based on testing
         zoomLevel = 1.0;
         initZoomLevel = 1.0;
@@ -31,30 +31,6 @@ public:
         setScene(scene);
     }
 
-//    virtual ~Game2DView(){
-//        for (auto& item : tileGraphicsItems) {
-//            item.release();
-//        }
-//        for (auto& item : healthpackGraphicsItems) {
-//            item.release();
-//        }
-//        for (auto& item : enemyGraphicsItems) {
-//            item.release();
-//        }
-//        for (auto& item : penemyGraphicsItems) {
-//            item.release();
-//        }
-//        for (auto& item : xenemyGraphicsItems) {
-//            item.release();
-//        }
-//        for (auto& item : portalGraphicsItems) {
-//            item.release();
-//        }
-//        for (auto& item : protagonistGraphicsItems) {
-//            item.release();
-//        }
-//        delete scene;
-//    }
     virtual ~Game2DView() = default;
 
     /**
@@ -89,13 +65,6 @@ private:
     qreal tileWidth;
     qreal tileHeight;
 
-//    std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
-//    std::vector<std::unique_ptr<HPGraphicsItem>> healthpackGraphicsItems;
-//    std::vector<std::unique_ptr<PortalGraphicsItem>> portalGraphicsItems;
-//    std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
-//    std::vector<std::unique_ptr<PEnemyGraphicsItem>> penemyGraphicsItems;
-//    std::vector<std::unique_ptr<XEnemyGraphicsItem>> xenemyGraphicsItems;
-//    std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
     std::vector<TileGraphicsItem*> tileGraphicsItems;
     std::vector<HPGraphicsItem*> healthpackGraphicsItems;
     std::vector<PortalGraphicsItem*> portalGraphicsItems;
