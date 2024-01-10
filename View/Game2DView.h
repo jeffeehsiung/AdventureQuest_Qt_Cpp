@@ -18,7 +18,7 @@
 class Game2DView : public QGraphicsView, public GameView {
     Q_OBJECT
 public:
-    explicit Game2DView(QWidget* parent)
+    explicit Game2DView(QWidget* parent = nullptr)
         : QGraphicsView(parent), scene(new QGraphicsScene(this)) {
         Background1.load(":/images/world_images/worldmap.png");
         Background2.load(":/images/world_images/worldmap4.png");
@@ -55,7 +55,7 @@ public:
 //        }
 //        delete scene;
 //    }
-    virtual ~Game2DView() = default;
+//    virtual ~Game2DView() = default;
 
     /**
      * @brief initializeView
