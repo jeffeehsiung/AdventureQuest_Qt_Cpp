@@ -69,6 +69,7 @@ private slots:
     void onGameWon();
     void onGameLost();
     void onAutoPlayed();
+    void onSliderValueChanged(int value);
 };
 
 #endif // MAINWINDOW_H

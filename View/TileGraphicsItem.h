@@ -7,8 +7,6 @@
 #include "EntityGraphicsItem.h"
 #include "Model/TileModel.h"
 
-// the naming should be changed to TileGraphicsItem
-
 class TileGraphicsItem : public EntityGraphicsItem, public TileObserver {
 public:
     TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent = nullptr);

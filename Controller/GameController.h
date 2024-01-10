@@ -39,6 +39,7 @@ public:
 
     bool isGameOver();
     void setGameOver();
+    WorldController* getWorldController();
 
 public slots:
     void onViewUpdated(QWidget* currentView);

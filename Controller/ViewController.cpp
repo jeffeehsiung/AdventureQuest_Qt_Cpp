@@ -9,8 +9,6 @@ ViewController::ViewController(QObject *parent) :
 
 
 void ViewController::initializeViews() {
-//    game2DView = std::make_unique<Game2DView>(nullptr);
-//    gameTextView = std::make_unique<GameTextView>(nullptr);
     game2DView = std::make_shared<Game2DView>(nullptr);
     gameTextView = std::make_shared<GameTextView>(nullptr);
 
@@ -24,7 +22,7 @@ void ViewController::initializeViews() {
 
     // Optionally set the initial view
     currentView = game2DView.get();
-//    currentView = game2DView;
+    //currentView = game2DView;
     emit viewUpdated(currentView);
 
     connect(&worldController, &WorldController::updateprotagonistPosition, this, &ViewController::onUpdateProtagonistPosition);
@@ -36,10 +34,6 @@ void ViewController::switchTo2DView() {
         currentView = game2DView.get();
         emit viewUpdated(currentView);
     }
-//    if (currentView != game2DView) {
-//        currentView = game2DView;
-//        emit viewUpdated(currentView);
-//    }
 }
 
 void ViewController::switchToTextView() {
@@ -47,10 +41,6 @@ void ViewController::switchToTextView() {
         currentView = gameTextView.get();
         emit viewUpdated(currentView);
     }
-//    if (currentView != gameTextView) {
-//        currentView = gameTextView;
-//        emit viewUpdated(currentView);
-//    }
 }
 
 QWidget* ViewController::getCurrentView() const {
