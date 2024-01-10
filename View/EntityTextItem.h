@@ -61,7 +61,6 @@ public:
 
 protected:
     const Entity& entity; // Presuming Entity has position and other relevant attributes
-    //    QString defaultTextRepresentation;
     QString textRepresentation;
 
 private:
