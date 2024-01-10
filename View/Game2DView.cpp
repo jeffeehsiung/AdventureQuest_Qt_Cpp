@@ -29,16 +29,11 @@ void Game2DView::initializeView() {
     setBackground(backgroundNumber);
     scaleEntitiesToFitView();
     // Extract entities from the WorldController
-    const std::vector<std::unique_ptr<TileModel>>& tiles = world->getTiles();
-    const std::vector<std::unique_ptr<TileModel>>& healthPacks = world->getHealthPacks();
-    const std::vector<std::unique_ptr<EnemyModel>>& enemies = world->getEnemies();
-    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = world->getPEnemies();
-    const std::vector<std::unique_ptr<XEnemyModel>>& xenemies = world->getXEnemies();
     const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = world->getProtagonists();
 
     /** baseFramesDir for tile is constant */
     QString tileBase = ":/images/tiles/";
-    for (const auto& tile : tiles) {
+    for (const auto& tile : world->getTiles()) {
         TileGraphicsItem* item = new TileGraphicsItem(*tile, tileBase);
         scene->addItem(item);
         tileGraphicsItems.push_back(item);
@@ -58,7 +53,7 @@ void Game2DView::initializeView() {
 
     /** baseFramesDir for healthpack is constant */
     QString healthpackBase = ":/images/healthpack/";
-    for (const auto& healthPack : healthPacks) {
+    for (const auto& healthPack : world->getHealthPacks()) {
         HPGraphicsItem* healthPackGraphicsItem = new HPGraphicsItem(*healthPack, healthpackBase);
         scene->addItem(healthPackGraphicsItem);
         healthpackGraphicsItems.push_back(healthPackGraphicsItem);
@@ -66,7 +61,7 @@ void Game2DView::initializeView() {
 
     /** baseFramesDir for enemy is constant */
     QString enemyBase = ":/images/enemy_golem/PNG Sequences/";
-    for (const auto& enemy : enemies) {
+    for (const auto& enemy : world->getEnemies()) {
         EnemyGraphicsItem* enemyGraphicsItem = new EnemyGraphicsItem(*enemy, enemyBase);
         scene->addItem(enemyGraphicsItem);
         enemyGraphicsItems.push_back(enemyGraphicsItem);
@@ -74,7 +69,7 @@ void Game2DView::initializeView() {
 
     /** baseFramesDir for penemy is constant */
     QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
-    for (const auto& penemy : penemies) {
+    for (const auto& penemy : world->getPEnemies()) {
         PEnemyGraphicsItem* penemyGraphicsItem = new PEnemyGraphicsItem(*penemy, penemyBase);
         scene->addItem(penemyGraphicsItem);
         penemyGraphicsItems.push_back(penemyGraphicsItem);
@@ -82,7 +77,7 @@ void Game2DView::initializeView() {
 
     /** baseFramesDir for xenemy is constant */
     QString xenemyBase = ":/images/xenemy_wraith/PNG Sequences/";
-    for (const auto& xenemy : xenemies) {
+    for (const auto& xenemy : world->getXEnemies()) {
         XEnemyGraphicsItem* xenemyGraphicsItem = new XEnemyGraphicsItem(*xenemy, xenemyBase);
         scene->addItem(xenemyGraphicsItem);
         xenemyGraphicsItems.push_back(xenemyGraphicsItem);
