@@ -1,7 +1,6 @@
 #include "WorldModel.h"
 
-// Constructor definition
-WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float pRatio, bool firstWorld) : world(std::make_unique<World>()){
+WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float pRatio, bool firstWorld) : world(std::make_unique<World>()) {
     // Additional initialization code if needed
     world -> createWorld(map, nrOfEnemies, nrOfHealthpacks, pRatio);
     rows = world->getRows();
@@ -10,9 +9,6 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
     // for avoding placing xenemy on the used cell
     std::vector<bool> used;
     used.reserve(rows * cols);
-    /**
-     * create tilemodels, enemymodels, penemymodels, xenemymodels, and protagonistmodels based on created world
-     * */
     for (auto &tile : world->getTiles()) {
         std::unique_ptr<TileModel> tileModel = std::make_unique<TileModel>(std::move(tile));
         coordinate pos = tileModel->getPosition();
@@ -20,7 +16,7 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
         tiles.push_back(std::move(tileModel));
     }
 
-    for ( auto &healthPack : world->getHealthPacks() ){
+    for ( auto &healthPack : world->getHealthPacks()) {
         used[healthPack->getYPos() * cols + healthPack->getXPos()] = true;
         std::unique_ptr<TileModel> healthPackModel = std::make_unique<TileModel>(std::move(healthPack));
         healthPacks.push_back(std::move(healthPackModel));
@@ -36,71 +32,6 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
             enemies.push_back(std::make_unique<EnemyModel>(std::move(enemy)));
         }
     }
-
-    // for (const auto& enemyModel : enemies) {
-    //     coordinate enemyPos = enemyModel->getPosition();
-    //     int radius = 1; 
-    //     for (int dx = -radius; dx <= radius; ++dx) {
-    //         for (int dy = -radius; dy <= radius; ++dy) {
-    //             int tileX = enemyPos.xCoordinate + dx;
-    //             int tileY = enemyPos.yCoordinate + dy;
-
-    //             // Check if the tile coordinates are within the world boundaries
-    //             if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
-    //                 try {
-    //                     auto& tileModel = this->tiles.at(tileY*this->getRows()+tileX);
-    //                     tileModel->setEnergyValue(1);
-    //                 } catch (const std::out_of_range& e) {
-    //                     // Handle or ignore the exception if the tile does not exist
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // for (const auto& pEnemyModel : penemies) {
-    //     coordinate pEnemyPos = pEnemyModel->getPosition();
-    //     int radius = 1; 
-    //     for (int dx = -radius; dx <= radius; ++dx) {
-    //         for (int dy = -radius; dy <= radius; ++dy) {
-    //             int tileX = pEnemyPos.xCoordinate + dx;
-    //             int tileY = pEnemyPos.yCoordinate + dy;
-
-    //             // Check if the tile coordinates are within the world boundaries
-    //             if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
-    //                 try {
-    //                     auto& tileModel = this->tiles.at(tileY*this->getRows()+tileX);
-    //                     tileModel->setEnergyValue(2);
-    //                 } catch (const std::out_of_range& e) {
-    //                     // Handle or ignore the exception if the tile does not exist
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // for (const auto& XEnemyModel : xenemies) {
-    //     coordinate xEnemyPos = XEnemyModel->getPosition();
-    //     int radius = 1; 
-    //     for (int dx = -radius; dx <= radius; ++dx) {
-    //         for (int dy = -radius; dy <= radius; ++dy) {
-    //             int tileX = xEnemyPos.xCoordinate + dx;
-    //             int tileY = xEnemyPos.yCoordinate + dy;
-
-    //             // Check if the tile coordinates are within the world boundaries
-    //             if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
-    //                 try {
-    //                     auto& tileModel = this->tiles.at(tileY*this->getRows()+tileX);
-    //                     tileModel->setEnergyValue(3);
-    //                 } catch (const std::out_of_range& e) {
-    //                     // Handle or ignore the exception if the tile does not exist
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // Choose a random distribution for x, y and strength for Xenemy
     std::random_device r;
     std::default_random_engine e1(r());
     std::uniform_int_distribution<int> uniform_x(8, cols - 8);
@@ -121,7 +52,7 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
         }
     }
 
-    if(firstWorld){
+    if(firstWorld) {
         std::unique_ptr<ProtagonistModel> protagonist = std::make_unique<ProtagonistModel>(world->getProtagonist());
         protagonists.push_back(std::move(protagonist));
     }
@@ -133,65 +64,40 @@ WorldModel::WorldModel(QString map, int nrOfEnemies, int nrOfHealthpacks, float 
     currentHealthpack = nullptr;
 }
 
-/**
- * size of world
- */
-int WorldModel::getRows() const
-{
+int WorldModel::getRows() const {
     return rows;
 }
 
-int WorldModel::getCols() const
-{
+int WorldModel::getCols() const {
     return cols;
 }
 
-/**
- * getter and setters
- * */
-
-//const std::map<coordinate, std::unique_ptr<TileModel>>& WorldModel::getTileMap() const {
-//    return tileMap;
-//}
-
-const std::vector<std::unique_ptr<TileModel> >& WorldModel::getTiles() const
-{
+const std::vector<std::unique_ptr<TileModel> >& WorldModel::getTiles() const {
     return tiles;
 }
 
 
-const std::vector<std::unique_ptr<TileModel> > &WorldModel::getHealthPacks() const
-{
+const std::vector<std::unique_ptr<TileModel> > &WorldModel::getHealthPacks() const {
     return healthPacks;
 }
 
-const std::vector<std::unique_ptr<EnemyModel> > &WorldModel::getEnemies() const
-{
+const std::vector<std::unique_ptr<EnemyModel> > &WorldModel::getEnemies() const {
     return enemies;
 }
 
-const std::vector<std::unique_ptr<PEnemyModel> > &WorldModel::getPEnemies() const
-{
+const std::vector<std::unique_ptr<PEnemyModel> > &WorldModel::getPEnemies() const {
     return penemies;
 }
 
-const std::vector<std::unique_ptr<XEnemyModel> > &WorldModel::getXEnemies() const
-{
+const std::vector<std::unique_ptr<XEnemyModel> > &WorldModel::getXEnemies() const {
     return xenemies;
 }
 
-const std::vector<std::unique_ptr<ProtagonistModel> > &WorldModel::getProtagonists() const
-{
+const std::vector<std::unique_ptr<ProtagonistModel> > &WorldModel::getProtagonists() const {
     return protagonists;
 }
 
-/**
- * type of tiles check
- */
-
-
-bool WorldModel::isHealthPack(coordinate coord)
-{
+bool WorldModel::isHealthPack(coordinate coord) {
     for ( auto &healthPack : healthPacks )
     {
         if ( healthPack->getPosition() == coord )
@@ -203,8 +109,7 @@ bool WorldModel::isHealthPack(coordinate coord)
     return false;
 }
 
-bool WorldModel::isAffectedTiles(coordinate coord)
-{
+bool WorldModel::isAffectedTiles(coordinate coord) {
     if(auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())){
         bool affected = tileModel->isPoisoned() || tileModel->isThundered();
         bool active = !(tileModel->getState() == DYING);
@@ -213,8 +118,7 @@ bool WorldModel::isAffectedTiles(coordinate coord)
     return false;
 }
 
-float WorldModel::valueEnergyComsumingTiles(coordinate coord)
-{
+float WorldModel::valueEnergyComsumingTiles(coordinate coord) {
     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
         qDebug() << "Tile value: " << tileModel->getValue() << "\n";
         return (1-tileModel->getValue());
@@ -224,65 +128,7 @@ float WorldModel::valueEnergyComsumingTiles(coordinate coord)
     }
 }
 
-// bool WorldModel::isEnergyRestoringTiles(coordinate coord)
-// {
-//     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
-//         // Directly access the tile and check if it's poisoned
-//         bool flagDefeated = false;
-//         for ( auto &enemy : enemies )
-//         {
-//             if ( enemy->getPosition() == coord )
-//             {
-//                 currentEnemy = enemy.get();
-//                 flagDefeated = currentEnemy->isDefeated();
-//             }
-//         }
-//         return tileModel->getEnergyValue() == 1 && flagDefeated;
-//     }
-// }
-
-// void WorldModel::setEnergyRestoringTilesZero(coordinate coord) {
-//     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
-//         tileModel->setEnergyValue(0);
-//     }
-// }
-
-// bool WorldModel::isEnergyBoostTiles(coordinate coord)
-// {
-//     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
-//         // Directly access the tile and check if it's poisoned
-//         bool flagDefeated = false;
-//         for ( auto &penemy : penemies )
-//         {
-//             if ( penemy->getPosition() == coord )
-//             {
-//                 currentPEnemy = penemy.get();
-//                 flagDefeated = currentPEnemy->isDefeated();
-//             }
-//         }
-//         return tileModel->getEnergyValue() == 2 && flagDefeated;
-//     }
-// }
-
-// bool WorldModel::isEnergyHealthBoostTiles(coordinate coord)
-// {
-//     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
-//         // Directly access the tile and check if it's poisoned
-//         bool flagDefeated = false;
-//         for ( auto &xenemy : xenemies )
-//         {
-//             if ( xenemy->getPosition() == coord )
-//             {
-//                 currentXEnemy = xenemy.get();
-//                 flagDefeated = currentXEnemy->isDefeated();
-//             }
-//         }
-//         return tileModel->getEnergyValue() == 3 && flagDefeated;
-//     }
-// }
-
-int WorldModel::getEnemyCounts()
-{
+int WorldModel::getEnemyCounts() {
     int count = 0;
     for ( auto &enemy : enemies )
     {
@@ -294,8 +140,7 @@ int WorldModel::getEnemyCounts()
     return count;
 }
 
-int WorldModel::getPEnemyCounts()
-{
+int WorldModel::getPEnemyCounts() {
     int count = 0;
     for ( auto &penemy : penemies )
     {
@@ -307,8 +152,7 @@ int WorldModel::getPEnemyCounts()
     return count;
 }
 
-int WorldModel::getXEnemyCounts()
-{
+int WorldModel::getXEnemyCounts() {
     int count = 0;
     for ( auto &xenemy : xenemies )
     {
@@ -320,12 +164,7 @@ int WorldModel::getXEnemyCounts()
     return count;
 }
 
-/**
- * type of enemy check
- */
-
-bool WorldModel::isEnemy(coordinate coord)
-{
+bool WorldModel::isEnemy(coordinate coord) {
     for ( auto &enemy : enemies )
     {
         if ( enemy->getPosition() == coord )
@@ -337,8 +176,7 @@ bool WorldModel::isEnemy(coordinate coord)
     return false;
 }
 
-bool WorldModel::isPEnemy(coordinate coord)
-{
+bool WorldModel::isPEnemy(coordinate coord) {
     for ( auto &penemy : penemies )
     {
         if ( penemy->getPosition() == coord )
@@ -351,22 +189,13 @@ bool WorldModel::isPEnemy(coordinate coord)
     return false;
 }
 
-bool WorldModel::isXEnemy(coordinate coord)
-{
-//    qDebug()<< "protagonist pos: " << coord.xCoordinate << "," << coord.yCoordinate;
+bool WorldModel::isXEnemy(coordinate coord) {
     for ( auto &xenemy : xenemies )
     {
-//        qDebug()<< "xenemy orignal pos: " << xenemy->getXPos() << "," << xenemy->getYPos();
         if ( xenemy->getPosition() == coord )
         {
             currentXEnemy = xenemy.get();
-//            qDebug()<< "currentXEnemy pos: " << currentXEnemy->getXPos() << "," << currentXEnemy->getYPos();
             qDebug()<< "currentXEnemey dead: "<< currentXEnemy->isDefeated();
-            // if (currentXEnemy->isDefeated()) {
-            //     if (auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())) {
-            //         tileModel->setEnergyValue(3);
-            //     }
-            // }
             connect(currentXEnemy, &XEnemyModel::thunderLevelUpdated, this, &WorldModel::setAffectedTiles);
             return !currentXEnemy->isDefeated();
         }
@@ -374,16 +203,9 @@ bool WorldModel::isXEnemy(coordinate coord)
     return false;
 }
 
-int WorldModel::getNumOfProtagonists() const
-{
-    /** return the size of protagonist vector */
+int WorldModel::getNumOfProtagonists() const {
     return protagonists.size();
 }
-
-/**
- * PEnemy poisened tiles
- */
-
 
 void WorldModel::setAffectedTiles(bool xenemyType, float value) {
     int maxVal = 32; // Maximum poison level
@@ -424,105 +246,72 @@ void WorldModel::setAffectedTiles(bool xenemyType, float value) {
     }
 }
 
-
-
-/**
- * defeated functions
- */
-
-void WorldModel::deleteEnemy(coordinate coord)
-{
-    /**
-     * delete enemy from vector
-     * */
-    for ( auto &enemy : enemies )
-    {
-        if ( enemy->getPosition() == coord )
-        {
-            enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [&](std::unique_ptr<EnemyModel> &enemy)
-                                         {
-                                             return enemy->getPosition() == coord;
-                                         }), enemies.end());
+void WorldModel::deleteEnemy(coordinate coord) {
+    for ( auto &enemy : enemies ) {
+        if ( enemy->getPosition() == coord ) {
+            enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [&](std::unique_ptr<EnemyModel> &enemy) {
+                return enemy->getPosition() == coord;
+            }), enemies.end());
         }
     }
 }
 
 void WorldModel::deletePsnTile(coordinate coord) {
-    // Assuming tileMap is a std::map<coordinate, std::unique_ptr<TileModel>>
-//    auto it = tileMap.find(coord);
-//    if (it != tileMap.end()) {
-//        tileMap.erase(it);
-//    }
     if(auto& tileModel = this->tiles.at(coord.getYPos()*this->getRows()+coord.getXPos())){
-        // Remove the element at the specified index
-        // This is a bit tricky with a vector, as it doesn't support direct removal by index without shifting elements
         int index = coord.getYPos()*this->getRows()+coord.getXPos();
         this->tiles.erase(tiles.begin() + index);
-        // After erasing, you might want to fill the gap if necessary
-        // For example, you could insert a nullptr or a default tile at the end of the vector
         this->tiles.push_back(std::unique_ptr<TileModel>(nullptr)); // Or however you represent an empty tile
     }
 }
 
-
-/**
- * healthpack functions
- */
-
-void WorldModel::removeHealthpack(coordinate coord)
-{
-    /**
-     * remove healthpack from vector
-     * */
+void WorldModel::removeHealthpack(coordinate coord) {
     std::random_device rd;  // Obtain a random number from hardware
     std::mt19937 eng(rd()); // Seed the generator
     std::uniform_int_distribution<> distr(-3, 3); // Define the range for coordinates
-    auto it = std::find_if(healthPacks.begin(), healthPacks.end(),
-                           [&](const std::unique_ptr<TileModel>& healthPack) {
-                               return healthPack->getPosition() == coord;});
+    auto it = std::find_if(healthPacks.begin(), healthPacks.end(), [&](const std::unique_ptr<TileModel>& healthPack){return healthPack->getPosition() == coord;});
     if (it != healthPacks.end()) {
-        coordinate newCoord = {(*it)->getPosition().xCoordinate + distr(eng), (*it)->getPosition().yCoordinate + distr(eng)};
-        int tileX = newCoord.getXPos();
-        int tileY = newCoord.getYPos();
-        if (tileX >= 0 && tileX < cols && tileY >= 0 && tileY < rows) {
-            (*it)->setPosition(newCoord);
-        }
+        int incrementX = distr(eng);
+        int incrementY = distr(eng);
+        int tileX = (*it)->getPosition().xCoordinate + incrementX;
+        int tileY = (*it)->getPosition().yCoordinate + incrementY;
         if (tileX < 0) {
-            (*it)->setPosition({0, tileY});
+            tileX = 0;
         }
         if (tileX >= cols) {
-            (*it)->setPosition({tileX - cols, tileY});
+            tileX = tileX - cols;
         }
         if (tileY < 0) {
-            (*it)->setPosition({tileX, 0});
+            tileY = 0;
         }
         if (tileY >= rows) {
-            (*it)->setPosition({tileX, tileY - rows});
+            tileY = tileY - rows;
         }
+        qDebug() << "old healthpack position: " << (*it)->getPosition().xCoordinate << "," << (*it)->getPosition().yCoordinate;
+        qDebug() << "random generated position increment: " << incrementX << "," << incrementY;
+        qDebug() << "new healthpack position: " << tileX << "," << tileY;
+        qDebug() << "map bound is: " << cols << "," << rows;
+        coordinate newCoord = {tileX, tileY};
+        (*it)->setPosition(newCoord);
     }
 }
 
-coordinate WorldModel::getStart() const
-{
+coordinate WorldModel::getStart() const {
     return start;
 }
 
-coordinate WorldModel::getExit() const
-{
+coordinate WorldModel::getExit() const {
     return exit;
 }
 
-coordinate* WorldModel::getStartValue()
-{
+coordinate* WorldModel::getStartValue() {
     return &start;
 }
 
-coordinate* WorldModel::getExitValue()
-{
+coordinate* WorldModel::getExitValue() {
     return &exit;
 }
 
-void WorldModel::addProtagonist(std::vector<std::unique_ptr<ProtagonistModel>> incoming){
+void WorldModel::addProtagonist(std::vector<std::unique_ptr<ProtagonistModel>> incoming) {
     protagonists.reserve(protagonists.size() + incoming.size());
     std::move(incoming.begin(), incoming.end(), std::back_inserter(protagonists));
 }
@@ -531,7 +320,7 @@ std::vector<std::unique_ptr<ProtagonistModel>> WorldModel::removeProtagonists(){
     return std::move(protagonists);
 }
 
-coordinate WorldModel::findNearestHealthPack(){
+coordinate WorldModel::findNearestHealthPack() const {
     int distance = 1000;
     coordinate returnCoordinate(0,0);
     for (const auto& tile : healthPacks ){
@@ -546,7 +335,7 @@ coordinate WorldModel::findNearestHealthPack(){
     return returnCoordinate;
 }
 
-coordinate WorldModel::findNearestEnemy(){
+coordinate WorldModel::findNearestEnemy() const {
     int distance = 1000;
     coordinate returnCoordinate(0,0);
     for (const auto& tile : enemies ){
@@ -563,7 +352,7 @@ coordinate WorldModel::findNearestEnemy(){
     return returnCoordinate;
 }
 
-coordinate WorldModel::findNearestPEnemy(){
+coordinate WorldModel::findNearestPEnemy() const {
     int distance = 1000;
     coordinate returnCoordinate(0,0);
     for (const auto& tile : penemies ){
@@ -580,7 +369,7 @@ coordinate WorldModel::findNearestPEnemy(){
     return returnCoordinate;
 }
 
-coordinate WorldModel::findNearestXEnemy(){
+coordinate WorldModel::findNearestXEnemy() const {
     int distance = 1000;
     coordinate returnCoordinate(0,0);
     for (const auto& tile : xenemies ){
@@ -596,4 +385,3 @@ coordinate WorldModel::findNearestXEnemy(){
     }
     return returnCoordinate;
 }
-

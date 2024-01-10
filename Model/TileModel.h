@@ -19,11 +19,13 @@ public:
     coordinate getPosition() const override;
     float getValue() const;
     void setValue(float value);
-    // int getEnergyValue() const;
-    // void setEnergyValue(int value);
     std::string serialize() const;
     void attack() override;
     void takeDamage(float strength) override;
+    void setState(state newStatus) override{
+        status = newStatus;
+        notifyObservers();
+    }
 
     // Functions specific to tile
     inline bool isPoisoned() const { return poisoned; }

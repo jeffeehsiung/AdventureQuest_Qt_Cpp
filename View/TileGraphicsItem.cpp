@@ -7,7 +7,6 @@ std::vector<QPixmap> TileGraphicsItem::sharedPathFoundFrames;
 std::vector<QPixmap> TileGraphicsItem::sharedThunderedFrames;
 std::vector<QPixmap> TileGraphicsItem::sharedPoisonedFrames;
 
-const float maxValue = 0.95;
 // the naming should be changed to TileGraphicsItem
 
 TileGraphicsItem::TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
@@ -62,7 +61,7 @@ void TileGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* 
     float tileVal = this->tileModel.getValue();
     int maxIndex = idleFrames.size()-1;
     if(tileVal < 1){
-        int backgroundIndex = static_cast<int>((1.0 - this->tileModel.getValue()) * maxIndex) % maxIndex;
+        int backgroundIndex = static_cast<int>((1.0 - this->tileModel.getValue()) * maxIndex) /*% maxIndex*/;
         backgroundImage = idleFrames[backgroundIndex];
     }else{
         backgroundImage = idleFrames[maxIndex];
@@ -74,6 +73,10 @@ void TileGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* 
     if(!image.isNull()){
         painter->drawPixmap(0, 0, image);
     }
+}
+
+const TileModel& TileGraphicsItem::getTileModel(){
+    return tileModel;
 }
 
 void TileGraphicsItem::onTileChanged(){
@@ -90,7 +93,13 @@ void TileGraphicsItem::nextFrame() {
         break;
     case MOVING:
         if(!moveFrames.empty()){
-            currentFrameIndex = (currentFrameIndex + 1) % moveFrames.size();
+            currentFrameIndex = (currentFrameIndex + 1) % (moveFrames.size());
+            if (currentFrameIndex >= moveFrames.size()-1) {
+                QTimer::singleShot(1000, this, [this]() {
+                    currentFrameIndex = 0;
+                    this->animationTimer->stop();
+                });
+            }
             image = moveFrames[currentFrameIndex];
         }
         break;
@@ -168,11 +177,6 @@ void HPGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* op
     backgroundImage = idleFrames[backgroundIndex];
 
     painter->drawPixmap(0, 0, backgroundImage);
-
-//    // draw the animation frame if not null
-//    if(!image.isNull()){
-//        painter->drawPixmap(0, 0, image);
-//    }
 }
 
 /** Portal Sectoin */

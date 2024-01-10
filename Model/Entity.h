@@ -25,7 +25,7 @@ public:
         return status;
     }
 
-    void setState(state newStatus) {
+    virtual void setState(state newStatus) {
         status = newStatus;
     }
 protected:

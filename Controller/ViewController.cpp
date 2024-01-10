@@ -7,13 +7,12 @@ ViewController::ViewController(QObject *parent) :
     
 }
 
-ViewController::~ViewController() {
-    // Clean up if necessary
-}
 
 void ViewController::initializeViews() {
-    game2DView = std::make_unique<Game2DView>(nullptr);
-    gameTextView = std::make_unique<GameTextView>(nullptr);
+//    game2DView = std::make_unique<Game2DView>(nullptr);
+//    gameTextView = std::make_unique<GameTextView>(nullptr);
+    game2DView = std::make_shared<Game2DView>(nullptr);
+    gameTextView = std::make_shared<GameTextView>(nullptr);
 
     const WorldModel& world = worldController.getCurrentWorld();
     game2DView->setCurrentWorld(world);
@@ -25,6 +24,7 @@ void ViewController::initializeViews() {
 
     // Optionally set the initial view
     currentView = game2DView.get();
+//    currentView = game2DView;
     emit viewUpdated(currentView);
 
     connect(&worldController, &WorldController::updateprotagonistPosition, this, &ViewController::onUpdateProtagonistPosition);
@@ -36,6 +36,10 @@ void ViewController::switchTo2DView() {
         currentView = game2DView.get();
         emit viewUpdated(currentView);
     }
+//    if (currentView != game2DView) {
+//        currentView = game2DView;
+//        emit viewUpdated(currentView);
+//    }
 }
 
 void ViewController::switchToTextView() {
@@ -43,6 +47,10 @@ void ViewController::switchToTextView() {
         currentView = gameTextView.get();
         emit viewUpdated(currentView);
     }
+//    if (currentView != gameTextView) {
+//        currentView = gameTextView;
+//        emit viewUpdated(currentView);
+//    }
 }
 
 QWidget* ViewController::getCurrentView() const {
@@ -50,9 +58,9 @@ QWidget* ViewController::getCurrentView() const {
 }
 
 void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
+    Q_UNUSED(protagonistIndex);
     game2DView->updateView();
     gameTextView->updateView();
-//    emit viewUpdated(currentView);
 }
 
 void ViewController::updateLevel() {
@@ -61,4 +69,6 @@ void ViewController::updateLevel() {
     gameTextView->setCurrentWorld(world);
     game2DView->initializeView();
     gameTextView->initializeView();
+    game2DView->updateView();
+    gameTextView->updateView();
 }

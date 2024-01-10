@@ -18,13 +18,10 @@ public:
     explicit GameController(QObject *parent = nullptr);
     ~GameController();
 
-    // Interface for MainWindow to notify about user actions
     void readGameStarted(bool isStarted);
-    void readGamePaused(bool isPaused);
-    void readGameAutoplayed(bool isAutoPlayed);
+    void readGameAutoplayed();
     void readGameNumberOfPlayers(const QString &numberOfPlayers);
     void readGameDifficultyLevel(const QString &difficultyLevel);
-    void printAllGameInfo();
     void decideGameParameters();
 
     void initializeWorld();
@@ -38,11 +35,7 @@ public:
     void onLeftArrowPressed();
     void onRightArrowPressed();
 
-//    void processCommand(const QString& command);
     void displayHelp() const;
-
-    int getHealth1();
-    float getEnergy1();
 
     bool isGameOver();
     void setGameOver();
@@ -50,10 +43,17 @@ public:
 public slots:
     void onViewUpdated(QWidget* currentView);
     void processCommand(const QString& command);
+    void onUpdateHealthAndEnergy();
+    void setWon();
+    void setLost();
 
 signals:
     void viewUpdateRequested(QWidget* currentView);
     void sendTextToGUI(const QString& text) const;
+    void sendGameWon();
+    void sendGameLost();
+    void updateStatusDisplay(int health, float energy);
+    void autoPlayed();
 
 private:
     WorldController& worldController;
@@ -61,18 +61,13 @@ private:
 
     bool isGameStarted;
     bool isGamePaused;
-    bool isGameAutoplayed;
     QString gameNumberOfPlayers;
     QString gameDifficultyLevel;
     QString gameMap;
     int gameDifficultyIdx;
     float gamePRatio;
-    int gameHealth1;
-    float gameEnergy1;
 
     std::map<QString, std::function<void(const QStringList&)>> commandMap;
-
-    void updateHealthAndEnergy();
 };
 
 #endif // GAMECONTROLLER_H

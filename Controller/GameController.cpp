@@ -5,13 +5,15 @@ GameController::GameController(QObject *parent)
     worldController(WorldController::getInstance()),
     viewController(ViewController::getInstance()),
     isGameStarted(false),
-    isGamePaused(false),
-    isGameAutoplayed(false)
+    isGamePaused(false)
 {
-    /** set up connections: viewcontroller to gamecontroller */
+    // Connect signals and slots
     connect(&viewController, &ViewController::viewUpdated, this, &GameController::onViewUpdated);
+    connect(&worldController, &WorldController::gameWon, this, &GameController::setWon);
+    connect(&worldController, &WorldController::onProtagonistDead, this, &GameController::setLost);
+    connect(&worldController, &WorldController::onHealthAndEnergyUpdate, this, &GameController::onUpdateHealthAndEnergy);
 
-    // Setup the command map
+
     commandMap["up"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(UP); };
     commandMap["down"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(DOWN); };
     commandMap["left"] = [this](const QStringList& args) { Q_UNUSED(args); worldController.moveProtagonist(LEFT); };
@@ -20,8 +22,42 @@ GameController::GameController(QObject *parent)
         if(args.size() >= 3) {
             int x = args[1].toInt();
             int y = args[2].toInt();
-            worldController.moveProtagonist(x, y);
+            coordinate coord(x,y);
+            worldController.moveProtagonist(coord);
         }
+    };
+
+    commandMap["attack"] = [this](const QStringList& args){
+        Q_UNUSED(args);
+        const WorldModel& currentWorld = worldController.getCurrentWorld();
+        const coordinate& protagonistPos = currentWorld.getProtagonists()[0]->getPosition();
+        coordinate coord1 = worldController.getCurrentWorld().findNearestEnemy();
+        coordinate coord2 = worldController.getCurrentWorld().findNearestPEnemy();
+        coordinate coord3 = worldController.getCurrentWorld().findNearestXEnemy();
+        // Calculate distances to each enemy
+        double dist1 = protagonistPos.distanceTo(coord1);
+        double dist2 = protagonistPos.distanceTo(coord2);
+        double dist3 = protagonistPos.distanceTo(coord3);
+
+        // Determine the nearest enemy
+        coordinate nearestCoord = coord1; // Assume the regular enemy is the closest
+        double minDist = dist1;
+
+        if (dist2 < minDist) {
+            nearestCoord = coord2;
+            minDist = dist2;
+        }
+        if (dist3 < minDist) {
+            nearestCoord = coord3;
+        }
+
+        // Move the protagonist to the nearest enemy
+        worldController.moveProtagonist(nearestCoord);
+    };
+    commandMap["take"] = [this](const QStringList& args){
+        Q_UNUSED(args);
+        coordinate coord = worldController.getCurrentWorld().findNearestHealthPack();
+        worldController.moveProtagonist(coord);
     };
     commandMap["help"] = [this](const QStringList& args) {
         Q_UNUSED(args); // This macro indicates that the args parameter is intentionally unused
@@ -30,19 +66,16 @@ GameController::GameController(QObject *parent)
 }
 
 GameController::~GameController() {
-    // Destructor for clean-up if necessary
+    
 }
 
 void GameController::readGameStarted(bool isStarted) {
     isGameStarted = isStarted;
 }
 
-void GameController::readGamePaused(bool isPaused) {
-    isGamePaused = isPaused;
-}
-
-void GameController::readGameAutoplayed(bool isAutoPlayed) {
-    isGameAutoplayed = isAutoPlayed;
+void GameController::readGameAutoplayed() {
+    worldController.autoplay();
+    emit autoPlayed();
 }
 
 void GameController::readGameNumberOfPlayers(const QString &numberOfPlayers) {
@@ -51,15 +84,6 @@ void GameController::readGameNumberOfPlayers(const QString &numberOfPlayers) {
 
 void GameController::readGameDifficultyLevel(const QString &difficultyLevel) {
     gameDifficultyLevel = difficultyLevel;
-}
-
-void GameController::printAllGameInfo() {
-    qDebug() << "Game Info: "
-             << "\nGame Started? " << isGameStarted
-             << "\nGame Paused? " << isGamePaused
-             << "\nGame Autoplayed? " << isGameAutoplayed
-             << "\nNumber of Players: " << gameNumberOfPlayers
-             << "\nDifficulty Level: " << gameDifficultyLevel << "\n";
 }
 
 void GameController::decideGameParameters() {
@@ -85,8 +109,6 @@ void GameController::initializeWorld() {
     worldController.createWorld(":/images/world_images/worldmap5.png", gameNumberOfPlayers.toInt(), gameDifficultyIdx, gamePRatio);
     worldController.getCurrentWorld().getProtagonists()[0]->setHealth(5);
     worldController.getCurrentWorld().getProtagonists()[0]->setEnergy(100);
-    gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-    gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
 
     viewController.initializeViews();
 }
@@ -94,11 +116,8 @@ void GameController::initializeWorld() {
 void GameController::reInitializeWorld() {
     worldController.getCurrentWorld().getProtagonists()[0]->setHealth(5);
     worldController.getCurrentWorld().getProtagonists()[0]->setEnergy(100);
-    gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-    gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
 }
 
-// Methods to switch between views
 void GameController::switchTo2DView() {
     viewController.switchTo2DView();
 }
@@ -114,44 +133,41 @@ void GameController::onViewUpdated(QWidget* currentView) {
 void GameController::onUpArrowPressed() {
     if (isGameStarted) {
         worldController.moveProtagonist(UP);
-        updateHealthAndEnergy();
     }
 }
 
 void GameController::onDownArrowPressed() {
     if (isGameStarted) {
         worldController.moveProtagonist(DOWN);
-        updateHealthAndEnergy();
     }
 }
 
 void GameController::onLeftArrowPressed() {
     if (isGameStarted) {
         worldController.moveProtagonist(LEFT);
-        updateHealthAndEnergy();
     }
 }
 
 void GameController::onRightArrowPressed() {
     if (isGameStarted) {
         worldController.moveProtagonist(RIGHT);
-        updateHealthAndEnergy();
     }
 }
 
-void GameController::updateHealthAndEnergy() {
-    gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-    gameEnergy1 = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
-    qDebug() << "Health: " << gameHealth1 << "Energy: " << gameEnergy1;
+void GameController::onUpdateHealthAndEnergy() {
+    int gameHealth = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
+    float gameEnergy = worldController.getCurrentWorld().getProtagonists()[0]->getEnergy();
+    emit updateStatusDisplay(gameHealth, gameEnergy);
 }
 
-
-int GameController::getHealth1() {
-    return gameHealth1;
+void GameController::setWon() {
+    this->setGameOver();
+    emit sendGameWon();
 }
 
-float GameController::getEnergy1() {
-    return gameEnergy1;
+void GameController::setLost() {
+    this->setGameOver();
+    emit sendGameLost();
 }
 
 bool GameController::isGameOver() {
@@ -198,30 +214,3 @@ void GameController::displayHelp() const {
 }
 
 
-//void GameController::onUpArrowPressed() {
-//    if (isGameStarted) {
-//        worldController.onUpArrowPressed();
-//        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-//    }
-//}
-
-//void GameController::onDownArrowPressed() {
-//    if (isGameStarted) {
-//        worldController.onDownArrowPressed();
-//        gameHealth1 =worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-//    }
-//}
-
-//void GameController::onLeftArrowPressed() {
-//    if (isGameStarted) {
-//        worldController.onLeftArrowPressed();
-//        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-//    }
-//}
-
-//void GameController::onRightArrowPressed() {
-//    if (isGameStarted) {
-//        worldController.onRightArrowPressed();
-//        gameHealth1 = worldController.getCurrentWorld().getProtagonists()[0]->getHealth();
-//    }
-//}
