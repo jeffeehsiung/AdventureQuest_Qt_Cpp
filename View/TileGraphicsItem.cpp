@@ -1,13 +1,11 @@
 #include "TileGraphicsItem.h"
 
-/** Tile Sectoin */
 bool TileGraphicsItem::imagesLoaded = false;
 std::vector<QPixmap> TileGraphicsItem::sharedIdleFrames;
 std::vector<QPixmap> TileGraphicsItem::sharedPathFoundFrames;
 std::vector<QPixmap> TileGraphicsItem::sharedThunderedFrames;
 std::vector<QPixmap> TileGraphicsItem::sharedPoisonedFrames;
 
-// the naming should be changed to TileGraphicsItem
 
 TileGraphicsItem::TileGraphicsItem(const TileModel& tileModel, const QString& baseFramesDir, QGraphicsRectItem* parent)
     : EntityGraphicsItem(tileModel, parent), tileModel(tileModel), baseFramesDir(baseFramesDir){

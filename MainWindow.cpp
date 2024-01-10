@@ -293,16 +293,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-//void MainWindow::onDisplayText(const QString& text) {
-//    graphicsMessageWidget->append(text);
-
-//    QString currentText = textualMessageWidget->toPlainText();
-//    textualMessageWidget->setPlainText(currentText + "\n" + text);
-//    QTextCursor cursor = textualMessageWidget->textCursor();
-//    cursor.movePosition(QTextCursor::End);
-//    textualMessageWidget->setTextCursor(cursor);
-//}
-
 void MainWindow::onDisplayText(const QString& text) {
     graphicsMessageWidget->append(text);
 
