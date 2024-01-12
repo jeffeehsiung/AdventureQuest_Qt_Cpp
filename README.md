@@ -49,3 +49,8 @@ Welcome to [Project Name]! 🌟
 
 ## UML
 <img src="UML_20240112.png" width="1000">
+
+## Contributing
+- Jeffee Hsiung: Game Controller, World Controller, View Controller, Models (all), Views (all GraphicsItem, 2Dview, Textview), Mainwindow, Misc
+- Ruicong Wang:
+- William Zhu: World Controller, World Model, autoplay, levels 
