@@ -48,7 +48,7 @@ Welcome to [Project Name]! 🌟
 * **Craftpix.net** <br> [![Craftpix.Net](https://craftpix.net/wp-content/themes/craftpix/assets/images/logo-xmas.svg)](https://craftpix.net)
 
 ## UML
-<img src="UML_20231205.png" width="1000">
+<img src="FINALUML.png" width="1000">
 
 ## Contributing
 Jeffee Hsiung:
