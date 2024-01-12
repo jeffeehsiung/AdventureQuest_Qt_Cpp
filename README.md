@@ -49,3 +49,8 @@ Welcome to [Project Name]! 🌟
 
 ## UML
 <img src="UML_20231205.png" width="1000">
+
+## Contributing
+Jeffee Hsiung:
+Ruicong Wang:
+William Zhu: World Controller, World Model, autoplay, levels 
