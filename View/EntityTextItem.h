@@ -11,7 +11,7 @@
 
 class EntityTextItem {
 public:
-    EntityTextItem(const Entity& entity) : entity(entity)/*, defaultTextRepresentation("?")*/ {
+    EntityTextItem(const Entity& entity) : entity(entity){
         // Default representation for a generic entity
         textRepresentation = "?";
     }

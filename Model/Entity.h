@@ -9,8 +9,7 @@
 #include "Model/structs.h"
 #include "world.h"
 
-class Entity/*: public QObject*/{
-//    Q_OBJECT
+class Entity{
 public:
     Entity() : status(IDLE) {}
     virtual ~Entity() {}

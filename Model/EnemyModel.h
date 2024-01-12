@@ -16,7 +16,6 @@ public:
 
     // Enemy specific functions
     bool isDefeated() const;
-    void setDefeated(bool defeated);
     std::string serialize() const;
 
 public slots:
@@ -48,11 +47,11 @@ public slots:
     void onDead();
     void onPoisonLevelUpdated(float poisonLevel);
 
-    signals:
-        void psnTilesUpdated(bool xenemyType, float newPoisonLevel);
-
-    private:
-        std::unique_ptr<PEnemy> penemy;
+signals:
+    void psnTilesUpdated(bool xenemyType, float newPoisonLevel);
+    
+private:
+    std::unique_ptr<PEnemy> penemy;
 };
 
 class XEnemyModel : public Enemy, public Entity {
