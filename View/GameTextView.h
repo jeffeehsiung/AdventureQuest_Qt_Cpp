@@ -12,7 +12,6 @@
 #include "View/EntityTextItem.h"
 
 class GameTextView : public QTextEdit, public GameView {
-    Q_OBJECT
 
 public:
     explicit GameTextView(QWidget* parent = nullptr) : QTextEdit(parent){
@@ -26,6 +25,9 @@ public:
     void setCurrentWorld(const WorldModel& world) override;
     void initializeView() override;
     void updateView() override;
+
+    virtual ~GameTextView() = default;
+
 
 private:
     const WorldModel* world;

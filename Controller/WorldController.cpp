@@ -65,6 +65,11 @@ int WorldController::getDifficultyIdx() const
     return difficultyIdx;
 }
 
+int WorldController::getCurrentWorldIndex() const
+{
+    return static_cast<int>(currentWorldIndex);
+}
+
 void WorldController::deleteEnemy(coordinate coord)
 {
     currentWorld->deleteEnemy(coord);

@@ -3,18 +3,24 @@
 ViewController::ViewController(QObject *parent) :
     QObject(parent),
     worldController(WorldController::getInstance()),
+    game2DView(nullptr),
+    gameTextView(nullptr),
     currentView(nullptr) {
     
 }
 
 
 void ViewController::initializeViews() {
-    game2DView = std::make_unique<Game2DView>(nullptr);
-    gameTextView = std::make_unique<GameTextView>(nullptr);
+    if(game2DView == nullptr){
+        game2DView = std::make_unique<Game2DView>(nullptr);
+    }
+    if(gameTextView == nullptr){
+        gameTextView = std::make_unique<GameTextView>(nullptr);
+    }
 
     const WorldModel& world = worldController.getCurrentWorld();
+    game2DView->setBackgroundNumber(worldController.getCurrentWorldIndex());
     game2DView->setCurrentWorld(world);
-    game2DView->setBackgroundNumber(worldController.getDifficultyIdx());
     gameTextView->setCurrentWorld(world);
 
     // Initialize the views
@@ -55,6 +61,7 @@ void ViewController::onUpdateProtagonistPosition(int protagonistIndex) {
 
 void ViewController::updateLevel() {
     const WorldModel& world = worldController.getCurrentWorld();
+    game2DView->setBackgroundNumber(worldController.getCurrentWorldIndex());
     game2DView->setCurrentWorld(world);
     gameTextView->setCurrentWorld(world);
     game2DView->initializeView();

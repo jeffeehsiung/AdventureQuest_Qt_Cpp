@@ -22,6 +22,8 @@ public:
         Background1.load(":/images/world_images/worldmap.png");
         Background2.load(":/images/world_images/worldmap2.png");
         Background3.load(":/images/world_images/worldmap3.png");
+        Background4.load(":/images/world_images/worldmap4.png");
+        Background5.load(":/images/world_images/worldmap5.png");
         zoomSpeed = 0.001; // Example value, adjust based on testing
         zoomLevel = 1.0;
         initZoomLevel = 1.0;
@@ -57,6 +59,8 @@ private:
     QPixmap Background1;
     QPixmap Background2;
     QPixmap Background3;
+    QPixmap Background4;
+    QPixmap Background5;
     QPixmap backgroundImage;
     int backgroundNumber;
     qreal zoomSpeed; // Zoom sensitivity factor

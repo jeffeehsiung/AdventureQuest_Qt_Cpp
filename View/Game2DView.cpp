@@ -150,9 +150,12 @@ void Game2DView::setBackgroundNumber(int backgroundNumber){
 void Game2DView::setBackground(int backgroundNumber) {
     // Load the background image based on the difficulty level
     switch(backgroundNumber) {
+    /** current tilewidth and height are set to 30 regardless case, yet for future ocassions if larger map it can be set to smaller */
     case 1: backgroundImage = Background1; tileWidth = 30; tileHeight = 30; break;
     case 2: backgroundImage = Background2; tileWidth = 30; tileHeight = 30; break;
-    case 3: backgroundImage = Background3; tileWidth = 30; tileHeight = 20; break;
+    case 3: backgroundImage = Background3; tileWidth = 30; tileHeight = 30; break;
+    case 4: backgroundImage = Background4; tileWidth = 30; tileHeight = 30; break;
+    case 5: backgroundImage = Background5; tileWidth = 30; tileHeight = 30; break;
     default: backgroundImage= Background1; tileWidth = 30; tileHeight = 30; break;
     }
 

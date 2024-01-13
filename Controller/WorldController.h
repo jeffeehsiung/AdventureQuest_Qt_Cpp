@@ -34,6 +34,7 @@ public:
 
     int getNumOfProtagonists() const;
     int getDifficultyIdx() const;
+    int getCurrentWorldIndex() const;
 
     void deleteEnemy(coordinate);
     void deletePsnTile(coordinate);

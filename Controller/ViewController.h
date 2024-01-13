@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <memory>
+#include <QPointer> // Include QPointer
 #include "Controller/WorldController.h"
-#include "View/GameView.h"
 #include "View/Game2DView.h"
 #include "View/GameTextView.h"
 
@@ -39,7 +39,7 @@ private:
     WorldController& worldController;
     std::unique_ptr<Game2DView> game2DView;
     std::unique_ptr<GameTextView> gameTextView;
-    QWidget* currentView;
+    QPointer<QWidget> currentView; // Changed to QPointer
 
 };
 
