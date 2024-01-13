@@ -52,5 +52,5 @@ Welcome to [Project Name]! 🌟
 
 ## Contributing
 - Jeffee Hsiung: Game Controller, World Controller, View Controller, Models (all), Views (all GraphicsItem, 2Dview, Textview), Mainwindow, Misc
-- Ruicong Wang:
+- Ruicong Wang: Main Window (UI design and connect others), Game Controller, World Controller, World Model (Health and Energy)
 - William Zhu: World Controller, World Model, autoplay, levels 
