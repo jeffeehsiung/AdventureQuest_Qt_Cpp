@@ -96,7 +96,8 @@ For detail descriptoin please refer to the status report PDF.
 [See the LICENSE file for license rights and limitations.](LICENSE.md)
 
 ## Screenshots
-[Add screenshots of your project here.]
+<img src="game2dview.png" width="500">
+<img src="gametextview.png" width="500">
 
 ## Naming Convention
 ## Case Summary ##
