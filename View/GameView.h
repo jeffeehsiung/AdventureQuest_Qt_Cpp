@@ -8,6 +8,7 @@
 
 class GameView {
 public:
+    GameView() = default;
     virtual ~GameView(){}
     /**
      * @brief initializeView
