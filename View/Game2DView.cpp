@@ -25,15 +25,23 @@ void Game2DView::initializeView() {
 
     setBackground(backgroundNumber);
     scaleEntitiesToFitView();
+
     // Extract entities from the WorldController
+    const std::vector<std::unique_ptr<TileModel>>& tiles = world->getTiles();
+    const std::vector<std::unique_ptr<TileModel>>& healthPacks = world->getHealthPacks();
+    const std::vector<std::unique_ptr<EnemyModel>>& enemies = world->getEnemies();
+    const std::vector<std::unique_ptr<PEnemyModel>>& penemies = world->getPEnemies();
+    const std::vector<std::unique_ptr<XEnemyModel>>& xenemies = world->getXEnemies();
     const std::vector<std::unique_ptr<ProtagonistModel>>& protagonists = world->getProtagonists();
 
     /** baseFramesDir for tile is constant */
     QString tileBase = ":/images/tiles/";
-    for (const auto& tile : world->getTiles()) {
-        TileGraphicsItem* item = new TileGraphicsItem(*tile, tileBase);
-        scene->addItem(item);
-        tileGraphicsItems.push_back(item);
+    for (const auto& tile : tiles) {
+
+        std::unique_ptr<TileGraphicsItem> tileGraphicsItem = std::make_unique<TileGraphicsItem>(*tile, tileBase);
+        scene->addItem(tileGraphicsItem.get());
+        tileGraphicsItems.push_back(std::move(tileGraphicsItem));
+
     }
 
     /** baseFramesDir for portal is constant */
@@ -41,43 +49,43 @@ void Game2DView::initializeView() {
     // compute the exit tile index and set the picture
     const std::unique_ptr<TileModel>& exit = world->getTiles().at((world->getExit().yCoordinate) * world->getCols() + (world->getExit().xCoordinate));
     const std::unique_ptr<TileModel>& start = world->getTiles().at((world->getStart().yCoordinate) * world->getCols() + (world->getStart().xCoordinate));
-    PortalGraphicsItem* exitGraphicsItem = new PortalGraphicsItem(*exit, portalBase);
-    PortalGraphicsItem* startGraphicsItem = new PortalGraphicsItem(*start, portalBase);
-    scene->addItem(exitGraphicsItem);
-    scene->addItem(startGraphicsItem);
-    portalGraphicsItems.push_back(exitGraphicsItem);
-    portalGraphicsItems.push_back(startGraphicsItem);
+    std::unique_ptr<PortalGraphicsItem> exitGraphicsItem = std::make_unique<PortalGraphicsItem>(*exit, portalBase);
+    std::unique_ptr<PortalGraphicsItem> startGraphicsItem = std::make_unique<PortalGraphicsItem>(*start, portalBase);
+    scene->addItem(exitGraphicsItem.get());
+    scene->addItem(startGraphicsItem.get());
+    portalGraphicsItems.push_back(std::move(exitGraphicsItem));
+    portalGraphicsItems.push_back(std::move(startGraphicsItem));
 
     /** baseFramesDir for healthpack is constant */
     QString healthpackBase = ":/images/healthpack/";
-    for (const auto& healthPack : world->getHealthPacks()) {
-        HPGraphicsItem* healthPackGraphicsItem = new HPGraphicsItem(*healthPack, healthpackBase);
-        scene->addItem(healthPackGraphicsItem);
-        healthpackGraphicsItems.push_back(healthPackGraphicsItem);
+    for (const auto& healthPack : healthPacks) {
+        std::unique_ptr<HPGraphicsItem> healthPackGraphicsItem = std::make_unique<HPGraphicsItem>(*healthPack, healthpackBase);
+        scene->addItem(healthPackGraphicsItem.get());
+        healthpackGraphicsItems.push_back(std::move(healthPackGraphicsItem));
     }
 
     /** baseFramesDir for enemy is constant */
     QString enemyBase = ":/images/enemy_golem/PNG Sequences/";
-    for (const auto& enemy : world->getEnemies()) {
-        EnemyGraphicsItem* enemyGraphicsItem = new EnemyGraphicsItem(*enemy, enemyBase);
-        scene->addItem(enemyGraphicsItem);
-        enemyGraphicsItems.push_back(enemyGraphicsItem);
+    for (const auto& enemy : enemies) {
+        std::unique_ptr<EnemyGraphicsItem> enemyGraphicsItem = std::make_unique<EnemyGraphicsItem>(*enemy, enemyBase);
+        scene->addItem(enemyGraphicsItem.get());
+        enemyGraphicsItems.push_back(std::move(enemyGraphicsItem));
     }
 
     /** baseFramesDir for penemy is constant */
     QString penemyBase = ":/images/penemy_wraith/PNG Sequences/";
-    for (const auto& penemy : world->getPEnemies()) {
-        PEnemyGraphicsItem* penemyGraphicsItem = new PEnemyGraphicsItem(*penemy, penemyBase);
-        scene->addItem(penemyGraphicsItem);
-        penemyGraphicsItems.push_back(penemyGraphicsItem);
+    for (const auto& penemy : penemies) {
+        std::unique_ptr<PEnemyGraphicsItem> penemyGraphicsItem = std::make_unique<PEnemyGraphicsItem>(*penemy, penemyBase);
+        scene->addItem(penemyGraphicsItem.get());
+        penemyGraphicsItems.push_back(std::move(penemyGraphicsItem));
     }
 
     /** baseFramesDir for xenemy is constant */
     QString xenemyBase = ":/images/xenemy_wraith/PNG Sequences/";
-    for (const auto& xenemy : world->getXEnemies()) {
-        XEnemyGraphicsItem* xenemyGraphicsItem = new XEnemyGraphicsItem(*xenemy, xenemyBase);
-        scene->addItem(xenemyGraphicsItem);
-        xenemyGraphicsItems.push_back(xenemyGraphicsItem);
+    for (const auto& xenemy : xenemies) {
+        std::unique_ptr<XEnemyGraphicsItem> xenemyGraphicsItem = std::make_unique<XEnemyGraphicsItem>(*xenemy, xenemyBase);
+        scene->addItem(xenemyGraphicsItem.get());
+        xenemyGraphicsItems.push_back(std::move(xenemyGraphicsItem));
     }
 
 
@@ -98,9 +106,9 @@ void Game2DView::initializeView() {
         } else {
             protagonistBase = pro1Base;
         }
-        ProtagonistGraphicsItem* protagonistGraphicsItem = new ProtagonistGraphicsItem(*protagonists[i], protagonistBase);
-        scene->addItem(protagonistGraphicsItem);
-        protagonistGraphicsItems.push_back(protagonistGraphicsItem);
+        std::unique_ptr<ProtagonistGraphicsItem> protagonistGraphicsItem = std::make_unique<ProtagonistGraphicsItem>(*protagonists[i], protagonistBase);
+        scene->addItem(protagonistGraphicsItem.get());
+        protagonistGraphicsItems.push_back(std::move(protagonistGraphicsItem));
     }
     scene->setSceneRect(0, 0, backgroundImage.width() + tileWidth, backgroundImage.height() + tileHeight);
     this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
@@ -112,20 +120,17 @@ void Game2DView::initializeView() {
 }
 
 void Game2DView::updateView() {
-    for (auto* item : tileGraphicsItems) {
-        item->updatePosition();
-    }
-    for(auto* protagonistGraphicsItem : protagonistGraphicsItems) {
+    for(const auto& protagonistGraphicsItem : protagonistGraphicsItems) {
         if (protagonistGraphicsItem) {
             protagonistGraphicsItem->updatePosition();
         }
     }
-    for (auto* healthpackGraphicsItem : healthpackGraphicsItems) {
+    for (const auto& healthpackGraphicsItem : healthpackGraphicsItems) {
         if (healthpackGraphicsItem) {
             healthpackGraphicsItem->updatePosition();
         }
     }
-    for (auto* xenemyGraphicsItem : xenemyGraphicsItems) {
+    for (const auto& xenemyGraphicsItem : xenemyGraphicsItems) {
         if (xenemyGraphicsItem) {
             xenemyGraphicsItem->updatePosition();
         }
@@ -133,6 +138,12 @@ void Game2DView::updateView() {
     scene->setSceneRect(scene->itemsBoundingRect());
     this->update();
 }
+
+
+void Game2DView::setBackgroundNumber(int backgroundNumber){
+    this->backgroundNumber = backgroundNumber;
+}
+
 
 void Game2DView::wheelEvent(QWheelEvent* event) {
     int delta = event->angleDelta().y() / 12 ;
@@ -143,9 +154,6 @@ void Game2DView::wheelEvent(QWheelEvent* event) {
     }
 }
 
-void Game2DView::setBackgroundNumber(int backgroundNumber){
-    this->backgroundNumber = backgroundNumber;
-}
 
 void Game2DView::setBackground(int backgroundNumber) {
     // Load the background image based on the difficulty level
@@ -174,49 +182,9 @@ void Game2DView::setBackground(int backgroundNumber) {
 }
 
 void Game2DView::clearTileObservers() {
-    for (auto* tileGraphicsItem : tileGraphicsItems) {
+    for (const auto& tileGraphicsItem : tileGraphicsItems) {
         tileGraphicsItem->getTileModel().clearObservers();
     }
-}
-
-
-void Game2DView::zoomIn(int delta) {
-    qreal maxZoomLevel = initZoomLevel * 2;
-    qreal targetZoomLevel = zoomLevel + delta * zoomSpeed;
-    if (targetZoomLevel > maxZoomLevel) {  // If the target zoom level is greater than the max, clamp it
-        targetZoomLevel = maxZoomLevel;
-        this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-    }
-
-    if (zoomLevel < targetZoomLevel) {  // Only zoom in if not already at the max zoom level
-        qreal factor = qPow(2.0, targetZoomLevel);
-        setTransform(QTransform::fromScale(factor, factor));
-        if (!protagonistGraphicsItems.empty()) {
-            centerOn(protagonistGraphicsItems.front());
-        }
-        zoomLevel = targetZoomLevel; // Update the current zoom level
-    }
-    this->update();
-}
-
-void Game2DView::zoomOut(int delta) {
-    qreal scale = 0.001;
-    qreal minZoomLevel = (initZoomLevel * scale);
-    qreal targetZoomLevel = zoomLevel - delta * zoomSpeed;
-    if (targetZoomLevel < minZoomLevel) {  // If the target zoom level is less than the min, clamp it
-        targetZoomLevel = minZoomLevel;
-        this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-    }
-
-    if (zoomLevel > targetZoomLevel) {  // Only zoom out if not already at the min zoom level
-        qreal factor = qPow(2.0, targetZoomLevel);
-        setTransform(QTransform::fromScale(factor, factor));
-        if (!protagonistGraphicsItems.empty()) {
-            centerOn(protagonistGraphicsItems.front());
-        }
-        zoomLevel = targetZoomLevel; // Update the current zoom level
-    }
-    this->update();
 }
 
 // This function should be called after setting the background and calculating tileWidth and tileHeight.
@@ -244,5 +212,46 @@ void Game2DView::scaleEntitiesToFitView() {
     EntityGraphicsItem::setCommonDimensions(tileWidth * scaleFactor, tileHeight * scaleFactor);
     EntityGraphicsItem::setTileDimensions(tileWidth, tileHeight);
 }
+
+void Game2DView::zoomIn(int delta) {
+    qreal maxZoomLevel = initZoomLevel * 2;
+    qreal targetZoomLevel = zoomLevel + delta * zoomSpeed;
+    if (targetZoomLevel > maxZoomLevel) {  // If the target zoom level is greater than the max, clamp it
+        targetZoomLevel = maxZoomLevel;
+        this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    }
+
+    if (zoomLevel < targetZoomLevel) {  // Only zoom in if not already at the max zoom level
+        qreal factor = qPow(2.0, targetZoomLevel);
+        setTransform(QTransform::fromScale(factor, factor));
+        if (!protagonistGraphicsItems.empty()) {
+            centerOn(protagonistGraphicsItems.front().get());
+        }
+        zoomLevel = targetZoomLevel; // Update the current zoom level
+    }
+    this->update();
+}
+
+void Game2DView::zoomOut(int delta) {
+    qreal scale = 0.001;
+    qreal minZoomLevel = (initZoomLevel * scale);
+    qreal targetZoomLevel = zoomLevel - delta * zoomSpeed;
+    if (targetZoomLevel < minZoomLevel) {  // If the target zoom level is less than the min, clamp it
+        targetZoomLevel = minZoomLevel;
+        this->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
+    }
+
+    if (zoomLevel > targetZoomLevel) {  // Only zoom out if not already at the min zoom level
+        qreal factor = qPow(2.0, targetZoomLevel);
+        setTransform(QTransform::fromScale(factor, factor));
+        if (!protagonistGraphicsItems.empty()) {
+            centerOn(protagonistGraphicsItems.front().get());
+        }
+        zoomLevel = targetZoomLevel; // Update the current zoom level
+    }
+    this->update();
+}
+
+
 
 

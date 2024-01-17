@@ -65,7 +65,6 @@ void GameTextView::updateView() {
 }
 
 
-
 void GameTextView::displayScene(const QString& sceneString) {
     this->setHtml(sceneString); // Use setHtml instead of setPlainText
     this->update();

@@ -14,7 +14,7 @@
 class GameTextView : public QTextEdit, public GameView {
 
 public:
-    explicit GameTextView(QWidget* parent = nullptr) : QTextEdit(parent){
+    explicit GameTextView(QWidget* parent) : QTextEdit(parent){
         setReadOnly(true);
         // Set the font family
         QFont font;
@@ -27,7 +27,6 @@ public:
     void updateView() override;
 
     virtual ~GameTextView() = default;
-
 
 private:
     const WorldModel* world;

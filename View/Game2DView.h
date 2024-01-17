@@ -17,7 +17,7 @@
 
 class Game2DView : public QGraphicsView, public GameView {
 public:
-    explicit Game2DView(QWidget* parent = nullptr)
+    explicit Game2DView(QWidget* parent)
         : QGraphicsView(parent), scene(new QGraphicsScene(this)) {
         Background1.load(":/images/world_images/worldmap.png");
         Background2.load(":/images/world_images/worldmap2.png");
@@ -70,15 +70,14 @@ private:
     qreal tileWidth;
     qreal tileHeight;
 
-    /** use raw pointers here since items are owned and managed by QGraphicsScene to avoid double deletion */
-    std::vector<TileGraphicsItem*> tileGraphicsItems;
-    std::vector<HPGraphicsItem*> healthpackGraphicsItems;
-    std::vector<PortalGraphicsItem*> portalGraphicsItems;
-    std::vector<EnemyGraphicsItem*> enemyGraphicsItems;
-    std::vector<PEnemyGraphicsItem*> penemyGraphicsItems;
-    std::vector<XEnemyGraphicsItem*> xenemyGraphicsItems;
-    std::vector<ProtagonistGraphicsItem*> protagonistGraphicsItems;
-
+    std::vector<std::unique_ptr<TileGraphicsItem>> tileGraphicsItems;
+    std::vector<std::unique_ptr<HPGraphicsItem>> healthpackGraphicsItems;
+    std::vector<std::unique_ptr<PortalGraphicsItem>> portalGraphicsItems;
+    std::vector<std::unique_ptr<EnemyGraphicsItem>> enemyGraphicsItems;
+    std::vector<std::unique_ptr<PEnemyGraphicsItem>> penemyGraphicsItems;
+    std::vector<std::unique_ptr<XEnemyGraphicsItem>> xenemyGraphicsItems;
+    std::vector<std::unique_ptr<ProtagonistGraphicsItem>> protagonistGraphicsItems;
+    
     void scaleEntitiesToFitView();
     void zoomIn(int delta);
     void zoomOut(int delta);
