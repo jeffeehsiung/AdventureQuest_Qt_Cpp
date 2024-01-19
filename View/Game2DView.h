@@ -42,9 +42,9 @@ public:
      * based on which iteratively create grahpicsRectItems or entityTextItem(string) and
      * add it to the scene
      */
-    void setCurrentWorld(const WorldModel& world) override;
-    void initializeView() override;
-    void updateView() override;
+    virtual void setCurrentWorld(const WorldModel& world) override;
+    virtual void initializeView() override;
+    virtual void updateView() override;
 
     void setBackgroundNumber(int backgroundNumber);
 

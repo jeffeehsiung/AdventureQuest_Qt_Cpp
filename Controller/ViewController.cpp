@@ -12,10 +12,11 @@ ViewController::ViewController(QObject *parent) :
 
 void ViewController::initializeViews() {
     if(game2DView == nullptr){
-        game2DView = std::make_unique<Game2DView>(nullptr);
+        game2DView = new Game2DView(nullptr);
+
     }
     if(gameTextView == nullptr){
-        gameTextView = std::make_unique<GameTextView>(nullptr);
+        gameTextView = new GameTextView(nullptr);
     }
 
     const WorldModel& world = worldController.getCurrentWorld();
@@ -28,7 +29,7 @@ void ViewController::initializeViews() {
     gameTextView->initializeView();
 
     // Optionally set the initial view
-    currentView = game2DView.get();
+    currentView = game2DView;
     emit viewUpdated(currentView);
 
     connect(&worldController, &WorldController::updateprotagonistPosition, this, &ViewController::onUpdateProtagonistPosition);
@@ -36,15 +37,15 @@ void ViewController::initializeViews() {
 }
 
 void ViewController::switchTo2DView() {
-    if (currentView != game2DView.get()) {
-        currentView = game2DView.get();
+    if (currentView != game2DView) {
+        currentView = game2DView;
         emit viewUpdated(currentView);
     }
 }
 
 void ViewController::switchToTextView() {
-    if (currentView != gameTextView.get()) {
-        currentView = gameTextView.get();
+    if (currentView != gameTextView) {
+        currentView = gameTextView;
         emit viewUpdated(currentView);
     }
 }

@@ -35,10 +35,9 @@ signals:
 
 private:
     ViewController(QObject *parent = nullptr);
-
     WorldController& worldController;
-    std::unique_ptr<Game2DView> game2DView;
-    std::unique_ptr<GameTextView> gameTextView;
+    QPointer<Game2DView> game2DView; // Changed to QPointer
+    QPointer<GameTextView> gameTextView; // Changed to QPointer
     QPointer<QWidget> currentView; // Changed to QPointer
 
 };

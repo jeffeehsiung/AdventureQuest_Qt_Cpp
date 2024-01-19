@@ -22,9 +22,9 @@ public:
         setFont(font);
     }
 
-    void setCurrentWorld(const WorldModel& world) override;
-    void initializeView() override;
-    void updateView() override;
+    virtual void setCurrentWorld(const WorldModel& world) override;
+    virtual void initializeView() override;
+    virtual void updateView() override;
 
     virtual ~GameTextView() = default;
 
