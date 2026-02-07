@@ -18,8 +18,7 @@ const std::vector<QPixmap>& SpriteCache::getFrames(const QString& dirPath) {
     }
 
     auto frames = loadFramesFromDir(dirPath);
-    auto [inserted, _] = frameCache_.insert(dirPath, std::move(frames));
-    Q_UNUSED(_);
+    auto inserted = frameCache_.insert(dirPath, std::move(frames));
     return inserted.value();
 }
 

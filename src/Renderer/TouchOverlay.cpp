@@ -118,7 +118,7 @@ void TouchOverlay::handleTouch(const QPointF& pos) {
     // Check D-pad zones
     for (const auto& zone : dpadZones_) {
         if (zone.rect.contains(pos)) {
-            InputAction action;
+            InputAction action = InputAction::MoveUp;
             switch (zone.dir) {
                 case Direction::Up:    action = InputAction::MoveUp; break;
                 case Direction::Down:  action = InputAction::MoveDown; break;
