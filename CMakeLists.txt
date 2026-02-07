@@ -1,16 +1,26 @@
 cmake_minimum_required(VERSION 3.21)
 
 # ============================================================================
-# AdventureQuest - Cross-platform 2D RPG (Desktop + iOS)
+# AdventureQuest - Cross-platform 2D RPG
 # ============================================================================
-# Desktop build:
-#   mkdir build && cd build && cmake .. && cmake --build .
 #
-# iOS build (requires macOS + Xcode + Qt6 for iOS):
-#   mkdir build-ios && cd build-ios
-#   cmake .. -G Xcode -DCMAKE_TOOLCHAIN_FILE=../cmake/ios.toolchain.cmake \
-#     -DCMAKE_PREFIX_PATH=<path-to-qt6-ios>
-#   cmake --build . --config Release
+# macOS Desktop (Xcode):
+#   ./scripts/build-macos.sh
+#   -- or manually --
+#   cmake -S . -B build-macos -G Xcode
+#   open build-macos/AdventureQuest.xcodeproj
+#
+# macOS Desktop (Makefiles):
+#   cmake -S . -B build && cmake --build build
+#
+# iOS Device:
+#   ./scripts/build-ios.sh device
+#   open build-ios-device/AdventureQuest.xcodeproj
+#
+# iOS Simulator:
+#   ./scripts/build-ios.sh simulator
+#   open build-ios-sim/AdventureQuest.xcodeproj
+#
 # ============================================================================
 
 project(AdventureQuest VERSION 2.0.0 LANGUAGES CXX)
@@ -23,17 +33,16 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # ---------- Qt6 ----------
 find_package(Qt6 REQUIRED COMPONENTS Widgets Core Gui)
+message(STATUS "Qt6 found at: ${Qt6_DIR}")
 
 # ---------- Source files ----------
 
-# Original world library (kept as-is for backward compatibility)
 set(WORLD_LIB_SOURCES
     Model/world.cpp
     Model/world.h
     Model/world_global.h
 )
 
-# New architecture sources
 set(CORE_SOURCES
     src/Core/Types.h
     src/Core/Event.h
@@ -79,48 +88,8 @@ set(APP_SOURCES
     src/App/main.cpp
 )
 
-# Legacy sources (kept for reference and fallback builds)
-set(LEGACY_SOURCES
-    Model/structs.h
-    Model/Entity.h
-    Model/TileModel.h
-    Model/TileModel.cpp
-    Model/EnemyModel.h
-    Model/EnemyModel.cpp
-    Model/ProtagonistModel.h
-    Model/ProtagonistModel.cpp
-    Model/WorldModel.h
-    Model/WorldModel.cpp
-    Model/TileObserver.h
-    Controller/GameController.h
-    Controller/GameController.cpp
-    Controller/WorldController.h
-    Controller/WorldController.cpp
-    Controller/ViewController.h
-    Controller/ViewController.cpp
-    Controller/InputType.h
-    Controller/ViewType.h
-    View/GameView.h
-    View/Game2DView.h
-    View/Game2DView.cpp
-    View/GameTextView.h
-    View/GameTextView.cpp
-    View/EntityGraphicsItem.h
-    View/EntityGraphicsItem.cpp
-    View/ProtagonistGraphicsItem.h
-    View/ProtagonistGraphicsItem.cpp
-    View/EnemyGraphicsItem.h
-    View/EnemyGraphicsItem.cpp
-    View/TileGraphicsItem.h
-    View/TileGraphicsItem.cpp
-    View/EntityTextItem.h
-    pathfinder.h
-)
-
-# ---------- Resources ----------
 set(RESOURCES images.qrc)
 
-# ---------- All sources ----------
 set(ALL_SOURCES
     ${WORLD_LIB_SOURCES}
     ${CORE_SOURCES}
@@ -131,13 +100,9 @@ set(ALL_SOURCES
     ${RESOURCES}
 )
 
-# ---------- Platform-specific configuration ----------
+# ---------- Platform targets ----------
 if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
-    # iOS app bundle
-    set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.adventurequest.game")
-    set(MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION})
-    set(MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION})
-
+    # ===== iOS APP BUNDLE =====
     set(IOS_RESOURCES
         ios/LaunchScreen.storyboard
     )
@@ -146,27 +111,59 @@ if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
 
     set_target_properties(${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.adventurequest.game"
+        MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
+        MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/ios/Info.plist"
-        XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2"  # iPhone + iPad
+        XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2"
         XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET "15.0"
         XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon"
         XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.adventurequest.game"
+        XCODE_ATTRIBUTE_DEVELOPMENT_TEAM ""
         RESOURCE "${IOS_RESOURCES}"
     )
 
-    # Define iOS platform macro
     target_compile_definitions(${PROJECT_NAME} PRIVATE IOS_PLATFORM=1 WORLD_LIBRARY)
 
+elseif(APPLE)
+    # ===== macOS APP BUNDLE =====
+    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${ALL_SOURCES})
+
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.adventurequest.game"
+        MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
+        MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
+        MACOSX_BUNDLE_BUNDLE_NAME "AdventureQuest"
+        XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.adventurequest.game"
+    )
+
+    # Copy images into the app bundle Resources
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_SOURCE_DIR}/images"
+            "$<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Resources/images"
+        COMMENT "Copying images into macOS app bundle"
+    )
+
+    target_compile_definitions(${PROJECT_NAME} PRIVATE WORLD_LIBRARY)
+
 else()
-    # Desktop executable
+    # ===== Linux / Windows =====
     add_executable(${PROJECT_NAME} ${ALL_SOURCES})
     target_compile_definitions(${PROJECT_NAME} PRIVATE WORLD_LIBRARY)
+
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_SOURCE_DIR}/images" "${CMAKE_BINARY_DIR}/images"
+        COMMENT "Copying image assets to build directory"
+    )
 endif()
 
 # ---------- Include directories ----------
 target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_SOURCE_DIR}           # For Model/, Controller/, View/ legacy paths
-    ${CMAKE_SOURCE_DIR}/src       # For new src/Core/, src/Game/, etc.
+    ${CMAKE_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/src
 )
 
 # ---------- Link Qt ----------
@@ -184,13 +181,15 @@ target_compile_options(${PROJECT_NAME} PRIVATE
     $<$<CXX_COMPILER_ID:MSVC>:/W4 /O2>
 )
 
-# ---------- Post-build (desktop) ----------
-if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${CMAKE_SOURCE_DIR}/images" "${CMAKE_BINARY_DIR}/images"
-        COMMENT "Copying image assets to build directory"
-    )
+# ---------- Organize Xcode source groups ----------
+if(CMAKE_GENERATOR MATCHES "Xcode")
+    source_group("Core"       FILES ${CORE_SOURCES})
+    source_group("Game"       FILES ${GAME_SOURCES})
+    source_group("Platform"   FILES ${PLATFORM_SOURCES})
+    source_group("Renderer"   FILES ${RENDERER_SOURCES})
+    source_group("App"        FILES ${APP_SOURCES})
+    source_group("WorldLib"   FILES ${WORLD_LIB_SOURCES})
+    source_group("Resources"  FILES ${RESOURCES})
 endif()
 
 # ---------- Install ----------

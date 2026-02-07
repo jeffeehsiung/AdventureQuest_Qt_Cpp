@@ -73,7 +73,14 @@ CMakeLists.txt.user*
 *.exe
 
 .vscode
-build
-```
+build/
+build-*/
+
+# Xcode
+*.xcuserdata
+xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/
+
 # *.pro
 # APTgame.pro
