@@ -7,6 +7,7 @@ set -euo pipefail
 # Usage:
 #   ./scripts/build-macos.sh          # generate + open Xcode
 #   ./scripts/build-macos.sh --build  # generate + build (no Xcode GUI)
+#   ./scripts/build-macos.sh --clean  # wipe build dir and regenerate
 # ============================================================================
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -15,15 +16,50 @@ BUILD_DIR="$PROJECT_DIR/build-macos"
 
 echo "=== AdventureQuest - macOS Desktop Build ==="
 
+# --- Handle --clean flag ---
+if [ "${1:-}" = "--clean" ]; then
+    echo "Cleaning build directory..."
+    rm -rf "$BUILD_DIR"
+    shift
+fi
+
+# --- Verify Xcode toolchain ---
+echo ""
+echo "Checking Xcode toolchain..."
+
+# Make sure xcode-select points to Xcode.app (not just CLT)
+XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
+if [ "$XCODE_PATH" != "/Applications/Xcode.app/Contents/Developer" ]; then
+    if [ -d "/Applications/Xcode.app" ]; then
+        echo "[!] xcode-select not pointing to Xcode.app. Fixing..."
+        echo "    (may ask for your password)"
+        sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+    else
+        echo "[!] Xcode.app not found. Using command line tools."
+    fi
+fi
+
+# Accept Xcode license (silently check, prompt if needed)
+if ! xcodebuild -license check &>/dev/null 2>&1; then
+    echo "[!] Xcode license not accepted. Accepting..."
+    echo "    (may ask for your password)"
+    sudo xcodebuild -license accept
+fi
+
+echo "[OK] Xcode: $(xcodebuild -version 2>/dev/null | head -1)"
+
 # --- Find Qt6 ---
 QT_PREFIX=""
 
-# Try Homebrew first
+# Try Homebrew (handles both qt@6 and qt formula names)
 if command -v brew &>/dev/null; then
-    QT_BREW=$(brew --prefix qt@6 2>/dev/null || true)
-    if [ -d "$QT_BREW/lib/cmake/Qt6" ]; then
-        QT_PREFIX="$QT_BREW"
-    fi
+    for formula in qt@6 qt; do
+        QT_BREW=$(brew --prefix "$formula" 2>/dev/null || true)
+        if [ -n "$QT_BREW" ] && [ -d "$QT_BREW/lib/cmake/Qt6" ]; then
+            QT_PREFIX="$QT_BREW"
+            break
+        fi
+    done
 fi
 
 # Try Qt Online Installer paths
@@ -36,19 +72,21 @@ if [ -z "$QT_PREFIX" ]; then
     done
 fi
 
-# Try system
-if [ -z "$QT_PREFIX" ]; then
-    if cmake --find-package -DNAME=Qt6 -DCOMPILER_ID=AppleClang -DLANGUAGE=CXX -DMODE=EXIST &>/dev/null 2>&1; then
-        QT_PREFIX=""  # system default will work
-    fi
-fi
-
 if [ -n "$QT_PREFIX" ]; then
-    echo "Qt6 found at: $QT_PREFIX"
+    echo "[OK] Qt6 at: $QT_PREFIX"
     QT_ARG="-DCMAKE_PREFIX_PATH=$QT_PREFIX"
 else
-    echo "Qt6 path: using system default"
-    QT_ARG=""
+    echo "[!] Qt6 not found. Install with: brew install qt@6"
+    exit 1
+fi
+
+# --- Clean stale cache if generator changed ---
+if [ -f "$BUILD_DIR/CMakeCache.txt" ]; then
+    CACHED_GEN=$(grep "CMAKE_GENERATOR:" "$BUILD_DIR/CMakeCache.txt" 2>/dev/null | cut -d= -f2 || true)
+    if [ -n "$CACHED_GEN" ] && [ "$CACHED_GEN" != "Xcode" ]; then
+        echo "[!] Build dir has a different generator ($CACHED_GEN). Cleaning..."
+        rm -rf "$BUILD_DIR"
+    fi
 fi
 
 # --- Generate Xcode project ---
