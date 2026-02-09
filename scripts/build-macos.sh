@@ -2,25 +2,47 @@
 set -euo pipefail
 
 # ============================================================================
-# build-macos.sh - Generate and open Xcode project for macOS Desktop
+# build-macos.sh - Build AdventureQuest for macOS Desktop
 # ============================================================================
 # Usage:
-#   ./scripts/build-macos.sh          # generate + open Xcode
-#   ./scripts/build-macos.sh --build  # generate + build (no Xcode GUI)
-#   ./scripts/build-macos.sh --clean  # wipe build dir and regenerate
+#   ./scripts/build-macos.sh                # Xcode project + open
+#   ./scripts/build-macos.sh --build        # Xcode project + command-line build
+#   ./scripts/build-macos.sh --ninja        # Ninja build (no Xcode needed)
+#   ./scripts/build-macos.sh --clean        # wipe build dir first
+#   ./scripts/build-macos.sh --clean --ninja
 # ============================================================================
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-BUILD_DIR="$PROJECT_DIR/build-macos"
+
+# --- Parse flags ---
+CLEAN=false
+USE_NINJA=false
+DO_BUILD=false
+
+for arg in "$@"; do
+    case "$arg" in
+        --clean) CLEAN=true ;;
+        --ninja) USE_NINJA=true ;;
+        --build) DO_BUILD=true ;;
+    esac
+done
+
+if $USE_NINJA; then
+    BUILD_DIR="$PROJECT_DIR/build-macos-ninja"
+    GENERATOR="Ninja"
+else
+    BUILD_DIR="$PROJECT_DIR/build-macos"
+    GENERATOR="Xcode"
+fi
 
 echo "=== AdventureQuest - macOS Desktop Build ==="
+echo "    Generator: $GENERATOR"
 
 # --- Handle --clean flag ---
-if [ "${1:-}" = "--clean" ]; then
+if $CLEAN; then
     echo "Cleaning build directory..."
     rm -rf "$BUILD_DIR"
-    shift
 fi
 
 # --- Verify Xcode toolchain ---
@@ -47,6 +69,10 @@ if ! xcodebuild -license check &>/dev/null 2>&1; then
 fi
 
 echo "[OK] Xcode: $(xcodebuild -version 2>/dev/null | head -1)"
+
+# Run first-launch setup (installs required system packages/plugins)
+echo "    Running first-launch setup (may take a moment)..."
+xcodebuild -runFirstLaunch 2>/dev/null || sudo xcodebuild -runFirstLaunch 2>/dev/null || true
 
 # --- Find Qt6 ---
 QT_PREFIX=""
@@ -83,13 +109,13 @@ fi
 # --- Clean stale cache if generator changed ---
 if [ -f "$BUILD_DIR/CMakeCache.txt" ]; then
     CACHED_GEN=$(grep "CMAKE_GENERATOR:" "$BUILD_DIR/CMakeCache.txt" 2>/dev/null | cut -d= -f2 || true)
-    if [ -n "$CACHED_GEN" ] && [ "$CACHED_GEN" != "Xcode" ]; then
+    if [ -n "$CACHED_GEN" ] && [ "$CACHED_GEN" != "$GENERATOR" ]; then
         echo "[!] Build dir has a different generator ($CACHED_GEN). Cleaning..."
         rm -rf "$BUILD_DIR"
     fi
 fi
 
-# --- Locate compilers explicitly (most reliable for Xcode generator) ---
+# --- Locate compilers explicitly ---
 CC=$(xcrun --find clang 2>/dev/null || echo "")
 CXX=$(xcrun --find clang++ 2>/dev/null || echo "")
 if [ -z "$CC" ] || [ -z "$CXX" ]; then
@@ -100,22 +126,42 @@ fi
 echo "[OK] CC:  $CC"
 echo "[OK] CXX: $CXX"
 
-# --- Generate Xcode project ---
+# --- Check Ninja availability (for --ninja mode) ---
+if $USE_NINJA; then
+    if ! command -v ninja &>/dev/null; then
+        echo "[ ] Ninja not found. Installing via Homebrew..."
+        brew install ninja
+    fi
+    echo "[OK] Ninja: $(ninja --version)"
+fi
+
+# --- Generate ---
 echo ""
-echo "Generating Xcode project..."
+echo "Generating with $GENERATOR..."
 cmake -S "$PROJECT_DIR" -B "$BUILD_DIR" \
-    -G Xcode \
+    -G "$GENERATOR" \
     $QT_ARG \
     -DCMAKE_C_COMPILER="$CC" \
     -DCMAKE_CXX_COMPILER="$CXX" \
     -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
 
 echo ""
-echo "[OK] Xcode project generated at:"
-echo "     $BUILD_DIR/AdventureQuest.xcodeproj"
+echo "[OK] Build system generated at: $BUILD_DIR"
 
 # --- Build or open ---
-if [ "${1:-}" = "--build" ]; then
+if $USE_NINJA; then
+    echo ""
+    echo "Building with Ninja..."
+    cmake --build "$BUILD_DIR" --config Debug -j "$(sysctl -n hw.logicalcpu 2>/dev/null || echo 4)"
+    echo ""
+    echo "[OK] Build complete!"
+    # Find the .app bundle or binary
+    if [ -d "$BUILD_DIR/AdventureQuest.app" ]; then
+        echo "     Run: open $BUILD_DIR/AdventureQuest.app"
+    else
+        echo "     Run: $BUILD_DIR/AdventureQuest"
+    fi
+elif $DO_BUILD; then
     echo ""
     echo "Building..."
     cmake --build "$BUILD_DIR" --config Debug
