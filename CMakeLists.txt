@@ -136,6 +136,10 @@ elseif(APPLE)
         MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
         MACOSX_BUNDLE_BUNDLE_NAME "AdventureQuest"
         XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.adventurequest.game"
+        # Ad-hoc code signing for local development (no Apple Developer account needed)
+        XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "-"
+        XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO"
+        XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
     )
 
     # Copy images into the app bundle Resources

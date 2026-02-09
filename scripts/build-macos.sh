@@ -143,7 +143,7 @@ cmake -S "$PROJECT_DIR" -B "$BUILD_DIR" \
     $QT_ARG \
     -DCMAKE_C_COMPILER="$CC" \
     -DCMAKE_CXX_COMPILER="$CXX" \
-    -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
+    -DCMAKE_OSX_DEPLOYMENT_TARGET=14.0
 
 echo ""
 echo "[OK] Build system generated at: $BUILD_DIR"
