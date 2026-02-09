@@ -83,6 +83,34 @@ if ! xcodebuild -version &>/dev/null; then
 fi
 echo "Xcode: $(xcodebuild -version | head -1)"
 
+# --- Find QT_HOST_PATH (macOS Qt needed for cross-compilation tools) ---
+QT_HOST=""
+# Try Homebrew first
+if command -v brew &>/dev/null; then
+    for formula in qt@6 qt; do
+        QT_HOST_TRY=$(brew --prefix "$formula" 2>/dev/null || true)
+        if [ -n "$QT_HOST_TRY" ] && [ -d "$QT_HOST_TRY/lib/cmake/Qt6" ]; then
+            QT_HOST="$QT_HOST_TRY"
+            break
+        fi
+    done
+fi
+# Try Qt Online Installer macOS path
+if [ -z "$QT_HOST" ]; then
+    for qtdir in "$HOME/Qt"/6.*/macos "$HOME/Qt"/6.*/clang_64; do
+        if [ -d "$qtdir/lib/cmake/Qt6" ]; then
+            QT_HOST="$qtdir"
+            break
+        fi
+    done
+fi
+if [ -z "$QT_HOST" ]; then
+    echo "[ERROR] Cannot find Qt6 for macOS (needed as host tools for cross-compilation)."
+    echo "        Install with: brew install qt@6"
+    exit 1
+fi
+echo "Qt6 host (macOS): $QT_HOST"
+
 # --- Generate ---
 echo ""
 echo "Generating Xcode project for $TARGET_LABEL..."
@@ -90,7 +118,7 @@ cmake -S "$PROJECT_DIR" -B "$BUILD_DIR" \
     -G Xcode \
     -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN" \
     -DCMAKE_PREFIX_PATH="$QT_IOS_PREFIX" \
-    -DQT_HOST_PATH="$(brew --prefix qt@6 2>/dev/null || echo "$HOME/Qt/$(ls "$HOME/Qt" 2>/dev/null | grep '^6\.' | sort -V | tail -1)/macos")"
+    -DQT_HOST_PATH="$QT_HOST"
 
 echo ""
 echo "[OK] Xcode project generated at:"

@@ -89,12 +89,25 @@ if [ -f "$BUILD_DIR/CMakeCache.txt" ]; then
     fi
 fi
 
+# --- Locate compilers explicitly (most reliable for Xcode generator) ---
+CC=$(xcrun --find clang 2>/dev/null || echo "")
+CXX=$(xcrun --find clang++ 2>/dev/null || echo "")
+if [ -z "$CC" ] || [ -z "$CXX" ]; then
+    echo "[ERROR] Cannot find clang/clang++ via xcrun."
+    echo "        Run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer"
+    exit 1
+fi
+echo "[OK] CC:  $CC"
+echo "[OK] CXX: $CXX"
+
 # --- Generate Xcode project ---
 echo ""
 echo "Generating Xcode project..."
 cmake -S "$PROJECT_DIR" -B "$BUILD_DIR" \
     -G Xcode \
     $QT_ARG \
+    -DCMAKE_C_COMPILER="$CC" \
+    -DCMAKE_CXX_COMPILER="$CXX" \
     -DCMAKE_OSX_DEPLOYMENT_TARGET=12.0
 
 echo ""
